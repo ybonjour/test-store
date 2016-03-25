@@ -19,8 +19,6 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="test-store_main" target="1.5" />
-      <module name="test-store_test" target="1.5" />
       <module name="teststore_main" target="1.8" />
       <module name="teststore_test" target="1.8" />
     </bytecodeTargetLevel>

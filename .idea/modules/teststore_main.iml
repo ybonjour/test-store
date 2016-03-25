@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<module external.linked.project.id="teststore:main" external.linked.project.path="$MODULE_DIR$/../.." external.root.project.path="$MODULE_DIR$/../.." external.system.id="GRADLE" external.system.module.group="ch.yvu" external.system.module.type="sourceSet" external.system.module.version="unspecified" type="JAVA_MODULE" version="4">
+<module external.linked.project.id="teststore:main" external.linked.project.path="$MODULE_DIR$/../.." external.root.project.path="$MODULE_DIR$/../.." external.system.id="GRADLE" external.system.module.group="" external.system.module.type="sourceSet" external.system.module.version="unspecified" type="JAVA_MODULE" version="4">
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_8" inherit-compiler-output="false">
     <output url="file://$MODULE_DIR$/../../build/classes/main" />
     <exclude-output />
@@ -12,6 +12,7 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib:1.0.1" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework.boot:spring-boot-starter-web:1.3.3.RELEASE" level="project" />
+    <orderEntry type="library" name="Gradle: org.springframework.data:spring-data-cassandra:1.3.4.RELEASE" level="project" />
     <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-runtime:1.0.1" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework.boot:spring-boot-starter:1.3.3.RELEASE" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework.boot:spring-boot-starter-tomcat:1.3.3.RELEASE" level="project" />
@@ -19,6 +20,12 @@
     <orderEntry type="library" name="Gradle: com.fasterxml.jackson.core:jackson-databind:2.6.5" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework:spring-web:4.2.5.RELEASE" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework:spring-webmvc:4.2.5.RELEASE" level="project" />
+    <orderEntry type="library" name="Gradle: org.springframework.data:spring-cql:1.3.4.RELEASE" level="project" />
+    <orderEntry type="library" name="Gradle: org.springframework:spring-expression:4.2.5.RELEASE" level="project" />
+    <orderEntry type="library" name="Gradle: org.springframework.data:spring-data-commons:1.11.4.RELEASE" level="project" />
+    <orderEntry type="library" name="Gradle: com.datastax.cassandra:cassandra-driver-dse:2.1.9" level="project" />
+    <orderEntry type="library" name="Gradle: org.slf4j:slf4j-api:1.7.16" level="project" />
+    <orderEntry type="library" name="Gradle: org.slf4j:jcl-over-slf4j:1.7.16" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework.boot:spring-boot:1.3.3.RELEASE" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework.boot:spring-boot-autoconfigure:1.3.3.RELEASE" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework.boot:spring-boot-starter-logging:1.3.3.RELEASE" level="project" />
@@ -34,16 +41,22 @@
     <orderEntry type="library" name="Gradle: org.springframework:spring-aop:4.2.5.RELEASE" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework:spring-beans:4.2.5.RELEASE" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework:spring-context:4.2.5.RELEASE" level="project" />
-    <orderEntry type="library" name="Gradle: org.springframework:spring-expression:4.2.5.RELEASE" level="project" />
+    <orderEntry type="library" name="Gradle: org.springframework:spring-tx:4.2.5.RELEASE" level="project" />
+    <orderEntry type="library" name="Gradle: com.google.guava:guava:18.0" level="project" />
+    <orderEntry type="library" name="Gradle: com.datastax.cassandra:cassandra-driver-core:2.1.9" level="project" />
     <orderEntry type="library" name="Gradle: ch.qos.logback:logback-classic:1.1.5" level="project" />
-    <orderEntry type="library" name="Gradle: org.slf4j:jcl-over-slf4j:1.7.16" level="project" />
     <orderEntry type="library" name="Gradle: org.slf4j:jul-to-slf4j:1.7.16" level="project" />
     <orderEntry type="library" name="Gradle: org.slf4j:log4j-over-slf4j:1.7.16" level="project" />
     <orderEntry type="library" name="Gradle: javax.validation:validation-api:1.1.0.Final" level="project" />
     <orderEntry type="library" name="Gradle: org.jboss.logging:jboss-logging:3.3.0.Final" level="project" />
     <orderEntry type="library" name="Gradle: com.fasterxml:classmate:1.1.0" level="project" />
     <orderEntry type="library" name="Gradle: aopalliance:aopalliance:1.0" level="project" />
+    <orderEntry type="library" name="Gradle: io.netty:netty-handler:4.0.27.Final" level="project" />
+    <orderEntry type="library" name="Gradle: com.codahale.metrics:metrics-core:3.0.2" level="project" />
     <orderEntry type="library" name="Gradle: ch.qos.logback:logback-core:1.1.5" level="project" />
-    <orderEntry type="library" name="Gradle: org.slf4j:slf4j-api:1.7.16" level="project" />
+    <orderEntry type="library" name="Gradle: io.netty:netty-buffer:4.0.27.Final" level="project" />
+    <orderEntry type="library" name="Gradle: io.netty:netty-transport:4.0.27.Final" level="project" />
+    <orderEntry type="library" name="Gradle: io.netty:netty-codec:4.0.27.Final" level="project" />
+    <orderEntry type="library" name="Gradle: io.netty:netty-common:4.0.27.Final" level="project" />
   </component>
 </module>

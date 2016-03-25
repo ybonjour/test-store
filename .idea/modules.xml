@@ -2,9 +2,6 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/test-store.iml" filepath="$PROJECT_DIR$/.idea/modules/test-store.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/test-store_main.iml" filepath="$PROJECT_DIR$/.idea/modules/test-store_main.iml" group="test-store" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/test-store_test.iml" filepath="$PROJECT_DIR$/.idea/modules/test-store_test.iml" group="test-store" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/teststore.iml" filepath="$PROJECT_DIR$/.idea/modules/teststore.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/teststore_main.iml" filepath="$PROJECT_DIR$/.idea/modules/teststore_main.iml" group="teststore" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/teststore_test.iml" filepath="$PROJECT_DIR$/.idea/modules/teststore_test.iml" group="teststore" />
