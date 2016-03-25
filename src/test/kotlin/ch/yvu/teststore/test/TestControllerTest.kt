@@ -2,7 +2,8 @@ package ch.yvu.teststore.test
 
 import ch.yvu.teststore.Application
 import com.jayway.restassured.RestAssured
-import com.jayway.restassured.RestAssured.get
+import com.jayway.restassured.RestAssured.*
+import org.hamcrest.Matchers.equalTo
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -26,5 +27,14 @@ class TestControllerTest {
 
     @Test fun itResponds() {
         get("/tests").then().assertThat().statusCode(200)
+    }
+
+
+    @Test fun itReturnsAStoredTest() {
+        val testName = "FooTest"
+
+        given().queryParam("name", testName).post("/tests").then().assertThat().statusCode(200)
+
+        get("/tests").then().assertThat().body("[0].name", equalTo(testName))
     }
 }
