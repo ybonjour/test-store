@@ -18,4 +18,15 @@ Execute the tests with
 
 ```
 ./gradlew test
-````ç
+````
+
+# How to start the app
+Simply run
+```
+docker-compose up
+```
+then the service is avialable on your docker host on port 8080
+
+```
+curl http://$(docker-machine ip):8080/tests
+```
