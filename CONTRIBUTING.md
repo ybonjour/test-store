@@ -3,7 +3,7 @@ Spring boot does not yet work with Cassandra 3. So you have to use Cassandra 2.2
 
 
 ```
-docker run -p 9042:9042 cassandra:2.2
+docker run -p 9042:9042 -d cassandra:2.2
 ```
 
 Find out the name of the cassandra docker container using `docker ps` and then execute:
@@ -18,4 +18,4 @@ Execute the tests with
 
 ```
 ./gradlew test
-````
+````ç
