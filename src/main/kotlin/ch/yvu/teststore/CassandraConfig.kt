@@ -6,6 +6,8 @@ import org.springframework.data.cassandra.config.CassandraClusterFactoryBean
 import org.springframework.data.cassandra.config.CassandraSessionFactoryBean
 import org.springframework.data.cassandra.config.SchemaAction.NONE
 import org.springframework.data.cassandra.convert.MappingCassandraConverter
+import org.springframework.data.cassandra.core.CassandraOperations
+import org.springframework.data.cassandra.core.CassandraTemplate
 import org.springframework.data.cassandra.mapping.BasicCassandraMappingContext
 import org.springframework.data.cassandra.repository.config.EnableCassandraRepositories
 
@@ -33,6 +35,11 @@ open class CassandraConfig {
         session.schemaAction = NONE
 
         return session
+    }
+
+    @Bean
+    open fun cassandraTemplate(): CassandraOperations {
+        return CassandraTemplate(session().getObject());
     }
 }
 
