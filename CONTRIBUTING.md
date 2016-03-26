@@ -23,6 +23,7 @@ Execute the tests with
 # How to start the app
 Simply run
 ```
+./gradlew assemble
 docker-compose up
 ```
 then the service is avialable on your docker host on port 8080
