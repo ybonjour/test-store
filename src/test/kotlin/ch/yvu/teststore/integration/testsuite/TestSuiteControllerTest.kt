@@ -37,7 +37,7 @@ class TestSuiteControllerTest() {
     @Test fun storesTestSuiteWithCorrectName() {
         val testSuiteName = "MyTestSuite"
 
-        given().queryParam("name", testSuiteName).`when`().post("/testsuites").then().assertThat().statusCode(201)
+        given().queryParam("name", testSuiteName).`when`().post("/testsuites")
 
         val tests = testSuiteRepository.findAll()
         assertEquals(1, tests.count())
@@ -46,7 +46,9 @@ class TestSuiteControllerTest() {
 
     @Test fun returnsIdOfStoredTestSuite() {
         given().queryParam("name", "MyTestSuite").`when`().post("/testsuites").then()
-                .assertThat().body("id", not(isEmptyOrNullString()))
+                .assertThat()
+                .statusCode(201)
+                .body("id", not(isEmptyOrNullString()))
     }
 
     private fun testSuiteWithName(name: String): TypeSafeMatcher<TestSuite> = object : TypeSafeMatcher<TestSuite>() {
