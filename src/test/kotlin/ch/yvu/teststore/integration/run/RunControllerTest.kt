@@ -5,7 +5,7 @@ import ch.yvu.teststore.run.Run
 import ch.yvu.teststore.run.RunRepository
 import com.jayway.restassured.RestAssured.given
 import org.hamcrest.Description
-import org.hamcrest.Matchers.hasItem
+import org.hamcrest.Matchers.*
 import org.hamcrest.TypeSafeMatcher
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertThat
@@ -35,6 +35,13 @@ class RunControllerTest : BaseIntegrationTest() {
         val runs = runRepository.findAll()
         assertEquals(1, runs.count())
         assertThat(runs, hasItem(runWith(revision, testSuite)))
+    }
+
+    @Test fun runIdIsReturnedWhenCreatingARun() {
+        given().queryParam("testSuite", randomUUID().toString())
+                .queryParam("revision", "abcd123")
+                .post("/runs")
+                .then().assertThat().body("id", not(isEmptyOrNullString()))
     }
 
     private fun runWith(revision: String, testSuite: String) = object : TypeSafeMatcher<Run>() {

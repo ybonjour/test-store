@@ -15,11 +15,12 @@ class RunController @Autowired constructor(val runRepository: RunRepository) {
     fun createRun(
             @RequestParam(name = "revision") revision: String,
             @RequestParam(name = "testSuite") testSuite: String,
-            response: HttpServletResponse) {
+            response: HttpServletResponse):Run {
 
         val run = Run(randomUUID().toString(), testSuite, revision)
         runRepository.save(run)
         response.status = 201
 
+        return run
     }
 }
