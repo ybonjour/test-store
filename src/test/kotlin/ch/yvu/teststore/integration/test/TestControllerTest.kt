@@ -1,4 +1,4 @@
-package ch.yvu.teststore.test
+package ch.yvu.teststore.integration.test
 
 import ch.yvu.teststore.Application
 import com.jayway.restassured.RestAssured
