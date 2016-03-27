@@ -7,3 +7,9 @@ CREATE TABLE IF NOT EXISTS test (
 	name text,
 	PRIMARY KEY (id)
 );
+
+CREATE TABLE IF NOT EXISTS testsuite (
+	id text,
+	name text,
+	PRIMARY KEY (id)
+);
