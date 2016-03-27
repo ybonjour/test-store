@@ -37,8 +37,8 @@ class ListBackedRepository<M : Model> : CassandraRepository<M> {
         throw UnsupportedOperationException()
     }
 
-    override fun findAll(): MutableIterable<M>? {
-        throw UnsupportedOperationException()
+    override fun findAll(): MutableIterable<M> {
+        return entries.toMutableList()
     }
 
     override fun findAll(ids: MutableIterable<MapId>?): MutableIterable<M>? {
