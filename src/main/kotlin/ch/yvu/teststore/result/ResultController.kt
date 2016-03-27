@@ -18,9 +18,10 @@ class ResultController @Autowired constructor(val resultRepository: ResultReposi
             @RequestParam(name="test") test: UUID,
             @RequestParam(name = "retryNum") retryNum: Int,
             @RequestParam(name = "passed") passed: Boolean,
-            response:HttpServletResponse) {
+            response: HttpServletResponse): Result {
         val result = Result(randomUUID(), run, test, retryNum, passed)
         resultRepository.save(result)
-            response.status = 201
+        response.status = 201
+        return result
     }
 }

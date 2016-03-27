@@ -5,7 +5,7 @@ import ch.yvu.teststore.result.Result
 import ch.yvu.teststore.result.ResultRepository
 import com.jayway.restassured.RestAssured.given
 import org.hamcrest.Description
-import org.hamcrest.Matchers.hasItem
+import org.hamcrest.Matchers.*
 import org.hamcrest.TypeSafeMatcher
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertThat
@@ -47,6 +47,15 @@ class ResultControllerTest : BaseIntegrationTest() {
         val results = resultRepository.findAll()
         assertEquals(1, results.count())
         assertThat(results, hasItem(resultWith(run, test, retryNum, passed)))
+    }
+
+    @Test fun createResultReturnsId() {
+        given().queryParam("run", randomUUID())
+                .queryParam("test", randomUUID())
+                .queryParam("retryNum", 0)
+                .queryParam("passed", true)
+                .post("/results")
+        .then().assertThat().body("id", not(isEmptyOrNullString()))
     }
 
     private fun resultWith(run: UUID, test: UUID, retryNum: Int, passed: Boolean) = object : TypeSafeMatcher<Result>() {
