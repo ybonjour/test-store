@@ -6,7 +6,7 @@ import ch.yvu.teststore.testsuite.TestSuiteRepository
 import com.jayway.restassured.RestAssured
 import com.jayway.restassured.RestAssured.given
 import org.hamcrest.Description
-import org.hamcrest.Matchers.hasItem
+import org.hamcrest.Matchers.*
 import org.hamcrest.TypeSafeMatcher
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertThat
@@ -42,6 +42,11 @@ class TestSuiteControllerTest() {
         val tests = testSuiteRepository.findAll()
         assertEquals(1, tests.count())
         assertThat(tests, hasItem(testSuiteWithName(testSuiteName)))
+    }
+
+    @Test fun returnsIdOfStoredTestSuite() {
+        given().queryParam("name", "MyTestSuite").`when`().post("/testsuites").then()
+                .assertThat().body("id", not(isEmptyOrNullString()))
     }
 
     private fun testSuiteWithName(name: String): TypeSafeMatcher<TestSuite> = object : TypeSafeMatcher<TestSuite>() {
