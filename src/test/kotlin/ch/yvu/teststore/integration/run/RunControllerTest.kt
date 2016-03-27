@@ -24,7 +24,7 @@ class RunControllerTest : BaseIntegrationTest() {
     }
 
     @Test fun createRunReturnsCorrectStatusCode() {
-        given().queryParam("testSuite", randomUUID().toString())
+        given().queryParam("testSuite", randomUUID())
                 .queryParam("revision", "abcd123")
                 .post("/runs")
                 .then().assertThat().statusCode(201)
