@@ -18,9 +18,10 @@ class TestController @Autowired constructor(val testRepository: TestRepository) 
     }
 
     @RequestMapping(method = arrayOf(POST), value = "/tests")
-    fun createTest(@RequestParam(name = "name") name: String, response: HttpServletResponse) {
+    fun createTest(@RequestParam(name = "name") name: String, response: HttpServletResponse): Test {
         val test = Test(randomUUID(), name)
         testRepository.save(test)
         response.status = 201
+        return test
     }
 }

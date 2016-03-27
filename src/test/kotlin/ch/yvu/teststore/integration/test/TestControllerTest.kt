@@ -5,10 +5,8 @@ import ch.yvu.teststore.test.Test
 import ch.yvu.teststore.test.TestRepository
 import com.jayway.restassured.RestAssured.given
 import org.hamcrest.Description
-import org.hamcrest.Matchers
-import org.hamcrest.Matchers.hasItem
+import org.hamcrest.Matchers.*
 import org.hamcrest.TypeSafeMatcher
-import org.junit.Assert
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertThat
 import org.junit.Before
@@ -24,7 +22,8 @@ class TestControllerTest : BaseIntegrationTest() {
     }
 
     @org.junit.Test fun createTestReturnsCorrectStatusCode() {
-        given().queryParam("name", "ATest").post("/tests").then().assertThat().statusCode(201)
+        given().queryParam("name", "ATest").post("/tests")
+                .then().assertThat().statusCode(201)
     }
 
     @org.junit.Test fun createTestStoresTestWithCorrectName() {
@@ -35,6 +34,11 @@ class TestControllerTest : BaseIntegrationTest() {
         val tests = testRepository.findAll()
         assertEquals(1, tests.count())
         assertThat(tests, hasItem(testWithName(name)))
+    }
+
+    @org.junit.Test fun createTestReturnsId() {
+        given().queryParam("name", "ATest").post("/tests")
+                .then().assertThat().body("id", not(isEmptyOrNullString()))
     }
 
     private fun testWithName(name: String) = object : TypeSafeMatcher<Test>() {
