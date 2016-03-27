@@ -1,7 +1,9 @@
 package ch.yvu.teststore.integration
 
+import ch.yvu.teststore.integration.run.ListBackedRunRepository
 import ch.yvu.teststore.integration.test.ListBackedTestRepository
 import ch.yvu.teststore.integration.testsuite.ListBackedTestSuiteRepository
+import ch.yvu.teststore.run.RunRepository
 import ch.yvu.teststore.test.TestRepository
 import ch.yvu.teststore.testsuite.TestSuiteRepository
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration
@@ -28,9 +30,13 @@ open class RepositoryMockingConfiguration {
         return ListBackedTestSuiteRepository(ListBackedRepository())
     }
 
-
     @Bean
     open fun testRepository(): TestRepository {
         return ListBackedTestRepository(ListBackedRepository())
+    }
+
+    @Bean
+    open fun runRepository(): RunRepository {
+        return ListBackedRunRepository(ListBackedRepository())
     }
 }
