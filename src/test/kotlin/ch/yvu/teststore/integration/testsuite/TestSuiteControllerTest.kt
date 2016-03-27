@@ -9,6 +9,7 @@ import org.hamcrest.Matchers.*
 import org.hamcrest.TypeSafeMatcher
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertThat
+import org.junit.Before
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 
@@ -16,6 +17,11 @@ import org.springframework.beans.factory.annotation.Autowired
 class TestSuiteControllerTest() : BaseIntegrationTest() {
 
     @Autowired lateinit var testSuiteRepository: TestSuiteRepository
+
+    @Before override fun setUp() {
+        super.setUp()
+        testSuiteRepository.deleteAll()
+    }
 
     @Test fun storesTestSuiteWithCorrectName() {
         val testSuiteName = "MyTestSuite"

@@ -17,7 +17,7 @@ abstract class BaseIntegrationTest {
 
     var port: Int = 0
 
-    @Before fun setUp() {
+    @Before open fun setUp() {
         RestAssured.port = port
     }
 }

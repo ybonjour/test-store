@@ -9,6 +9,7 @@ import org.hamcrest.Matchers.*
 import org.hamcrest.TypeSafeMatcher
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertThat
+import org.junit.Before
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import java.util.UUID.randomUUID
@@ -16,8 +17,12 @@ import java.util.UUID.randomUUID
 class RunControllerTest : BaseIntegrationTest() {
     @Autowired lateinit var runRepository: RunRepository;
 
-    @Test
-    fun createRunReturnsCorrectStatusCode() {
+    @Before override fun setUp() {
+        super.setUp()
+        runRepository.deleteAll()
+    }
+
+    @Test fun createRunReturnsCorrectStatusCode() {
         given().queryParam("testSuite", randomUUID().toString())
                 .queryParam("revision", "abcd123")
                 .post("/runs")

@@ -50,6 +50,6 @@ class ListBackedRepository<M : Model> : CassandraRepository<M> {
     }
 
     override fun deleteAll() {
-        throw UnsupportedOperationException()
+        entries = emptyList()
     }
 }
