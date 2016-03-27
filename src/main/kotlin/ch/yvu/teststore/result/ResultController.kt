@@ -1,14 +1,16 @@
 package ch.yvu.teststore.result
 
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod.POST
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import java.util.*
+import java.util.UUID.randomUUID
 import javax.servlet.http.HttpServletResponse
 
 @RestController
-class ResultController {
+class ResultController @Autowired constructor(val resultRepository: ResultRepository) {
 
     @RequestMapping(method = arrayOf(POST), value = "/results")
     fun createResult(
@@ -17,6 +19,8 @@ class ResultController {
             @RequestParam(name = "retryNum") retryNum: Int,
             @RequestParam(name = "passed") passed: Boolean,
             response:HttpServletResponse) {
+        val result = Result(randomUUID(), run, test, retryNum, passed)
+        resultRepository.save(result)
             response.status = 201
     }
 }

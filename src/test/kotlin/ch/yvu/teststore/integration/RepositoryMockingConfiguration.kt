@@ -1,8 +1,10 @@
 package ch.yvu.teststore.integration
 
+import ch.yvu.teststore.integration.run.ListBackedResultRepository
 import ch.yvu.teststore.integration.run.ListBackedRunRepository
 import ch.yvu.teststore.integration.test.ListBackedTestRepository
 import ch.yvu.teststore.integration.testsuite.ListBackedTestSuiteRepository
+import ch.yvu.teststore.result.ResultRepository
 import ch.yvu.teststore.run.RunRepository
 import ch.yvu.teststore.test.TestRepository
 import ch.yvu.teststore.testsuite.TestSuiteRepository
@@ -38,5 +40,10 @@ open class RepositoryMockingConfiguration {
     @Bean
     open fun runRepository(): RunRepository {
         return ListBackedRunRepository(ListBackedRepository())
+    }
+
+    @Bean
+    open fun resultRepository(): ResultRepository {
+        return ListBackedResultRepository(ListBackedRepository())
     }
 }
