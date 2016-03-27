@@ -3,19 +3,19 @@ CREATE KEYSPACE IF NOT EXISTS teststore WITH REPLICATION = { 'class' : 'SimpleSt
 USE teststore;
 
 CREATE TABLE IF NOT EXISTS test (
-	id text,
+	id uuid,
 	name text,
 	PRIMARY KEY (id)
 );
 
 CREATE TABLE IF NOT EXISTS testsuite (
-	id text,
+	id uuid,
 	name text,
 	PRIMARY KEY (id)
 );
 
 CREATE TABLE IF NOT EXISTS run (
-	id text,
+	id uuid,
 	testSuite text,
 	revision text,
 	PRIMARY KEY (id)

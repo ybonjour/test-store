@@ -17,7 +17,7 @@ class RunController @Autowired constructor(val runRepository: RunRepository) {
             @RequestParam(name = "testSuite") testSuite: String,
             response: HttpServletResponse):Run {
 
-        val run = Run(randomUUID().toString(), testSuite, revision)
+        val run = Run(randomUUID(), testSuite, revision)
         runRepository.save(run)
         response.status = 201
 

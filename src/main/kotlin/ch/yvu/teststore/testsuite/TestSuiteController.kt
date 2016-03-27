@@ -13,7 +13,7 @@ class TestSuiteController @Autowired constructor(val testSuiteRepository: TestSu
 
     @RequestMapping(method = arrayOf(POST), value = "/testsuites")
     fun createTestSuite(@RequestParam(name = "name") name: String, response: HttpServletResponse): TestSuite {
-        val testSuite = TestSuite(randomUUID().toString(), name)
+        val testSuite = TestSuite(randomUUID(), name)
         testSuiteRepository.save(testSuite)
         response.status = 201
         return testSuite
