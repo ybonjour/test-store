@@ -16,7 +16,7 @@ CREATE TABLE IF NOT EXISTS testsuite (
 
 CREATE TABLE IF NOT EXISTS run (
 	id uuid,
-	testSuite text,
+	testSuite uuid,
 	revision text,
 	PRIMARY KEY (id)
 );

@@ -12,6 +12,7 @@ import org.junit.Assert.assertThat
 import org.junit.Before
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
+import java.util.*
 import java.util.UUID.randomUUID
 
 class RunControllerTest : BaseIntegrationTest() {
@@ -30,7 +31,7 @@ class RunControllerTest : BaseIntegrationTest() {
     }
 
     @Test fun storesRunWithCorrectRevisionAndTestSuite() {
-        val testSuite = randomUUID().toString()
+        val testSuite = randomUUID()
         val revision = "abcd123"
 
         given().queryParam("testSuite", testSuite)
@@ -49,7 +50,7 @@ class RunControllerTest : BaseIntegrationTest() {
                 .then().assertThat().body("id", not(isEmptyOrNullString()))
     }
 
-    private fun runWith(revision: String, testSuite: String) = object : TypeSafeMatcher<Run>() {
+    private fun runWith(revision: String, testSuite: UUID) = object : TypeSafeMatcher<Run>() {
         override fun matchesSafely(item: Run?): Boolean {
             if (item == null) return false
 

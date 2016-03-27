@@ -6,7 +6,7 @@ import org.springframework.data.cassandra.mapping.Table
 import java.util.*
 
 @Table("run")
-data class Run(@PrimaryKey val id: UUID, val testSuite: String, val revision: String) : Model {
+data class Run(@PrimaryKey val id: UUID, val testSuite: UUID, val revision: String) : Model {
     override fun id(): UUID {
         return id
     }
