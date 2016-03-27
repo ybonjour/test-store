@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMethod.POST
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import java.util.UUID.randomUUID
+import javax.servlet.http.HttpServletResponse
 
 @RestController
 class TestController @Autowired constructor(val testRepository: TestRepository) {
@@ -17,8 +18,9 @@ class TestController @Autowired constructor(val testRepository: TestRepository) 
     }
 
     @RequestMapping(method = arrayOf(POST), value = "/tests")
-    fun createTest(@RequestParam(name = "name") name: String) {
+    fun createTest(@RequestParam(name = "name") name: String, response: HttpServletResponse) {
         val test = Test(randomUUID(), name)
         testRepository.save(test)
+        response.status = 201
     }
 }
