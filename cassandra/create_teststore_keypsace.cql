@@ -13,3 +13,10 @@ CREATE TABLE IF NOT EXISTS testsuite (
 	name text,
 	PRIMARY KEY (id)
 );
+
+CREATE TABLE IF NOT EXISTS run (
+	id text,
+	testSuite text,
+	revision text,
+	PRIMARY KEY (id)
+);
