@@ -13,7 +13,6 @@ class TestController @Autowired constructor(val testRepository: TestRepository) 
 
     @RequestMapping(method = arrayOf(GET), value = "/tests")
     fun tests(): List<Test> {
-        return emptyList()
         return testRepository.findAll().toList()
     }
 
