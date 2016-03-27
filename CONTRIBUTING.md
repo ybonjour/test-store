@@ -15,7 +15,7 @@ Execute the tests with
 
 ```
 ./gradlew test
-````
+```
 
 # How to start the app
 Simply run
