@@ -18,4 +18,17 @@ object RunMatchers {
             description.appendText("Run with revision $revision and testSuite $testSuite")
         }
     }
+
+    fun runWithId(id: UUID) = object : TypeSafeMatcher<Run>() {
+        override fun matchesSafely(item: Run?): Boolean {
+            if (item == null) return false
+
+            return item.id == id
+        }
+
+        override fun describeTo(description: Description?) {
+            if (description == null) return
+            description.appendText("Run with id $id")
+        }
+    }
 }
