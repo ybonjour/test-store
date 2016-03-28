@@ -10,8 +10,9 @@ import java.util.UUID.randomUUID
 @Service
 class InsertService @Autowired constructor(val testSuiteRepository: TestSuiteRepository) {
 
-    fun insertTestSuite(testSuiteDto: TestSuiteDto) {
+    fun insertTestSuite(testSuiteDto: TestSuiteDto): TestSuite {
         val testSuite = TestSuite(randomUUID(), testSuiteDto.name)
         testSuiteRepository.save(testSuite)
+        return testSuite
     }
 }
