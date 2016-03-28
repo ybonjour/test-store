@@ -1,12 +1,10 @@
 package ch.yvu.teststore.integration.test
 
 import ch.yvu.teststore.integration.BaseIntegrationTest
-import ch.yvu.teststore.test.Test
+import ch.yvu.teststore.matchers.TestMatchers.testWithName
 import ch.yvu.teststore.test.TestRepository
 import com.jayway.restassured.RestAssured.given
-import org.hamcrest.Description
 import org.hamcrest.Matchers.*
-import org.hamcrest.TypeSafeMatcher
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertThat
 import org.junit.Before
@@ -39,19 +37,5 @@ class TestControllerTest : BaseIntegrationTest() {
     @org.junit.Test fun createTestReturnsId() {
         given().queryParam("name", "ATest").post("/tests")
                 .then().assertThat().body("id", not(isEmptyOrNullString()))
-    }
-
-    private fun testWithName(name: String) = object : TypeSafeMatcher<Test>() {
-        override fun matchesSafely(item: Test?): Boolean {
-            if(item == null) return false
-
-            return item.name == name
-        }
-
-        override fun describeTo(description: Description?) {
-            if(description == null) return
-
-            description.appendText("Test with name ${name}")
-        }
     }
 }
