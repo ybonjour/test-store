@@ -17,6 +17,12 @@ import java.util.UUID.randomUUID
 
 class InsertServiceTest {
 
+    companion object {
+        val TEST_SUITE_DTO = TestSuiteDto("My Test Suite")
+        val EMPTY_RUN_DTO = RunDto(revision="abc123", results = emptyList())
+        val TEST_SUITE_ID = randomUUID()
+    }
+
     lateinit var testSuiteRepository: TestSuiteRepository
     lateinit var runRepository: RunRepository
 
@@ -29,41 +35,32 @@ class InsertServiceTest {
     }
 
     @Test fun insertsTestSuiteCorrectly() {
-        val testSuite = TestSuiteDto("My Test Suite")
-        insertService.insertTestSuite(testSuite)
+        insertService.insertTestSuite(TEST_SUITE_DTO)
 
-        verify(testSuiteRepository).save(argThat(testSuiteWithName(testSuite.name)))
+        verify(testSuiteRepository).save(argThat(testSuiteWithName(TEST_SUITE_DTO.name)))
         verifyNoMoreInteractions()
     }
 
     @Test fun returnsCorrectTestSuiteAfterCreation() {
-        val testSuiteDto = TestSuiteDto("MyTestSuite")
-
-        val result = insertService.insertTestSuite(testSuiteDto)
+        val result = insertService.insertTestSuite(TEST_SUITE_DTO)
 
         assertNotNull(result.id)
-        assertEquals(testSuiteDto.name, result.name)
+        assertEquals(TEST_SUITE_DTO.name, result.name)
         verify(testSuiteRepository).save(argThat(testSuiteWithId(result.id)))
     }
 
     @Test fun insertsEmptyRunCorrectly() {
-        val emptyRun = RunDto(revision = "abcd123", results = emptyList())
-        val testSuiteId = randomUUID();
+        insertService.insertRun(EMPTY_RUN_DTO, TEST_SUITE_ID)
 
-        insertService.insertRun(emptyRun, testSuiteId)
-
-        verify(runRepository).save(argThat(runWith(emptyRun.revision, testSuiteId)))
+        verify(runRepository).save(argThat(runWith(EMPTY_RUN_DTO.revision, TEST_SUITE_ID)))
         verifyNoMoreInteractions()
     }
 
     @Test fun returnsCorrectRunAfterCreation() {
-        val run = RunDto(revision = "abcd123", results = emptyList())
-        val testSuiteId = randomUUID()
-
-        val result = insertService.insertRun(run, testSuiteId)
+        val result = insertService.insertRun(EMPTY_RUN_DTO, TEST_SUITE_ID)
 
         assertNotNull(result.id)
-        assertEquals(run.revision, result.revision)
+        assertEquals(EMPTY_RUN_DTO.revision, result.revision)
         verify(runRepository).save(argThat(runWithId(result.id)))
     }
 
