@@ -30,8 +30,8 @@ class InsertServiceTest {
         val EMPTY_RUN_DTO = RunDto(revision="abc123", results = emptyList())
         val A_TEST_DTO = TestDto("ATest")
         val B_TEST_DTO = TestDto("BTest")
-        val A_TEST_DTO_PASSED = ResultDto(test = A_TEST_DTO, retryNum = 0, passed = true)
-        val B_TEST_DTO_FAILED = ResultDto(test = B_TEST_DTO, retryNum = 0, passed = false)
+        val A_TEST_DTO_PASSED = ResultDto(test = A_TEST_DTO, testName = A_TEST_DTO.name, retryNum = 0, passed = true)
+        val B_TEST_DTO_FAILED = ResultDto(test = B_TEST_DTO, testName = B_TEST_DTO.name, retryNum = 0, passed = false)
         val TEST_SUITE_ID = randomUUID()
     }
 
