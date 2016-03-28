@@ -43,7 +43,7 @@ class ResultControllerTest : BaseIntegrationTest() {
 
         val results = resultRepository.findAll()
         assertEquals(1, results.count())
-        assertThat(results, hasItem(resultWith(run, test, retryNum, passed)))
+        assertThat(results, hasItem(resultWith(equalTo(run), equalTo(test), retryNum, passed)))
     }
 
     @Test fun createResultReturnsId() {
