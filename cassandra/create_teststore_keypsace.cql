@@ -15,12 +15,6 @@ CREATE TABLE IF NOT EXISTS run (
 	PRIMARY KEY (id)
 );
 
-CREATE TABLE IF NOT EXISTS test (
-	id uuid,
-	name text,
-	PRIMARY KEY (id)
-);
-
 CREATE TABLE IF NOT EXISTS result (
 	id uuid,
 	run uuid,
