@@ -107,6 +107,7 @@ class InsertServiceTest {
         verify(resultRepository).save(argThat(resultWith(
                 runId = any(UUID::class.java),
                 testId = any(UUID::class.java),
+                testName = resultDto.test.name,
                 retryNum = resultDto.retryNum,
                 passed = resultDto.passed
         )))

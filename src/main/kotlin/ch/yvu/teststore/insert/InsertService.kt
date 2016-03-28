@@ -34,7 +34,7 @@ class InsertService @Autowired constructor(
             val test = Test(randomUUID(), it.test.name)
             testRepository.save(test)
 
-            val result = Result(randomUUID(), run.id, test.id, it.retryNum, it.passed)
+            val result = Result(randomUUID(), run.id, test.id, test.name, it.retryNum, it.passed)
             resultRepository.save(result)
         }
 

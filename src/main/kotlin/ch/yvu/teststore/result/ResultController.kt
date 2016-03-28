@@ -15,11 +15,12 @@ class ResultController @Autowired constructor(val resultRepository: ResultReposi
     @RequestMapping(method = arrayOf(POST), value = "/results")
     fun createResult(
             @RequestParam(name = "run") run: UUID,
-            @RequestParam(name="test") test: UUID,
+            @RequestParam(name = "test") test: UUID,
+            @RequestParam(name = "testName") testName: String,
             @RequestParam(name = "retryNum") retryNum: Int,
             @RequestParam(name = "passed") passed: Boolean,
             response: HttpServletResponse): Result {
-        val result = Result(randomUUID(), run, test, retryNum, passed)
+        val result = Result(randomUUID(), run, test, testName, retryNum, passed)
         resultRepository.save(result)
         response.status = 201
         return result

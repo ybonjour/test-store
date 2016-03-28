@@ -24,6 +24,7 @@ class ResultControllerTest : BaseIntegrationTest() {
     @Test fun createResultReturnsCorrectStatusCode() {
         given().queryParam("run", randomUUID())
                 .queryParam("test", randomUUID())
+                .queryParam("testName", "MyTest")
                 .queryParam("retryNum", 0)
                 .queryParam("passed", true)
                 .post("/results")
@@ -33,22 +34,25 @@ class ResultControllerTest : BaseIntegrationTest() {
     @Test fun createResultStoresResultWithCorrectAttributes() {
         val run = randomUUID()
         val test = randomUUID()
+        val testName = "MyTest"
         val retryNum = 0
         val passed = true
         given().queryParam("run", run)
                 .queryParam("test", test)
+                .queryParam("testName", testName)
                 .queryParam("retryNum", retryNum)
                 .queryParam("passed", passed)
                 .post("/results")
 
         val results = resultRepository.findAll()
         assertEquals(1, results.count())
-        assertThat(results, hasItem(resultWith(equalTo(run), equalTo(test), retryNum, passed)))
+        assertThat(results, hasItem(resultWith(equalTo(run), equalTo(test), testName, retryNum, passed)))
     }
 
     @Test fun createResultReturnsId() {
         given().queryParam("run", randomUUID())
                 .queryParam("test", randomUUID())
+                .queryParam("testName", "MyTest")
                 .queryParam("retryNum", 0)
                 .queryParam("passed", true)
                 .post("/results")

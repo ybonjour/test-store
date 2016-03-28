@@ -25,6 +25,7 @@ CREATE TABLE IF NOT EXISTS result (
 	id uuid,
 	run uuid,
 	test uuid,
+	testName text,
 	retryNum int,
 	passed boolean,
 	PRIMARY KEY (id)

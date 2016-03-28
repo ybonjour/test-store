@@ -8,13 +8,14 @@ import java.util.*
 
 object ResultMatchers {
 
-    fun resultWith(runId: Matcher<UUID>, testId: Matcher<UUID>, retryNum: Int, passed: Boolean) = object : TypeSafeMatcher<Result>() {
+    fun resultWith(runId: Matcher<UUID>, testId: Matcher<UUID>, testName: String, retryNum: Int, passed: Boolean) = object : TypeSafeMatcher<Result>() {
         override fun describeTo(description: Description?) {
             if (description == null) return
             description.appendText("Result with run ")
             description.appendDescriptionOf(runId)
-            description.appendText(", test ")
+            description.appendText(", test (")
             description.appendDescriptionOf(testId)
+            description.appendText(", ${testName})")
             description.appendText(", retryNum ${retryNum}, passed ${passed}")
         }
 
@@ -23,6 +24,7 @@ object ResultMatchers {
 
             return runId.matches(item.run)
                     && testId.matches(item.test)
+                    && item.testName == testName
                     && item.retryNum == retryNum
                     && item.passed == passed
         }
