@@ -2,7 +2,6 @@ package ch.yvu.teststore.insert
 
 import ch.yvu.teststore.insert.dto.ResultDto
 import ch.yvu.teststore.insert.dto.RunDto
-import ch.yvu.teststore.insert.dto.TestDto
 import ch.yvu.teststore.insert.dto.TestSuiteDto
 import ch.yvu.teststore.matchers.ResultMatchers.resultWith
 import ch.yvu.teststore.matchers.RunMatchers.runWith
@@ -28,10 +27,8 @@ class InsertServiceTest {
     companion object {
         val TEST_SUITE_DTO = TestSuiteDto("My Test Suite")
         val EMPTY_RUN_DTO = RunDto(revision="abc123", results = emptyList())
-        val A_TEST_DTO = TestDto("ATest")
-        val B_TEST_DTO = TestDto("BTest")
-        val A_TEST_DTO_PASSED = ResultDto(testName = A_TEST_DTO.name, retryNum = 0, passed = true)
-        val B_TEST_DTO_FAILED = ResultDto(testName = B_TEST_DTO.name, retryNum = 0, passed = false)
+        val A_TEST_DTO_PASSED = ResultDto(testName = "ATest", retryNum = 0, passed = true)
+        val B_TEST_DTO_FAILED = ResultDto(testName = "BTest", retryNum = 0, passed = false)
         val TEST_SUITE_ID = randomUUID()
     }
 
