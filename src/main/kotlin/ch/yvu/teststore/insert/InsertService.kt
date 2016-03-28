@@ -6,8 +6,6 @@ import ch.yvu.teststore.result.Result
 import ch.yvu.teststore.result.ResultRepository
 import ch.yvu.teststore.run.Run
 import ch.yvu.teststore.run.RunRepository
-import ch.yvu.teststore.test.Test
-import ch.yvu.teststore.test.TestRepository
 import ch.yvu.teststore.testsuite.TestSuite
 import ch.yvu.teststore.testsuite.TestSuiteRepository
 import org.springframework.beans.factory.annotation.Autowired
@@ -19,8 +17,7 @@ import java.util.UUID.randomUUID
 class InsertService @Autowired constructor(
         val testSuiteRepository: TestSuiteRepository,
         val runRepository: RunRepository,
-        val resultRepository: ResultRepository,
-        val testRepository: TestRepository) {
+        val resultRepository: ResultRepository) {
 
     fun insertTestSuite(testSuiteDto: TestSuiteDto): TestSuite {
         val testSuite = TestSuite(randomUUID(), testSuiteDto.name)
@@ -31,10 +28,7 @@ class InsertService @Autowired constructor(
     fun insertRun(runDto: RunDto, testSuiteId: UUID):Run{
         val run = Run(randomUUID(), testSuiteId, runDto.revision)
         runDto.results.forEach {
-            val test = Test(randomUUID(), it.testName)
-            testRepository.save(test)
-
-            val result = Result(randomUUID(), run.id, test.name, it.retryNum, it.passed)
+            val result = Result(randomUUID(), run.id, it.testName, it.retryNum, it.passed)
             resultRepository.save(result)
         }
 

@@ -6,12 +6,10 @@ import ch.yvu.teststore.insert.dto.TestSuiteDto
 import ch.yvu.teststore.matchers.ResultMatchers.resultWith
 import ch.yvu.teststore.matchers.RunMatchers.runWith
 import ch.yvu.teststore.matchers.RunMatchers.runWithId
-import ch.yvu.teststore.matchers.TestMatchers.testWithName
 import ch.yvu.teststore.matchers.TestSuiteMatchers.testSuiteWithId
 import ch.yvu.teststore.matchers.TestSuiteMatchers.testSuiteWithName
 import ch.yvu.teststore.result.ResultRepository
 import ch.yvu.teststore.run.RunRepository
-import ch.yvu.teststore.test.TestRepository
 import ch.yvu.teststore.testsuite.TestSuiteRepository
 import org.hamcrest.Matchers.any
 import org.junit.Assert.assertEquals
@@ -35,7 +33,6 @@ class InsertServiceTest {
     lateinit var testSuiteRepository: TestSuiteRepository
     lateinit var runRepository: RunRepository
     lateinit var resultRepository: ResultRepository
-    lateinit var testRepository: TestRepository
 
     lateinit var insertService: InsertService
 
@@ -43,8 +40,7 @@ class InsertServiceTest {
         testSuiteRepository = mock(TestSuiteRepository::class.java)
         runRepository = mock(RunRepository::class.java)
         resultRepository = mock(ResultRepository::class.java)
-        testRepository = mock(TestRepository::class.java)
-        insertService = InsertService(testSuiteRepository, runRepository, resultRepository, testRepository)
+        insertService = InsertService(testSuiteRepository, runRepository, resultRepository)
     }
 
     @Test fun insertsTestSuiteCorrectly() {
@@ -83,7 +79,7 @@ class InsertServiceTest {
         insertService.insertRun(runDto, TEST_SUITE_ID)
 
         verifyRunSaved(runDto, TEST_SUITE_ID)
-        verifyTestAndResultSaved(A_TEST_DTO_PASSED)
+        verifyResultSaved(A_TEST_DTO_PASSED)
         verifyNoMoreInteractions()
 
     }
@@ -94,13 +90,12 @@ class InsertServiceTest {
         insertService.insertRun(runDto, TEST_SUITE_ID)
 
         verifyRunSaved(runDto, TEST_SUITE_ID)
-        verifyTestAndResultSaved(A_TEST_DTO_PASSED)
-        verifyTestAndResultSaved(B_TEST_DTO_FAILED)
+        verifyResultSaved(A_TEST_DTO_PASSED)
+        verifyResultSaved(B_TEST_DTO_FAILED)
         verifyNoMoreInteractions()
     }
 
-    private fun verifyTestAndResultSaved(resultDto: ResultDto) {
-        verify(testRepository).save(argThat(testWithName(resultDto.testName)))
+    private fun verifyResultSaved(resultDto: ResultDto) {
         verify(resultRepository).save(argThat(resultWith(
                 runId = any(UUID::class.java),
                 testName = resultDto.testName,
@@ -117,6 +112,5 @@ class InsertServiceTest {
         verifyNoMoreInteractions(testSuiteRepository)
         verifyNoMoreInteractions(runRepository)
         verifyNoMoreInteractions(resultRepository)
-        verifyNoMoreInteractions(testRepository)
     }
 }
