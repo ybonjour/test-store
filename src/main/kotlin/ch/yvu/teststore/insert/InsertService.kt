@@ -31,7 +31,7 @@ class InsertService @Autowired constructor(
     fun insertRun(runDto: RunDto, testSuiteId: UUID):Run{
         val run = Run(randomUUID(), testSuiteId, runDto.revision)
         runDto.results.forEach {
-            val test = Test(randomUUID(), it.test.name)
+            val test = Test(randomUUID(), it.testName)
             testRepository.save(test)
 
             val result = Result(randomUUID(), run.id, test.name, it.retryNum, it.passed)
