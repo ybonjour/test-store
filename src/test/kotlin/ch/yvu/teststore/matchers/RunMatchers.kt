@@ -6,16 +6,19 @@ import org.hamcrest.TypeSafeMatcher
 import java.util.*
 
 object RunMatchers {
-    fun runWith(revision: String, testSuite: UUID) = object : TypeSafeMatcher<Run>() {
+    fun runWith(revision: String, testSuite: UUID, time: Date) = object : TypeSafeMatcher<Run>() {
         override fun matchesSafely(item: Run?): Boolean {
             if (item == null) return false
 
-            return item.revision == revision && item.testSuite == testSuite
+            var match = item.revision == revision
+            match = match && (item.testSuite == testSuite)
+            match = match && (time.equals(item.time))
+            return match
         }
 
         override fun describeTo(description: Description?) {
             if (description == null) return
-            description.appendText("Run with revision $revision and testSuite $testSuite")
+            description.appendText("Run with revision $revision, testSuite $testSuite and time $time")
         }
     }
 

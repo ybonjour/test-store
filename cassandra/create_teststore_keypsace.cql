@@ -12,6 +12,7 @@ CREATE TABLE IF NOT EXISTS run (
 	id uuid,
 	testSuite uuid,
 	revision text,
+	time timestamp,
 	PRIMARY KEY (id)
 );
 

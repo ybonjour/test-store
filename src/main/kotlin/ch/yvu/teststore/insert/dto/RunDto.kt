@@ -1,3 +1,5 @@
 package ch.yvu.teststore.insert.dto
 
-data class RunDto(val revision: String, val results: List<ResultDto>)
+import java.util.*
+
+data class RunDto(val revision: String, val time: Date, val results: List<ResultDto>)

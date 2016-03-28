@@ -23,8 +23,9 @@ import java.util.UUID.randomUUID
 class InsertServiceTest {
 
     companion object {
+        val TODAY = Date()
         val TEST_SUITE_DTO = TestSuiteDto("My Test Suite")
-        val EMPTY_RUN_DTO = RunDto(revision="abc123", results = emptyList())
+        val EMPTY_RUN_DTO = RunDto(revision = "abc123", time = TODAY, results = emptyList())
         val A_TEST_DTO_PASSED = ResultDto(testName = "ATest", retryNum = 0, passed = true)
         val B_TEST_DTO_FAILED = ResultDto(testName = "BTest", retryNum = 0, passed = false)
         val TEST_SUITE_ID = randomUUID()
@@ -74,7 +75,7 @@ class InsertServiceTest {
     }
 
     @Test fun insertsRunWithOneTestResultCorrectly() {
-        val runDto = RunDto(revision = "abcd123", results = listOf(A_TEST_DTO_PASSED))
+        val runDto = RunDto(revision = "abcd123", results = listOf(A_TEST_DTO_PASSED), time = TODAY)
 
         insertService.insertRun(runDto, TEST_SUITE_ID)
 
@@ -85,7 +86,7 @@ class InsertServiceTest {
     }
 
     @Test fun insertRunWithMultipleTestResultsCorrectly() {
-        val runDto = RunDto(revision = "abcd123", results = listOf(A_TEST_DTO_PASSED, B_TEST_DTO_FAILED))
+        val runDto = RunDto(revision = "abcd123", results = listOf(A_TEST_DTO_PASSED, B_TEST_DTO_FAILED), time = TODAY)
 
         insertService.insertRun(runDto, TEST_SUITE_ID)
 
@@ -105,7 +106,7 @@ class InsertServiceTest {
     }
 
     private fun verifyRunSaved(runDto: RunDto, testSuiteId: UUID) {
-        verify(runRepository).save(argThat(runWith(runDto.revision, testSuiteId)))
+        verify(runRepository).save(argThat(runWith(revision = runDto.revision, time = runDto.time, testSuite = testSuiteId)))
     }
 
     private fun verifyNoMoreInteractions() {
