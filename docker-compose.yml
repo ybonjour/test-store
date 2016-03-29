@@ -9,7 +9,7 @@ services:
     build: .
     volumes:
       - ./scripts:/scripts
-    command: bash -c "/scripts/wait-for-cassandra.sh cassandra 9042 && java -jar /app/teststore.jar"
+    command: bash -c "/scripts/wait-for-cassandra.sh cassandra 9042 && java -jar /app/teststore.jar --cassandra.contactPoints=cassandra"
     ports:
       - "8080:8080"
     depends_on:
