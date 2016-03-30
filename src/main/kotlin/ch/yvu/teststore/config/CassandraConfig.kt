@@ -1,22 +1,21 @@
 package ch.yvu.teststore.config
 
 
+import ch.yvu.teststore.result.CassandraResultRepository
+import ch.yvu.teststore.result.ResultRepository
+import ch.yvu.teststore.run.CassandraRunRepository
+import ch.yvu.teststore.run.RunRepository
+import ch.yvu.teststore.testsuite.CassandraTestSuiteRepository
+import ch.yvu.teststore.testsuite.TestSuiteRepository
+import com.datastax.driver.core.Cluster
+import com.datastax.driver.core.Session
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.PropertySource
 import org.springframework.core.env.Environment
-import org.springframework.data.cassandra.config.CassandraClusterFactoryBean
-import org.springframework.data.cassandra.config.CassandraSessionFactoryBean
-import org.springframework.data.cassandra.config.SchemaAction.NONE
-import org.springframework.data.cassandra.convert.MappingCassandraConverter
-import org.springframework.data.cassandra.core.CassandraOperations
-import org.springframework.data.cassandra.core.CassandraTemplate
-import org.springframework.data.cassandra.mapping.BasicCassandraMappingContext
-import org.springframework.data.cassandra.repository.config.EnableCassandraRepositories
 
 @Configuration
-@EnableCassandraRepositories
 @PropertySource("classpath:META-INF/cassandra.properties")
 open class CassandraConfig {
 
@@ -24,29 +23,27 @@ open class CassandraConfig {
     // default constructor
     @Autowired lateinit var environment: Environment
 
-    @Bean
-    open fun cluster(): CassandraClusterFactoryBean {
-        val cluster = CassandraClusterFactoryBean()
+    @Autowired lateinit var session: Session
 
-        cluster.setContactPoints(environment.getRequiredProperty("cassandra.contactPoints"))
-        cluster.setPort(environment.getRequiredProperty("cassandra.port", Int::class.java))
-        return cluster
+
+    @Bean open fun session(): Session {
+        val cluster = Cluster.builder()
+                .addContactPoint(environment.getRequiredProperty("cassandra.contactPoints"))
+                .withPort(environment.getRequiredProperty("cassandra.port", Int::class.java))
+                .build()
+        return cluster.connect(environment.getRequiredProperty("cassandra.keyspace"))
     }
 
-    @Bean
-    open fun session(): CassandraSessionFactoryBean {
-        val session = CassandraSessionFactoryBean()
-        session.setCluster(cluster().`object`)
-        session.setKeyspaceName(environment.getRequiredProperty("cassandra.keyspace"))
-        session.converter = MappingCassandraConverter(BasicCassandraMappingContext())
-        session.schemaAction = NONE
-
-        return session
+    @Bean open fun testSuiteRepository(): TestSuiteRepository {
+        return CassandraTestSuiteRepository(session)
     }
 
-    @Bean
-    open fun cassandraTemplate(): CassandraOperations {
-        return CassandraTemplate(session().getObject());
+    @Bean open fun runRepository(): RunRepository {
+        return CassandraRunRepository(session)
+    }
+
+    @Bean open fun resultRepository(): ResultRepository {
+        return CassandraResultRepository(session)
     }
 }
 

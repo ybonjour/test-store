@@ -1,7 +1,7 @@
 package ch.yvu.teststore.run
 
-import org.springframework.data.cassandra.repository.CassandraRepository
+import ch.yvu.teststore.common.TestStoreRepository
 import org.springframework.stereotype.Repository
 
 @Repository
-interface RunRepository : CassandraRepository<Run>
+interface RunRepository : TestStoreRepository<Run>

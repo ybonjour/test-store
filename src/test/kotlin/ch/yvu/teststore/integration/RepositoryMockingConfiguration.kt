@@ -1,6 +1,6 @@
 package ch.yvu.teststore.integration
 
-import ch.yvu.teststore.integration.run.ListBackedResultRepository
+import ch.yvu.teststore.integration.result.ListBackedResultRepository
 import ch.yvu.teststore.integration.run.ListBackedRunRepository
 import ch.yvu.teststore.integration.testsuite.ListBackedTestSuiteRepository
 import ch.yvu.teststore.result.ResultRepository

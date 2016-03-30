@@ -3,20 +3,19 @@ package ch.yvu.teststore.insert
 import ch.yvu.teststore.insert.dto.ResultDto
 import ch.yvu.teststore.insert.dto.RunDto
 import ch.yvu.teststore.insert.dto.TestSuiteDto
+import ch.yvu.teststore.integration.ListBackedRepository
+import ch.yvu.teststore.integration.result.ListBackedResultRepository
+import ch.yvu.teststore.integration.run.ListBackedRunRepository
+import ch.yvu.teststore.integration.testsuite.ListBackedTestSuiteRepository
 import ch.yvu.teststore.matchers.ResultMatchers.resultWith
-import ch.yvu.teststore.matchers.RunMatchers.runWith
-import ch.yvu.teststore.matchers.RunMatchers.runWithId
-import ch.yvu.teststore.matchers.TestSuiteMatchers.testSuiteWithId
-import ch.yvu.teststore.matchers.TestSuiteMatchers.testSuiteWithName
 import ch.yvu.teststore.result.ResultRepository
 import ch.yvu.teststore.run.RunRepository
 import ch.yvu.teststore.testsuite.TestSuiteRepository
 import org.hamcrest.Matchers.any
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertNotNull
+import org.hamcrest.Matchers.hasItem
+import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
-import org.mockito.Mockito.*
 import java.util.*
 import java.util.UUID.randomUUID
 
@@ -38,32 +37,18 @@ class InsertServiceTest {
     lateinit var insertService: InsertService
 
     @Before fun setUp() {
-        testSuiteRepository = mock(TestSuiteRepository::class.java)
-        runRepository = mock(RunRepository::class.java)
-        resultRepository = mock(ResultRepository::class.java)
+        testSuiteRepository = ListBackedTestSuiteRepository(ListBackedRepository())
+        runRepository = ListBackedRunRepository(ListBackedRepository())
+        resultRepository = ListBackedResultRepository(ListBackedRepository())
         insertService = InsertService(testSuiteRepository, runRepository, resultRepository)
     }
 
     @Test fun insertsTestSuiteCorrectly() {
         insertService.insertTestSuite(TEST_SUITE_DTO)
 
-        verify(testSuiteRepository).save(argThat(testSuiteWithName(TEST_SUITE_DTO.name)))
-        verifyNoMoreInteractions()
-    }
-
-    @Test fun returnsCorrectTestSuiteAfterCreation() {
-        val result = insertService.insertTestSuite(TEST_SUITE_DTO)
-
-        assertNotNull(result.id)
-        assertEquals(TEST_SUITE_DTO.name, result.name)
-        verify(testSuiteRepository).save(argThat(testSuiteWithId(result.id)))
-    }
-
-    @Test fun insertsEmptyRunCorrectly() {
-        insertService.insertRun(EMPTY_RUN_DTO, TEST_SUITE_ID)
-
-        verifyRunSaved(EMPTY_RUN_DTO, TEST_SUITE_ID)
-        verifyNoMoreInteractions()
+        val testSuites = testSuiteRepository.findAll()
+        assertEquals(1, testSuites.count());
+        assertEquals(TEST_SUITE_DTO.name, testSuites[0].name)
     }
 
     @Test fun returnsCorrectRunAfterCreation() {
@@ -71,7 +56,7 @@ class InsertServiceTest {
 
         assertNotNull(run.id)
         assertEquals(EMPTY_RUN_DTO.revision, run.revision)
-        verify(runRepository).save(argThat(runWithId(run.id)))
+        assertEquals(runRepository.findAll()[0].id, run.id)
     }
 
     @Test fun insertsRunWithOneTestResultCorrectly() {
@@ -80,9 +65,21 @@ class InsertServiceTest {
         insertService.insertRun(runDto, TEST_SUITE_ID)
 
         verifyRunSaved(runDto, TEST_SUITE_ID)
-        verifyResultSaved(A_TEST_DTO_PASSED)
-        verifyNoMoreInteractions()
+        verifyResultsSaved(A_TEST_DTO_PASSED)
+    }
 
+    @Test fun returnsCorrectTestSuiteAfterCreation() {
+        val testSuite = insertService.insertTestSuite(TEST_SUITE_DTO)
+
+        assertNotNull(testSuite.id)
+        assertEquals(TEST_SUITE_DTO.name, testSuite.name)
+        assertEquals(testSuiteRepository.findAll()[0].id, testSuite.id)
+    }
+
+    @Test fun insertsEmptyRunCorrectly() {
+        insertService.insertRun(EMPTY_RUN_DTO, TEST_SUITE_ID)
+
+        verifyRunSaved(EMPTY_RUN_DTO, TEST_SUITE_ID)
     }
 
     @Test fun insertRunWithMultipleTestResultsCorrectly() {
@@ -91,27 +88,29 @@ class InsertServiceTest {
         insertService.insertRun(runDto, TEST_SUITE_ID)
 
         verifyRunSaved(runDto, TEST_SUITE_ID)
-        verifyResultSaved(A_TEST_DTO_PASSED)
-        verifyResultSaved(B_TEST_DTO_FAILED)
-        verifyNoMoreInteractions()
+        verifyResultsSaved(A_TEST_DTO_PASSED, B_TEST_DTO_FAILED)
     }
 
-    private fun verifyResultSaved(resultDto: ResultDto) {
-        verify(resultRepository).save(argThat(resultWith(
-                runId = any(UUID::class.java),
-                testName = resultDto.testName,
-                retryNum = resultDto.retryNum,
-                passed = resultDto.passed
-        )))
+    private fun verifyResultsSaved(vararg resultDtos: ResultDto) {
+        val results = resultRepository.findAll()
+        assertEquals(resultDtos.size, results.size)
+
+        resultDtos.forEach {
+            assertThat(results, hasItem(resultWith(
+                    runId = any(UUID::class.java),
+                    testName = it.testName,
+                    retryNum = it.retryNum,
+                    passed = it.passed
+            )))
+        }
     }
 
     private fun verifyRunSaved(runDto: RunDto, testSuiteId: UUID) {
-        verify(runRepository).save(argThat(runWith(revision = runDto.revision, time = runDto.time, testSuite = testSuiteId)))
-    }
-
-    private fun verifyNoMoreInteractions() {
-        verifyNoMoreInteractions(testSuiteRepository)
-        verifyNoMoreInteractions(runRepository)
-        verifyNoMoreInteractions(resultRepository)
+        val runs = runRepository.findAll()
+        assertEquals(1, runs.size)
+        val run = runs[0]
+        assertEquals(runDto.revision, run.revision)
+        assertEquals(runDto.time, run.time)
+        assertEquals(testSuiteId, run.testSuite)
     }
 }

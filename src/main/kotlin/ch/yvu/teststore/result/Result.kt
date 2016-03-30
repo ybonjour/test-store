@@ -1,14 +1,9 @@
 package ch.yvu.teststore.result
 
 import ch.yvu.teststore.common.Model
-import org.springframework.data.cassandra.mapping.PrimaryKey
-import org.springframework.data.cassandra.mapping.Table
+import com.datastax.driver.mapping.annotations.PartitionKey
+import com.datastax.driver.mapping.annotations.Table
 import java.util.*
 
-@Table("result")
-data class Result(@PrimaryKey val id: UUID, val run: UUID, val testName: String, val retryNum: Int, val passed: Boolean) : Model {
-    override fun id(): UUID {
-        return id
-    }
-
-}
+@Table(name = "result")
+data class Result(@PartitionKey var id: UUID, var run: UUID, var testName: String, var retryNum: Int, var passed: Boolean) : Model
