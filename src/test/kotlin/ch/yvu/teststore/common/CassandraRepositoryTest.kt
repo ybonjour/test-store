@@ -65,6 +65,18 @@ class CassandraRepositoryTest {
         verify(session).execute("SELECT * FROM myTable")
     }
 
+    @Test fun findAllReturnsCorrectResult() {
+        val model = MyModel("Foo")
+        val resultSet = mock(ResultSet::class.java)
+        `when`(session.execute(anyString())).thenReturn(resultSet)
+        `when`(mapper.map(resultSet)).thenReturn(result)
+        `when`(result.all()).thenReturn(listOf(model))
+
+        val result = repository.findAll()
+
+        assertEquals(listOf(model), result)
+    }
+
 
     @Table(name = "myTable")
     data class MyModel(var name: String) : Model
