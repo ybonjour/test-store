@@ -1,17 +1,11 @@
 package ch.yvu.teststore.common
 
-import com.datastax.driver.core.Session
-import com.datastax.driver.mapping.Mapper
 import com.datastax.driver.mapping.MappingManager
-import javax.annotation.PostConstruct
 
-abstract class CassandraRepository<M : Model>(val session: Session, val table: String, val modelClass: Class<M>) {
+abstract class CassandraRepository<M : Model>(val mappingManager: MappingManager, val table: String, val modelClass: Class<M>) {
+    val session = mappingManager.session
+    val mapper = mappingManager.mapper(modelClass)
 
-    private lateinit var mapper: Mapper<M>
-
-    @PostConstruct fun postConstruct() {
-        this.mapper = MappingManager(session).mapper(modelClass);
-    }
 
     open fun save(item: M): M {
         mapper.save(item)
