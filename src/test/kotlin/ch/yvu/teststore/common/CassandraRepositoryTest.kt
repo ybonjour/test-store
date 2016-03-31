@@ -77,6 +77,12 @@ class CassandraRepositoryTest {
         assertEquals(listOf(model), result)
     }
 
+    @Test fun deleteAllSendsCorrectQuery() {
+        repository.deleteAll()
+
+        verify(mapper).deleteQuery("DELETE FROM myTable")
+    }
+
 
     @Table(name = "myTable")
     data class MyModel(var name: String) : Model
