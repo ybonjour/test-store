@@ -18,7 +18,7 @@ abstract class CassandraRepository<M : Model>(val mappingManager: MappingManager
 
     open fun findAll(): List<M> {
         val results = session.execute("SELECT * FROM $table")
-        return mapper.map(results).toList()
+        return mapper.map(results).all().toList()
     }
 
     open fun count(): Long {
