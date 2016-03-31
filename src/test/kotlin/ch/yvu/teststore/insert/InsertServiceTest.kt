@@ -52,7 +52,7 @@ class InsertServiceTest {
     }
 
     @Test fun returnsCorrectRunAfterCreation() {
-        val run = insertService.insertRun(EMPTY_RUN_DTO, TEST_SUITE_ID)
+        val run = insertService.insertRun(EMPTY_RUN_DTO, TEST_SUITE_ID).get()
 
         assertNotNull(run.id)
         assertEquals(EMPTY_RUN_DTO.revision, run.revision)
