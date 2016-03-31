@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse
 class InsertController @Autowired constructor(val runRespository: RunRepository, val runRepository: RunRepository) {
 
     @RequestMapping(method = arrayOf(RequestMethod.POST), value = "/insert")
-    fun insert( response: HttpServletResponse) {
+    fun insert(response: HttpServletResponse) {
         response.status = 200
     }
 
