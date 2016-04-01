@@ -1,3 +1,8 @@
 package ch.yvu.teststore.insert.dto
 
-data class ResultDto(val testName: String, val retryNum: Int=0, val passed: Boolean)
+import com.fasterxml.jackson.annotation.JsonProperty
+
+data class ResultDto(
+        @JsonProperty("testName") val testName: String,
+        @JsonProperty("retryNum") val retryNum: Int=0,
+        @JsonProperty("passed") val passed: Boolean)
