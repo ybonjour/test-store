@@ -15,7 +15,7 @@ name=My Testsuite
 201 Created
 {
     "id": "f6da9a37-d7e0-4cfb-b880-a99294c53709",
-    "name": "aTestSuite"
+    "name": "My Testsuite"
 }
 ```
 
