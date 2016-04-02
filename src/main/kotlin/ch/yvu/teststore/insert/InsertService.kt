@@ -36,9 +36,6 @@ open class InsertService @Autowired constructor(
             resultRepository.save(result)
         }
 
-        // Work hard
-        Thread.sleep(10000);
-
         runRepository.save(run)
         return AsyncResult(run)
     }
