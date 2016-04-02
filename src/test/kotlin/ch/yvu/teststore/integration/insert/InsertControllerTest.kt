@@ -33,7 +33,8 @@ class InsertControllerTest : BaseIntegrationTest() {
                 time = Date(),
                 results = listOf(ResultDto(
                         testName = "MyTest",
-                        passed = true
+                        passed = true,
+                        durationSeconds = 10
                 ))
         )
 

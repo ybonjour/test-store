@@ -13,7 +13,8 @@ class JsonConversionTest {
                 time = Date(),
                 results = listOf(ResultDto(
                         testName = "MyTest",
-                        passed = true
+                        passed = true,
+                        durationSeconds = 10
                 ))
         )
         val json = mapper.writeValueAsString(runDto)
