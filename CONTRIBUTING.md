@@ -10,7 +10,7 @@ Simply run
 ./gradlew assemble
 docker-compose up -d
 ```
-then the service is avialable on your docker host on port 8080
+then the service is avialable on your docker host on port `8080`
 
 ```
 curl http://$(docker-machine ip):8080
