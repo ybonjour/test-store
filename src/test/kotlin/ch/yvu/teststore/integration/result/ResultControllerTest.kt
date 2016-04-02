@@ -27,6 +27,7 @@ class ResultControllerTest : BaseIntegrationTest() {
                 .queryParam("testName", "MyTest")
                 .queryParam("retryNum", 0)
                 .queryParam("passed", true)
+                .queryParam("durationSeconds", 10)
                 .post("/results")
                 .then().assertThat().statusCode(201)
     }
@@ -37,16 +38,18 @@ class ResultControllerTest : BaseIntegrationTest() {
         val testName = "MyTest"
         val retryNum = 0
         val passed = true
+        val durationSeconds = 10L
         given().queryParam("run", run)
                 .queryParam("test", test)
                 .queryParam("testName", testName)
                 .queryParam("retryNum", retryNum)
                 .queryParam("passed", passed)
+                .queryParam("durationSeconds", durationSeconds)
                 .post("/results")
 
         val results = resultRepository.findAll()
         assertEquals(1, results.count())
-        assertThat(results, hasItem(resultWith(equalTo(run), testName, retryNum, passed)))
+        assertThat(results, hasItem(resultWith(equalTo(run), testName, retryNum, passed, durationSeconds)))
     }
 
     @Test fun createResultReturnsId() {
@@ -55,6 +58,7 @@ class ResultControllerTest : BaseIntegrationTest() {
                 .queryParam("testName", "MyTest")
                 .queryParam("retryNum", 0)
                 .queryParam("passed", true)
+                .queryParam("durationSeconds", 10)
                 .post("/results")
         .then().assertThat().body("id", not(isEmptyOrNullString()))
     }

@@ -100,7 +100,8 @@ class InsertServiceTest {
                     runId = any(UUID::class.java),
                     testName = it.testName,
                     retryNum = it.retryNum,
-                    passed = it.passed
+                    passed = it.passed,
+                    durationSeconds = it.durationSeconds
             )))
         }
     }

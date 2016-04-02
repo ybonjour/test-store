@@ -6,4 +6,4 @@ import com.datastax.driver.mapping.annotations.Table
 import java.util.*
 
 @Table(name = "result")
-data class Result(@PartitionKey var id: UUID, var run: UUID, var testName: String, var retryNum: Int, var passed: Boolean) : Model
+data class Result(@PartitionKey var id: UUID, var run: UUID, var testName: String, var retryNum: Int, var passed: Boolean, var durationSeconds: Long) : Model
