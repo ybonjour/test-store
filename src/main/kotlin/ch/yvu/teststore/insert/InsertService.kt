@@ -17,7 +17,7 @@ import java.util.UUID.randomUUID
 import java.util.concurrent.Future
 
 @Service
-class InsertService @Autowired constructor(
+open class InsertService @Autowired constructor(
         val testSuiteRepository: TestSuiteRepository,
         val runRepository: RunRepository,
         val resultRepository: ResultRepository) {
