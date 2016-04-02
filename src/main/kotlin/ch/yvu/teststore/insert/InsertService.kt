@@ -18,23 +18,26 @@ import java.util.concurrent.Future
 
 @Service
 open class InsertService @Autowired constructor(
-        val testSuiteRepository: TestSuiteRepository,
-        val runRepository: RunRepository,
-        val resultRepository: ResultRepository) {
+        open val testSuiteRepository: TestSuiteRepository,
+        open val runRepository: RunRepository,
+        open val resultRepository: ResultRepository) {
 
-    fun insertTestSuite(testSuiteDto: TestSuiteDto): TestSuite {
+    open fun insertTestSuite(testSuiteDto: TestSuiteDto): TestSuite {
         val testSuite = TestSuite(randomUUID(), testSuiteDto.name)
         testSuiteRepository.save(testSuite)
         return testSuite
     }
 
     @Async
-    fun insertRun(runDto: RunDto, testSuiteId: UUID): Future<Run> {
+    open fun insertRun(runDto: RunDto, testSuiteId: UUID): Future<Run> {
         val run = Run(randomUUID(), testSuiteId, runDto.revision, runDto.time)
         runDto.results.forEach {
             val result = Result(randomUUID(), run.id, it.testName, it.retryNum, it.passed)
             resultRepository.save(result)
         }
+
+        // Work hard
+        Thread.sleep(10000);
 
         runRepository.save(run)
         return AsyncResult(run)
