@@ -1,2 +1,2 @@
-FROM cassandra:2.2
+FROM cassandra
 RUN apt-get update && apt-get install -y netcat

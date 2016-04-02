@@ -1,12 +1,12 @@
 # How to create a fresh database instance
 Start a cassandra instance in a docker container named `cassandra`:
 ```
-docker run -p 9042:9042 --name cassandra -d cassandra:2.2
+docker run -p 9042:9042 --name cassandra -d cassandra
 ```
 
 Create the `teststore` keyspace on that Cassandra instance:
 ```
-docker run -it --link cassandra:cassandra --rm -v $(pwd)/cassandra/:/scripts  cassandra:2.2 cqlsh cassandra -f /scripts/create_teststore_keypsace.cql
+docker run -it --link cassandra:cassandra --rm -v $(pwd)/cassandra/:/scripts  cassandra cqlsh cassandra -f /scripts/create_teststore_keypsace.cql
 ```
 
 # How to run tests
