@@ -22,5 +22,6 @@ CREATE TABLE IF NOT EXISTS result (
 	testName text,
 	retryNum int,
 	passed boolean,
+	durationMillis bigint,
 	PRIMARY KEY (id)
 );
