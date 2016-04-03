@@ -1,5 +1,6 @@
 package ch.yvu.teststore.insert
 
+import ch.yvu.teststore.insert.dto.ResultDto
 import ch.yvu.teststore.insert.dto.RunDto
 import ch.yvu.teststore.insert.dto.TestSuiteDto
 import ch.yvu.teststore.result.Result
@@ -31,12 +32,18 @@ open class InsertService @Autowired constructor(
     @Async
     open fun insertRun(runDto: RunDto, testSuiteId: UUID): Future<Run> {
         val run = Run(randomUUID(), testSuiteId, runDto.revision, runDto.time)
-        runDto.results.forEach {
-            val result = Result(randomUUID(), run.id, it.testName, it.retryNum, it.passed, it.durationMillis)
+        runRepository.save(run)
+
+        insertResults(runDto.results, run.id)
+
+        return AsyncResult(run)
+    }
+
+    @Async
+    open fun insertResults(resultDtos: List<ResultDto>, runId: UUID) {
+        resultDtos.forEach {
+            val result = Result(randomUUID(), runId, it.testName, it.retryNum, it.passed, it.durationMillis)
             resultRepository.save(result)
         }
-
-        runRepository.save(run)
-        return AsyncResult(run)
     }
 }

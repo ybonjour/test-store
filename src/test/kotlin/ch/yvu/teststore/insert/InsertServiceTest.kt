@@ -51,12 +51,12 @@ class InsertServiceTest {
         assertEquals(TEST_SUITE_DTO.name, testSuites[0].name)
     }
 
-    @Test fun returnsCorrectRunAfterCreation() {
-        val run = insertService.insertRun(EMPTY_RUN_DTO, TEST_SUITE_ID).get()
+    @Test fun returnsCorrectTestSuiteAfterCreation() {
+        val testSuite = insertService.insertTestSuite(TEST_SUITE_DTO)
 
-        assertNotNull(run.id)
-        assertEquals(EMPTY_RUN_DTO.revision, run.revision)
-        assertEquals(runRepository.findAll()[0].id, run.id)
+        assertNotNull(testSuite.id)
+        assertEquals(TEST_SUITE_DTO.name, testSuite.name)
+        assertEquals(testSuiteRepository.findAll()[0].id, testSuite.id)
     }
 
     @Test fun insertsRunWithOneTestResultCorrectly() {
@@ -68,12 +68,12 @@ class InsertServiceTest {
         verifyResultsSaved(A_TEST_DTO_PASSED)
     }
 
-    @Test fun returnsCorrectTestSuiteAfterCreation() {
-        val testSuite = insertService.insertTestSuite(TEST_SUITE_DTO)
+    @Test fun returnsCorrectRunAfterCreation() {
+        val run = insertService.insertRun(EMPTY_RUN_DTO, TEST_SUITE_ID).get()
 
-        assertNotNull(testSuite.id)
-        assertEquals(TEST_SUITE_DTO.name, testSuite.name)
-        assertEquals(testSuiteRepository.findAll()[0].id, testSuite.id)
+        assertNotNull(run.id)
+        assertEquals(EMPTY_RUN_DTO.revision, run.revision)
+        assertEquals(runRepository.findAll()[0].id, run.id)
     }
 
     @Test fun insertsEmptyRunCorrectly() {
@@ -89,6 +89,33 @@ class InsertServiceTest {
 
         verifyRunSaved(runDto, TEST_SUITE_ID)
         verifyResultsSaved(A_TEST_DTO_PASSED, B_TEST_DTO_FAILED)
+    }
+
+    @Test fun insertOneTestResultCorrectly() {
+        val runId = randomUUID()
+        val resultDtos = listOf(A_TEST_DTO_PASSED)
+
+        insertService.insertResults(resultDtos, runId)
+
+        verifyResultsSaved(A_TEST_DTO_PASSED)
+    }
+
+    @Test fun insertTwoTestResultsCorrectly() {
+        val runId = randomUUID()
+        val resultDtos = listOf(A_TEST_DTO_PASSED, B_TEST_DTO_FAILED)
+
+        insertService.insertResults(resultDtos, runId)
+
+        verifyResultsSaved(A_TEST_DTO_PASSED, B_TEST_DTO_FAILED)
+    }
+
+    @Test fun insertsEmptyListOfResultsCorrectly() {
+        val runId = randomUUID()
+        val resultDtos = emptyList<ResultDto>()
+
+        insertService.insertResults(resultDtos, runId)
+
+        assertEquals(0, resultRepository.count())
     }
 
     private fun verifyResultsSaved(vararg resultDtos: ResultDto) {
