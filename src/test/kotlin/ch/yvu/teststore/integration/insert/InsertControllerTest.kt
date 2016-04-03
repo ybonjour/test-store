@@ -34,7 +34,7 @@ class InsertControllerTest : BaseIntegrationTest() {
                 results = listOf(ResultDto(
                         testName = "MyTest",
                         passed = true,
-                        durationSeconds = 10
+                        durationMillis = 10
                 ))
         )
 

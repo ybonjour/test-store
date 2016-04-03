@@ -19,7 +19,7 @@ object JunitXMLParser {
                     testName = "${testResult.classname}#${testResult.name}",
                     retryNum = 0,
                     passed = testResult.passed,
-                    durationSeconds = testResult.durationMs
+                    durationMillis = testResult.durationMs
             )
         }
 

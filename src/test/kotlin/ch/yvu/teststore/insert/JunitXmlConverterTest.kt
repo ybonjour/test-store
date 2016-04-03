@@ -17,7 +17,7 @@ class JunitXmlParserTest {
                         testName = "ch.yvu.teststore.MyTestClass#myTest",
                         retryNum = 0,
                         passed = true,
-                        durationSeconds = 6
+                        durationMillis = 6
                 )
         ), parsed)
     }
@@ -33,7 +33,7 @@ class JunitXmlParserTest {
                         testName = "ch.yvu.teststore.MyTestClass#myTest",
                         retryNum = 0,
                         passed = false,
-                        durationSeconds = 6
+                        durationMillis = 6
                 )
         ), parsed)
     }
@@ -49,7 +49,7 @@ class JunitXmlParserTest {
                         testName = "ch.yvu.teststore.MyTestClass#myTest",
                         retryNum = 0,
                         passed = false,
-                        durationSeconds = 6
+                        durationMillis = 6
                 )
         ), parsed)
     }
@@ -74,13 +74,13 @@ class JunitXmlParserTest {
                         testName = "ch.yvu.teststore.MyTestClass#myTest",
                         retryNum = 0,
                         passed = true,
-                        durationSeconds = 6
+                        durationMillis = 6
                 ),
                 ResultDto(
                         testName = "ch.yvu.teststore.MyTestClass2#myTest",
                         retryNum = 0,
                         passed = true,
-                        durationSeconds = 10
+                        durationMillis = 10
                 )
         ), parsed)
     }
