@@ -2,14 +2,12 @@
 Stores your test results
 
 ## API Usage
-Create a testsuite `My Testsuite`:
-
+### Creating a testsuite
 **Request**
 ```
 POST /testsuites
 name=My Testsuite
 ```
-
 **Response**
 ```
 201 Created
@@ -19,8 +17,7 @@ name=My Testsuite
 }
 ```
 
-Store the test results of a run:
-
+### Store entire run with all results
 **Request**
 ```
 POST /testsuites/f6da9a37-d7e0-4cfb-b880-a99294c53709/runs
@@ -31,15 +28,53 @@ Content-Type: application/json
   "time": 1459588895366,
   "results": [
     {
-      "testName": "ch.yvu.teststore.integration.insert.InsertControllerTest",
+      "testName": "ch.yvu.teststore.integration.insert.InsertControllerTest#canInsertRun",
       "retryNum": 0,
-      "passed": true
+      "passed": true,
+      "durationMillis": 1230
     }
   ]
 }
 ```
-
 **Response**
 ```
 200 OK
 ```
+
+### Create an empty run
+**Request**
+```
+POST /runs
+revision=e46ed71567d5da172b00ece3efd7019aab51d756
+testSuite=f6da9a37-d7e0-4cfb-b880-a99294c53709
+time=2016-04-03T01:30:00.001-0200
+```
+**Response**
+```
+201 Created
+{
+    "id": "1b48b134-bb93-4bcd-9c02-92dd83d89157",
+    "testSuite": "f6da9a37-d7e0-4cfb-b880-a99294c53709",
+    "revision": "e46ed71567d5da172b00ece3efd7019aab51d756",
+    "time": 1459654200001
+}
+```
+
+### Add test results to run using JUnit XML format
+**Request**
+```
+POST /runs/1b48b134-bb93-4bcd-9c02-92dd83d89157/results
+Content-Type: application/xml
+
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+    <testsuite errors="0" skipped="0" tests="1" failures="0" timestamp="2016-03-31T17:51:02">
+        <testcase classname="ch.yvu.teststore.integration.insert.InsertControllerTest" name="canInsertRun" time="1.23"/>
+    </testsuite>
+</testsuites>
+```
+**Response**
+```
+200 OK
+```
+
