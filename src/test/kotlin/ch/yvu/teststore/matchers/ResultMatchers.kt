@@ -8,12 +8,12 @@ import java.util.*
 
 object ResultMatchers {
 
-    fun resultWith(runId: Matcher<UUID>, testName: String, retryNum: Int, passed: Boolean, durationSeconds: Long) = object : TypeSafeMatcher<Result>() {
+    fun resultWith(runId: Matcher<UUID>, testName: String, retryNum: Int, passed: Boolean, durationMillis: Long) = object : TypeSafeMatcher<Result>() {
         override fun describeTo(description: Description?) {
             if (description == null) return
             description.appendText("Result with run ")
             description.appendDescriptionOf(runId)
-            description.appendText(", test $testName, retryNum $retryNum, passed $passed, duration $durationSeconds")
+            description.appendText(", test $testName, retryNum $retryNum, passed $passed, duration $durationMillis")
         }
 
         override fun matchesSafely(item: Result?): Boolean {
@@ -23,7 +23,7 @@ object ResultMatchers {
                     && item.testName == testName
                     && item.retryNum == retryNum
                     && item.passed == passed
-                    && item.durationMillis == durationSeconds
+                    && item.durationMillis == durationMillis
         }
     }
 }

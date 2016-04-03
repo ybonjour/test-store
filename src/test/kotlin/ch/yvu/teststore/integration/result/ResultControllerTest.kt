@@ -27,7 +27,7 @@ class ResultControllerTest : BaseIntegrationTest() {
                 .queryParam("testName", "MyTest")
                 .queryParam("retryNum", 0)
                 .queryParam("passed", true)
-                .queryParam("durationSeconds", 10)
+                .queryParam("durationMillis", 10)
                 .post("/results")
                 .then().assertThat().statusCode(201)
     }
@@ -44,7 +44,7 @@ class ResultControllerTest : BaseIntegrationTest() {
                 .queryParam("testName", testName)
                 .queryParam("retryNum", retryNum)
                 .queryParam("passed", passed)
-                .queryParam("durationSeconds", durationSeconds)
+                .queryParam("durationMillis", durationSeconds)
                 .post("/results")
 
         val results = resultRepository.findAll()
@@ -58,7 +58,7 @@ class ResultControllerTest : BaseIntegrationTest() {
                 .queryParam("testName", "MyTest")
                 .queryParam("retryNum", 0)
                 .queryParam("passed", true)
-                .queryParam("durationSeconds", 10)
+                .queryParam("durationMillis", 10)
                 .post("/results")
         .then().assertThat().body("id", not(isEmptyOrNullString()))
     }
