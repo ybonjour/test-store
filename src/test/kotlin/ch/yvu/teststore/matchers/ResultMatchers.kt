@@ -23,7 +23,7 @@ object ResultMatchers {
                     && item.testName == testName
                     && item.retryNum == retryNum
                     && item.passed == passed
-                    && item.durationSeconds == durationSeconds
+                    && item.durationMillis == durationSeconds
         }
     }
 }
