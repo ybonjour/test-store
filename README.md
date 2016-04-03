@@ -60,7 +60,7 @@ time=2016-04-03T01:30:00.001-0200
 }
 ```
 
-### Add test results to run using JUnit XML format
+### Add results to run using JUnit XML format
 **Request**
 ```
 POST /runs/1b48b134-bb93-4bcd-9c02-92dd83d89157/results
