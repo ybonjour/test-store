@@ -8,6 +8,7 @@ import ch.yvu.teststore.run.RunRepository
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.jayway.restassured.RestAssured.given
 import com.jayway.restassured.http.ContentType.JSON
+import com.jayway.restassured.http.ContentType.XML
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
@@ -48,6 +49,20 @@ class InsertControllerTest : BaseIntegrationTest() {
                 .then().assertThat().statusCode(200)
 
         assertEquals(1, runRepository.count())
+        assertEquals(1, resultRepository.count())
+    }
+
+    @Test fun canInsertXmlResults() {
+        val run = randomUUID()
+
+        val xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<testsuites>\n    <testsuite errors=\"0\" skipped=\"0\" tests=\"1\" failures=\"0\" timestamp=\"2016-03-31T17:51:02\">\n        <testcase classname=\"ch.yvu.teststore.MyTestClass\" name=\"myTest\" time=\"0.006\"/>\n    </testsuite>\n</testsuites>"
+
+        given()
+                .contentType(XML)
+                .body(xml)
+                .post("/runs/${run.toString()}/results")
+                .then().assertThat().statusCode(200)
+
         assertEquals(1, resultRepository.count())
     }
 }
