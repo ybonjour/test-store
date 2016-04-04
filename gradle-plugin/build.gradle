@@ -1,0 +1,20 @@
+version =
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+}
+
+apply plugin: 'groovy'
+apply plugin: 'java-gradle-plugin'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile localGroovy()
+    testCompile group: 'junit', name: 'junit', version: '4.11'
+}
