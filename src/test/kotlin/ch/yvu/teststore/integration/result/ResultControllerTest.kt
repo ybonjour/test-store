@@ -23,7 +23,6 @@ class ResultControllerTest : BaseIntegrationTest() {
 
     @Test fun createResultReturnsCorrectStatusCode() {
         given().queryParam("run", randomUUID())
-                .queryParam("test", randomUUID())
                 .queryParam("testName", "MyTest")
                 .queryParam("retryNum", 0)
                 .queryParam("passed", true)
@@ -40,7 +39,6 @@ class ResultControllerTest : BaseIntegrationTest() {
         val passed = true
         val durationMillis = 10L
         given().queryParam("run", run)
-                .queryParam("test", test)
                 .queryParam("testName", testName)
                 .queryParam("retryNum", retryNum)
                 .queryParam("passed", passed)
@@ -54,7 +52,6 @@ class ResultControllerTest : BaseIntegrationTest() {
 
     @Test fun createResultReturnsId() {
         given().queryParam("run", randomUUID())
-                .queryParam("test", randomUUID())
                 .queryParam("testName", "MyTest")
                 .queryParam("retryNum", 0)
                 .queryParam("passed", true)
