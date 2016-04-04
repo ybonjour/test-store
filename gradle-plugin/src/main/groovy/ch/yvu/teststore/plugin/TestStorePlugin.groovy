@@ -7,6 +7,7 @@ class TestStorePlugin implements Plugin<Project> {
 
     @Override
     void apply(Project project) {
+        project.extensions.create('teststore', TestStorePluginExtension)
         project.task('storeResults') << {
         }
     }
