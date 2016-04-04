@@ -2,7 +2,6 @@ package ch.yvu.teststore.plugin
 
 import org.gradle.api.DefaultTask
 import org.gradle.api.Project
-import org.junit.Assert
 import org.junit.Test
 
 import static org.gradle.testfixtures.ProjectBuilder.builder
