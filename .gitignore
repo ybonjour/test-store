@@ -3,6 +3,7 @@
 /.idea/libraries
 /.idea/shelf
 .gradle
-/build
+**/build/
+/gradle-plugin/build
 .DS_Store
 
