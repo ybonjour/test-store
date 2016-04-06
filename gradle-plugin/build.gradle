@@ -1,4 +1,5 @@
 version = 0.1
+group = 'ch.yvu.teststore'
 buildscript {
     repositories {
         mavenCentral()
