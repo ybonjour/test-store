@@ -2,6 +2,7 @@ package ch.yvu.teststore.plugin
 
 import org.gradle.api.DefaultTask
 import org.gradle.api.Project
+import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 
@@ -27,8 +28,16 @@ class TestStorePluginTest {
     }
 
     @Test
+    public void storeResultsTaskHasDescription() {
+        def storeResultTask = project.tasks.storeResults
+
+        Assert.assertNotNull(storeResultTask.description)
+    }
+
+    @Test
     public void addsTeststoreExtensionPointToProject() {
         def testStoreExtension = project.teststore
+
         assertTrue(testStoreExtension instanceof TestStorePluginExtension)
     }
 
