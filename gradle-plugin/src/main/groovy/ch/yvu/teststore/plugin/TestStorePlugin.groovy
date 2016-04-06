@@ -10,6 +10,8 @@ class TestStorePlugin implements Plugin<Project> {
     void apply(Project project) {
         project.extensions.create('teststore', TestStorePluginExtension)
         project.task(storeResultsTaskSettings(), 'storeResults') << {
+
+            System.out.println(project.buildDir)
         }
     }
 
