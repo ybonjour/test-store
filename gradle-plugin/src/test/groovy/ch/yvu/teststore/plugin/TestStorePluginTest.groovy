@@ -44,4 +44,10 @@ class TestStorePluginTest {
         def port = project.teststore.port
         assertEquals(8080, port)
     }
+
+    @Test
+    public void testStoreExtensionHasTestSuiteAttribute() {
+        def testSuite = project.teststore.testSuite
+        assertEquals(null, testSuite)
+    }
 }
