@@ -57,4 +57,10 @@ class TestStorePluginTest {
         def testSuite = project.teststore.testSuite
         assertEquals(null, testSuite)
     }
+
+    @Test
+    public void testStoreExtensionDefaultXmlReportPatternMatchesDefaultXmlReports() {
+        def pattern = project.teststore.xmlReports
+        assert ("build/test-results/MyTestClass.myTest.xml" ==~ pattern)
+    }
 }
