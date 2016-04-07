@@ -3,6 +3,7 @@ package ch.yvu.teststore.run
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.format.annotation.DateTimeFormat
 import org.springframework.format.annotation.DateTimeFormat.ISO
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod.POST
 import org.springframework.web.bind.annotation.RequestParam
@@ -14,10 +15,10 @@ import javax.servlet.http.HttpServletResponse
 @RestController
 class RunController @Autowired constructor(val runRepository: RunRepository) {
 
-    @RequestMapping(method = arrayOf(POST), value = "/runs")
+    @RequestMapping(method = arrayOf(POST), value = "/testsuites/{testSuite}/runs")
     fun createRun(
+            @PathVariable testSuite: UUID,
             @RequestParam(name = "revision") revision: String,
-            @RequestParam(name = "testSuite") testSuite: UUID,
             @RequestParam(name = "time") @DateTimeFormat(iso= ISO.DATE_TIME) time: Date,
             response: HttpServletResponse):Run {
 

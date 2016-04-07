@@ -19,6 +19,7 @@ class RunControllerTest : BaseIntegrationTest() {
         val isoFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
         val nowString = SimpleDateFormat(isoFormat).format(Date())
         val now = SimpleDateFormat(isoFormat).parse(nowString)
+        val testSuite = randomUUID()
     }
 
     @Autowired lateinit var runRepository: RunRepository;
@@ -29,22 +30,19 @@ class RunControllerTest : BaseIntegrationTest() {
     }
 
     @Test fun createRunReturnsCorrectStatusCode() {
-        given().queryParam("testSuite", randomUUID())
-                .queryParam("revision", "abcd123")
+        given().queryParam("revision", "abcd123")
                 .queryParam("time", nowString)
-                .post("/runs")
+                .post("/testsuites/$testSuite/runs")
                 .then().assertThat().statusCode(201)
     }
 
     @Test fun storesRunWithCorrectRevisionAndTestSuite() {
-        val testSuite = randomUUID()
         val revision = "abcd123"
         val time = nowString
 
-        given().queryParam("testSuite", testSuite)
-                .queryParam("revision", revision)
+        given().queryParam("revision", revision)
                 .queryParam("time", time)
-                .post("/runs")
+                .post("/testsuites/$testSuite/runs")
 
         val runs = runRepository.findAll()
         assertEquals(1, runs.count())
@@ -52,10 +50,9 @@ class RunControllerTest : BaseIntegrationTest() {
     }
 
     @Test fun runIdIsReturnedWhenCreatingARun() {
-        given().queryParam("testSuite", randomUUID().toString())
-                .queryParam("revision", "abcd123")
+        given().queryParam("revision", "abcd123")
                 .queryParam("time", nowString)
-                .post("/runs")
+                .post("/testsuites/$testSuite/runs")
                 .then().assertThat().body("id", not(isEmptyOrNullString()))
     }
 }

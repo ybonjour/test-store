@@ -44,9 +44,8 @@ Content-Type: application/json
 ### Create an empty run
 **Request**
 ```
-POST /runs
+POST /testsuites/f6da9a37-d7e0-4cfb-b880-a99294c53709/runs
 revision=e46ed71567d5da172b00ece3efd7019aab51d756
-testSuite=f6da9a37-d7e0-4cfb-b880-a99294c53709
 time=2016-04-03T01:30:00.001-0200
 ```
 **Response**

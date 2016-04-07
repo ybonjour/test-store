@@ -12,7 +12,10 @@ import java.util.*
 @RestController
 class InsertController @Autowired constructor(val insertService: InsertService) {
 
-    @RequestMapping(method = arrayOf(POST), value = "/testsuites/{testSuite}/runs")
+    @RequestMapping(
+            method = arrayOf(POST),
+            value = "/testsuites/{testSuite}/runs",
+            headers = arrayOf("content-type=application/json"))
     fun insert(@PathVariable testSuite: UUID, @RequestBody runDto: RunDto) {
         insertService.insertRun(runDto, testSuite)
     }
