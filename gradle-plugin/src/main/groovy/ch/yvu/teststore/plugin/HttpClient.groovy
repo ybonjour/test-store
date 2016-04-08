@@ -12,6 +12,6 @@ class HttpClient {
     }
 
     def postForm(String path, Map<String, String> parameters) {
-        http.post(path: path, body: parameters, requestContentType: URLENC)
+        return http.post(path: path, body: parameters, requestContentType: URLENC)
     }
 }

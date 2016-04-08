@@ -12,7 +12,7 @@ class TestStorePlugin implements Plugin<Project> {
         project.task(storeResultsTaskSettings(), 'storeResults') << {
             def testSuiteId = UUID.fromString(project.teststore.testSuite)
             def client = createClient(project.teststore.host, project.teststore.port, testSuiteId)
-            client.createRun("staticRevision", new Date())
+            client.createRun(project.teststore.revision, new Date())
         }
     }
 

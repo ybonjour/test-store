@@ -16,11 +16,12 @@ class TeststoreClientTest {
     public void canCreateARun() {
         String revision = "abc123"
         UUID runId = randomUUID()
+        def response = [id:runId.toString()]
         def mock = new MockFor(HttpClient)
         mock.demand.postForm { String path, Map<String, String> parameters ->
             assert path == "/testsuites/$TEST_SUITE/runs"
             assert parameters == [revision: revision, time: new SimpleDateFormat(ISO_DATE_FORMAT).format(NOW)]
-            return runId
+            return response
         }
 
         mock.use {
