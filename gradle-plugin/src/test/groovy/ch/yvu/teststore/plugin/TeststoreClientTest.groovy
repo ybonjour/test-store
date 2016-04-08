@@ -30,4 +30,21 @@ class TeststoreClientTest {
             assert result == runId
         }
     }
+
+    @Test
+    public void canInsertAResult() {
+        def runId = randomUUID()
+        def mock = new MockFor(HttpClient)
+        def junitXml = "<someXML />"
+        mock.demand.postXml { String path, String xml ->
+            assert path == "/testsuites/$TEST_SUITE/runs/${runId.toString()}/results"
+            assert junitXml == xml
+        }
+
+        mock.use {
+            def client = new TeststoreClient(httpClient: new HttpClient("", 0), testSuiteId: TEST_SUITE)
+            client.insertTestResult(runId, junitXml)
+        }
+
+    }
 }

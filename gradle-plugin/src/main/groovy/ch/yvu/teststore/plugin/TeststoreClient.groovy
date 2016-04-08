@@ -14,4 +14,8 @@ class TeststoreClient {
         def response = httpClient.postForm("/testsuites/${testSuiteId.toString()}/runs", params)
         return UUID.fromString(response.id)
     }
+
+    def insertTestResult(UUID runId, String junitXml) {
+        httpClient.postXml("/testsuites/${testSuiteId.toString()}/runs/$runId/results", junitXml)
+    }
 }

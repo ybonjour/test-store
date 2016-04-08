@@ -3,6 +3,7 @@ package ch.yvu.teststore.plugin
 import groovyx.net.http.HTTPBuilder
 
 import static groovyx.net.http.ContentType.URLENC
+import static groovyx.net.http.ContentType.XML
 
 class HttpClient {
     private HTTPBuilder http
@@ -12,6 +13,10 @@ class HttpClient {
     }
 
     def postForm(String path, Map<String, String> parameters) {
-        return http.post(path: path, body: parameters, requestContentType: URLENC)
+        return http.post(path: path, body: parameters, contentType: URLENC)
+    }
+
+    def postXml(String path, String xml) {
+        return http.post(path: path, body: xml, contentType: XML)
     }
 }
