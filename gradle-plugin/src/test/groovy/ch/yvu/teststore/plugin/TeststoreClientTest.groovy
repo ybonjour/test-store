@@ -7,7 +7,7 @@ import java.text.SimpleDateFormat
 
 import static java.util.UUID.randomUUID
 
-class FilestoreClientTest {
+class TeststoreClientTest {
     private static final UUID TEST_SUITE = randomUUID()
     private static final String ISO_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
     private static final Date NOW = new Date()
@@ -24,7 +24,7 @@ class FilestoreClientTest {
         }
 
         mock.use {
-            def client = new FilestoreClient(httpClient: new HttpClient("", 0), testSuiteId: TEST_SUITE)
+            def client = new TeststoreClient(httpClient: new HttpClient("", 0), testSuiteId: TEST_SUITE)
             def result = client.createRun(revision, NOW)
             assert result == runId
         }

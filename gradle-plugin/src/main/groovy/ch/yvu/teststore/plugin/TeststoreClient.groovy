@@ -2,7 +2,7 @@ package ch.yvu.teststore.plugin
 
 import java.text.SimpleDateFormat
 
-class FilestoreClient {
+class TeststoreClient {
     HttpClient httpClient
     UUID testSuiteId
 

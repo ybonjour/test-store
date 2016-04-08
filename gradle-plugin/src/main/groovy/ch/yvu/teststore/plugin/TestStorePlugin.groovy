@@ -18,7 +18,7 @@ class TestStorePlugin implements Plugin<Project> {
 
     private static createClient(String host, int port, UUID testSuiteId) {
         def httpClient = new HttpClient(host, port)
-        return new FilestoreClient(httpClient: httpClient, testSuiteId: testSuiteId)
+        return new TeststoreClient(httpClient: httpClient, testSuiteId: testSuiteId)
     }
 
 
