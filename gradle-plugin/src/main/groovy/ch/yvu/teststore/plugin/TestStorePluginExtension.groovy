@@ -7,4 +7,5 @@ class TestStorePluginExtension {
     def int port = 8080
     def Pattern xmlReports = ~/.*\/test-results\/.*\.xml/
     def String testSuite
+    def String revision = ""
 }

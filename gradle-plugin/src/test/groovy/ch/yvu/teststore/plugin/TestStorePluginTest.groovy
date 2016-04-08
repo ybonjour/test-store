@@ -63,4 +63,10 @@ class TestStorePluginTest {
         def pattern = project.teststore.xmlReports
         assert ("build/test-results/MyTestClass.myTest.xml" ==~ pattern)
     }
+
+    @Test
+    public void testStoreExtensionDefaultRevisionIsEmptyString() {
+        def revision = project.teststore.revision
+        assert revision == ""
+    }
 }
