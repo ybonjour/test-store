@@ -1,13 +1,16 @@
 package ch.yvu.teststore.plugin
 
-import org.joda.time.DateTime
+import java.text.SimpleDateFormat
 
 class FilestoreClient {
     HttpClient httpClient
     UUID testSuiteId
 
-    def createRun(String revision, DateTime time) {
-        def params = [revision: revision, time: time]
+    private static final String ISO_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
+
+    def createRun(String revision, Date time) {
+        def timeString = new SimpleDateFormat(ISO_DATE_FORMAT).format(time);
+        def params = [revision: revision, time: timeString]
         httpClient.postForm("/testsuites/${testSuiteId.toString()}/runs", params)
     }
 }

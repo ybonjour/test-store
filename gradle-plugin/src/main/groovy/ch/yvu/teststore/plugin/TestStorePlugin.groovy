@@ -10,10 +10,17 @@ class TestStorePlugin implements Plugin<Project> {
     void apply(Project project) {
         project.extensions.create('teststore', TestStorePluginExtension)
         project.task(storeResultsTaskSettings(), 'storeResults') << {
-
-            System.out.println(project.buildDir)
+            def testSuiteId = UUID.fromString(project.teststore.testSuite)
+            def client = createClient(project.teststore.host, project.teststore.port, testSuiteId)
+            client.createRun("staticRevision", new Date())
         }
     }
+
+    private static createClient(String host, int port, UUID testSuiteId) {
+        def httpClient = new HttpClient(host, port)
+        return new FilestoreClient(httpClient: httpClient, testSuiteId: testSuiteId)
+    }
+
 
     private static Map<String, String> storeResultsTaskSettings() {
         def settings = [:]

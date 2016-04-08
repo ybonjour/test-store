@@ -1,14 +1,16 @@
 package ch.yvu.teststore.plugin
 
 import groovy.mock.interceptor.MockFor
-import org.joda.time.DateTime
 import org.junit.Test
+
+import java.text.SimpleDateFormat
 
 import static java.util.UUID.randomUUID
 
 class FilestoreClientTest {
     private static final UUID TEST_SUITE = randomUUID()
-    private static final DateTime NOW = new DateTime()
+    private static final String ISO_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
+    private static final Date NOW = new Date()
 
     @Test
     public void canCreateARun() {
@@ -17,7 +19,7 @@ class FilestoreClientTest {
         def mock = new MockFor(HttpClient)
         mock.demand.postForm { String path, Map<String, String> parameters ->
             assert path == "/testsuites/$TEST_SUITE/runs"
-            assert parameters == [revision: revision, time: NOW]
+            assert parameters == [revision: revision, time: new SimpleDateFormat(ISO_DATE_FORMAT).format(NOW)]
             return runId
         }
 
