@@ -12,7 +12,17 @@ class TestStorePlugin implements Plugin<Project> {
         project.task(storeResultsTaskSettings(), 'storeResults') << {
             def testSuiteId = UUID.fromString(project.teststore.testSuite)
             def client = createClient(project.teststore.host, project.teststore.port, testSuiteId)
-            client.createRun(project.teststore.revision, new Date())
+            def runId = client.createRun(project.teststore.revision, new Date())
+            System.out.println("Created run $runId")
+            def fileWalker = new FileWalker(baseDir: project.rootDir, pattern: project.teststore.xmlReports)
+            fileWalker.walkFileContents { filePath, xml ->
+                try {
+                    client.insertTestResult(runId, xml)
+                    System.out.println("Stored $filePath")
+                } catch(Exception e) {
+                    System.err.println("Could not store $filePath (${e.getMessage()}")
+                }
+            }
         }
     }
 
