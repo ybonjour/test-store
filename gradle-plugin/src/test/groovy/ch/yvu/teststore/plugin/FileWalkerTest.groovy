@@ -20,8 +20,8 @@ class FileWalkerTest {
         def fileWalker = new FileWalker(baseDir: TEST_RESULTS_DIR, pattern: PATTERN_FILE)
 
         def fileContents = []
-        fileWalker.walkFileContents({
-            fileContents += it
+        fileWalker.walkFileContents({ fileName, fileContent ->
+            fileContents += fileContent
         })
 
         assertEquals(1, fileContents.size())
@@ -33,8 +33,8 @@ class FileWalkerTest {
         def fileWalker = new FileWalker(baseDir: TEST_RESULTS_DIR, pattern: PATTERN_NONE)
 
         def fileContents = []
-        fileWalker.walkFileContents({
-            fileContents += it
+        fileWalker.walkFileContents({fileName, fileContent ->
+            fileContents += fileContent
         })
 
         assertEquals(0, fileContents.size())
@@ -45,8 +45,8 @@ class FileWalkerTest {
         def fileWalker = new FileWalker(baseDir: TEST_RESULTS_DIR, pattern: PATTERN_RECURSIVE)
 
         def fileContents = []
-        fileWalker.walkFileContents({
-            fileContents += it
+        fileWalker.walkFileContents({fileName, fileContent ->
+            fileContents += fileContent
         })
 
         assertEquals(1, fileContents.size())

@@ -11,7 +11,7 @@ class FileWalker {
     def walkFileContents(visitor) {
         new File(baseDir).eachFileRecurse {
             if (it.isFile() && it.path ==~ pattern) {
-                visitor(it.getText(UTF_8.name()))
+                visitor(it.absolutePath, it.getText(UTF_8.name()))
             }
         }
     }
