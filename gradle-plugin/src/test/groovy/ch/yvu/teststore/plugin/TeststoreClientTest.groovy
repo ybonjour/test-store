@@ -37,7 +37,7 @@ class TeststoreClientTest {
         def mock = new MockFor(HttpClient)
         def junitXml = "<someXML />"
         mock.demand.postXml { String path, String xml ->
-            assert path == "/testsuites/$TEST_SUITE/runs/${runId.toString()}/results"
+            assert path == "/runs/${runId.toString()}/results"
             assert junitXml == xml
         }
 

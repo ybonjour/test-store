@@ -16,6 +16,6 @@ class TeststoreClient {
     }
 
     def insertTestResult(UUID runId, String junitXml) {
-        httpClient.postXml("/testsuites/${testSuiteId.toString()}/runs/$runId/results", junitXml)
+        httpClient.postXml("/runs/$runId/results", junitXml)
     }
 }
