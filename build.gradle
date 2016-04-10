@@ -6,6 +6,7 @@ buildscript {
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.0.1"
         classpath "org.springframework.boot:spring-boot-gradle-plugin:1.3.3.RELEASE"
+        classpath 'org.ajoberstar:grgit:1.1.0'
         classpath 'ch.yvu.teststore:gradle-plugin:0.1'
     }
 }
@@ -24,11 +25,17 @@ jar {
     version = "0.1.0"
 }
 
+ext {
+     revision = org.ajoberstar.grgit.Grgit.open(file('.')).head().id.toString()
+}
+
 teststore {
+//    host '52.28.29.237'
     host '192.168.99.100'
     port  8080
-    testSuite 'e2ca0fe3-12d3-4894-a2d0-23ea146929e5'
-    revision 'abcd123'
+    testSuite '5b5cf1c6-6672-4154-9cfb-15629dafc789'
+    revision "${->project.ext.revision}"
+    xmlReports ~/.*\/test-results\/TEST-.*\.xml/
 }
 
 repositories {
