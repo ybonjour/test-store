@@ -30,8 +30,7 @@ ext {
 }
 
 teststore {
-//    host '52.28.29.237'
-    host '192.168.99.100'
+    host '52.28.29.237'
     port  8080
     testSuite '5b5cf1c6-6672-4154-9cfb-15629dafc789'
     revision "${->project.ext.revision}"
