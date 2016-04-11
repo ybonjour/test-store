@@ -7,8 +7,8 @@ services:
     ports:
       - "9042:9042"
 
-  web:
-    build: .
+  backend:
+    build: ./backend
     volumes:
       - ./scripts:/scripts
     command: bash -c "/scripts/wait-for-cassandra.sh cassandra 9042 && java -jar /app/teststore.jar --cassandra.contactPoints=cassandra"

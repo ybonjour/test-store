@@ -4,26 +4,13 @@ buildscript {
         flatDir dirs: "libs"
     }
     dependencies {
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.0.1"
-        classpath "org.springframework.boot:spring-boot-gradle-plugin:1.3.3.RELEASE"
         classpath 'org.ajoberstar:grgit:1.1.0'
         classpath 'ch.yvu.teststore:gradle-plugin:0.1'
     }
 }
 
-apply plugin: 'java'
 apply plugin: 'idea'
-apply plugin: 'kotlin'
-apply plugin: 'spring-boot'
 apply plugin: 'ch.yvu.teststore'
-
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
-
-jar {
-    baseName = "teststore"
-    version = "0.1.0"
-}
 
 ext {
      revision = org.ajoberstar.grgit.Grgit.open(file('.')).head().id.toString()
@@ -35,35 +22,4 @@ teststore {
     testSuite '5b5cf1c6-6672-4154-9cfb-15629dafc789'
     revision "${->project.ext.revision}"
     xmlReports ~/.*\/test-results\/TEST-.*\.xml/
-}
-
-repositories {
-    mavenCentral()
-}
-
-sourceSets {
-    main {
-        kotlin {
-            srcDir "src/main/kotlin"
-        }
-    }
-    test {
-        kotlin {
-            srcDir "test/main/kotlin"
-        }
-    }
-}
-
-springBoot {
-    mainClass = "ch.yvu.teststore.ApplicationKt"
-}
-
-dependencies {
-    compile "org.jetbrains.kotlin:kotlin-stdlib:1.0.1"
-    compile "org.springframework.boot:spring-boot-starter-web"
-    compile "com.datastax.cassandra:cassandra-driver-core:3.0.0"
-    compile "com.datastax.cassandra:cassandra-driver-mapping:3.0.0"
-    testCompile "junit:junit"
-    testCompile "com.jayway.restassured:rest-assured:2.9.0"
-    testCompile "org.springframework.boot:spring-boot-starter-test:1.3.3.RELEASE"
 }
