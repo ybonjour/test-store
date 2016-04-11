@@ -77,3 +77,38 @@ Content-Type: application/xml
 200 OK
 ```
 
+## Use test-store with gradle and git
+
+### Build the plugin
+1. Clone the repository `git clone git@github.com:ybonjour/test-store`
+2. Build the gradle-plugin `cd teststore/gradle-plugin; ../gradlew assemble`
+3. Copy the created jar from `build/libs/teststore/gradle-plugin-0.1.jar` into your project (e.g. into the `libs` folder)
+
+
+## Integrate the gradle plugin into your build
+Adapt your build.gradle according to the following template
+
+```
+buildscript {
+    repositories {
+        mavenCentral()
+        flatDir dirs: 'libs'
+    }
+    dependencies {
+        classpath 'org.ajoberstar:grgit:1.1.0'
+        classpath 'ch.yvu.teststore:gradle-plugin:0.1'
+    }
+}
+
+teststore {
+    host '<your test store host>'
+    port  8080
+    testSuite '<your test suite id>'
+    revision "${->project.ext.revision}"
+    xmlReports ~/.*\/test-results\/TEST-.*\.xml/
+}
+```
+
+## Enjoy
+Run `./gradlew storeResults` to store your test results once you have executed your tests.
+
