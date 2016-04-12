@@ -4,7 +4,8 @@ import ch.yvu.teststore.integration.BaseIntegrationTest
 import ch.yvu.teststore.matchers.ResultMatchers.resultWith
 import ch.yvu.teststore.result.ResultRepository
 import com.jayway.restassured.RestAssured.given
-import org.hamcrest.Matchers.*
+import org.hamcrest.Matchers.equalTo
+import org.hamcrest.Matchers.hasItem
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertThat
 import org.junit.Before
@@ -33,7 +34,6 @@ class ResultControllerTest : BaseIntegrationTest() {
 
     @Test fun createResultStoresResultWithCorrectAttributes() {
         val run = randomUUID()
-        val test = randomUUID()
         val testName = "MyTest"
         val retryNum = 0
         val passed = true
@@ -48,15 +48,5 @@ class ResultControllerTest : BaseIntegrationTest() {
         val results = resultRepository.findAll()
         assertEquals(1, results.count())
         assertThat(results, hasItem(resultWith(equalTo(run), testName, retryNum, passed, durationMillis)))
-    }
-
-    @Test fun createResultReturnsId() {
-        given().queryParam("run", randomUUID())
-                .queryParam("testName", "MyTest")
-                .queryParam("retryNum", 0)
-                .queryParam("passed", true)
-                .queryParam("durationMillis", 10)
-                .post("/results")
-        .then().assertThat().body("id", not(isEmptyOrNullString()))
     }
 }

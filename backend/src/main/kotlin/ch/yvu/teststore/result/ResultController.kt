@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.RequestMethod.POST
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import java.util.*
-import java.util.UUID.randomUUID
 import javax.servlet.http.HttpServletResponse
 
 @RestController
@@ -20,7 +19,7 @@ class ResultController @Autowired constructor(val resultRepository: ResultReposi
             @RequestParam(name = "passed") passed: Boolean,
             @RequestParam(name = "durationMillis") durationMillis: Long,
             response: HttpServletResponse): Result {
-        val result = Result(randomUUID(), run, testName, retryNum, passed, durationMillis)
+        val result = Result(run, testName, retryNum, passed, durationMillis)
         resultRepository.save(result)
         response.status = 201
         return result

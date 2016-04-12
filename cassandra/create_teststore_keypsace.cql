@@ -17,11 +17,10 @@ CREATE TABLE IF NOT EXISTS run (
 );
 
 CREATE TABLE IF NOT EXISTS result (
-	id uuid,
 	run uuid,
 	testName text,
 	retryNum int,
 	passed boolean,
 	durationMillis bigint,
-	PRIMARY KEY (id)
+	PRIMARY KEY (run, testName, retryNum)
 );
