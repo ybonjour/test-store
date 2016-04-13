@@ -8,8 +8,8 @@
 Simply run
 ```
 ./gradlew assemble
-docker build backend
-docker build migration
+docker build -t test-store-backend backend
+docker build -t test-store-migration migration
 docker-compose up -d
 ```
 then the service is avialable on your docker host on port `8080`
