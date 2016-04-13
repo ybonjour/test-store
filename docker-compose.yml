@@ -8,7 +8,7 @@ services:
       - "9042:9042"
 
   backend:
-    build: ./backend
+    image: test-store-backend
     volumes:
       - ./scripts:/scripts
     command: bash -c "/scripts/wait-for-cassandra.sh cassandra 9042 && java -jar /app/teststore.jar --cassandra.contactPoints=cassandra"
@@ -19,7 +19,7 @@ services:
       - migration
 
   migration:
-    build: ./migration
+    image: test-store-migration
     volumes:
       - ./scripts:/scripts
       - ./cassandra:/cassandra
