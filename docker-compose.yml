@@ -18,6 +18,11 @@ services:
       - cassandra
       - migration
 
+  web:
+    image: test-store-web
+    ports:
+      - "80:80"
+
   migration:
     image: test-store-migration
     volumes:
