@@ -1,5 +1,6 @@
 {
   "scripts": {
+    "run": "npm run build && live-server",
     "build": "jspm bundle-sfx app build/app.js"
   },
   "jspm": {
@@ -16,7 +17,9 @@
       "core-js": "npm:core-js@^1.1.4"
     }
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "live-server": "^0.9.2"
+  },
   "dependencies": {
     "angular2": "^2.0.0-beta.6",
     "chokidar-socket-emitter": "^0.5.0",
