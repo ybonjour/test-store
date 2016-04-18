@@ -1,4 +1,6 @@
 import {Component} from 'angular2/core';
+import {Injectable} from 'angular2/core';
+import {TestResultService} from './test-result.service'
 
 @Component({
   selector: 'test-results',
@@ -12,11 +14,6 @@ import {Component} from 'angular2/core';
 	`
 })
 export class TestResultsComponent {
-	results = [{
-		"run": "e7add2bc-a2f4-41ab-97ae-a2f210b3a447",
-		"testName": "ch.yvu.teststore.common.CassandraRepositoryTest#canSaveAnItem",
-		"retryNum": 0,
-		"passed": true,
-		"durationMillis": 2349
-	}];
+	constructor(private _testResultService: TestResultService) {}
+	results = _testResultService.getResults();
 }
