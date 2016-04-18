@@ -1,6 +1,8 @@
 import {Component} from 'angular2/core';
 import {Injectable} from 'angular2/core';
+import {OnInit} from 'angular2/core';
 import {TestResultService} from './test-result.service'
+import {TestResult} from './test-result'
 
 @Component({
   selector: 'test-results',
@@ -13,7 +15,12 @@ import {TestResultService} from './test-result.service'
 		</ul>
 	`
 })
-export class TestResultsComponent {
+export class TestResultsComponent implements OnInit {
+	results: TestResult[];
+	
 	constructor(private _testResultService: TestResultService) {}
-	results = _testResultService.getResults();
+
+	ngOnInit() {
+		this._testResultService.getResults().then(results => this.results = results);
+	}
 }

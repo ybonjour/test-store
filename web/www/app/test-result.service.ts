@@ -3,7 +3,7 @@ import {Injectable} from 'angular2/core';
 @Injectable()
 export class TestResultService {
 	getResults() {
-			return [{
+		return Promise.resolve([{
 			"run": "e7add2bc-a2f4-41ab-97ae-a2f210b3a447",
 			"testName": "ch.yvu.teststore.common.CassandraRepositoryTest#canSaveAnItem",
 			"retryNum": 0,
@@ -16,6 +16,6 @@ export class TestResultService {
 			"retryNum": 0,
 			"passed": false,
 			"durationMillis": 3451
-		}];
+		}]);
 	}
 }
