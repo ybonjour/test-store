@@ -11,6 +11,4 @@ import {TestResultService} from './test-result.service'
   directives: [TestResultsComponent],
   providers: [TestResultService]
 })
-export class AppComponent {
-	constructor(private _testResultService: TestResultService) {}
-}
+export class AppComponent {}
