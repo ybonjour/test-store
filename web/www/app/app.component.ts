@@ -1,6 +1,6 @@
 import {Component} from 'angular2/core';
 import {RouteConfig, ROUTER_DIRECTIVES, ROUTER_PROVIDERS} from 'angular2/router';
-import {TestResultsComponent} from './test-results.component'
+import {TestResultListComponent} from './test-result-list.component'
 import {TestResultService} from './test-result.service'
 
 @Component({
@@ -20,7 +20,7 @@ import {TestResultService} from './test-result.service'
 {
 	path: '/runs/:run_id/results',
 	name: 'Results',
-	component: TestResultsComponent
+	component: TestResultListComponent
 }
 ])
 export class AppComponent {}

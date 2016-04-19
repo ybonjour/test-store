@@ -16,7 +16,7 @@ import {TestResult} from './test-result'
 		</ul>
 	`
 })
-export class TestResultsComponent implements OnInit {
+export class TestResultListComponent implements OnInit {
 	results: TestResult[];
 	
 	constructor(
