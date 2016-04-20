@@ -7,14 +7,7 @@ import {TestResult} from './test-result'
 
 @Component({
   selector: 'test-results',
-  template: `
-		<h1>Test Results for </h1>
-		<ul>
-			<li *ngFor="#result of results">
-				{{result.testName}}
-			</li>
-		</ul>
-	`
+  templateUrl: 'app/test-result-list.html' 
 })
 export class TestResultListComponent implements OnInit {
 	results: TestResult[];
