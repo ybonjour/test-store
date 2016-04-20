@@ -6,7 +6,6 @@ import {TestResultService} from './test-result.service'
 import {TestResult} from './test-result'
 
 @Component({
-  selector: 'test-results',
   templateUrl: 'app/test-result-list.html' 
 })
 export class TestResultListComponent implements OnInit {
