@@ -2,7 +2,6 @@ import {Injectable} from 'angular2/core';
 import {Http, Response} from 'angular2/http';
 import {Observable} from 'rxjs/Observable';
 import {TestResult} from './test-results.ts'
-import 'rxjs/Rx';
 
 @Injectable()
 export class TestResultService {
