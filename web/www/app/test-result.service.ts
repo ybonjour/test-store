@@ -1,21 +1,28 @@
 import {Injectable} from 'angular2/core';
+import {Http, Response} from 'angular2/http';
+import {Observable} from 'rxjs/Observable';
+import {TestResult} from './test-results.ts'
+import 'rxjs/Rx';
 
 @Injectable()
 export class TestResultService {
-	getResults() {
-		return Promise.resolve([{
-			"run": "e7add2bc-a2f4-41ab-97ae-a2f210b3a447",
-			"testName": "ch.yvu.teststore.common.CassandraRepositoryTest#canSaveAnItem",
-			"retryNum": 0,
-			"passed": true,
-			"durationMillis": 2349
-		},
-		{
-			"run": "e7add2bc-a2f4-41ab-97ae-a2f210b3a447",
-			"testName": "ch.yvu.teststore.common.CassandraRepositoryTest#returnsSavedItem",
-			"retryNum": 0,
-			"passed": false,
-			"durationMillis": 3451
-		}]);
+	constructor(private _http: Http) {}
+
+	getResults(runId: String): Observable<TestResult[]> {
+		return this._http.get("/api/results")
+						.map(this.extractBody)
+						.catch(this.extractError);
+	}
+
+	private extractBody(response: Response) {
+		if(response.status != 200) throw new Error("Bad response status: " + response.status);
+
+		let body = response.json();
+		return body.data || {};
+	}
+
+	private extractError (error: any) {
+		let errorMessage = error.message || "Server error";
+		return Observable.throw(errorMessage);
 	}
 }

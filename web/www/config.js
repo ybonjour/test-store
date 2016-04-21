@@ -35,6 +35,7 @@ System.config({
     "babel-runtime": "npm:babel-runtime@5.8.38",
     "core-js": "npm:core-js@1.2.6",
     "reflect-metadata": "npm:reflect-metadata@0.1.3",
+    "rxjs": "npm:rxjs@5.0.0-beta.6",
     "systemjs-hot-reloader": "github:capaj/systemjs-hot-reloader@0.5.7",
     "ts": "github:frankwallis/plugin-typescript@4.0.5",
     "zone.js": "npm:zone.js@0.6.11",

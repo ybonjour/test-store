@@ -9,6 +9,7 @@ import {TestResult} from './test-result'
   templateUrl: 'app/test-result-list.html' 
 })
 export class TestResultListComponent implements OnInit {
+	errorMessage: string;
 	results: TestResult[];
 	
 	constructor(
@@ -17,6 +18,13 @@ export class TestResultListComponent implements OnInit {
 
 	ngOnInit() {
 		let runId = +this._routeParams.get('run_id');
-		this._testResultService.getResults().then(results => this.results = results);
+		this.getResults(runId);
+	}
+
+	getResults(runId: String) {
+		this._testResultService.getResults(runId)
+					.subscribe(
+						results => this.results = results,
+						error => this.errorMessage = <any>error);
 	}
 }

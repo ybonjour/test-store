@@ -1,4 +1,5 @@
 import {Component} from 'angular2/core';
+import { HTTP_PROVIDERS } from 'angular2/http';
 import {RouteConfig, ROUTER_DIRECTIVES, ROUTER_PROVIDERS} from 'angular2/router';
 import {TestResultListComponent} from './test-result-list.component'
 import {TestResultService} from './test-result.service'
@@ -9,6 +10,7 @@ import {TestResultService} from './test-result.service'
   directives: [ROUTER_DIRECTIVES],
   providers: [
 	  ROUTER_PROVIDERS,
+    HTTP_PROVIDERS,
 	  TestResultService
   ]
 })
