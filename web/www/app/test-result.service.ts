@@ -16,8 +16,7 @@ export class TestResultService {
 	private extractBody(response: Response) {
 		if(response.status != 200) throw new Error("Bad response status: " + response.status);
 
-		let body = response.json();
-		return body.data || {};
+		return response.json();
 	}
 
 	private extractError (error: any) {
