@@ -36,7 +36,6 @@ class CassandraRepositoryTest {
 
     @Before fun setUp() {
         initMocks(this)
-        mappingManager = mock(MappingManager::class.java)
         `when`(mappingManager.session).thenReturn(session)
         `when`(mappingManager.mapper(MyModel::class.java)).thenReturn(mapper)
 
