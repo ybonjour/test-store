@@ -6,4 +6,8 @@ import com.datastax.driver.mapping.annotations.Table
 import java.util.*
 
 @Table(name = "testsuite")
-data class TestSuite(@PartitionKey var id: UUID, var name: String) : Model
+data class TestSuite(
+        @PartitionKey var id: UUID?,
+        var name: String?) : Model {
+    constructor() : this(null, null) {}
+}

@@ -7,8 +7,10 @@ import java.util.*
 
 @Table(name = "result")
 data class Result(
-        @PartitionKey(0) var run: UUID,
-        @PartitionKey(1) var testName: String,
-        @PartitionKey(2) var retryNum: Int,
-        var passed: Boolean,
-        var durationMillis: Long) : Model
+        @PartitionKey(0) var run: UUID?,
+        @PartitionKey(1) var testName: String?,
+        @PartitionKey(2) var retryNum: Int?,
+        var passed: Boolean?,
+        var durationMillis: Long?) : Model {
+    constructor(): this(null, null, null, null, null) {}
+}
