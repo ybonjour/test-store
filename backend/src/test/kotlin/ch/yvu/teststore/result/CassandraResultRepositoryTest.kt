@@ -4,7 +4,6 @@ import com.datastax.driver.core.ResultSet
 import com.datastax.driver.core.Session
 import com.datastax.driver.mapping.Mapper
 import com.datastax.driver.mapping.MappingManager
-import org.junit.Assert
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
@@ -57,7 +56,6 @@ class CassandraResultRepositoryTest {
         `when`(session.execute(anyString(), any(UUID::class.java))).thenReturn(resultSet)
         `when`(mapper.map(resultSet)).thenReturn(result)
         `when`(result.all()).thenReturn(listOf(aResult))
-
 
         val actual = repository.findAllByRunId(runId)
 
