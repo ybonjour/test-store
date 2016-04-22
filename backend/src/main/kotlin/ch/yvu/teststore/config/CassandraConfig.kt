@@ -9,6 +9,7 @@ import ch.yvu.teststore.testsuite.CassandraTestSuiteRepository
 import ch.yvu.teststore.testsuite.TestSuiteRepository
 import com.datastax.driver.core.Cluster
 import com.datastax.driver.core.Session
+import com.datastax.driver.mapping.MappingManager
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -43,7 +44,7 @@ open class CassandraConfig {
     }
 
     @Bean open fun resultRepository(): ResultRepository {
-        return CassandraResultRepository(session)
+        return CassandraResultRepository(MappingManager(session))
     }
 }
 
