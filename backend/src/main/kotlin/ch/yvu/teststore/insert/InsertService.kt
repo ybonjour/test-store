@@ -31,10 +31,11 @@ open class InsertService @Autowired constructor(
 
     @Async
     open fun insertRun(runDto: RunDto, testSuiteId: UUID): Future<Run> {
-        val run = Run(randomUUID(), testSuiteId, runDto.revision, runDto.time)
+        val runId = randomUUID()
+        val run = Run(runId, testSuiteId, runDto.revision, runDto.time)
         runRepository.save(run)
 
-        insertResults(runDto.results, run.id)
+        insertResults(runDto.results, runId)
 
         return AsyncResult(run)
     }
