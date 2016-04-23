@@ -7,6 +7,7 @@
 ## With Docker Compose
 Simply run
 ```
+(cd web/www; npm run build)
 ./gradlew assemble
 docker build -t test-store-web web
 docker build -t test-store-backend backend
