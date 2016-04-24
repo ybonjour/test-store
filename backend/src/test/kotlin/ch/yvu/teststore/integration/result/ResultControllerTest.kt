@@ -2,6 +2,7 @@ package ch.yvu.teststore.integration.result
 
 import ch.yvu.teststore.integration.BaseIntegrationTest
 import ch.yvu.teststore.matchers.ResultMatchers.resultWith
+import ch.yvu.teststore.result.Result
 import ch.yvu.teststore.result.ResultRepository
 import com.jayway.restassured.RestAssured.given
 import org.hamcrest.Matchers.equalTo
@@ -48,5 +49,21 @@ class ResultControllerTest : BaseIntegrationTest() {
         val results = resultRepository.findAll()
         assertEquals(1, results.count())
         assertThat(results, hasItem(resultWith(equalTo(run), testName, retryNum, passed, durationMillis)))
+    }
+
+    @Test fun findAllByRunQueriesRepository() {
+        val runId = randomUUID()
+
+        val result1 = Result(runId, "MyTest", 0, true, 204)
+        resultRepository.save(result1)
+
+        val result2 = Result(runId, "MyTest2", 0, true, 478)
+        resultRepository.save(result2)
+
+        given()
+                .get("/runs/$runId/results")
+        .then()
+                .body("[0].testName", equalTo(result1.testName))
+                .body("[1].testName", equalTo(result2.testName))
     }
 }

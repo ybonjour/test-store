@@ -19,6 +19,10 @@ class ListBackedRepository<M : Model> {
         return entries
     }
 
+    fun findAll(filter: (M) -> Boolean): List<M> {
+        return entries.filter(filter)
+    }
+
     fun deleteAll() {
         entries = emptyList()
     }

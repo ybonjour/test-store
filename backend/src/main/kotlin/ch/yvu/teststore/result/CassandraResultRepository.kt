@@ -8,7 +8,7 @@ import java.util.*
 open class CassandraResultRepository @Autowired constructor(mappingManager: MappingManager) :
         ResultRepository, CassandraRepository<Result>(mappingManager, "result", Result::class.java) {
 
-    fun findAllByRunId(runId: UUID): List<Result> {
+    override fun findAllByRunId(runId: UUID): List<Result> {
         val results = session.execute("SELECT * FROM result WHERE run=?", runId)
         return mapper.map(results).all().toList()
     }

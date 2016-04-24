@@ -1,6 +1,7 @@
 package ch.yvu.teststore.result
 
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod.GET
 import org.springframework.web.bind.annotation.RequestMethod.POST
@@ -26,8 +27,8 @@ class ResultController @Autowired constructor(val resultRepository: ResultReposi
         return result
     }
 
-    @RequestMapping(method = arrayOf(GET), value = "/results")
-    fun getAllResults(): List<Result> {
-        return resultRepository.findAll();
+    @RequestMapping(method = arrayOf(GET), value = "/runs/{run}/results")
+    fun getAllResults(@PathVariable run: UUID): List<Result> {
+        return resultRepository.findAllByRunId(run)
     }
 }
