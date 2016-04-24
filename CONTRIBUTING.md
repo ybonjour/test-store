@@ -7,11 +7,7 @@
 ## With Docker Compose
 Simply run
 ```
-(cd web/www; npm run build)
-./gradlew assemble
-docker build -t test-store-web web
-docker build -t test-store-backend backend
-docker build -t test-store-migration migration
+./scripts/build-all.sh
 docker-compose up -d
 ```
 then the service is avialable on your docker host on port `8080`
