@@ -1,5 +1,4 @@
 import {Component} from 'angular2/core';
-import {Injectable} from 'angular2/core';
 import {OnInit} from 'angular2/core';
 import { RouteParams } from 'angular2/router';
 import {TestResultService} from './test-result.service'
@@ -11,14 +10,15 @@ import {TestResult} from './test-result'
 export class TestResultListComponent implements OnInit {
 	errorMessage: string;
 	results: TestResult[];
+	runId: String;
 	
 	constructor(
 		private _testResultService: TestResultService,
 		private _routeParams: RouteParams) {}
 
 	ngOnInit() {
-		let runId = +this._routeParams.get('run_id');
-		this.getResults(runId);
+		this.runId = this._routeParams.get('run_id');
+		this.getResults(this.runId);
 	}
 
 	getResults(runId: String) {
