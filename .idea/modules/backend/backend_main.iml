@@ -1,15 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module external.linked.project.id=":backend:main" external.linked.project.path="$MODULE_DIR$/../../../backend" external.root.project.path="$MODULE_DIR$/../../.." external.system.id="GRADLE" external.system.module.group="teststore" external.system.module.type="sourceSet" external.system.module.version="unspecified" type="JAVA_MODULE" version="4">
-  <component name="FacetManager">
-    <facet type="Spring" name="Spring">
-      <configuration>
-        <fileset id="fileset" name="Spring Application Context" removed="false">
-          <file>file://$MODULE_DIR$/../../../backend/src/main/kotlin/ch/yvu/teststore/config/CassandraConfig.kt</file>
-          <file>file://$MODULE_DIR$/../../../backend/src/main/kotlin/ch/yvu/teststore/Application.kt</file>
-        </fileset>
-      </configuration>
-    </facet>
-  </component>
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_8" inherit-compiler-output="false">
     <output url="file://$MODULE_DIR$/../../../backend/build/classes/main" />
     <exclude-output />
