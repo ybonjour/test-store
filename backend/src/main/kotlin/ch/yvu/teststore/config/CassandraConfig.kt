@@ -40,7 +40,7 @@ open class CassandraConfig {
     }
 
     @Bean open fun runRepository(): RunRepository {
-        return CassandraRunRepository(session)
+        return CassandraRunRepository(MappingManager(session))
     }
 
     @Bean open fun resultRepository(): ResultRepository {
