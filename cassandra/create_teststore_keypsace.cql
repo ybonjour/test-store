@@ -10,11 +10,13 @@ CREATE TABLE IF NOT EXISTS testsuite (
 
 CREATE TABLE IF NOT EXISTS run (
 	id uuid,
-	testSuite uuid,
+	testsuite uuid,
 	revision text,
 	time timestamp,
 	PRIMARY KEY (id)
 );
+
+create index runsByTestsuite ON run (testsuite);
 
 CREATE TABLE IF NOT EXISTS result (
 	run uuid,
