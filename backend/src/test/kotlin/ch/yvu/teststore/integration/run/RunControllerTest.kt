@@ -2,6 +2,7 @@ package ch.yvu.teststore.integration.run
 
 import ch.yvu.teststore.integration.BaseIntegrationTest
 import ch.yvu.teststore.matchers.RunMatchers.runWith
+import ch.yvu.teststore.run.Run
 import ch.yvu.teststore.run.RunRepository
 import com.jayway.restassured.RestAssured.given
 import org.hamcrest.Matchers.*
@@ -54,6 +55,22 @@ class RunControllerTest : BaseIntegrationTest() {
                 .queryParam("time", nowString)
                 .post("/testsuites/$testSuite/runs")
                 .then().assertThat().body("id", not(isEmptyOrNullString()))
+    }
+
+    @Test fun findAllByTestSuiteFindsCorrectTestSuites() {
+        val run1 = Run(randomUUID(), testSuite, "abc123", now)
+        val run2 = Run(randomUUID(), testSuite, "abc124", now)
+        val run3 = Run(randomUUID(), randomUUID(), "abc342", now)
+        runRepository.save(run1)
+        runRepository.save(run2)
+        runRepository.save(run3)
+
+        given()
+                .get("/testsuites/$testSuite/runs")
+        .then()
+                .statusCode(200)
+                .body("[0].revision", equalTo(run1.revision))
+                .body("[1].revision", equalTo(run2.revision))
     }
 }
 
