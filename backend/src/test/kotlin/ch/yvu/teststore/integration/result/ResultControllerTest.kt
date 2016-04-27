@@ -63,6 +63,7 @@ class ResultControllerTest : BaseIntegrationTest() {
         given()
                 .get("/runs/$runId/results")
         .then()
+                .statusCode(200)
                 .body("[0].testName", equalTo(result1.testName))
                 .body("[1].testName", equalTo(result2.testName))
     }
