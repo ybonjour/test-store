@@ -1,0 +1,5 @@
+<h1>Runs</h1>
+
+<ul>
+    <li *ngFor="#run of runs"><a [routerLink]="['Results', {run_id: run.id}]">{{run.id}}</a></li>
+</ul>
