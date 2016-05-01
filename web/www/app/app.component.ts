@@ -4,6 +4,7 @@ import {RouteConfig, ROUTER_DIRECTIVES, ROUTER_PROVIDERS} from "angular2/router"
 import {TestResultListComponent} from "./test-result-list.component";
 import {RunListComponent} from "./run-list.component";
 import {TestResultService} from "./test-result.service";
+import {RunService} from "./run-service";
 
 @Component({
     selector: 'app',
@@ -12,7 +13,8 @@ import {TestResultService} from "./test-result.service";
     providers: [
         ROUTER_PROVIDERS,
         HTTP_PROVIDERS,
-        TestResultService
+        TestResultService,
+        RunService
     ]
 })
 @RouteConfig([
