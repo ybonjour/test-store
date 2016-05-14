@@ -2,6 +2,9 @@
 
     <div id="sidebar-wrapper">
         <ul class="sidebar-nav">
+            <li>
+                <a *ngIf="sidebarVisible" id="sidebar-toggle" class="btn btn-default btn-xs" (click)="onToggleSidebar()">&lt;&lt;</a>
+            </li>
             <li class="sidebar-brand">
                     test-store
             </li>
@@ -13,7 +16,7 @@
             </li>
         </ul>
     </div>
-    <a class="btn btn-default btn-xs" (click)="onToggleSidebar()">{{sidebarVisible ? "<<" : ">>"}}</a>
+    <a *ngIf="!sidebarVisible" class="btn btn-default btn-xs" (click)="onToggleSidebar()">&gt;&gt;</a>
     <div id="page-content-wrapper">
         <div class="container-fluid">
             <div class="row">
