@@ -1,3 +1,27 @@
-<h1>test-store</h1>
-<a [routerLink]="['Runs', {testsuite_id: '5b5cf1c6-6672-4154-9cfb-15629dafc789'}]">Runs</a>
-<router-outlet></router-outlet>
+<div id="wrapper" [ngClass]="{toggled: !sidebarVisible}">
+
+    <div id="sidebar-wrapper">
+        <ul class="sidebar-nav">
+            <li class="sidebar-brand">
+                    test-store
+            </li>
+            <li>
+                <a href="#">Dashboard</a>
+            </li>
+            <li>
+                <a [routerLink]="['Runs', {testsuite_id: '5b5cf1c6-6672-4154-9cfb-15629dafc789'}]">Runs</a>
+            </li>
+        </ul>
+    </div>
+    <a class="btn btn-default btn-xs" (click)="onToggleSidebar()">{{sidebarVisible ? "<<" : ">>"}}</a>
+    <div id="page-content-wrapper">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12">
+                    <router-outlet></router-outlet>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

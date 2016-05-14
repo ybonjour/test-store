@@ -34,6 +34,7 @@ System.config({
     "babel": "npm:babel-core@5.8.38",
     "babel-runtime": "npm:babel-runtime@5.8.38",
     "core-js": "npm:core-js@1.2.6",
+    "ng2-bootstrap": "npm:ng2-bootstrap@1.0.15",
     "reflect-metadata": "npm:reflect-metadata@0.1.3",
     "rxjs": "npm:rxjs@5.0.0-beta.6",
     "systemjs-hot-reloader": "github:capaj/systemjs-hot-reloader@0.5.7",
@@ -111,6 +112,11 @@ System.config({
       "vm-browserify": "npm:vm-browserify@0.0.4"
     },
     "npm:angular2@2.0.0-beta.15": {
+      "reflect-metadata": "npm:reflect-metadata@0.1.2",
+      "rxjs": "npm:rxjs@5.0.0-beta.6",
+      "zone.js": "npm:zone.js@0.6.11"
+    },
+    "npm:angular2@2.0.0-beta.16": {
       "reflect-metadata": "npm:reflect-metadata@0.1.2",
       "rxjs": "npm:rxjs@5.0.0-beta.6",
       "zone.js": "npm:zone.js@0.6.11"
@@ -283,6 +289,10 @@ System.config({
     "npm:miller-rabin@4.0.0": {
       "bn.js": "npm:bn.js@4.11.3",
       "brorand": "npm:brorand@1.0.5"
+    },
+    "npm:ng2-bootstrap@1.0.15": {
+      "angular2": "npm:angular2@2.0.0-beta.16",
+      "moment": "npm:moment@2.13.0"
     },
     "npm:os-browserify@0.1.2": {
       "os": "github:jspm/nodelibs-os@0.1.0"

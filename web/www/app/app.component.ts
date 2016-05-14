@@ -30,4 +30,8 @@ import {RunService} from "./run-service";
     }
 ])
 export class AppComponent {
+    sidebarVisible = true;
+    onToggleSidebar() {
+        this.sidebarVisible = !this.sidebarVisible;
+    }
 }
