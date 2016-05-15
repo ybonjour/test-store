@@ -57,13 +57,12 @@ class RunOverviewServiceTest {
     }
 
     @Test fun returnsLatestRun() {
-        val date2 = Date(2);
-        val latestRun = Run(randomUUID(), testSuiteId, "abc124", date2)
+        val latestRun = Run(randomUUID(), testSuiteId, "abc124", Date(2))
         runRepository.save(run)
         runRepository.save(latestRun)
 
         val runOverview = runOverviewService.getLastRunOverview(testSuiteId)
 
-        assertEquals(runOverview.get().run, run)
+        assertEquals(runOverview.get().run, latestRun)
     }
 }

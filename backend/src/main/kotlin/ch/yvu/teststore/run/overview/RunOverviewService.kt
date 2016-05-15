@@ -12,12 +12,11 @@ class RunOverviewService @Autowired constructor(
         open val resultRepository: ResultRepository) {
 
     fun getLastRunOverview(testSuiteId: UUID): Optional<RunOverview> {
-        val run = runRepository.findAllByTestSuiteId(testSuiteId).lastOrNull()
-        if(run == null){
+        val run = runRepository.findAllByTestSuiteId(testSuiteId).firstOrNull()
+        if (run == null) {
             return Optional.empty()
         } else {
             return Optional.of(RunOverview(run))
         }
     }
-
 }
