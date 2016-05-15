@@ -13,4 +13,8 @@ data class Result(
         var passed: Boolean?,
         var durationMillis: Long?) : Model {
     constructor(): this(null, null, null, null, null) {}
+
+    fun isRetry(): Boolean {
+        return retryNum!! > 0
+    }
 }

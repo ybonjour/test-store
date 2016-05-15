@@ -119,4 +119,41 @@ class RunOverviewServiceTest {
 
         assertEquals(runOverview.get().result, UNKNOWN)
     }
+
+    @Test fun returnsCorrectResultIfRetryPassed() {
+        val passedRetry = Result(run.id, failedResult.testName, 1, true, 0)
+        runRepository.save(run)
+        resultRepository.save(failedResult)
+        resultRepository.save(passedRetry)
+
+        val runOverview = runOverviewService.getLastRunOverview(testSuiteId)
+
+        assertEquals(runOverview.get().result, PASSED_WITH_RETRIES)
+    }
+
+    @Test fun returnsCorrectResultIfRunHasFailedRetry() {
+        val failedRetry = Result(run.id, failedResult.testName, 1, false, 0)
+        runRepository.save(run)
+        resultRepository.save(failedResult)
+        resultRepository.save(failedRetry)
+
+        val runOverview = runOverviewService.getLastRunOverview(testSuiteId)
+
+        assertEquals(runOverview.get().result, FAILED)
+    }
+
+    @Test fun returnsCorrectResultIfRunHasOnePassedWithRetriesAndOneFailedTest() {
+        val passedRetry = Result(run.id, failedResult.testName, 1, true, 0)
+        val failedResult2 = Result(run.id, "myFailedTest2", 0, false, 0)
+        val failedRetry = Result(run.id, failedResult2.testName, 1, false, 0)
+        runRepository.save(run)
+        resultRepository.save(failedResult2)
+        resultRepository.save(failedRetry)
+        resultRepository.save(failedResult)
+        resultRepository.save(passedRetry)
+
+        val runOverview = runOverviewService.getLastRunOverview(testSuiteId)
+
+        assertEquals(runOverview.get().result, FAILED)
+    }
 }
