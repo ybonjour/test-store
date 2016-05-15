@@ -2,6 +2,8 @@ package ch.yvu.teststore.integration.run
 
 import ch.yvu.teststore.integration.BaseIntegrationTest
 import ch.yvu.teststore.matchers.RunMatchers.runWith
+import ch.yvu.teststore.result.Result
+import ch.yvu.teststore.result.ResultRepository
 import ch.yvu.teststore.run.Run
 import ch.yvu.teststore.run.RunRepository
 import com.jayway.restassured.RestAssured.given
@@ -23,11 +25,13 @@ class RunControllerTest : BaseIntegrationTest() {
         val testSuite = randomUUID()
     }
 
-    @Autowired lateinit var runRepository: RunRepository;
+    @Autowired lateinit var runRepository: RunRepository
+    @Autowired lateinit var resultRepository: ResultRepository
 
     @Before override fun setUp() {
         super.setUp()
         runRepository.deleteAll()
+        resultRepository.deleteAll()
     }
 
     @Test fun createRunReturnsCorrectStatusCode() {
@@ -71,6 +75,28 @@ class RunControllerTest : BaseIntegrationTest() {
                 .statusCode(200)
                 .body("[0].revision", equalTo(run1.revision))
                 .body("[1].revision", equalTo(run2.revision))
+    }
+
+    @Test fun getTestSuiteStateReturnsRunOverview() {
+        val run = Run(randomUUID(), testSuite, "abc123", now)
+        val result = Result(run.id, "myTest", 0, true, 20)
+        runRepository.save(run)
+        resultRepository.save(result)
+
+        given()
+                .get("/testsuites/$testSuite/runs/last")
+        .then()
+            .statusCode(200)
+            .body("run.revision", equalTo(run.revision))
+            .body("result", equalTo("PASSED"))
+            .body("totalDurationMillis", equalTo(20))
+    }
+
+    @Test fun getTestSuiteStateReturns404IfTherIsNoRunForTheTestSuite() {
+        given()
+                .get("/testsuites/$testSuite/runs/last")
+        .then()
+            .statusCode(404)
     }
 }
 
