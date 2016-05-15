@@ -3,9 +3,11 @@ package ch.yvu.teststore.run.overview
 import ch.yvu.teststore.integration.ListBackedRepository
 import ch.yvu.teststore.integration.result.ListBackedResultRepository
 import ch.yvu.teststore.integration.run.ListBackedRunRepository
+import ch.yvu.teststore.result.Result
 import ch.yvu.teststore.result.ResultRepository
 import ch.yvu.teststore.run.Run
 import ch.yvu.teststore.run.RunRepository
+import ch.yvu.teststore.run.overview.RunOverview.RunResult.*
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
@@ -17,6 +19,8 @@ class RunOverviewServiceTest {
     companion object {
         val testSuiteId = randomUUID()
         val run = Run(randomUUID(), testSuiteId, "abc123", Date(1))
+        val passedResult = Result(run.id, "myTest", 0, true, 0)
+        val failedResult = Result(run.id, "myTest2", 0, false, 0)
     }
 
     lateinit var runRepository: RunRepository
@@ -64,5 +68,55 @@ class RunOverviewServiceTest {
         val runOverview = runOverviewService.getLastRunOverview(testSuiteId)
 
         assertEquals(runOverview.get().run, latestRun)
+    }
+
+    @Test fun returnsCorrectResultIfAllResultsArePassedWithoutRetry() {
+        runRepository.save(run)
+
+        resultRepository.save(passedResult)
+
+        val runOverview = runOverviewService.getLastRunOverview(testSuiteId)
+
+        assertEquals(runOverview.get().result, PASSED)
+    }
+
+    @Test fun returnsCorrectResultIfOneResultIsFailedAndHasNoRetries() {
+        runRepository.save(run)
+        resultRepository.save(failedResult)
+
+        val runOverview = runOverviewService.getLastRunOverview(testSuiteId)
+
+        assertEquals(runOverview.get().result, FAILED)
+    }
+
+    @Test fun returnsCorrectResultIfOnlyOneResultIsFailed() {
+        runRepository.save(run)
+        resultRepository.save(passedResult)
+        resultRepository.save(failedResult)
+
+        val runOverview = runOverviewService.getLastRunOverview(testSuiteId)
+
+        assertEquals(runOverview.get().result, FAILED)
+    }
+
+    @Test fun returnsCorrectResultIfRunHasNoResults() {
+        runRepository.save(run)
+
+        val runOverview = runOverviewService.getLastRunOverview(testSuiteId)
+
+        assertEquals(runOverview.get().result, UNKNOWN)
+    }
+
+    @Test fun doesNotConsiderResultsFromOtherRuns() {
+        val otherTestSuiteId = randomUUID()
+        val otherRun = Run(randomUUID(), otherTestSuiteId, "def123", Date(1))
+        val otherFailedResult = Result(otherRun.id, "myOtherTest", 0, false, 0)
+        runRepository.save(run)
+        runRepository.save(otherRun)
+        resultRepository.save(otherFailedResult)
+
+        val runOverview = runOverviewService.getLastRunOverview(testSuiteId)
+
+        assertEquals(runOverview.get().result, UNKNOWN)
     }
 }
