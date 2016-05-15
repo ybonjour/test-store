@@ -41,7 +41,7 @@ class RunOverviewServiceTest {
         val runOverview = runOverviewService.getLastRunOverview(testSuiteId)
 
         assertTrue(runOverview.isPresent)
-        assertEquals(runOverview.get().run, run)
+        assertEquals(run, runOverview.get().run)
     }
 
     @Test fun returnsNoRunOverviewIfThereAreNoRuns() {
@@ -67,7 +67,7 @@ class RunOverviewServiceTest {
 
         val runOverview = runOverviewService.getLastRunOverview(testSuiteId)
 
-        assertEquals(runOverview.get().run, latestRun)
+        assertEquals(latestRun, runOverview.get().run)
     }
 
     @Test fun returnsCorrectResultIfAllResultsArePassedWithoutRetry() {
@@ -77,7 +77,7 @@ class RunOverviewServiceTest {
 
         val runOverview = runOverviewService.getLastRunOverview(testSuiteId)
 
-        assertEquals(runOverview.get().result, PASSED)
+        assertEquals(PASSED, runOverview.get().result)
     }
 
     @Test fun returnsCorrectResultIfOneResultIsFailedAndHasNoRetries() {
@@ -86,7 +86,7 @@ class RunOverviewServiceTest {
 
         val runOverview = runOverviewService.getLastRunOverview(testSuiteId)
 
-        assertEquals(runOverview.get().result, FAILED)
+        assertEquals(FAILED, runOverview.get().result)
     }
 
     @Test fun returnsCorrectResultIfOnlyOneResultIsFailed() {
@@ -96,7 +96,7 @@ class RunOverviewServiceTest {
 
         val runOverview = runOverviewService.getLastRunOverview(testSuiteId)
 
-        assertEquals(runOverview.get().result, FAILED)
+        assertEquals(FAILED, runOverview.get().result)
     }
 
     @Test fun returnsCorrectResultIfRunHasNoResults() {
@@ -104,7 +104,7 @@ class RunOverviewServiceTest {
 
         val runOverview = runOverviewService.getLastRunOverview(testSuiteId)
 
-        assertEquals(runOverview.get().result, UNKNOWN)
+        assertEquals(UNKNOWN, runOverview.get().result)
     }
 
     @Test fun doesNotConsiderResultsFromOtherRuns() {
@@ -117,7 +117,7 @@ class RunOverviewServiceTest {
 
         val runOverview = runOverviewService.getLastRunOverview(testSuiteId)
 
-        assertEquals(runOverview.get().result, UNKNOWN)
+        assertEquals(UNKNOWN, runOverview.get().result)
     }
 
     @Test fun returnsCorrectResultIfRetryPassed() {
@@ -128,7 +128,7 @@ class RunOverviewServiceTest {
 
         val runOverview = runOverviewService.getLastRunOverview(testSuiteId)
 
-        assertEquals(runOverview.get().result, PASSED_WITH_RETRIES)
+        assertEquals(PASSED_WITH_RETRIES, runOverview.get().result)
     }
 
     @Test fun returnsCorrectResultIfRunHasFailedRetry() {
@@ -139,7 +139,7 @@ class RunOverviewServiceTest {
 
         val runOverview = runOverviewService.getLastRunOverview(testSuiteId)
 
-        assertEquals(runOverview.get().result, FAILED)
+        assertEquals(FAILED, runOverview.get().result)
     }
 
     @Test fun returnsCorrectResultIfRunHasOnePassedWithRetriesAndOneFailedTest() {
@@ -154,6 +154,39 @@ class RunOverviewServiceTest {
 
         val runOverview = runOverviewService.getLastRunOverview(testSuiteId)
 
-        assertEquals(runOverview.get().result, FAILED)
+        assertEquals(FAILED, runOverview.get().result)
+    }
+
+    @Test fun totalDurationIsZeroIfThereAreNoResults() {
+        runRepository.save(run)
+
+        val runOverview = runOverviewService.getLastRunOverview(testSuiteId)
+
+        assertEquals(0, runOverview.get().totalDurationMillis)
+    }
+
+    @Test fun totalDurationIsSumOfAllResultDurations() {
+        val result1 = Result(run.id, "myTest", 0, true, 10)
+        val result2 = Result(run.id, "myTest", 0, true, 20)
+        runRepository.save(run)
+        resultRepository.save(result1)
+        resultRepository.save(result2)
+
+        val runOverview = runOverviewService.getLastRunOverview(testSuiteId)
+
+        assertEquals(30, runOverview.get().totalDurationMillis)
+    }
+
+    @Test fun totalDurationDoesNotCountResultsFromOtherRuns() {
+        val otherTestSuiteId = randomUUID()
+        val otherRun = Run(randomUUID(), otherTestSuiteId, "def123", Date(2))
+        val otherResult = Result(otherRun.id, "myOtherTest", 0, true, 10)
+        runRepository.save(run)
+        runRepository.save(otherRun)
+        resultRepository.save(otherResult)
+
+        val runOverview = runOverviewService.getLastRunOverview(testSuiteId)
+
+        assertEquals(0, runOverview.get().totalDurationMillis)
     }
 }

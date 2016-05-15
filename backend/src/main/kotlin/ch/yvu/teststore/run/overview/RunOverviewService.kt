@@ -19,8 +19,9 @@ open class RunOverviewService @Autowired constructor(
 
         val results = resultRepository.findAllByRunId(run.id!!)
         val runResult = extractRunResult(results);
+        val totalDuration = results.map { it.durationMillis!! }.sum()
 
-        return Optional.of(RunOverview(run, runResult))
+        return Optional.of(RunOverview(run, runResult, totalDuration))
     }
 
     private fun extractRunResult(results: List<Result>): RunOverview.RunResult {
