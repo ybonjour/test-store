@@ -7,7 +7,7 @@ import java.util.*
 
 open class ListBackedRunRepository(val genericRepository: ListBackedRepository<Run>) : RunRepository {
     override fun findAllByTestSuiteId(testSuiteId: UUID): List<Run> {
-        return genericRepository.findAll { run -> testSuiteId == run.testSuite}
+        return sorted(genericRepository.findAll { run -> testSuiteId == run.testSuite })
     }
 
     override fun deleteAll() {
@@ -19,10 +19,14 @@ open class ListBackedRunRepository(val genericRepository: ListBackedRepository<R
     }
 
     override fun findAll(): List<Run> {
-        return genericRepository.findAll()
+        return sorted(genericRepository.findAll())
     }
 
     override fun count(): Long {
         return genericRepository.count()
+    }
+
+    private fun sorted(results: List<Run>): List<Run> {
+        return results.sortedByDescending { it.time }
     }
 }
