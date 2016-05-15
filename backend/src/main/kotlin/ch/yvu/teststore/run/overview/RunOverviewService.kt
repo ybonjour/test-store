@@ -21,6 +21,10 @@ open class RunOverviewService @Autowired constructor(
         return Optional.of(getRunOverview(run))
     }
 
+    fun getRunOverviews(testSuiteId: UUID): List<RunOverview> {
+        return runRepository.findAllByTestSuiteId(testSuiteId).map{getRunOverview(it)}
+    }
+
     private fun getRunOverview(run: Run): RunOverview {
         val results = resultRepository.findAllByRunId(run.id!!)
         val runResult = extractRunResult(results);

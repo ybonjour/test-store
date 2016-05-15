@@ -189,4 +189,23 @@ class RunOverviewServiceTest {
 
         assertEquals(0, runOverview.get().totalDurationMillis)
     }
+
+    @Test fun getRunOverviewsReturnsRunOverviews() {
+        runRepository.save(run)
+        resultRepository.save(passedResult)
+
+        val runOverviews = runOverviewService.getRunOverviews(testSuiteId)
+        assertEquals(listOf(RunOverview(run, PASSED, passedResult.durationMillis!!)), runOverviews)
+
+    }
+
+    @Test fun getRunOverviewsDoesNotFindRunsFromOtherTestSuites() {
+        val otherTestSuiteId = randomUUID()
+        val otherRun = Run(randomUUID(), otherTestSuiteId, "def123", Date(2))
+        runRepository.save(otherRun)
+
+        val runOverviews = runOverviewService.getRunOverviews(testSuiteId)
+
+        assertEquals(emptyList<RunOverview>(), runOverviews)
+    }
 }
