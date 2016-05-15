@@ -13,8 +13,8 @@ CREATE TABLE IF NOT EXISTS run (
 	testsuite uuid,
 	revision text,
 	time timestamp,
-	PRIMARY KEY (id)
-);
+	PRIMARY KEY (id, time)
+) WITH CLUSTERING ORDER BY (time DESC);
 
 create index runsByTestsuite ON run (testsuite);
 
