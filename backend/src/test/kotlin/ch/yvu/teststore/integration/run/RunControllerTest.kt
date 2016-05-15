@@ -77,7 +77,7 @@ class RunControllerTest : BaseIntegrationTest() {
                 .body("[1].revision", equalTo(run2.revision))
     }
 
-    @Test fun getTestSuiteStateReturnsRunOverview() {
+    @Test fun getLastRunReturnsRunOverview() {
         val run = Run(randomUUID(), testSuite, "abc123", now)
         val result = Result(run.id, "myTest", 0, true, 20)
         runRepository.save(run)
@@ -92,11 +92,26 @@ class RunControllerTest : BaseIntegrationTest() {
             .body("totalDurationMillis", equalTo(20))
     }
 
-    @Test fun getTestSuiteStateReturns404IfTherIsNoRunForTheTestSuite() {
+    @Test fun getLastRunReturns404IfTherIsNoRunForTheTestSuite() {
         given()
                 .get("/testsuites/$testSuite/runs/last")
         .then()
             .statusCode(404)
+    }
+
+    @Test fun getRunOverviewsReturnsRunOverviews() {
+        val run = Run(randomUUID(), testSuite, "abc123", now)
+        val result = Result(run.id, "myTest", 0, true, 20)
+        runRepository.save(run)
+        resultRepository.save(result)
+
+        given()
+            .get("/testsuites/$testSuite/runs/overview")
+        .then()
+            .statusCode(200)
+            .body("[0].run.revision", equalTo(run.revision))
+            .body("[0].result", equalTo("PASSED"))
+            .body("[0].totalDurationMillis", equalTo(20))
     }
 }
 
