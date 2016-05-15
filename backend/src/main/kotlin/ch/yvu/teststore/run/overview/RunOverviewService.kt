@@ -2,6 +2,7 @@ package ch.yvu.teststore.run.overview
 
 import ch.yvu.teststore.result.Result
 import ch.yvu.teststore.result.ResultRepository
+import ch.yvu.teststore.run.Run
 import ch.yvu.teststore.run.RunRepository
 import ch.yvu.teststore.run.overview.RunOverview.RunResult.*
 import org.springframework.beans.factory.annotation.Autowired
@@ -17,11 +18,15 @@ open class RunOverviewService @Autowired constructor(
         val run = runRepository.findAllByTestSuiteId(testSuiteId).firstOrNull()
         if (run == null) return Optional.empty()
 
+        return Optional.of(getRunOverview(run))
+    }
+
+    private fun getRunOverview(run: Run): RunOverview {
         val results = resultRepository.findAllByRunId(run.id!!)
         val runResult = extractRunResult(results);
         val totalDuration = results.map { it.durationMillis!! }.sum()
 
-        return Optional.of(RunOverview(run, runResult, totalDuration))
+        return RunOverview(run, runResult, totalDuration)
     }
 
     private fun extractRunResult(results: List<Result>): RunOverview.RunResult {
@@ -29,9 +34,9 @@ open class RunOverviewService @Autowired constructor(
 
         val testsWithResults = results.groupBy { it.testName }
         var runResult = PASSED
-        for((testname, testResults) in testsWithResults) {
+        for ((testname, testResults) in testsWithResults) {
             val testRunResult = getRunResultForTest(testResults)
-            if(testRunResult.isMoreSevere(runResult)) {
+            if (testRunResult.isMoreSevere(runResult)) {
                 runResult = testRunResult
             }
         }
@@ -41,9 +46,9 @@ open class RunOverviewService @Autowired constructor(
 
     private fun getRunResultForTest(results: List<Result>): RunOverview.RunResult {
         val lastResult = results.sortedBy { it.retryNum }.last()
-        if(!lastResult.passed!!) return FAILED
+        if (!lastResult.passed!!) return FAILED
 
-        return if(lastResult.isRetry()) PASSED_WITH_RETRIES else PASSED
+        return if (lastResult.isRetry()) PASSED_WITH_RETRIES else PASSED
     }
 
 }
