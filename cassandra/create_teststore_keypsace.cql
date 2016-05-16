@@ -16,7 +16,7 @@ CREATE TABLE IF NOT EXISTS run (
 	PRIMARY KEY (id, time)
 ) WITH CLUSTERING ORDER BY (time DESC);
 
-create index runsByTestsuite ON run (testsuite);
+CREATE INDEX IF NOT EXISTS runsByTestsuite ON run (testsuite);
 
 CREATE TABLE IF NOT EXISTS result (
 	run uuid,
