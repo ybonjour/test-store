@@ -17,4 +17,15 @@ data class Result(
     fun isRetry(): Boolean {
         return retryNum!! > 0
     }
+
+    fun isPassed(): Boolean {
+        synchronized(this, {
+            if (passed == null) return false
+            else return passed!!
+        })
+    }
+
+    fun isFailed(): Boolean {
+        return !isPassed()
+    }
 }
