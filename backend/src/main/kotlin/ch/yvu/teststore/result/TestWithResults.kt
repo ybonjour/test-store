@@ -1,6 +1,6 @@
 package ch.yvu.teststore.result
 
-ndata class TestWithResults(val testName: String, val results: List<Result> = emptyList()) {
+data class TestWithResults(val testName: String, val results: List<Result> = emptyList()) {
     enum class TestResult {
         PASSED, FAILED, RETRIED
     }
