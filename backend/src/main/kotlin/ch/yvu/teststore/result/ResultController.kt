@@ -11,7 +11,7 @@ import java.util.*
 import javax.servlet.http.HttpServletResponse
 
 @RestController
-class ResultController @Autowired constructor(val resultRepository: ResultRepository) {
+class ResultController @Autowired constructor(val resultRepository: ResultRepository, val resultService: ResultService) {
 
     @RequestMapping(method = arrayOf(POST), value = "/results")
     fun createResult(
@@ -31,4 +31,11 @@ class ResultController @Autowired constructor(val resultRepository: ResultReposi
     fun getAllResults(@PathVariable run: UUID): List<Result> {
         return resultRepository.findAllByRunId(run)
     }
+
+    @RequestMapping(method = arrayOf(GET), value = "/runs/{run}/results/grouped")
+    fun getAllResultsGrouped(
+            @PathVariable run: UUID): Map<TestWithResults.TestResult, List<TestWithResults>> {
+        return resultService.getGroupedResults(run)
+    }
+
 }

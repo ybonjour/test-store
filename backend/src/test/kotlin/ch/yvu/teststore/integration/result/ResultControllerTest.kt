@@ -51,7 +51,7 @@ class ResultControllerTest : BaseIntegrationTest() {
         assertThat(results, hasItem(resultWith(equalTo(run), testName, retryNum, passed, durationMillis)))
     }
 
-    @Test fun findAllByRunQueriesRepository() {
+    @Test fun findAllByRun() {
         val runId = randomUUID()
 
         val result1 = Result(runId, "MyTest", 0, true, 204)
@@ -62,9 +62,36 @@ class ResultControllerTest : BaseIntegrationTest() {
 
         given()
                 .get("/runs/$runId/results")
-        .then()
+                .then()
                 .statusCode(200)
                 .body("[0].testName", equalTo(result1.testName))
                 .body("[1].testName", equalTo(result2.testName))
+    }
+
+    @Test fun findAllByRunGrouped() {
+        val runId = randomUUID()
+
+        val resultFlakyTest = Result(runId, "FlakyTest", 0, false, 204)
+        val resultRetryFlakyTest = Result(runId, "FlakyTest", 1, true, 120)
+
+        val resultPassingTest = Result(runId, "PassingTest", 0, true, 34)
+
+        val resultFailingTest = Result(runId, "FailingTest", 0, false, 23)
+        val resultRetryFailingTest = Result(runId, "FailingTest", 1, false, 30)
+
+        saveResults(listOf(resultFlakyTest, resultRetryFlakyTest, resultPassingTest, resultFailingTest, resultRetryFailingTest))
+
+
+        given()
+                .get("/runs/$runId/results/grouped")
+                .then()
+                .statusCode(200)
+                .body("PASSED[0].testName", equalTo(resultPassingTest.testName))
+                .body("RETRIED[0].testName", equalTo(resultFlakyTest.testName))
+                .body("FAILED[0].testName", equalTo(resultFailingTest.testName))
+    }
+
+    private fun saveResults(results: List<Result>) {
+        results.forEach { resultRepository.save(it) }
     }
 }
