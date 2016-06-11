@@ -18,14 +18,14 @@ data class Result(
         return retryNum!! > 0
     }
 
+    fun setPassed(passed: Boolean) {
+        this.passed = passed
+    }
+
     fun isPassed(): Boolean {
         synchronized(this, {
             if (passed == null) return false
             else return passed!!
         })
-    }
-
-    fun isFailed(): Boolean {
-        return !isPassed()
     }
 }

@@ -13,7 +13,7 @@ data class TestWithResults(val testName: String, val results: List<Result> = emp
         if (results.isEmpty()) return TestResult.PASSED
         val lastResult = results.sortedBy { it.retryNum }.last()
 
-        if (lastResult.isFailed()) return TestResult.FAILED
+        if (!lastResult.isPassed()) return TestResult.FAILED
         else if (lastResult.isRetry()) return TestResult.RETRIED
         else return TestResult.PASSED
     }
