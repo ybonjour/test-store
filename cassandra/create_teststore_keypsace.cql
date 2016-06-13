@@ -24,5 +24,6 @@ CREATE TABLE IF NOT EXISTS result (
 	retryNum int,
 	passed boolean,
 	durationMillis bigint,
+	stackTrace varchar,
 	PRIMARY KEY (run, testName, retryNum)
 );
