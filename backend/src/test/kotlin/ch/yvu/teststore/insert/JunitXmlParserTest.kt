@@ -24,7 +24,7 @@ class JunitXmlParserTest {
 
     @Test
     fun canParseFailedTest() {
-        val xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<testsuites>\n    <testsuite errors=\"0\" skipped=\"0\" tests=\"1\" failures=\"0\" timestamp=\"2016-03-31T17:51:02\">\n        <testcase classname=\"ch.yvu.teststore.MyTestClass\" name=\"myTest\" time=\"0.006\">\n            <failure />\n        </testcase>\n    </testsuite>\n</testsuites>"
+        val xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<testsuites>\n    <testsuite errors=\"0\" skipped=\"0\" tests=\"1\" failures=\"0\" timestamp=\"2016-03-31T17:51:02\">\n        <testcase classname=\"ch.yvu.teststore.MyTestClass\" name=\"myTest\" time=\"0.006\">\n            <failure message=\"java.lang.AssertionError\" type=\"java.lang.AssertionError\">stacktrace</failure>\n        </testcase>\n    </testsuite>\n</testsuites>"
 
         val parsed = JunitXMLParser.parse(xml)
 
@@ -33,7 +33,8 @@ class JunitXmlParserTest {
                         testName = "ch.yvu.teststore.MyTestClass#myTest",
                         retryNum = 0,
                         passed = false,
-                        durationMillis = 6
+                        durationMillis = 6,
+                        stackTrace = "stacktrace"
                 )
         ), parsed)
     }

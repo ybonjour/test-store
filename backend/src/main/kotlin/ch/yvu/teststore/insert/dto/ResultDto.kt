@@ -6,4 +6,5 @@ data class ResultDto(
         @JsonProperty("testName") val testName: String,
         @JsonProperty("retryNum") val retryNum: Int=0,
         @JsonProperty("passed") val passed: Boolean,
-        @JsonProperty("durationMillis") val durationMillis: Long)
+        @JsonProperty("durationMillis") val durationMillis: Long,
+        @JsonProperty("stackTrace") val stackTrace: String?=null)

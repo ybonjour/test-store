@@ -3,6 +3,7 @@ package ch.yvu.teststore.insert
 import ch.yvu.teststore.insert.dto.ResultDto
 import org.w3c.dom.Node
 import org.w3c.dom.NodeList
+import java.util.*
 import javax.xml.parsers.DocumentBuilderFactory
 import kotlin.text.Charsets.UTF_8
 
@@ -15,11 +16,13 @@ object JunitXMLParser {
             val testResult = TestResultNode(testResultNodes.item(i))
             if (testResult.skipped) continue
 
+
             resultDtos += ResultDto(
                     testName = "${testResult.classname}#${testResult.name}",
                     retryNum = 0,
                     passed = testResult.passed,
-                    durationMillis = testResult.durationMs
+                    durationMillis = testResult.durationMs,
+                    stackTrace = testResult.stackTrace
             )
         }
 
@@ -46,6 +49,19 @@ object JunitXMLParser {
         val passed = !hasChildWithName("failure", "error")
 
         val skipped = hasChildWithName("skipped")
+
+        val stackTrace = getContentFromChildWithName("failure")
+
+        private fun getContentFromChildWithName(name: String): String? {
+            val children = node.childNodes
+            for(i in 0..children.length -1) {
+                val child = children.item(i)
+
+                if(child.nodeName == name)  return child.textContent
+            }
+
+            return null
+        }
 
         private fun hasChildWithName(vararg names: String): Boolean {
             val children = node.childNodes
