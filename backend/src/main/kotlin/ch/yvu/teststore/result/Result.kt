@@ -11,8 +11,11 @@ data class Result(
         @PartitionKey(1) var testName: String?,
         @PartitionKey(2) var retryNum: Int?,
         var passed: Boolean?,
-        var durationMillis: Long?) : Model {
-    constructor(): this(null, null, null, null, null) {}
+        var durationMillis: Long?,
+        var stackTrace: String?) : Model {
+    constructor(): this(null, null, null, null, null, null) {}
+    constructor(run: UUID?, testName: String?, retryNum:Int?, passed:Boolean?, durationMillis: Long?):
+        this(run, testName, retryNum, passed, durationMillis, null);
 
     fun isRetry(): Boolean {
         return retryNum!! > 0

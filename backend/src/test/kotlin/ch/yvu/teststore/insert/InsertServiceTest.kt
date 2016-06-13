@@ -128,7 +128,8 @@ class InsertServiceTest {
                     testName = it.testName,
                     retryNum = it.retryNum,
                     passed = it.passed,
-                    durationMillis = it.durationMillis
+                    durationMillis = it.durationMillis,
+                    stackTrace = null
             )))
         }
     }

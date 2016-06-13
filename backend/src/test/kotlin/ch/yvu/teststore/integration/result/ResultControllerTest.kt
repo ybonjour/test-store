@@ -48,7 +48,29 @@ class ResultControllerTest : BaseIntegrationTest() {
 
         val results = resultRepository.findAll()
         assertEquals(1, results.count())
-        assertThat(results, hasItem(resultWith(equalTo(run), testName, retryNum, passed, durationMillis)))
+        assertThat(results, hasItem(resultWith(
+                equalTo(run), testName, retryNum, passed, durationMillis, null)))
+    }
+
+    @Test fun createResultCanCreateFailedResult() {
+        val run = randomUUID()
+        val testName = "MyTest"
+        val retryNum = 0
+        val passed = false
+        val durationMillis = 10L
+        val stackTrace = "stacktrace";
+        given().queryParam("run", run)
+                .queryParam("testName", testName)
+                .queryParam("retryNum", retryNum)
+                .queryParam("passed", passed)
+                .queryParam("durationMillis", durationMillis)
+                .queryParam("stackTrace", stackTrace)
+                .post("/results")
+
+        val results = resultRepository.findAll()
+        assertEquals(1, results.count())
+        assertThat(results, hasItem(resultWith(
+                equalTo(run), testName, retryNum, passed, durationMillis, stackTrace)))
     }
 
     @Test fun findAllByRun() {
