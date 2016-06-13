@@ -1,0 +1,59 @@
+.header {
+    background-color: #DDDDDD;
+    width: 100%;
+    float: left;
+}
+
+.header h1 {
+    float: left;
+    margin-left: 20px;
+}
+
+.header .failed {
+    color: #AA0000;
+}
+
+.header .retried {
+    color: #ffc520;
+}
+
+.header .passed {
+    color: #00AA00;
+}
+
+.results-container {
+    clear: left;
+    float: left;
+    margin-top: 20px;
+    width: 100%;
+}
+ul.results {
+    list-style: none;
+    padding-left: 0px;
+    width: 100%;
+}
+
+li.result {
+    background-color: #EEEEEE;
+    margin-top: 5px;
+    display: block;
+    float: left;
+    clear: left;
+    width:100%;
+}
+
+li.result .name {
+    float: left;
+    font-weight: bold;
+    padding-left: 5px;
+}
+
+li.result .duration {
+    float: right;
+    padding-right: 5px;
+}
+
+li.passed {
+    border-left: 10px solid #00AA00;
+    border-bottom: 1px solid #00AA00;
+}

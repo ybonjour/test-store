@@ -2,15 +2,16 @@ import {Injectable} from 'angular2/core';
 import {Http, Response} from 'angular2/http';
 import {Observable} from 'rxjs/Observable';
 import {TestResult} from "./test-result";
+import {TestWithResults} from "./test-with-results";
 
 @Injectable()
 export class TestResultService {
 	constructor(private _http: Http) {}
 
-	getResults(runId: String): Observable<TestResult[]> {
-		return this._http.get("/api/runs/" + runId + "/results")
-						.map(TestResultService.extractBody)
-						.catch(TestResultService.extractError);
+	getResultsGrouped(runId: String): Observable<Map<String, TestWithResults[]>> {
+		return this._http.get("/api/runs/" + runId + "/results/grouped")
+			.map(TestResultService.extractBody)
+			.catch(TestResultService.extractError)
 	}
 
 	private static extractBody(response: Response) {

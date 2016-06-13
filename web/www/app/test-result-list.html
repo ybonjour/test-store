@@ -1,7 +1,14 @@
-<h1>Test Results for {{runId}}</h1>
+<div class="header">
+	<h1 class="passed">Passed: {{passedResults.length}}</h1>
+	<h1 class="retried">Retried: {{retriedResults.length}}</h1>
+	<h1 class="failed">Failed: {{failedResults.length}}</h1>
+</div>
+
 <div *ngIf="errorMessage">{{errorMessage}}</div>
-<ul>
-	<li *ngFor="#result of results">
-		{{result.testName}}
-	</li>
-</ul>
+<div class="results-container">
+	<ul class="results">
+		<li *ngFor="#result of passedResults" class="result passed">
+			<span class="name">{{result.testName}}</span> <span class="duration">{{(result.results[0].durationMillis / 1000) | number}} seconds</span>
+		</li>
+	</ul>
+</div>
