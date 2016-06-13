@@ -20,7 +20,7 @@ class ResultController @Autowired constructor(val resultRepository: ResultReposi
             @RequestParam(name = "retryNum") retryNum: Int,
             @RequestParam(name = "passed") passed: Boolean,
             @RequestParam(name = "durationMillis") durationMillis: Long,
-            @RequestParam(name = "stackTrace") stackTrace: String,
+            @RequestParam(name = "stackTrace", required = false) stackTrace: String?,
             response: HttpServletResponse): Result {
         val result = Result(run, testName, retryNum, passed, durationMillis, stackTrace)
         resultRepository.save(result)
