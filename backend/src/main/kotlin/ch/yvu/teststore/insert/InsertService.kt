@@ -43,7 +43,7 @@ open class InsertService @Autowired constructor(
     @Async
     open fun insertResults(resultDtos: List<ResultDto>, runId: UUID) {
         resultDtos.forEach {
-            val result = Result(runId, it.testName, it.retryNum, it.passed, it.durationMillis)
+            val result = Result(runId, it.testName, it.retryNum, it.passed, it.durationMillis, it.stackTrace)
             resultRepository.save(result)
         }
     }
