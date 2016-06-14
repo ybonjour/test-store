@@ -7,6 +7,25 @@
 <div *ngIf="errorMessage">{{errorMessage}}</div>
 <div class="results-container">
 	<ul class="results">
+		<li *ngFor="#result of failedResults" class="result failed">
+			<span class="name">{{result.testName}}</span>
+
+			<ul *ngFor="#try of result.results" class="tries">
+				<li class="try">
+					<div class="title">
+						<span class="name">Try {{try.retryNum + 1}}</span>
+						<span class="duration">{{(try.durationMillis / 1000) | number}} seconds</span>
+					</div>
+					<div class="stacktrace">
+						{{try.stackTrace}}
+					</div>
+				</li>
+			</ul>
+		</li>
+	</ul>
+</div>
+<div class="results-container">
+	<ul class="results">
 		<li *ngFor="#result of passedResults" class="result passed">
 			<span class="name">{{result.testName}}</span> <span class="duration">{{(result.results[0].durationMillis / 1000) | number}} seconds</span>
 		</li>
