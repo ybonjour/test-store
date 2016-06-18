@@ -63,6 +63,8 @@ export class TestResultListComponent implements OnInit {
 				results.push(result);
 			}
 
+			results.sort(function(result1, result2) {return result2.retryNum - result1.retryNum;});
+
 			var testWithResults = new TestWithResults();
 			testWithResults.testName = testResultJson.testName;
 			testWithResults.testResult = testResultJson.testResult;
