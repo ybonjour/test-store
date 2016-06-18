@@ -16,7 +16,7 @@
 						<span class="name">Try {{try.retryNum + 1}}</span>
 						<span class="duration">{{(try.durationMillis / 1000) | number}} seconds</span>
 					</div>
-					<div class="stacktrace">
+					<div class="stacktrace" (click)="toggleExpanded(try.testName, try.retryNum)" [class.height-limited]="!isExpanded(try.testName, try.retryNum)">
 						{{try.stackTrace}}
 					</div>
 				</li>

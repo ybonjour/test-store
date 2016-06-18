@@ -42,11 +42,14 @@ li.result {
     width:100%;
 }
 
+
 li.result .name,
 li.try .name {
     float: left;
     font-weight: bold;
     padding-left: 5px;
+    word-wrap: break-word;
+    width: 100%;
 }
 
 li.result .duration,
@@ -73,6 +76,10 @@ ul.tries {
     padding-right: 10px;
 }
 
+li.try {
+    padding-bottom: 10px;
+}
+
 li.try .title {
     border:1px solid #DDDDDD;
     clear: left;
@@ -87,5 +94,12 @@ li.try .stacktrace {
     background: #FFFFFF;
     border: 1px solid #DDDDDD;
     padding: 5px;
+    word-wrap: break-word;
+    padding-bottom: 10px;
+}
+
+div.height-limited {
+    max-height: 250px;
+    overflow: hidden;
 }
 

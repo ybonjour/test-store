@@ -14,6 +14,7 @@ export class TestResultListComponent implements OnInit {
 	passedResults: TestWithResults[] = [];
 	failedResults: TestWithResults[] = [];
 	retriedResults: TestWithResults[] = [];
+	expandedTests: String[] = [];
 
 	constructor(
 		private _testResultService: TestResultService,
@@ -44,5 +45,25 @@ export class TestResultListComponent implements OnInit {
 		if(results["RETRIED"] != null) {
 			this.retriedResults = results["RETRIED"];
 		}
+	}
+
+	isExpanded(testName: String, retryNum: number) {
+		var key = this.retryRepresentation(testName, retryNum);
+		var result = this.expandedTests.indexOf(key);
+		return result >= 0;
+	}
+
+	toggleExpanded(testName: String, retryNum: number) {
+		var key = this.retryRepresentation(testName, retryNum);
+		var index = this.expandedTests.indexOf(key);
+		if(index < 0) {
+			this.expandedTests.push(key);
+		} else {
+			delete this.expandedTests[index]
+		}
+	}
+
+	private retryRepresentation(testName: String, retryNum: number) {
+		return testName + "$" + retryNum;
 	}
 }
