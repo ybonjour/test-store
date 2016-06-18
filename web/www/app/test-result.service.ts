@@ -14,7 +14,7 @@ export class TestResultService {
 			.catch(TestResultService.extractError)
 	}
 
-	private static extractBody(response: Response) {
+	private static extractBody(response: Response): TestWithResults[] {
 		if(response.status != 200) throw new Error("Bad response status: " + response.status);
 
 		return response.json();

@@ -3,6 +3,8 @@ import {OnInit} from 'angular2/core';
 import { RouteParams } from 'angular2/router';
 import {TestResultService} from './test-result.service'
 import {TestWithResults} from './test-with-results'
+import {retry} from "../jspm_packages/npm/rxjs@5.0.0-beta.6/operator/retry";
+import {TestResult} from "./test-result";
 
 @Component({
 	templateUrl: 'app/test-result-list.html',
@@ -14,7 +16,6 @@ export class TestResultListComponent implements OnInit {
 	passedResults: TestWithResults[] = [];
 	failedResults: TestWithResults[] = [];
 	retriedResults: TestWithResults[] = [];
-	expandedStacktraces: String[] = [];
 
 	constructor(
 		private _testResultService: TestResultService,
@@ -35,35 +36,41 @@ export class TestResultListComponent implements OnInit {
 
 	extractResults(results: Map<String, TestWithResults[]>) {
 		if(results["PASSED"] != null) {
-			this.passedResults = results["PASSED"];
+			this.passedResults = this.convertJson(results["PASSED"]);
 		}
 
 		if(results["FAILED"] != null) {
-			this.failedResults = results["FAILED"];
+			this.failedResults = this.convertJson(results["FAILED"]);
 		}
 
 		if(results["RETRIED"] != null) {
-			this.retriedResults = results["RETRIED"];
+			this.retriedResults = this.convertJson(results["RETRIED"]);
 		}
 	}
 
-	isExpanded(testName: String, retryNum: number) {
-		var key = this.stackTraceIdentifier(testName, retryNum);
-		var result = this.expandedStacktraces.indexOf(key);
-		return result >= 0;
-	}
+	private convertJson(json: any): TestWithResults[] {
+		var testsWithResults = [];
+		for(var testResultJson of json) {
+			var results = [];
+			for(var resultJson of testResultJson.results) {
+				var result = new TestResult();
+				result.run = resultJson.run;
+				result.testName = resultJson.testName;
+				result.retryNum = resultJson.retryNum;
+				result.passed = resultJson.passed;
+				result.durationMillis = resultJson.durationMillis;
+				result.stackTrace = resultJson.stackTrace;
+				results.push(result);
+			}
 
-	toggleExpanded(testName: String, retryNum: number) {
-		var key = this.stackTraceIdentifier(testName, retryNum);
-		var index = this.expandedStacktraces.indexOf(key);
-		if(index < 0) {
-			this.expandedStacktraces.push(key);
-		} else {
-			delete this.expandedStacktraces[index]
+			var testWithResults = new TestWithResults();
+			testWithResults.testName = testResultJson.testName;
+			testWithResults.testResult = testResultJson.testResult;
+			testWithResults.results = results;
+
+			testsWithResults.push(testWithResults);
 		}
-	}
 
-	private stackTraceIdentifier(testName: String, retryNum: number) {
-		return testName + "$" + retryNum;
+		return testsWithResults;
 	}
 }

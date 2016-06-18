@@ -1,7 +1,7 @@
 <div class="header">
-	<h1 class="passed">Passed: {{passedResults.length}}</h1>
-	<h1 class="retried">Retried: {{retriedResults.length}}</h1>
-	<h1 class="failed">Failed: {{failedResults.length}}</h1>
+	<h1 class="passed" *ngIf="passedResults.length > 0">Passed: {{passedResults.length}}</h1>
+	<h1 class="retried" *ngIf="retriedResults.length > 0">Retried: {{retriedResults.length}}</h1>
+	<h1 class="failed" *ngIf="failedResults.length > 0">Failed: {{failedResults.length}}</h1>
 </div>
 
 <div *ngIf="errorMessage">{{errorMessage}}</div>
@@ -10,15 +10,28 @@
 		<li *ngFor="#result of failedResults" class="result failed">
 			<span class="name">{{result.testName}}</span>
 
-			<ul *ngFor="#try of result.results" class="tries">
-				<li class="try">
+			<ul class="tries">
+				<li *ngFor="#try of result.results" class="try">
 					<div class="title">
 						<span class="name">Try {{try.retryNum + 1}}</span>
 						<span class="duration">{{(try.durationMillis / 1000) | number}} seconds</span>
 					</div>
-					<div class="stacktrace" (click)="toggleExpanded(try.testName, try.retryNum)"
-						 [class.height-limited]="!isExpanded(try.testName, try.retryNum)">
+					<div class="stacktrace"
+						 [class.height-limited]="try.stackTraceExpandable() && !try.stackTraceExpanded">
 						{{try.stackTrace}}
+						<div class="stacktrace-gradient"
+							 *ngIf="try.stackTraceExpandable() && !try.stackTraceExpanded"
+							 (mouseover)="try.showCollapseIcon=true"
+							 (mouseleave)="try.showCollapseIcon=false"
+							 (click)="try.toggleStackTraceExpanded()">
+							<img
+								 *ngIf="try.showCollapseIcon"
+								 class="collapse-icon"
+								 src="img/collapse-down.png" />
+						</div>
+						<img src="img/collapse-up.png" class="stacktrace-collapse"
+							 *ngIf="try.stackTraceExpandable() && try.stackTraceExpanded"
+							 (click)="try.toggleStackTraceExpanded()" />
 					</div>
 				</li>
 			</ul>
