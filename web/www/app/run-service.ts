@@ -9,8 +9,9 @@ export class RunService {
 
     constructor(private _http: Http) {}
 
+
     getRuns(testSuiteId: String): Observable<Run[]> {
-        return this._http.get("/api/testsuites/" + testSuiteId + "/runs")
+        return this._http.get("/api/testsuites/" + testSuiteId + "/runs/overview")
             .map(RunService.extractBody)
             .catch(RunService.extractError)
     }

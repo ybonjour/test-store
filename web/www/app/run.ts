@@ -2,5 +2,7 @@
      id: string;
      testSuite: string;
      revision: string;
-     time: Date
+     time: Date;
+     runResult: string;
+     totalDurationMillis: number;
  }

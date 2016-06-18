@@ -3,7 +3,6 @@ import {OnInit} from 'angular2/core';
 import { RouteParams } from 'angular2/router';
 import {TestResultService} from './test-result.service'
 import {TestWithResults} from './test-with-results'
-import {retry} from "../jspm_packages/npm/rxjs@5.0.0-beta.6/operator/retry";
 import {TestResult} from "./test-result";
 
 @Component({

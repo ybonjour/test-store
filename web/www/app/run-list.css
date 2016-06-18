@@ -1,0 +1,40 @@
+ul.runs {
+    list-style: none;
+    padding-left: 0px;
+}
+
+li.run {
+    padding-left:10px;
+    padding-top:5px;
+    padding-bottom:5px;
+    margin-bottom: 2px;
+
+}
+
+li.run .title {
+    font-size: 18pt;
+}
+
+li.run .info {
+    font-size: 10pt;
+}
+
+li.passed {
+    border-left: 20px solid #00AA00;
+    border-bottom: 1px solid #00AA00;
+}
+
+li.failed {
+    border-left: 20px solid #AA0000;
+    border-bottom: 1px solid #AA0000;
+}
+
+li.retried {
+    border-left: 20px solid #ffc520;
+    border-bottom: 1px solid #ffc520;
+}
+
+li.unknwon {
+    border-left: 20px solid #aaaaaa;
+    border-bottom: 1px solid #aaaaaa;
+}
