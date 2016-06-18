@@ -14,7 +14,7 @@ export class TestResultListComponent implements OnInit {
 	passedResults: TestWithResults[] = [];
 	failedResults: TestWithResults[] = [];
 	retriedResults: TestWithResults[] = [];
-	expandedTests: String[] = [];
+	expandedStacktraces: String[] = [];
 
 	constructor(
 		private _testResultService: TestResultService,
@@ -48,22 +48,22 @@ export class TestResultListComponent implements OnInit {
 	}
 
 	isExpanded(testName: String, retryNum: number) {
-		var key = this.retryRepresentation(testName, retryNum);
-		var result = this.expandedTests.indexOf(key);
+		var key = this.stackTraceIdentifier(testName, retryNum);
+		var result = this.expandedStacktraces.indexOf(key);
 		return result >= 0;
 	}
 
 	toggleExpanded(testName: String, retryNum: number) {
-		var key = this.retryRepresentation(testName, retryNum);
-		var index = this.expandedTests.indexOf(key);
+		var key = this.stackTraceIdentifier(testName, retryNum);
+		var index = this.expandedStacktraces.indexOf(key);
 		if(index < 0) {
-			this.expandedTests.push(key);
+			this.expandedStacktraces.push(key);
 		} else {
-			delete this.expandedTests[index]
+			delete this.expandedStacktraces[index]
 		}
 	}
 
-	private retryRepresentation(testName: String, retryNum: number) {
+	private stackTraceIdentifier(testName: String, retryNum: number) {
 		return testName + "$" + retryNum;
 	}
 }
