@@ -1,13 +1,13 @@
 import {Component} from 'angular2/core';
 import {OnInit} from 'angular2/core';
 import { RouteParams } from 'angular2/router';
-import {TestResultService} from './test-result.service'
+import {TestResultService} from './test-result.service.ts'
 import {TestWithResults} from './test-with-results'
 import {TestResult} from "./test-result";
 
 @Component({
-	templateUrl: 'app/test-result-list.html',
-	styleUrls: ['app/test-result-list.css']
+	templateUrl: 'app/test-result/test-result-list.html',
+	styleUrls: ['app/test-result/test-result-list.css']
 })
 export class TestResultListComponent implements OnInit {
 	errorMessage: string;

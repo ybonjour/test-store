@@ -1,4 +1,4 @@
-import {TestResult} from "./test-result";
+import {TestResult} from "./";
 
 export class TestWithResults {
     testName: string;
