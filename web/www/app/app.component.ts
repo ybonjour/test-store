@@ -3,9 +3,9 @@ import {HTTP_PROVIDERS} from "angular2/http";
 import {RouteConfig, ROUTER_DIRECTIVES, ROUTER_PROVIDERS} from "angular2/router";
 import {Component} from 'angular2/core';
 import {TestResultListComponent} from "./test-result-list.component";
-import {RunListComponent} from "./run-list.component";
+import {RunListComponent} from "./run/run-list.component.ts";
 import {TestResultService} from "./test-result.service";
-import {RunService} from "./run.service";
+import {RunService} from "./run/run.service.ts";
 import {TestSuiteService} from "./test-suite/test-suite.service.ts"
 import {SidebarComponent} from "./sidebar.component";
 
