@@ -1,7 +1,7 @@
 import {Component, OnInit} from 'angular2/core';
 import {ROUTER_DIRECTIVES} from "angular2/router";
 import {Run} from './run';
-import {RunService} from './run-service';
+import {RunService} from './run.service';
 import {RouteParams} from 'angular2/router';
 
 @Component({
