@@ -11,8 +11,14 @@
             <li>
                 <a href="#">Dashboard</a>
             </li>
-            <li>
-                <a [routerLink]="['Runs', {testsuite_id: '5b5cf1c6-6672-4154-9cfb-15629dafc789'}]">Runs</a>
+            <li class="testsuite"
+                *ngFor="#testSuite of testSuites"
+                [ngClass]="{
+                'passed': testSuite.lastRunResult=='PASSED',
+                'retried': testSuite.lastRunResult=='PASSED_WITH_RETRIES',
+                'failed': testSuite.lastRunResult=='FAILED',
+                'unknwon': testSuite.lastRunResult=='UNKNOWN'}">
+                <a [routerLink]="['Runs', {testsuite_id: testSuite.id}]">{{testSuite.name}}</a>
             </li>
         </ul>
     </div>

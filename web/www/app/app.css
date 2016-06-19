@@ -1,0 +1,15 @@
+li.passed {
+    border-left: 10px solid #00AA00;
+}
+
+li.failed {
+    border-left: 10px solid #AA0000;
+}
+
+li.retried {
+    border-left: 10px solid #ffc520;
+}
+
+li.unknwon {
+    border-left: 10px solid #aaaaaa;
+}
