@@ -1,28 +1,8 @@
 <div id="wrapper" [ngClass]="{toggled: !sidebarVisible}">
-
     <div id="sidebar-wrapper">
-        <ul class="sidebar-nav">
-            <li>
-                <a *ngIf="sidebarVisible" id="sidebar-toggle" class="btn btn-default btn-xs" (click)="onToggleSidebar()">&lt;&lt;</a>
-            </li>
-            <li class="sidebar-brand">
-                    test-store
-            </li>
-            <li>
-                <a href="#">Dashboard</a>
-            </li>
-            <li class="testsuite"
-                *ngFor="#testSuite of testSuites"
-                [ngClass]="{
-                'passed': testSuite.lastRunResult=='PASSED',
-                'retried': testSuite.lastRunResult=='PASSED_WITH_RETRIES',
-                'failed': testSuite.lastRunResult=='FAILED',
-                'unknwon': testSuite.lastRunResult=='UNKNOWN'}">
-                <a [routerLink]="['Runs', {testsuite_id: testSuite.id}]">{{testSuite.name}}</a>
-            </li>
-        </ul>
+        <sidebar [sidebarVisible]="sidebarVisible" (hideSidebar)="hideSidebar()"></sidebar>
     </div>
-    <a *ngIf="!sidebarVisible" class="btn btn-default btn-xs" (click)="onToggleSidebar()">&gt;&gt;</a>
+    <a *ngIf="!sidebarVisible" class="btn btn-default btn-xs" (click)="showSidebar()">&gt;&gt;</a>
     <div id="page-content-wrapper">
         <div class="container-fluid">
             <div class="row">
@@ -32,5 +12,4 @@
             </div>
         </div>
     </div>
-
 </div>

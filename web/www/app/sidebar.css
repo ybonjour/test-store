@@ -1,0 +1,62 @@
+.sidebar-nav {
+    position: absolute;
+    top: 0;
+    width: 230px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.sidebar-nav li {
+    text-indent: 20px;
+    line-height: 40px;
+}
+
+.sidebar-nav li a {
+    display: block;
+    text-decoration: none;
+    color: #999999;
+}
+
+.sidebar-nav li a:hover {
+    text-decoration: none;
+    background: #eee;
+    border: 1px solid #aaa;
+}
+
+.sidebar-nav li a:active,
+.sidebar-nav li a:focus {
+    text-decoration: none;
+}
+
+.sidebar-nav > .sidebar-brand {
+    height: 65px;
+    font-size: 18px;
+    line-height: 60px;
+}
+
+.sidebar-nav > .sidebar-brand a {
+    color: #999999;
+    text-decoration-line: underline;
+}
+
+li.passed {
+    border-left: 10px solid #00AA00;
+}
+
+li.failed {
+    border-left: 10px solid #AA0000;
+}
+
+li.retried {
+    border-left: 10px solid #ffc520;
+}
+
+li.unknwon {
+    border-left: 10px solid #aaaaaa;
+}
+
+#sidebar-toggle {
+    float:right;
+    z-index: 2000;
+}

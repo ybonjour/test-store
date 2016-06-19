@@ -1,15 +1,78 @@
-li.passed {
-    border-left: 10px solid #00AA00;
+/*!
+ * Start Bootstrap - Simple Sidebar HTML Template (http://startbootstrap.com)
+ * Code licensed under the Apache License v2.0.
+ * For details, see http://www.apache.org/licenses/LICENSE-2.0.
+ */
+
+/* Toggle Styles */
+
+#wrapper {
+    padding-left: 0;
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;
 }
 
-li.failed {
-    border-left: 10px solid #AA0000;
+#wrapper.toggled {
+    padding-left: 230px;
 }
 
-li.retried {
-    border-left: 10px solid #ffc520;
+#sidebar-wrapper {
+    z-index: 1000;
+    position: fixed;
+    left: 230px;
+    width: 0;
+    height: 100%;
+    margin-left: -230px;
+    overflow-y: auto;
+    border-right: 1px solid #aaa;
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+    box-shadow: 3px 0 6px rgba(0,0,0,0.3);
 }
 
-li.unknwon {
-    border-left: 10px solid #aaaaaa;
+#wrapper.toggled #sidebar-wrapper {
+    width: 230px;
+}
+
+#page-content-wrapper {
+    width: 100%;
+    position: absolute;
+    padding: 15px;
+}
+
+#wrapper.toggled #page-content-wrapper {
+    position: absolute;
+    margin-right: -230px;
+}
+
+@media(min-width:768px) {
+    #wrapper {
+        padding-left: 230px;
+    }
+
+    #wrapper.toggled {
+        padding-left: 0;
+    }
+
+    #sidebar-wrapper {
+        width: 230px;
+    }
+
+    #wrapper.toggled #sidebar-wrapper {
+        width: 0;
+    }
+
+    #page-content-wrapper {
+        padding: 20px;
+        position: relative;
+    }
+
+    #wrapper.toggled #page-content-wrapper {
+        position: relative;
+        margin-right: 0;
+    }
 }

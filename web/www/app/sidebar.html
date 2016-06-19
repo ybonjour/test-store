@@ -1,0 +1,20 @@
+
+<ul class="sidebar-nav">
+    <li>
+        <a *ngIf="sidebarVisible" id="sidebar-toggle" class="btn btn-default btn-xs" (click)="onHideSidebar($event)">
+            &lt;&lt;
+        </a>
+    </li>
+    <li class="sidebar-brand">
+        test-store
+    </li>
+    <li class="testsuite"
+        *ngFor="#testSuite of testSuites"
+        [ngClass]="{
+            'passed': testSuite.lastRunResult=='PASSED',
+            'retried': testSuite.lastRunResult=='PASSED_WITH_RETRIES',
+            'failed': testSuite.lastRunResult=='FAILED',
+            'unknwon': testSuite.lastRunResult=='UNKNOWN'}">
+        <a [routerLink]="['Runs', {testsuite_id: testSuite.id}]">{{testSuite.name}}</a>
+    </li>
+</ul>
