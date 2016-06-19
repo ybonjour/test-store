@@ -3,7 +3,6 @@ import {OnInit} from 'angular2/core';
 import { RouteParams } from 'angular2/router';
 import {TestResultService} from './test-result.service.ts'
 import {TestWithResults} from './test-with-results'
-import {TestResult} from "./test-result";
 import {StacktraceComponent} from "./stacktrace/stacktrace.component";
 
 @Component({
@@ -37,43 +36,15 @@ export class TestResultListComponent implements OnInit {
 
 	extractResults(results: Map<String, TestWithResults[]>) {
 		if(results["PASSED"] != null) {
-			this.passedResults = this.convertJson(results["PASSED"]);
+			this.passedResults = results["PASSED"];
 		}
 
 		if(results["FAILED"] != null) {
-			this.failedResults = this.convertJson(results["FAILED"]);
+			this.failedResults = results["FAILED"];
 		}
 
 		if(results["RETRIED"] != null) {
-			this.retriedResults = this.convertJson(results["RETRIED"]);
+			this.retriedResults = results["RETRIED"];
 		}
-	}
-
-	private convertJson(json: any): TestWithResults[] {
-		var testsWithResults = [];
-		for(var testResultJson of json) {
-			var results = [];
-			for(var resultJson of testResultJson.results) {
-				var result = new TestResult();
-				result.run = resultJson.run;
-				result.testName = resultJson.testName;
-				result.retryNum = resultJson.retryNum;
-				result.passed = resultJson.passed;
-				result.durationMillis = resultJson.durationMillis;
-				result.stackTrace = resultJson.stackTrace;
-				results.push(result);
-			}
-
-			results.sort(function(result1, result2) {return result2.retryNum - result1.retryNum;});
-
-			var testWithResults = new TestWithResults();
-			testWithResults.testName = testResultJson.testName;
-			testWithResults.testResult = testResultJson.testResult;
-			testWithResults.results = results;
-
-			testsWithResults.push(testWithResults);
-		}
-
-		return testsWithResults;
 	}
 }
