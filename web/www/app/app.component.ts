@@ -7,7 +7,7 @@ import {RunListComponent} from "./run/run-list.component.ts";
 import {TestResultService} from "./test-result/test-result.service.ts";
 import {RunService} from "./run/run.service.ts";
 import {TestSuiteService} from "./test-suite/test-suite.service.ts"
-import {SidebarComponent} from "./sidebar.component";
+import {SidebarComponent} from "./sidebar/sidebar.component.ts";
 
 @Component({
     selector: 'app',
