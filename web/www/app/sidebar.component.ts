@@ -1,7 +1,7 @@
 import {Component, OnInit, EventEmitter, Input, Output} from 'angular2/core'
 import {ROUTER_DIRECTIVES} from "angular2/router";
 import {TestSuite} from "./test-suite";
-import {TestSuiteService} from "./test-suite-service";
+import {TestSuiteService} from "./test-suite.service";
 
 @Component({
     selector: 'sidebar',
