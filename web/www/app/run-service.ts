@@ -19,13 +19,31 @@ export class RunService {
     private static extractBody(response: Response) {
         if(response.status != 200) throw new Error("Bad response status: " + response.status);
 
-        return response.json();
+        return RunService.convertJsonToRunList(response.json());
     }
 
     private static extractError(error: any) {
         let errorMessage = error.message || "Server error";
         console.error(errorMessage);
         return Observable.throw(errorMessage);
+    }
+
+    private static convertJsonToRunList(json: any): Run[] {
+        var runs = [];
+        for(var runJson of json) {
+            var run = new Run();
+            run.id = runJson.run.id;
+            run.testSuite = runJson.run.testSuite;
+            run.revision = runJson.run.revision;
+            run.time = new Date(runJson.run.time);
+            run.runResult = runJson.result;
+            run.totalDurationMillis = runJson.totalDurationMillis;
+            runs.push(run);
+        }
+
+        runs.sort(function(run1, run2) { return run2.time - run1.time });
+
+        return runs;
     }
 
 }
