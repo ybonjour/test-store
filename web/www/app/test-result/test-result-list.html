@@ -16,23 +16,7 @@
 						<span class="name">Try {{try.retryNum + 1}}</span>
 						<span class="duration">{{(try.durationMillis / 1000) | number}} seconds</span>
 					</div>
-					<div class="stacktrace"
-						 [class.height-limited]="try.stackTraceExpandable() && !try.stackTraceExpanded">
-						{{try.stackTrace}}
-						<div class="stacktrace-gradient"
-							 *ngIf="try.stackTraceExpandable() && !try.stackTraceExpanded"
-							 (mouseover)="try.showCollapseIcon=true"
-							 (mouseleave)="try.showCollapseIcon=false"
-							 (click)="try.toggleStackTraceExpanded()">
-							<img
-								 *ngIf="try.showCollapseIcon"
-								 class="collapse-icon"
-								 src="img/collapse-down.png" />
-						</div>
-						<img src="img/collapse-up.png" class="stacktrace-collapse"
-							 *ngIf="try.stackTraceExpandable() && try.stackTraceExpanded"
-							 (click)="try.toggleStackTraceExpanded()" />
-					</div>
+					<stacktrace [stackTrace]="try.stackTrace"></stacktrace>
 				</li>
 			</ul>
 		</li>
@@ -49,23 +33,7 @@
 						<span class="name">Try {{try.retryNum + 1}}</span>
 						<span class="duration">{{(try.durationMillis / 1000) | number}} seconds</span>
 					</div>
-					<div class="stacktrace"
-						 [class.height-limited]="try.stackTraceExpandable() && !try.stackTraceExpanded">
-						{{try.stackTrace}}
-						<div class="stacktrace-gradient"
-							 *ngIf="try.stackTraceExpandable() && !try.stackTraceExpanded"
-							 (mouseover)="try.showCollapseIcon=true"
-							 (mouseleave)="try.showCollapseIcon=false"
-							 (click)="try.toggleStackTraceExpanded()">
-							<img
-									*ngIf="try.showCollapseIcon"
-									class="collapse-icon"
-									src="img/collapse-down.png" />
-						</div>
-						<img src="img/collapse-up.png" class="stacktrace-collapse"
-							 *ngIf="try.stackTraceExpandable() && try.stackTraceExpanded"
-							 (click)="try.toggleStackTraceExpanded()" />
-					</div>
+					<stacktrace [stackTrace]="try.stackTrace"></stacktrace>
 				</li>
 			</ul>
 		</li>

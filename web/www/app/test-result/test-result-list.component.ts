@@ -4,10 +4,12 @@ import { RouteParams } from 'angular2/router';
 import {TestResultService} from './test-result.service.ts'
 import {TestWithResults} from './test-with-results'
 import {TestResult} from "./test-result";
+import {StacktraceComponent} from "./stacktrace/stacktrace.component";
 
 @Component({
 	templateUrl: 'app/test-result/test-result-list.html',
-	styleUrls: ['app/test-result/test-result-list.css']
+	styleUrls: ['app/test-result/test-result-list.css'],
+	directives: [StacktraceComponent]
 })
 export class TestResultListComponent implements OnInit {
 	errorMessage: string;

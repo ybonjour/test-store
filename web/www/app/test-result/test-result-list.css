@@ -42,7 +42,6 @@ li.result {
     width:100%;
 }
 
-
 li.result .name,
 li.try .name {
     float: left;
@@ -59,14 +58,12 @@ li.try .duration
     padding-right: 5px;
 }
 
-li.passed,
-div.passed {
+li.passed {
     border-left: 10px solid #00AA00;
     border-bottom: 1px solid #00AA00;
 }
 
-li.failed,
-div.failed {
+li.failed {
     border-left: 10px solid #AA0000;
     border-bottom: 1px solid #AA0000;
 }
@@ -93,55 +90,4 @@ li.try .title {
     float:left;
     width: 100%;
     background: #FFFFFF;
-}
-
-li.try .stacktrace {
-    clear: left;
-    font-family: Courier;
-    background: #FFFFFF;
-    border: 1px solid #DDDDDD;
-    word-wrap: break-word;
-    padding: 5px 5px 10px;
-    position: relative;
-}
-
-
-
-div.height-limited {
-    max-height: 250px;
-    overflow: hidden;
-}
-div.stacktrace-gradient {
-    width: 100%;
-    height: 100px;
-    background-color: red;
-    z-index: 10;
-    position: absolute;
-    bottom: 0;
-    background: linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.8));
-    background: -moz-linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.8));
-    background: -o-linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.8));
-    background: -webkit-linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.8));
-    text-align: center;
-    cursor: pointer;
-}
-
-img.collapse-icon {
-    width:80px;
-    height:80px;
-    position: absolute;
-    bottom: 0;
-    margin-bottom: 5px;
-}
-
-img.stacktrace-collapse {
-    position: absolute;
-    z-index: 10;
-    top: 0;
-    right: 0;
-    width:20px;
-    height:20px;
-    margin-right: 5px;
-    margin-top: 5px;
-    cursor: pointer;
 }

@@ -1,0 +1,20 @@
+<div class="stacktrace"
+     [class.height-limited]="!expanded && isExpandable()">
+    {{stackTrace}}
+    <div class="stacktrace-gradient"
+         *ngIf="!expanded && isExpandable()"
+         (mouseover)="showCollapseIcon=true"
+         (mouseleave)="showCollapseIcon=false"
+         (click)="expand()">
+        <img
+                *ngIf="showCollapseIcon"
+                id="expand-icon"
+                src="img/collapse-down.png" />
+    </div>
+    <img
+            id="collapse-icon"
+            *ngIf="expanded"
+            (click)="collapse()"
+            src="img/collapse-up.png"
+          />
+</div>
