@@ -24,7 +24,7 @@ import {SidebarComponent} from "./sidebar/sidebar.component.ts";
 })
 @RouteConfig([
     {
-        path: '/runs/:run_id/results',
+        path: '/testsuites/:testsuite_id/runs/:run_id/results',
         name: 'Results',
         component: TestResultListComponent
     },
@@ -35,7 +35,7 @@ import {SidebarComponent} from "./sidebar/sidebar.component.ts";
     }
 ])
 export class AppComponent {
-
+    currentTestSuiteId:string;
     sidebarVisible = true;
 
     hideSidebar() {
@@ -44,5 +44,9 @@ export class AppComponent {
 
     showSidebar() {
         this.sidebarVisible = true;
+    }
+
+    onTestSuiteSelected(testSuiteId: string) {
+        this.currentTestSuiteId = testSuiteId;
     }
 }

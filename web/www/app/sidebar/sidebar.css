@@ -60,3 +60,8 @@ li.unknwon {
     float:right;
     z-index: 2000;
 }
+
+.active {
+    background: #eee;
+    border: 1px solid #aaa;
+}

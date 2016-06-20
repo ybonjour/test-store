@@ -1,6 +1,10 @@
 <div id="wrapper" [ngClass]="{toggled: !sidebarVisible}">
     <div id="sidebar-wrapper">
-        <sidebar [sidebarVisible]="sidebarVisible" (hideSidebar)="hideSidebar()"></sidebar>
+        <sidebar
+                [sidebarVisible]="sidebarVisible"
+                [currentTestSuiteId]="currentTestSuiteId"
+                (testSuiteSelected)="onTestSuiteSelected($event)"
+                (hideSidebar)="hideSidebar()"></sidebar>
     </div>
     <a *ngIf="!sidebarVisible" class="btn btn-default btn-xs" (click)="showSidebar()">&gt;&gt;</a>
     <div id="page-content-wrapper">
