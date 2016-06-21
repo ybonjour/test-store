@@ -18,14 +18,14 @@
     color: #999999;
 }
 
-.sidebar-nav li a:hover {
+.sidebar-nav > li > a:hover {
     text-decoration: none;
     background: #eee;
     border: 1px solid #aaa;
 }
 
-.sidebar-nav li a:active,
-.sidebar-nav li a:focus {
+.sidebar-nav > li > a:active,
+.sidebar-nav > li > a:focus {
     text-decoration: none;
 }
 
@@ -38,6 +38,11 @@
 .sidebar-nav > .sidebar-brand a {
     color: #999999;
     text-decoration-line: underline;
+}
+
+.sidebar-subnav {
+    list-style: none;
+    padding-left: 0px;
 }
 
 li.passed {
@@ -64,4 +69,8 @@ li.unknwon {
 .active {
     background: #eee;
     border: 1px solid #aaa;
+}
+
+.sidebar-subnav .router-link-active {
+    border-right: 5px solid black;
 }
