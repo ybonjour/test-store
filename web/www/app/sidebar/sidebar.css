@@ -20,7 +20,7 @@
 
 .sidebar-nav > li > a:hover {
     text-decoration: none;
-    background: #eee;
+    background: #EEEEEE;
     border: 1px solid #aaa;
 }
 
@@ -42,7 +42,19 @@
 
 .sidebar-subnav {
     list-style: none;
-    padding-left: 0px;
+    padding-left: 0;
+}
+
+.sidebar-subnav li {
+    border-bottom: 1px solid #AAAAAA;
+}
+
+.sidebar-subnav li a {
+    margin-left: 10px;
+}
+
+.sidebar-subnav .router-link-active {
+    border-right: 5px solid #AAAAAA;
 }
 
 li.passed {
@@ -58,7 +70,7 @@ li.retried {
 }
 
 li.unknwon {
-    border-left: 10px solid #aaaaaa;
+    border-left: 10px solid #AAAAAA;
 }
 
 #sidebar-toggle {
@@ -67,10 +79,6 @@ li.unknwon {
 }
 
 .active {
-    background: #eee;
-    border: 1px solid #aaa;
-}
-
-.sidebar-subnav .router-link-active {
-    border-right: 5px solid black;
+    background: #EEEEEE;
+    border: 1px solid #AAAAAA;
 }
