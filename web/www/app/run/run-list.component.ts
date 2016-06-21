@@ -19,8 +19,8 @@ export class RunListComponent implements OnInit {
     ) {}
 
     ngOnInit():any {
-        this.testSuiteId = this._routeParams.get('testsuite_id')
-        this.getRuns(this.testSuiteId)
+        this.testSuiteId = this._routeParams.get('testsuite_id');
+        this.getRuns(this.testSuiteId);
     }
 
     getRuns(testSuiteId: string) {

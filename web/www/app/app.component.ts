@@ -8,6 +8,7 @@ import {TestResultService} from "./test-result/test-result.service.ts";
 import {RunService} from "./run/run.service.ts";
 import {TestSuiteService} from "./test-suite/test-suite.service.ts"
 import {SidebarComponent} from "./sidebar/sidebar.component.ts";
+import {HistoryComponent} from "./history/history.component";
 
 @Component({
     selector: 'app',
@@ -32,6 +33,11 @@ import {SidebarComponent} from "./sidebar/sidebar.component.ts";
         path: '/testsuites/:testsuite_id/runs',
         name: 'Runs',
         component: RunListComponent
+    },
+    {
+        path: '/testsuites/:testsuite_id/history',
+        name: 'History',
+        component: HistoryComponent
     }
 ])
 export class AppComponent implements OnInit {
