@@ -1,5 +1,5 @@
 import {Component, OnInit, EventEmitter, Input, Output} from 'angular2/core'
-import {Router, ROUTER_DIRECTIVES} from "angular2/router";
+import {ROUTER_DIRECTIVES} from "angular2/router";
 import {TestSuite} from "./../test-suite/test-suite";
 import {TestSuiteService} from "./../test-suite/test-suite.service.ts";
 
@@ -16,11 +16,9 @@ export class SidebarComponent implements OnInit {
     @Input() sidebarVisible: boolean;
     @Input() currentTestSuiteId: string;
     @Output() hideSidebar: EventEmitter = new EventEmitter();
-    @Output() testSuiteSelected: EventEmitter = new EventEmitter();
 
     constructor(
-        private _testSuiteService: TestSuiteService,
-        private _router: Router){}
+        private _testSuiteService: TestSuiteService){}
 
     ngOnInit():any {
         this._testSuiteService.getTestSuites().subscribe(
@@ -31,11 +29,6 @@ export class SidebarComponent implements OnInit {
 
     onHideSidebar(event) {
         this.hideSidebar.emit(event);
-    }
-
-    onSelectTestSuite(testSuite: TestSuite) {
-        this.testSuiteSelected.emit(testSuite.id);
-        this._router.navigate(['Runs', {testsuite_id: testSuite.id}]);
     }
 
     isCurrentTestSuite(testSuite: TestSuite): boolean {

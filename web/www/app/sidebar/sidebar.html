@@ -16,7 +16,7 @@
             'failed': testSuite.lastRunResult=='FAILED',
             'unknwon': testSuite.lastRunResult=='UNKNOWN'}">
         <a
-                (click)="onSelectTestSuite(testSuite)"
+                [routerLink]="['Runs', {testsuite_id: testSuite.id}]"
                 [class.active]="isCurrentTestSuite(testSuite)"
             >{{testSuite.name}}</a>
     </li>

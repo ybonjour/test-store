@@ -1,6 +1,6 @@
-import {Component} from "angular2/core";
+import {Component, OnInit} from "angular2/core";
 import {HTTP_PROVIDERS} from "angular2/http";
-import {RouteConfig, ROUTER_DIRECTIVES, ROUTER_PROVIDERS} from "angular2/router";
+import {Router, RouteConfig, ROUTER_DIRECTIVES, ROUTER_PROVIDERS} from "angular2/router";
 import {Component} from 'angular2/core';
 import {TestResultListComponent} from "./test-result/test-result-list.component.ts";
 import {RunListComponent} from "./run/run-list.component.ts";
@@ -34,9 +34,36 @@ import {SidebarComponent} from "./sidebar/sidebar.component.ts";
         component: RunListComponent
     }
 ])
-export class AppComponent {
+export class AppComponent implements OnInit {
+
+    constructor(private _router:Router) {
+
+    }
+
     currentTestSuiteId:string;
     sidebarVisible = true;
+
+    ngOnInit():any {
+        this.onNewUrl();
+        return this._router.subscribe(
+            currentUrl => this.onNewUrl(),
+            error => console.error(error)
+        );
+    }
+
+    private onNewUrl() {
+        var instruction = this._router.currentInstruction;
+        if(instruction == null) return;
+        var component = instruction.component;
+        if(component == null) return;
+        var params = component.params;
+        for(var name in params) {
+            if(!params.hasOwnProperty(name)) continue;
+            if(name == 'testsuite_id'){
+                this.currentTestSuiteId = params[name];
+            }
+        }
+    }
 
     hideSidebar() {
         this.sidebarVisible = false;
@@ -44,9 +71,5 @@ export class AppComponent {
 
     showSidebar() {
         this.sidebarVisible = true;
-    }
-
-    onTestSuiteSelected(testSuiteId: string) {
-        this.currentTestSuiteId = testSuiteId;
     }
 }

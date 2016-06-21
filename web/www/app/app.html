@@ -3,7 +3,6 @@
         <sidebar
                 [sidebarVisible]="sidebarVisible"
                 [currentTestSuiteId]="currentTestSuiteId"
-                (testSuiteSelected)="onTestSuiteSelected($event)"
                 (hideSidebar)="hideSidebar()"></sidebar>
     </div>
     <a *ngIf="!sidebarVisible" class="btn btn-default btn-xs" (click)="showSidebar()">&gt;&gt;</a>
