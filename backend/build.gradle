@@ -50,4 +50,5 @@ dependencies {
     testCompile "junit:junit"
     testCompile "com.jayway.restassured:rest-assured:2.9.0"
     testCompile "org.springframework.boot:spring-boot-starter-test:1.3.3.RELEASE"
+    testCompile "com.natpryce:hamkrest:1.2.0.0"
 }
