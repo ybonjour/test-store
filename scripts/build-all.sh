@@ -9,7 +9,7 @@ $dir/../gradlew assemble
 docker build -t test-store-backend $dir/../backend
 
 # Build web
-docker run -v $dir/../web/www:/www --rm node bash -ce "(cd /www; npm install; npm run build)"
+docker run -v $dir/../web/www:/www --rm node bash -ce "(cd /www; npm install; npm install jspm -g; jspm install; npm run build)"
 docker build -t test-store-web $dir/../web
 
 # Build migration
