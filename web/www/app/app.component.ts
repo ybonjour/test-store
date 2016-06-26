@@ -9,6 +9,7 @@ import {RunService} from "./run/run.service.ts";
 import {TestSuiteService} from "./test-suite/test-suite.service.ts"
 import {SidebarComponent} from "./sidebar/sidebar.component.ts";
 import {HistoryComponent} from "./history/history.component";
+import {AddTestSuiteComponent} from "./test-suite/add-test-suite.component";
 
 @Component({
     selector: 'app',
@@ -38,6 +39,11 @@ import {HistoryComponent} from "./history/history.component";
         path: '/testsuites/:testsuite_id/history',
         name: 'History',
         component: HistoryComponent
+    },
+    {
+        path: 'testsuites/new',
+        name: 'New TestSuite',
+        component: AddTestSuiteComponent
     }
 ])
 export class AppComponent implements OnInit {
