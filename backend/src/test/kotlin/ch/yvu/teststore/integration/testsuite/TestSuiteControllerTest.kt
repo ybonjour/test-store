@@ -6,7 +6,6 @@ import ch.yvu.teststore.result.Result
 import ch.yvu.teststore.result.ResultRepository
 import ch.yvu.teststore.run.Run
 import ch.yvu.teststore.run.RunRepository
-import ch.yvu.teststore.run.overview.RunOverview
 import ch.yvu.teststore.run.overview.RunOverview.RunResult.PASSED
 import ch.yvu.teststore.run.overview.RunOverview.RunResult.UNKNOWN
 import ch.yvu.teststore.testsuite.TestSuite
@@ -51,18 +50,18 @@ class TestSuiteControllerTest() : BaseIntegrationTest() {
 
     @Test fun getTestSuitesReturnsLastTestResult() {
         val testSuite = TestSuite(randomUUID(), "MyTestSuite")
-        val run = Run(randomUUID(), testSuite.id,"abc-123", Date());
+        val run = Run(randomUUID(), testSuite.id, "abc-123", Date());
         val result = Result(run.id, "MyTest", 0, true, 2)
         testSuiteRepository.save(testSuite)
         runRepository.save(run)
         resultRepository.save(result)
 
         given()
-            .get("/testsuites")
-        .then()
-            .statusCode(200)
-            .body("[0].testSuite.name", equalTo(testSuite.name))
-            .body("[0].lastRunResult", equalTo(PASSED.toString()))
+                .get("/testsuites")
+                .then()
+                .statusCode(200)
+                .body("[0].testSuite.name", equalTo(testSuite.name))
+                .body("[0].lastRunResult", equalTo(PASSED.toString()))
     }
 
     @Test fun getTestSuiteReturnsLastRunResultUnknownIfNoRunIsPresent() {
@@ -72,7 +71,6 @@ class TestSuiteControllerTest() : BaseIntegrationTest() {
         given().get("/testsuites").then().body("[0].lastRunResult", equalTo(UNKNOWN.toString()))
     }
 
-
     @Test fun getTestSuitesReturnsTestSuites() {
         val testSuite1 = TestSuite(randomUUID(), "MyTestSuite1")
         val testSuite2 = TestSuite(randomUUID(), "MyTestSuite2")
@@ -81,9 +79,44 @@ class TestSuiteControllerTest() : BaseIntegrationTest() {
 
         given()
                 .get("/testsuites")
-        .then()
+                .then()
                 .statusCode(200)
                 .body("[0].testSuite.name", equalTo(testSuite1.name))
                 .body("[1].testSuite.name", equalTo(testSuite2.name))
+    }
+
+    @Test fun getTestSuiteReturnsTestSuite() {
+        val testSuite = TestSuite(randomUUID(), "MyTestSuite")
+        val run = Run(randomUUID(), testSuite.id, "abc-123", Date());
+        val result = Result(run.id, "MyTest", 0, true, 2)
+        testSuiteRepository.save(testSuite)
+        runRepository.save(run)
+        resultRepository.save(result)
+
+        given()
+                .get("/testsuites/${testSuite.id}")
+                .then()
+                .statusCode(200)
+                .body("testSuite.id", equalTo(testSuite.id.toString()))
+                .body("testSuite.name", equalTo(testSuite.name))
+                .body("lastRunResult", equalTo(PASSED.toString()))
+    }
+
+    @Test fun getTestSuiteReturnsUnknownLastTestResultIfNoRunsExist() {
+        val testSuite = TestSuite(randomUUID(), "MyTestSuite")
+        testSuiteRepository.save(testSuite)
+
+        given()
+                .get("/testsuites/${testSuite.id}")
+                .then()
+                .statusCode(200)
+                .body("lastRunResult", equalTo(UNKNOWN.toString()))
+    }
+
+    @Test fun getTestSuiteReturns404IfNoMatchingTestSuiteExists() {
+        given()
+                .get("/testsuites/${randomUUID()}")
+                .then()
+                .statusCode(404)
     }
 }

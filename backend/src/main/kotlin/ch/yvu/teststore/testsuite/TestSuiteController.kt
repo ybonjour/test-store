@@ -1,15 +1,19 @@
 package ch.yvu.teststore.testsuite
 
-import ch.yvu.teststore.run.overview.RunOverview
 import ch.yvu.teststore.run.overview.RunOverview.RunResult.UNKNOWN
 import ch.yvu.teststore.run.overview.RunOverviewService
 import ch.yvu.teststore.testsuite.overview.TestSuiteOverview
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.HttpStatus.NOT_FOUND
+import org.springframework.http.HttpStatus.OK
+import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod.GET
 import org.springframework.web.bind.annotation.RequestMethod.POST
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
+import java.util.*
 import java.util.UUID.randomUUID
 import javax.servlet.http.HttpServletResponse
 
@@ -28,8 +32,18 @@ class TestSuiteController @Autowired constructor(val testSuiteRepository: TestSu
     fun getAllTestSuites(): List<TestSuiteOverview> {
         return testSuiteRepository.findAll().map {
             val runOverview = runOverviewService.getLastRunOverview(it.id!!);
-            val runResult = if(runOverview.isPresent) runOverview.get().result else UNKNOWN;
+            val runResult = if (runOverview.isPresent) runOverview.get().result else UNKNOWN;
             TestSuiteOverview(it, runResult)
         };
+    }
+
+    @RequestMapping(method = arrayOf(GET), value = "/testsuites/{testSuiteId}")
+    fun getTestSuite(@PathVariable testSuiteId: UUID): ResponseEntity<TestSuiteOverview> {
+        val testSuite = testSuiteRepository.findById(testSuiteId)
+        if (!testSuite.isPresent) return ResponseEntity(NOT_FOUND)
+
+        val runOverview = runOverviewService.getLastRunOverview(testSuite.get().id!!)
+        val runResult = if (runOverview.isPresent) runOverview.get().result else UNKNOWN;
+        return ResponseEntity(TestSuiteOverview(testSuite.get(), runResult), OK)
     }
 }
