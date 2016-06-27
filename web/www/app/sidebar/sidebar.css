@@ -18,7 +18,7 @@
     color: #999999;
 }
 
-.sidebar-nav > li > a:hover {
+.sidebar-nav > li.testsuite > a:hover {
     text-decoration: none;
     background: #EEEEEE;
     border: 1px solid #aaa;
@@ -81,4 +81,8 @@ li.unknwon {
 .active {
     background: #EEEEEE;
     border: 1px solid #AAAAAA;
+}
+
+.icon-label {
+    vertical-align: middle;
 }

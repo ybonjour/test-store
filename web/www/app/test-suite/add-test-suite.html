@@ -1,0 +1,4 @@
+<h1>Add Test Suite</h1>
+<div *ngIf="errorMessage">{{errorMessage}}</div>
+<input type="text" [(ngModel)]="testSuite.name" />
+<button class="btn btn-primary" (click)="onAdd()">Add</button>

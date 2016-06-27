@@ -10,6 +10,7 @@ import {TestSuiteService} from "./test-suite/test-suite.service.ts"
 import {SidebarComponent} from "./sidebar/sidebar.component.ts";
 import {HistoryComponent} from "./history/history.component";
 import {AddTestSuiteComponent} from "./test-suite/add-test-suite.component";
+import {TestSuitesChangedEvent} from "./test-suite/test-suites-changed-event.ts";
 
 @Component({
     selector: 'app',
@@ -21,14 +22,15 @@ import {AddTestSuiteComponent} from "./test-suite/add-test-suite.component";
         HTTP_PROVIDERS,
         TestResultService,
         RunService,
-        TestSuiteService
+        TestSuiteService,
+        TestSuitesChangedEvent
     ]
 })
 @RouteConfig([
     {
         path: '/testsuites/:testsuite_id/runs/:run_id/results',
         name: 'Results',
-        component: TestResultListComponent
+        component: TestResultListComponent,
     },
     {
         path: '/testsuites/:testsuite_id/runs',
@@ -51,7 +53,6 @@ export class AppComponent implements OnInit {
     constructor(private _router:Router) {
 
     }
-
     currentTestSuiteId:string;
     sidebarVisible = true;
 

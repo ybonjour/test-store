@@ -2,6 +2,7 @@ import {Component, OnInit, EventEmitter, Input, Output} from 'angular2/core'
 import {ROUTER_DIRECTIVES} from "angular2/router";
 import {TestSuite} from "./../test-suite/test-suite";
 import {TestSuiteService} from "./../test-suite/test-suite.service.ts";
+import {TestSuitesChangedEvent} from "../test-suite/test-suites-changed-event.ts";
 
 @Component({
     selector: 'sidebar',
@@ -18,13 +19,13 @@ export class SidebarComponent implements OnInit {
     @Output() hideSidebar: EventEmitter = new EventEmitter();
 
     constructor(
-        private _testSuiteService: TestSuiteService){}
+        private _testSuiteService: TestSuiteService,
+        private _testSuitesChangedEvent: TestSuitesChangedEvent){}
 
     ngOnInit():any {
-        this._testSuiteService.getTestSuites().subscribe(
-            testSuites => this.testSuites = testSuites,
-            error => this.errorMessage = <any>error
-        )
+        this.onTestSuitesChanged();
+        //TODO: might cause double invocation
+        this._testSuitesChangedEvent.subscribe(this.onTestSuitesChanged, this);
     }
 
     onHideSidebar(event) {
@@ -34,5 +35,12 @@ export class SidebarComponent implements OnInit {
     isCurrentTestSuite(testSuite: TestSuite): boolean {
         if(this.currentTestSuiteId == null) return false;
         return this.currentTestSuiteId == testSuite.id;
+    }
+
+    onTestSuitesChanged() {
+        this._testSuiteService.getTestSuites().subscribe(
+            testSuites => this.testSuites = testSuites,
+            error => this.errorMessage = <any>error
+        )
     }
 }
