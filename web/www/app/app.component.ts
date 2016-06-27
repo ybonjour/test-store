@@ -9,7 +9,7 @@ import {RunService} from "./run/run.service.ts";
 import {TestSuiteService} from "./test-suite/test-suite.service.ts"
 import {SidebarComponent} from "./sidebar/sidebar.component.ts";
 import {HistoryComponent} from "./history/history.component";
-import {AddTestSuiteComponent} from "./test-suite/add-test-suite.component";
+import {AddTestSuiteComponent} from "./test-suite/add/add-test-suite.component.ts";
 import {TestSuitesChangedEvent} from "./test-suite/test-suites-changed-event.ts";
 
 @Component({
