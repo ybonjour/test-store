@@ -16,7 +16,7 @@
             'failed': testSuite.lastRunResult=='FAILED',
             'unknwon': testSuite.lastRunResult=='UNKNOWN'}">
         <a
-                [routerLink]="['Runs', {testsuite_id: testSuite.id}]"
+                [routerLink]="['TestSuite', {testsuite_id: testSuite.id}]"
                 [class.active]="isCurrentTestSuite(testSuite)"
             >{{testSuite.name}}</a>
         <ul *ngIf="isCurrentTestSuite(testSuite)" class="sidebar-subnav">

@@ -1,5 +1,5 @@
 import {Component, OnInit} from 'angular2/core';
-import {ROUTER_DIRECTIVES} from "angular2/router";
+import {ROUTER_DIRECTIVES} from 'angular2/router';
 import {Run} from './run';
 import {RunService} from './run.service.ts';
 import {RouteParams} from 'angular2/router';

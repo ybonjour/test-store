@@ -10,7 +10,7 @@ export class TestSuiteService {
 
     getTestSuites(): Observable<TestSuite[]> {
         return this._http.get("/api/testsuites")
-            .map(TestSuiteService.extractBody)
+            .map(TestSuiteService.extractTestSuites)
             .catch(TestSuiteService.extractError);
     }
 
@@ -23,17 +23,28 @@ export class TestSuiteService {
             .catch(TestSuiteService.extractError)
     }
 
+    getTestSuite(id: string): Observable<TestSuite> {
+        return this._http.get("/api/testsuites/" + id)
+            .map(TestSuiteService.extractTestSuite)
+            .catch(TestSuiteService.extractError)
+    }
+
     private static extractCreateResponse(response: Response): String {
         if(response.status != 201) throw new Error("Bad response status: " + response.status);
 
         return response.json().id
     }
 
-    private static extractBody(response: Response): TestSuite[] {
+    private static extractTestSuites(response: Response): TestSuite[] {
         if(response.status != 200) throw new Error("Bad response status: " + response.status);
 
         return TestSuiteService.convertToTestSuites(response.json());
+    }
 
+    private static extractTestSuite(response: Response): TestSuite {
+        if(response.status != 200) throw new Error("Bad response status: " + response.status);
+
+        return TestSuiteService.convertFromTestSuiteOverview(response.json());
     }
 
     private static extractError(error: any) {

@@ -1,4 +1,4 @@
-import {Component, OnInit} from "angular2/core";
+import {Component, OnInit, provide} from "angular2/core";
 import {HTTP_PROVIDERS} from "angular2/http";
 import {Router, RouteConfig, ROUTER_DIRECTIVES, ROUTER_PROVIDERS} from "angular2/router";
 import {Component} from 'angular2/core';
@@ -11,6 +11,8 @@ import {SidebarComponent} from "./sidebar/sidebar.component.ts";
 import {HistoryComponent} from "./history/history.component";
 import {AddTestSuiteComponent} from "./test-suite/add/add-test-suite.component.ts";
 import {TestSuitesChangedEvent} from "./test-suite/test-suites-changed-event.ts";
+import {TestSuiteOverviewComponent} from "./test-suite/overview/test-suite-overview.component";
+import {Window} from './window'
 
 @Component({
     selector: 'app',
@@ -23,7 +25,8 @@ import {TestSuitesChangedEvent} from "./test-suite/test-suites-changed-event.ts"
         TestResultService,
         RunService,
         TestSuiteService,
-        TestSuitesChangedEvent
+        TestSuitesChangedEvent,
+        provide(Window, {useValue: window})
     ]
 })
 @RouteConfig([
@@ -46,6 +49,11 @@ import {TestSuitesChangedEvent} from "./test-suite/test-suites-changed-event.ts"
         path: 'testsuites/new',
         name: 'New TestSuite',
         component: AddTestSuiteComponent
+    },
+    {
+        path: 'testsuites/:testsuite_id',
+        name: 'TestSuite',
+        component: TestSuiteOverviewComponent
     }
 ])
 export class AppComponent implements OnInit {

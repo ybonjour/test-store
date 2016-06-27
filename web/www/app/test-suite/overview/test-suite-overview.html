@@ -1,0 +1,12 @@
+<div *ngIf="testSuite">
+    <h1>{{testSuite.name}}</h1>
+
+    <b>test-store gradle plugin configuration</b>
+    <pre>teststore {
+    host '{{hostname}}'
+    port  8080
+    testSuite '{{testSuite.id}}'
+    revision "${->project.ext.revision}"
+    xmlReports ~/.*\/test-results\/TEST-.*\.xml/
+}</pre>
+</div>
