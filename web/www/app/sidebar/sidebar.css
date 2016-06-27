@@ -21,7 +21,6 @@
 .sidebar-nav > li.testsuite > a:hover {
     text-decoration: none;
     background: #EEEEEE;
-    border: 1px solid #aaa;
 }
 
 .sidebar-nav > li > a:active,
@@ -50,11 +49,12 @@
 }
 
 .sidebar-subnav li a {
-    margin-left: 10px;
+    padding-left: 20px;
+    background: #EEEEEE;
 }
 
 .sidebar-subnav .router-link-active {
-    border-right: 5px solid #AAAAAA;
+    border-right: 5px solid #000000;
 }
 
 li.passed {
@@ -80,7 +80,10 @@ li.unknwon {
 
 .active {
     background: #EEEEEE;
-    border: 1px solid #AAAAAA;
+    font-weight: bold;
+    color: #000000 !important;
+    border-top: 1px solid #AAAAAA;
+    border-bottom: 1px solid #AAAAAA;
 }
 
 .icon-label {
