@@ -2,7 +2,7 @@
  "compilerOptions": {
     "target": "es5",                /* target of the compilation (es5) */
     "module": "system",             /* System.register([dependencies], function) (in JS)*/
-    "moduleResolution": "node",     /* how module gets resolved (needed for Angular 2)*/
+    "moduleResolution": "jspm",     /* how module gets resolved (needed for Angular 2)*/
     "emitDecoratorMetadata": true,  /* needed for decorators */
     "experimentalDecorators": true, /* needed for decorators (@Injectable) */
     "noImplicitAny": false          /* any has to be written explicity*/
