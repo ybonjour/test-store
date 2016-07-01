@@ -13,6 +13,7 @@ import {AddTestSuiteComponent} from "./test-suite/add/add-test-suite.component.t
 import {TestSuitesChangedEvent} from "./test-suite/test-suites-changed-event.ts";
 import {TestSuiteOverviewComponent} from "./test-suite/overview/test-suite-overview.component";
 import {Window} from './window'
+import {HistoryService} from "./history/history.service";
 
 @Component({
     selector: 'app',
@@ -26,6 +27,7 @@ import {Window} from './window'
         RunService,
         TestSuiteService,
         TestSuitesChangedEvent,
+        HistoryService,
         provide(Window, {useValue: window})
     ]
 })

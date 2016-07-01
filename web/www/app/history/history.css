@@ -1,0 +1,100 @@
+table {
+    position: relative;
+    top: -80px;
+    table-layout: fixed;
+}
+
+td {
+    border: 1px solid #AAAAAA;
+}
+
+th.title {
+    position: relative;
+}
+
+th.title h1 {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+}
+
+.limit-switcher {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+}
+
+.limit-switcher div {
+    float: left;
+}
+
+.limit-switcher-title {
+    padding-left: 2px;
+    padding-right: 10px;
+    padding-bottom: 2px;
+    padding-top: 2px;
+    font-weight: normal;
+    color: #AAAAAA;
+}
+
+.limit-switcher-button {
+    padding-top: 2px;
+    padding-bottom: 2px;
+    padding-left: 4px;
+    padding-right: 4px;
+    border-right: 1px solid #AAAAAA;
+}
+
+.limit-switcher-button a {
+    color: #AAAAAA;
+    cursor: pointer;
+}
+
+.limit-switcher .active {
+    background-color: #EEEEEE;
+}
+
+th.rotate  {
+    height: 140px;
+    white-space: nowrap;
+}
+
+th.rotate > div {
+    transform:
+        translate(25px, 51px)
+        rotate(315deg);
+    width: 30px;
+}
+
+th.rotate > div > span {
+    border-bottom: 1px solid #AAAAAA;
+    padding-left: 5px;
+    position: relative;
+    top: -2px;
+    left: -7px
+}
+
+td.front {
+    padding-left: 4px;
+}
+
+td.result {
+    width: 30px;
+    height: 30px;
+}
+
+td.passed {
+    background-color: #00AA00;
+}
+
+td.failed {
+    background-color:#AA0000;
+}
+
+td.retried {
+    background-color: #ffc520;
+}
+
+tbody {
+    overflow-y:scroll;
+}

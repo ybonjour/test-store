@@ -1,1 +1,34 @@
-<h1>History {{testSuiteId}}</h1>
+<div *ngIf="errorMessage">{{errorMessage}}</div>
+<table>
+    <thead>
+        <tr>
+            <th class="title">
+                <h1>History</h1>
+                <div class="limit-switcher">
+                    <div class="limit-switcher-title">#Runs:</div>
+                    <div class="limit-switcher-button" [class.active]="limit==25"><a (click)="setLimit(25)">25</a></div>
+                    <div class="limit-switcher-button" [class.active]="limit==50"><a (click)="setLimit(50)">50</a></div>
+                    <div class="limit-switcher-button" [class.active]="limit==100"><a (click)="setLimit(100)">100</a></div>
+                </div>
+            </th>
+            <th class="rotate" *ngFor="#historyEntry of historyEntries">
+                <div>
+                    <span>{{historyEntry.getShortRevision()}}</span>
+                </div>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="#testName of testNames">
+            <td title="{{testName.longName}}" class="front">{{testName.shortName}}</td>
+            <td class="result"
+                *ngFor="#historyEntry of historyEntries"
+                [ngClass]="{
+                passed: historyEntry.results[testName.longName] == 'PASSED',
+                failed: historyEntry.results[testName.longName] == 'FAILED',
+                retried: historyEntry.results[testName.longName] == 'RETRIED'}"
+                title="{{testName.longName}}@{{historyEntry.getShortRevision()}}"
+            ></td>
+        </tr>
+    </tbody>
+</table>
