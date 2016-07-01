@@ -16,7 +16,7 @@ export class RunService {
             .catch(RunService.extractError)
     }
 
-    private static extractBody(response: Response) {
+    private static extractBody(response: Response): Run[] {
         if(response.status != 200) throw new Error("Bad response status: " + response.status);
 
         return RunService.convertJsonToRunList(response.json());
