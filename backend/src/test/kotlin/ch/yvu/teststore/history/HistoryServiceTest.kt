@@ -12,7 +12,7 @@ import ch.yvu.teststore.run.RunRepository
 import com.natpryce.hamkrest.assertion.assertThat
 import com.natpryce.hamkrest.equalTo
 import com.natpryce.hamkrest.has
-import org.hamcrest.Matchers
+import com.natpryce.hamkrest.hasSize
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Before
@@ -24,7 +24,8 @@ class HistoryServiceTest {
 
     companion object {
         val testSuiteId = randomUUID()
-        val run = Run(randomUUID(), testSuiteId, "abc-123", Date());
+        val run = Run(randomUUID(), testSuiteId, "abc-123", Date())
+        val defaultLImit = 25
     }
 
     lateinit var runRepository: RunRepository
@@ -44,7 +45,7 @@ class HistoryServiceTest {
     @Test fun returnsRevisionOfRun() {
         runRepository.save(run)
 
-        val runHistory = historyService.getRunHistories(testSuiteId)
+        val runHistory = historyService.getRunHistories(testSuiteId, defaultLImit)
 
         assertEquals(1, runHistory.size)
         assertThat(runHistory.get(0), has(RunHistory::revision, equalTo(run.revision)))
@@ -54,7 +55,7 @@ class HistoryServiceTest {
         runRepository.save(run)
         val otherTestSuiteId = randomUUID()
 
-        val runHistory = historyService.getRunHistories(otherTestSuiteId)
+        val runHistory = historyService.getRunHistories(otherTestSuiteId, defaultLImit)
 
         assertTrue(runHistory.isEmpty())
     }
@@ -65,7 +66,7 @@ class HistoryServiceTest {
         val run2 = Run(randomUUID(), testSuiteId, "def-456", Date(2))
         runRepository.save(run2)
 
-        val runHistory = historyService.getRunHistories(testSuiteId)
+        val runHistory = historyService.getRunHistories(testSuiteId, defaultLImit)
 
         assertEquals(2, runHistory.size)
         assertEquals(run2.revision, runHistory.get(0).revision)
@@ -77,9 +78,21 @@ class HistoryServiceTest {
         val result = Result(run.id, "myTest", 0, true, 20)
         resultRepository.save(result)
 
-        val runHistory = historyService.getRunHistories(testSuiteId)
+        val runHistory = historyService.getRunHistories(testSuiteId, defaultLImit)
 
-        assertEquals(1, runHistory.size)
+        assertThat(runHistory, hasSize(equalTo(1)));
         assertEquals(runHistory.get(0).results.get(result.testName), TestWithResults.TestResult.PASSED)
+    }
+
+    @Test fun historyOnlyReturnsLatestNRuns() {
+        val run1 = Run(randomUUID(), testSuiteId, randomUUID().toString(), Date(1))
+        val run2 = Run(randomUUID(), testSuiteId, randomUUID().toString(), Date(2))
+        runRepository.save(run1)
+        runRepository.save(run2)
+
+        val runHistory = historyService.getRunHistories(testSuiteId, 1)
+
+        assertThat(runHistory, hasSize(equalTo(1)));
+        assertEquals(runHistory.get(0).revision, run2.revision)
     }
 }

@@ -1,13 +1,11 @@
 package ch.yvu.teststore.integration.history
 
 import ch.yvu.teststore.integration.BaseIntegrationTest
-import ch.yvu.teststore.result.Result
 import ch.yvu.teststore.result.ResultRepository
 import ch.yvu.teststore.run.Run
 import ch.yvu.teststore.run.RunRepository
 import com.jayway.restassured.RestAssured.given
-import org.hamcrest.Matchers
-import org.hamcrest.Matchers.equalTo
+import org.hamcrest.Matchers.hasSize
 import org.junit.Before
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -24,18 +22,19 @@ class HistoryControllerTest : BaseIntegrationTest() {
         runRepository.deleteAll()
     }
 
-
-    @Test fun getHistoryReturnsHistory() {
+    @Test fun getHistoryReturnsHistoryWithLimit() {
         val testSuite = randomUUID()
         val run = Run(randomUUID(), testSuite, "abc-123", Date())
         runRepository.save(run)
-        val result = Result(run.id, "myTest", 0, true, 3)
-        resultRepository.save(result)
+        val otherRun = Run(randomUUID(), testSuite, "abc-123", Date())
+        runRepository.save(otherRun)
 
         given()
-            .get("/testsuites/$testSuite/history")
+                .get("/testsuites/$testSuite/history?limit=1")
         .then()
-            .statusCode(200).body("[0].revision", equalTo(run.revision))
+                .statusCode(200)
+                .body(".", hasSize<Collection<String>>(1))
     }
+
 }
 
