@@ -6,5 +6,5 @@ import java.util.*
 
 @Repository
 interface TestSuiteRepository : TestStoreRepository<TestSuite> {
-    fun findById(id: UUID): Optional<TestSuite>
+    fun findById(id: UUID): TestSuite?
 }

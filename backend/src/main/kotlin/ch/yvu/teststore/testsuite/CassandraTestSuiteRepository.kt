@@ -8,9 +8,9 @@ import java.util.*
 
 open class CassandraTestSuiteRepository @Autowired constructor(session: Session) :
         TestSuiteRepository, CassandraRepository<TestSuite>(MappingManager(session), "testsuite", TestSuite::class.java) {
-    override fun findById(id: UUID): Optional<TestSuite> {
+    override fun findById(id: UUID): TestSuite? {
         val resultSet = session.execute("SELECT * FROM testsuite WHERE id=?", id)
-        if(resultSet.isExhausted) return Optional.empty()
-        return Optional.of(mapper.map(resultSet).one())
+        if(resultSet.isExhausted) return null
+        return mapper.map(resultSet).one()
     }
 }

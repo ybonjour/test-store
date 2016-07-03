@@ -6,8 +6,8 @@ import ch.yvu.teststore.testsuite.TestSuiteRepository
 import java.util.*
 
 open class ListBackedTestSuiteRepository(val genericRepository: ListBackedRepository<TestSuite>) : TestSuiteRepository {
-    override fun findById(id: UUID): Optional<TestSuite> {
-        return Optional.ofNullable(genericRepository.findAll { it.id == id }.firstOrNull())
+    override fun findById(id: UUID): TestSuite? {
+        return genericRepository.findAll { it.id == id }.firstOrNull()
     }
 
     override fun findAll(): List<TestSuite> {

@@ -40,10 +40,10 @@ class TestSuiteController @Autowired constructor(val testSuiteRepository: TestSu
     @RequestMapping(method = arrayOf(GET), value = "/testsuites/{testSuiteId}")
     fun getTestSuite(@PathVariable testSuiteId: UUID): ResponseEntity<TestSuiteOverview> {
         val testSuite = testSuiteRepository.findById(testSuiteId)
-        if (!testSuite.isPresent) return ResponseEntity(NOT_FOUND)
+        if (testSuite == null) return ResponseEntity(NOT_FOUND)
 
-        val runOverview = runOverviewService.getLastRunOverview(testSuite.get().id!!)
+        val runOverview = runOverviewService.getLastRunOverview(testSuite.id!!)
         val runResult = if (runOverview.isPresent) runOverview.get().result else UNKNOWN;
-        return ResponseEntity(TestSuiteOverview(testSuite.get(), runResult), OK)
+        return ResponseEntity(TestSuiteOverview(testSuite, runResult), OK)
     }
 }
