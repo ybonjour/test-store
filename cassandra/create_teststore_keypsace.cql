@@ -16,6 +16,14 @@ CREATE TABLE IF NOT EXISTS run (
 	PRIMARY KEY (testsuite, time, id)
 ) WITH CLUSTERING ORDER BY (time DESC);
 
+CREATE TABLE IF NOT EXISTS runById (
+	id uuid,
+	testsuite uuid,
+	revision text,
+	time timestamp,
+	PRIMARY KEY (id)
+);
+
 CREATE INDEX IF NOT EXISTS runsByTestsuite ON run (testsuite);
 
 CREATE TABLE IF NOT EXISTS result (

@@ -7,9 +7,9 @@ import java.util.*
 
 @Table(name = "run")
 data class Run(
-        @PartitionKey var id: UUID?,
-        var testSuite: UUID?,
+        @PartitionKey(2) var id: UUID?,
+        @PartitionKey(0) var testSuite: UUID?,
         var revision: String?,
-        var time: Date?) : Model {
+        @PartitionKey(1) var time: Date?) : Model {
     constructor(): this(null, null, null, null) {}
 }
