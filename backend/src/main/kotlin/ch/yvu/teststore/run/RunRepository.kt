@@ -7,4 +7,5 @@ import java.util.*
 @Repository
 interface RunRepository : TestStoreRepository<Run> {
     fun findAllByTestSuiteId(testSuiteId: UUID): List<Run>
+    fun findLastRunBefore(testSuiteId: UUID, time: Date): Optional<Run>
 }
