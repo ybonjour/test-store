@@ -4,6 +4,8 @@ import ch.yvu.teststore.integration.BaseIntegrationTest
 import ch.yvu.teststore.matchers.ResultMatchers.resultWith
 import ch.yvu.teststore.result.Result
 import ch.yvu.teststore.result.ResultRepository
+import ch.yvu.teststore.run.Run
+import ch.yvu.teststore.run.RunRepository
 import com.jayway.restassured.RestAssured.given
 import org.hamcrest.Matchers.equalTo
 import org.hamcrest.Matchers.hasItem
@@ -12,15 +14,19 @@ import org.junit.Assert.assertThat
 import org.junit.Before
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
+import java.util.*
 import java.util.UUID.randomUUID
 
 class ResultControllerTest : BaseIntegrationTest() {
 
     @Autowired lateinit var resultRepository: ResultRepository
 
+    @Autowired lateinit var runRepository: RunRepository
+
     @Before override fun setUp() {
         super.setUp()
         resultRepository.deleteAll()
+        runRepository.deleteAll()
     }
 
     @Test fun createResultReturnsCorrectStatusCode() {
@@ -84,7 +90,7 @@ class ResultControllerTest : BaseIntegrationTest() {
 
         given()
                 .get("/runs/$runId/results")
-                .then()
+        .then()
                 .statusCode(200)
                 .body("[0].testName", equalTo(result1.testName))
                 .body("[1].testName", equalTo(result2.testName))
@@ -106,11 +112,48 @@ class ResultControllerTest : BaseIntegrationTest() {
 
         given()
                 .get("/runs/$runId/results/grouped")
-                .then()
+        .then()
                 .statusCode(200)
                 .body("PASSED[0].testName", equalTo(resultPassingTest.testName))
                 .body("RETRIED[0].testName", equalTo(resultFlakyTest.testName))
                 .body("FAILED[0].testName", equalTo(resultFailingTest.testName))
+    }
+
+    @Test fun getRunDiffReturnsDiffOfRun() {
+        val testSuiteId = randomUUID()
+        val prevRun = Run(randomUUID(), testSuiteId, "abc-123", Date(1))
+        runRepository.save(prevRun)
+        val run = Run(randomUUID(), testSuiteId, "def-456", Date(2))
+        runRepository.save(run)
+
+        val resultPrev = Result(prevRun.id, "MyTest", 0, false, 120)
+        val result = Result(run.id, resultPrev.testName, 0, true, 23)
+        saveResults(listOf(resultPrev, result))
+
+       given()
+               .get("/runs/${run.id}/results/diff")
+       .then()
+               .statusCode(200)
+                .body("FIXED[0].testName", equalTo(result.testName))
+    }
+
+    @Test fun getRunDiffReturns404IfRunDoesNotExist() {
+        val runId = randomUUID()
+
+        given()
+            .get("/runs/$runId/results/diff")
+        .then()
+            .statusCode(404)
+    }
+
+    @Test fun getRunDiffReturnsResultsIfNoPreviousRun() {
+        val run = Run(randomUUID(), randomUUID(), "abc-123", Date(1))
+        runRepository.save(run)
+
+        given()
+            .get("/runs/${run.id}/results/diff")
+        .then()
+            .statusCode(200)
     }
 
     private fun saveResults(results: List<Result>) {
