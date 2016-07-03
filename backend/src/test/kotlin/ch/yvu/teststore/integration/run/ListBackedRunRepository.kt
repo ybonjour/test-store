@@ -10,10 +10,8 @@ open class ListBackedRunRepository(val genericRepository: ListBackedRepository<R
         return genericRepository.findAll{ it.id==id }.firstOrNull()
     }
 
-    override fun findLastRunBefore(testSuiteId: UUID, time: Date): Optional<Run> {
-        return Optional.ofNullable(findAllByTestSuiteId(testSuiteId).find {
-            it.time != null && it.time!!.compareTo(time) < 0
-        })
+    override fun findLastRunBefore(testSuiteId: UUID, time: Date): Run? {
+        return findAllByTestSuiteId(testSuiteId).find { it.time != null && it.time!!.compareTo(time) < 0 }
     }
 
     override fun findAllByTestSuiteId(testSuiteId: UUID): List<Run> {

@@ -14,11 +14,11 @@ open class CassandraRunRepository @Autowired constructor(mappingManager: Mapping
         return mapper.map(resultSet).one()
     }
 
-    override fun findLastRunBefore(testSuiteId: UUID, time: Date): Optional<Run> {
+    override fun findLastRunBefore(testSuiteId: UUID, time: Date): Run? {
         val resultSet = session.execute("select * from run where testsuite=? and time < ? LIMIT 1", testSuiteId, time)
         val result = mapper.map(resultSet)
-        if(result.isExhausted) return Optional.empty()
-        else return Optional.of(result.one())
+        if(result.isExhausted) return null
+        else return result.one()
     }
 
     override fun findAllByTestSuiteId(testSuiteId: UUID): List<Run> {
