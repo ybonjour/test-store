@@ -14,7 +14,6 @@ open class CassandraRunRepository @Autowired constructor(mappingManager: Mapping
         return super.save(item)
     }
 
-
     override fun findById(id: UUID): Run? {
         val resultSet = session.execute("SELECT * FROM runById WHERE id=?", id)
         if(resultSet.isExhausted) return null
