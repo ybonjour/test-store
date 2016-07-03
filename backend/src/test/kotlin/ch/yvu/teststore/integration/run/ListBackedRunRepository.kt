@@ -6,6 +6,10 @@ import ch.yvu.teststore.run.RunRepository
 import java.util.*
 
 open class ListBackedRunRepository(val genericRepository: ListBackedRepository<Run>) : RunRepository {
+    override fun findById(id: UUID): Run? {
+        return genericRepository.findAll{ it.id==id }.firstOrNull()
+    }
+
     override fun findLastRunBefore(testSuiteId: UUID, time: Date): Optional<Run> {
         return Optional.ofNullable(findAllByTestSuiteId(testSuiteId).find {
             it.time != null && it.time!!.compareTo(time) < 0

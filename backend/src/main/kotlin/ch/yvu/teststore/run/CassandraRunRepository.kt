@@ -8,6 +8,12 @@ import java.util.*
 open class CassandraRunRepository @Autowired constructor(mappingManager: MappingManager) :
         RunRepository, CassandraRepository<Run>(mappingManager, "run", Run::class.java) {
 
+    override fun findById(id: UUID): Run? {
+        val resultSet = session.execute("SELECT * FROM run WHERE id=?", id)
+        if(resultSet.isExhausted) return null
+        return mapper.map(resultSet).one()
+    }
+
     override fun findLastRunBefore(testSuiteId: UUID, time: Date): Optional<Run> {
         val resultSet = session.execute("select * from run where testsuite=? and time < ? LIMIT 1", testSuiteId, time)
         val result = mapper.map(resultSet)
