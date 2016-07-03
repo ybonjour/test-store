@@ -5,44 +5,6 @@
 </div>
 
 <div *ngIf="errorMessage">{{errorMessage}}</div>
-<div class="results-container" *ngIf="failedResults.length > 0">
-	<ul class="results">
-		<li *ngFor="#result of failedResults" class="result failed">
-			<span class="name">{{result.testName}}</span>
-
-			<ul class="tries">
-				<li *ngFor="#try of result.results" class="try">
-					<div class="title">
-						<span class="name">Try {{try.retryNum + 1}}</span>
-						<span class="duration">{{(try.durationMillis / 1000) | number}} seconds</span>
-					</div>
-					<stacktrace [stackTrace]="try.stackTrace"></stacktrace>
-				</li>
-			</ul>
-		</li>
-	</ul>
-</div>
-<div class="results-container" *ngIf="retriedResults.length > 0">
-	<ul class="results">
-		<li *ngFor="#result of retriedResults" class="result retried">
-			<span class="name">{{result.testName}}</span>
-
-			<ul class="tries">
-				<li *ngFor="#try of result.results" class="try" [ngClass]="{'passed': try.passed, 'failed': !try.passed}">
-					<div class="title">
-						<span class="name">Try {{try.retryNum + 1}}</span>
-						<span class="duration">{{(try.durationMillis / 1000) | number}} seconds</span>
-					</div>
-					<stacktrace [stackTrace]="try.stackTrace"></stacktrace>
-				</li>
-			</ul>
-		</li>
-	</ul>
-</div>
-<div class="results-container" *ngIf="passedResults.length > 0">
-	<ul class="results">
-		<li *ngFor="#result of passedResults" class="result passed">
-			<span class="name">{{result.testName}}</span> <span class="duration">{{(result.results[0].durationMillis / 1000) | number}} seconds</span>
-		</li>
-	</ul>
-</div>
+<test-results [results]="failedResults" [type]="'FAILED'"></test-results>
+<test-results [results]="retriedResults" [type]="'RETRIED'"></test-results>
+<test-results [results]="passedResults" [type]="'PASSED'"></test-results>

@@ -1,0 +1,71 @@
+.results-container {
+    clear: left;
+    float: left;
+    margin-top: 20px;
+    width: 100%;
+}
+
+ul.results {
+    list-style: none;
+    padding-left: 0px;
+    width: 100%;
+}
+
+li.result {
+    background-color: #EEEEEE;
+    margin-top: 5px;
+    display: block;
+    float: left;
+    clear: left;
+    width:100%;
+}
+
+li.result .name,
+li.try .name {
+    float: left;
+    font-weight: bold;
+    padding-left: 5px;
+    word-wrap: break-word;
+    width: 100%;
+}
+
+li.result .duration,
+li.try .duration
+{
+    float: right;
+    padding-right: 5px;
+}
+
+li.passed {
+    border-left: 10px solid #00AA00;
+    border-bottom: 1px solid #00AA00;
+}
+
+li.failed {
+    border-left: 10px solid #AA0000;
+    border-bottom: 1px solid #AA0000;
+}
+
+li.retried {
+    border-left: 10px solid #ffc520;
+    border-bottom: 1px solid #ffc520;
+}
+
+ul.tries {
+    list-style: none;
+    clear: left;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+li.try {
+    margin-bottom: 10px;
+}
+
+li.try .title {
+    border:1px solid #DDDDDD;
+    clear: left;
+    float:left;
+    width: 100%;
+    background: #FFFFFF;
+}
