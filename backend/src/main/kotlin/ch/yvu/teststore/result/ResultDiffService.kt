@@ -14,29 +14,30 @@ open class ResultDiffService @Autowired constructor(
     }
 
 
-    fun findDiff(prevRunId: UUID, runId: UUID): Map<DiffCategory, List<TestWithResults>> {
-        val prevResults = resultService.getTestsWithResults(prevRunId)
+    fun findDiff(prevRunId: UUID?, runId: UUID): Map<DiffCategory, List<TestWithResults>> {
+        val prevResults = if (prevRunId == null) emptyList<TestWithResults>() else resultService.getTestsWithResults(prevRunId)
+
         val prevTestNames = prevResults.map { it.testName }
         val results = resultService.getTestsWithResults(runId)
-        val testNames = results.map{ it.testName }
+        val testNames = results.map { it.testName }
 
         val commonTests = results
-                .map { result -> Pair(result, prevResults.find { it.testName == result.testName})}
-                .filter { it.second != null}
-                .map { ResultDiff(it.first, it.second!!)}
+                .map { result -> Pair(result, prevResults.find { it.testName == result.testName }) }
+                .filter { it.second != null }
+                .map { ResultDiff(it.first, it.second!!) }
         val newTests = results.filter { !prevTestNames.contains(it.testName) }
         val removedTests = prevResults.filter { !testNames.contains(it.testName) }
 
         return mapOf(
                 Pair(NEW_PASSED, newTests.filter { it.getTestResult() == PASSED }),
                 Pair(NEW_FAILED, newTests.filter { it.getTestResult() == FAILED }),
-                Pair(NEW_RETRIED, newTests.filter { it.getTestResult() == RETRIED}),
+                Pair(NEW_RETRIED, newTests.filter { it.getTestResult() == RETRIED }),
                 Pair(REMOVED, removedTests),
-                Pair(FIXED, filterCommonResults(commonTests, {it.isFixed})),
-                Pair(BROKE, filterCommonResults(commonTests, {it.isBroken})),
-                Pair(STILL_FAILING, filterCommonResults(commonTests, {it.isStillFailing})),
-                Pair(STILL_PASSING, filterCommonResults(commonTests, {it.isStillPassing})),
-                Pair(NOW_FLAKY, filterCommonResults(commonTests, {it.isNowFlaky})))
+                Pair(FIXED, filterCommonResults(commonTests, { it.isFixed })),
+                Pair(BROKE, filterCommonResults(commonTests, { it.isBroken })),
+                Pair(STILL_FAILING, filterCommonResults(commonTests, { it.isStillFailing })),
+                Pair(STILL_PASSING, filterCommonResults(commonTests, { it.isStillPassing })),
+                Pair(NOW_FLAKY, filterCommonResults(commonTests, { it.isNowFlaky })))
                 .filter { !it.value.isEmpty() }
     }
 
@@ -56,6 +57,6 @@ open class ResultDiffService @Autowired constructor(
 
         val isStillPassing = prevResult.getTestResult() == PASSED && result.getTestResult() == PASSED
 
-        val isNowFlaky = prevResult.getTestResult() == PASSED &&  result.getTestResult() == RETRIED
+        val isNowFlaky = prevResult.getTestResult() == PASSED && result.getTestResult() == RETRIED
     }
 }

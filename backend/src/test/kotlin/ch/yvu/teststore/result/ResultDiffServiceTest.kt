@@ -141,6 +141,15 @@ class ResultDiffServiceTest {
         assertResultInCategory(NOW_FLAKY, resultRetried, results)
     }
 
+    @Test fun ifNoPreviousRunIsProvidedResultsAreInNewCategory() {
+        resultRepository.save(resultPassed)
+
+        val results = resultDiffService.findDiff(null, run)
+
+        assertResultInCategory(NEW_PASSED, resultPassed, results)
+    }
+
+
     private fun assertResultInCategory(expectedCategory: DiffCategory, result: Result, actual: Map<DiffCategory, List<TestWithResults>>) {
         assertEquals(1, actual.size)
         assertEquals(1, actual.get(expectedCategory)!!.size)
