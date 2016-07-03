@@ -20,5 +20,6 @@ export class StacktraceComponent {
 
     collapse() {
         this.expanded = false;
+        this.showCollapseIcon = false;
     }
 }
