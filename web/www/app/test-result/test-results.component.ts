@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from 'angular2/core'
+import {Component, Input} from 'angular2/core'
 import {TestWithResults} from "./test-with-results";
 import {StacktraceComponent} from "./stacktrace/stacktrace.component";
 
@@ -8,11 +8,7 @@ import {StacktraceComponent} from "./stacktrace/stacktrace.component";
     styleUrls: ['app/test-result/test-results.css'],
     directives: [StacktraceComponent]
 })
-export class TestResultsComponent implements OnInit {
-    ngOnInit():any {
-        console.log("Results: " + this.results)
-        console.log("Type: " + this.type)
-    }
+export class TestResultsComponent {
     @Input() results: TestWithResults[];
     @Input() type: string;
 }
