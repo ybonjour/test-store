@@ -6,8 +6,12 @@ import ch.yvu.teststore.result.ResultRepository
 import java.util.*
 
 open class ListBackedResultRepository(val genericRepository: ListBackedRepository<Result>) : ResultRepository {
+    override fun findAllByRunIdAndTestName(runId: UUID, testName: String): List<Result> {
+        return genericRepository.findAll { it.run == runId && it.testName == testName }
+    }
+
     override fun findAllByRunId(runId: UUID): List<Result> {
-        return genericRepository.findAll { result -> runId.equals(result.run) }
+        return genericRepository.findAll { runId.equals(it.run) }
     }
 
     override fun save(item: Result): Result {
