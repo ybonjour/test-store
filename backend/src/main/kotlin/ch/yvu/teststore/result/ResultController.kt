@@ -41,10 +41,10 @@ class ResultController @Autowired constructor(
         return resultRepository.findAllByRunId(run)
     }
 
-    @RequestMapping(method = arrayOf(GET), value = "/runs/{run}/test/{testName}/result")
+    @RequestMapping(method = arrayOf(GET), value = "/runs/{run}/results/filtered")
     fun getResultByRunAndTestName(
             @PathVariable run: UUID,
-            @PathVariable testName: String
+            @RequestParam(value="testname", required=true) testName: String
     ): ResponseEntity<TestWithResults> {
         val result = resultService.getTestWithResults(run, testName)
         if(result == null) return ResponseEntity(NOT_FOUND)
