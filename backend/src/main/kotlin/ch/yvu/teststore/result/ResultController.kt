@@ -41,6 +41,16 @@ class ResultController @Autowired constructor(
         return resultRepository.findAllByRunId(run)
     }
 
+    @RequestMapping(method = arrayOf(GET), value = "/runs/{run}/test/{testName}/result")
+    fun getResultByRunAndTestName(
+            @PathVariable run: UUID,
+            @PathVariable testName: String
+    ): ResponseEntity<TestWithResults> {
+        val result = resultService.getTestWithResults(run, testName)
+        if(result == null) return ResponseEntity(NOT_FOUND)
+        return ResponseEntity(result, OK)
+    }
+
     @RequestMapping(method = arrayOf(GET), value = "/runs/{run}/results/grouped")
     fun getAllResultsGrouped(
             @PathVariable run: UUID): Map<TestWithResults.TestResult, List<TestWithResults>> {

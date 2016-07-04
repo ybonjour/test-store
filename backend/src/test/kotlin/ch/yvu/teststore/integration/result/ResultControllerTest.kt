@@ -156,6 +156,26 @@ class ResultControllerTest : BaseIntegrationTest() {
             .statusCode(200)
     }
 
+    @Test fun getResultByRunAndTestNameReturnsResult() {
+        val runId = randomUUID()
+        val result = Result(runId, "myTest", 0, true, 42)
+        saveResults(listOf(result))
+
+        given()
+            .get("/runs/$runId/test/${result.testName}/result")
+        .then()
+            .statusCode(200)
+            .body("testName", equalTo(result.testName))
+    }
+
+    @Test fun getResultsByRunAndTestNameReturns404IfNoResultCanBeFound() {
+        val runId = randomUUID()
+        given()
+            .get("/runs/$runId/test/myTest/result")
+        .then()
+            .statusCode(404)
+    }
+
     private fun saveResults(results: List<Result>) {
         results.forEach { resultRepository.save(it) }
     }
