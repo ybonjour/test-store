@@ -42,8 +42,7 @@ export class HistoryComponent implements OnInit {
 
     selectResult(runId: string, testName: string){
         this._testResultService.getResult(runId, testName).subscribe(
-            result => this.currentResult = result,
-            error => this.errorMessage = <any>error
+            result => this.currentResult = result
         )
     }
 
