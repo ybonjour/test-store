@@ -48,7 +48,8 @@ class HistoryServiceTest {
         val runHistory = historyService.getRunHistories(testSuiteId, defaultLImit)
 
         assertEquals(1, runHistory.size)
-        assertThat(runHistory.get(0), has(RunHistory::revision, equalTo(run.revision)))
+        assertEquals(run.revision, runHistory.get(0).revision)
+        assertEquals(run.id, runHistory.get(0).runId)
     }
 
     @Test fun doesNotReturnRevisionsOfOtherTestSuites() {
