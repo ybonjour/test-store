@@ -28,7 +28,13 @@
                 failed: historyEntry.results[testName.longName] == 'FAILED',
                 retried: historyEntry.results[testName.longName] == 'RETRIED'}"
                 title="{{testName.longName}}@{{historyEntry.getShortRevision()}}"
-            ></td>
+                (click)="selectResult(historyEntry.runId, testName.longName)"
+            >
+                <div class="resultDetails" *ngIf="isCurrentResult(historyEntry.runId, testName.longName)">
+                    <a (click)="unselectResult($event)">Close</a>
+                    <test-results [results]="[currentResult]" [type]="currentResult.testResult"></test-results>
+                </div>
+            </td>
         </tr>
     </tbody>
 </table>

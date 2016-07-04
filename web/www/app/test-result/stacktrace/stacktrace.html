@@ -5,7 +5,7 @@
          *ngIf="!expanded && isExpandable()"
          (mouseover)="showCollapseIcon=true"
          (mouseleave)="showCollapseIcon=false"
-         (click)="expand()">
+         (click)="expand($event)">
         <img
                 *ngIf="showCollapseIcon"
                 id="expand-icon"
@@ -14,7 +14,7 @@
     <img
             id="collapse-icon"
             *ngIf="expanded"
-            (click)="collapse()"
+            (click)="collapse($event)"
             src="img/collapse-up.png"
           />
 </div>

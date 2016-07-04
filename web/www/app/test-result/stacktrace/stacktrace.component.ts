@@ -10,12 +10,14 @@ export class StacktraceComponent {
     expanded = false;
     showCollapseIcon = false;
 
-    isExpandable() {
+    isExpandable(event: Event) {
         return this.stackTrace != null && this.stackTrace.length > 3500;
+        event.stopPropagation();
     }
 
-    expand() {
+    expand(event: Event) {
         this.expanded = true;
+        event.stopPropagation();
     }
 
     collapse() {

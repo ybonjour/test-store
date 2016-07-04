@@ -98,3 +98,15 @@ td.retried {
 tbody {
     overflow-y:scroll;
 }
+
+.resultDetails {
+    position: absolute;
+    background-color:#FFFFFF;
+    border: 2px solid #AAAAAA;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.resultDetails a {
+    cursor: pointer;
+}
