@@ -1,9 +1,8 @@
-<div class="header">
-	<h1 class="passed" *ngIf="passedResults.length > 0">Passed: {{passedResults.length}}</h1>
-	<h1 class="retried" *ngIf="retriedResults.length > 0">Retried: {{retriedResults.length}}</h1>
-	<h1 class="failed" *ngIf="failedResults.length > 0">Failed: {{failedResults.length}}</h1>
-</div>
-
+<test-results-header
+        [numPassedResults]="passedResults.length"
+        [numRetriedResults]="retriedResults.length"
+        [numFailedResults]="failedResults.length"
+></test-results-header>
 <div *ngIf="errorMessage">{{errorMessage}}</div>
 <test-results [results]="failedResults" [type]="'FAILED'"></test-results>
 <test-results [results]="retriedResults" [type]="'RETRIED'"></test-results>

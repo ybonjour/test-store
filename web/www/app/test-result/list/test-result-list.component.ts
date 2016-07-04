@@ -4,11 +4,11 @@ import { RouteParams } from 'angular2/router';
 import {TestResultService} from '../test-result.service.ts'
 import {TestWithResults} from '../test-with-results'
 import {TestResultsComponent} from "../test-results.component";
+import {TestResultsHeaderComponent} from "../header/test-results-header.component";
 
 @Component({
 	templateUrl: 'app/test-result/list/test-result-list.html',
-	styleUrls: ['app/test-result/list/test-result-list.css'],
-	directives: [TestResultsComponent]
+	directives: [TestResultsComponent, TestResultsHeaderComponent]
 })
 export class TestResultListComponent implements OnInit {
 	errorMessage: string;
