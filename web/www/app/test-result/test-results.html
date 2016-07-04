@@ -1,4 +1,4 @@
-<div class="results-container" *ngIf="results.length > 0">
+<div class="results-container" *ngIf="results && results.length > 0">
     <ul class="results" *ngIf="type == 'PASSED'">
         <li *ngFor="#result of results" class="result passed">
             <span class="name">{{result.testName}}</span> <span class="duration">{{(result.results[0].durationMillis / 1000) | number}} seconds</span>

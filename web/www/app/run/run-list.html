@@ -9,7 +9,8 @@
                 'failed': run.runResult=='FAILED',
                 'unknwon': run.runResult=='UNKNOWN'}"
             class="run">
-        <a class="title" [routerLink]="['Results', {testsuite_id: run.testSuite, run_id: run.id}]">{{run.time.toLocaleDateString()}}, {{run.time.toLocaleTimeString()}}</a>
+        <a class="title" [routerLink]="['Results', {testsuite_id: run.testSuite, run_id: run.id}]">{{run.time.toLocaleDateString()}}, {{run.time.toLocaleTimeString()}}</a>,
+        <a [routerLink]="['Results Diff', {testsuite_id: run.testSuite, run_id: run.id}]">Diff</a>
         <div class="info">
             Total duration: {{run.totalDurationMillis / 1000}} seconds, Revision: {{run.revision}}
         </div>
