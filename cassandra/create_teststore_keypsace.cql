@@ -24,8 +24,6 @@ CREATE TABLE IF NOT EXISTS runById (
 	PRIMARY KEY (id)
 );
 
-CREATE INDEX IF NOT EXISTS runsByTestsuite ON run (testsuite);
-
 CREATE TABLE IF NOT EXISTS result (
 	run uuid,
 	testName text,
