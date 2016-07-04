@@ -1,5 +1,6 @@
 export class HistoryEntry {
     revision: string;
+    runId: string;
     results: {string: string};
 
     getShortRevision() {

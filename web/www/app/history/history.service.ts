@@ -31,6 +31,7 @@ export class HistoryService {
         for(var historyEntryJson of json) {
             let historyEntry = new HistoryEntry();
             historyEntry.revision = historyEntryJson.revision;
+            historyEntry.runId = historyEntryJson.runId;
             historyEntry.results = HistoryService.convertJsonToResultMap(historyEntryJson.results);
             history.push(historyEntry);
         }

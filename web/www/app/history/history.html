@@ -13,7 +13,7 @@
             </th>
             <th class="rotate" *ngFor="#historyEntry of historyEntries">
                 <div>
-                    <span>{{historyEntry.getShortRevision()}}</span>
+                    <span><a [routerLink]="['Results', {testsuite_id: testSuiteId, run_id: historyEntry.runId}]">{{historyEntry.getShortRevision()}}</a></span>
                 </div>
             </th>
         </tr>
