@@ -10,7 +10,11 @@ import java.util.*
 open class ResultDiffService @Autowired constructor(
         open val resultService: ResultService) {
     enum class DiffCategory {
-        NEW_PASSED, NEW_FAILED, NEW_RETRIED, REMOVED, FIXED, BROKE, NOW_FLAKY, STILL_FAILING, STILL_PASSING
+        NEW_PASSED, NEW_FAILED, NEW_RETRIED,
+        FIXED, BROKE,
+        RETRIED_AFTER_FAILED, RETRIED_AFTER_PASSED,
+        STILL_FAILING, STILL_PASSING, STILL_RETRIED,
+        REMOVED
     }
 
 
@@ -37,7 +41,9 @@ open class ResultDiffService @Autowired constructor(
                 Pair(BROKE, filterCommonResults(commonTests, { it.isBroken })),
                 Pair(STILL_FAILING, filterCommonResults(commonTests, { it.isStillFailing })),
                 Pair(STILL_PASSING, filterCommonResults(commonTests, { it.isStillPassing })),
-                Pair(NOW_FLAKY, filterCommonResults(commonTests, { it.isNowFlaky })))
+                Pair(RETRIED_AFTER_PASSED, filterCommonResults(commonTests, { it.isRetriedAfterPassed })),
+                Pair(RETRIED_AFTER_FAILED, filterCommonResults(commonTests, { it.isRetriedAfterFailed })),
+                Pair(STILL_RETRIED, filterCommonResults(commonTests, { it.isStillRetried })))
                 .filter { !it.value.isEmpty() }
     }
 
@@ -57,6 +63,10 @@ open class ResultDiffService @Autowired constructor(
 
         val isStillPassing = prevResult.getTestResult() == PASSED && result.getTestResult() == PASSED
 
-        val isNowFlaky = prevResult.getTestResult() == PASSED && result.getTestResult() == RETRIED
+        val isRetriedAfterPassed = prevResult.getTestResult() == PASSED && result.getTestResult() == RETRIED
+
+        val isRetriedAfterFailed = prevResult.getTestResult() == FAILED && result.getTestResult() == RETRIED
+
+        val isStillRetried = prevResult.getTestResult() == RETRIED && result.getTestResult() == RETRIED
     }
 }

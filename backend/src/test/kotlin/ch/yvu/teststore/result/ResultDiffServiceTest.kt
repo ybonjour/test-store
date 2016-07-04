@@ -129,16 +129,44 @@ class ResultDiffServiceTest {
         assertResultInCategory(STILL_PASSING, resultPassed, results)
     }
 
-    @Test fun nowRetriedTestIsCategorizedCorrectly() {
-        val resultPrevPasseed = Result(prevRun, resultFailed.testName, 0, true, duration)
+    @Test fun stillRetriedTestIsCategorizedCorrectly() {
+        val testName = "MyRetriedTest"
+        val resultPrevFailed = Result(prevRun, testName, 0, false, duration)
+        val resultPrevPassed = Result(prevRun, testName, 1, true, duration)
+        val resultFailed = Result(run, testName, 0, false, duration)
+        val resultPassed = Result(run, testName, 1, true, duration)
+        resultRepository.save(resultPrevFailed)
+        resultRepository.save(resultPrevPassed)
+        resultRepository.save(resultFailed)
+        resultRepository.save(resultPassed)
+
+        val results = resultDiffService.findDiff(prevRun, run)
+
+        assertResultInCategory(STILL_RETRIED, resultPassed, results)
+    }
+
+    @Test fun nowRetriedAfterPassedTestIsCategorizedCorrectly() {
+        val resultPrevPassed = Result(prevRun, resultFailed.testName, 0, true, duration)
         val resultRetried = Result(run, resultFailed.testName, 1, true, duration)
-        resultRepository.save(resultPrevPasseed)
+        resultRepository.save(resultPrevPassed)
         resultRepository.save(resultFailed)
         resultRepository.save(resultRetried)
 
         val results = resultDiffService.findDiff(prevRun, run)
 
-        assertResultInCategory(NOW_FLAKY, resultRetried, results)
+        assertResultInCategory(RETRIED_AFTER_PASSED, resultRetried, results)
+    }
+
+    @Test fun nowRetriedAfterFailedTestIsCategorizedCorrectly() {
+        val resultPrevPassed = Result(prevRun, resultFailed.testName, 0, false, duration)
+        val resultRetried = Result(run, resultFailed.testName, 1, true, duration)
+        resultRepository.save(resultPrevPassed)
+        resultRepository.save(resultFailed)
+        resultRepository.save(resultRetried)
+
+        val results = resultDiffService.findDiff(prevRun, run)
+
+        assertResultInCategory(RETRIED_AFTER_FAILED, resultRetried, results)
     }
 
     @Test fun ifNoPreviousRunIsProvidedResultsAreInNewCategory() {
