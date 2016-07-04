@@ -15,9 +15,16 @@ open class ResultService @Autowired constructor(open val resultRepository: Resul
                 .groupBy { it.testName }
                 .map {
                     val (name, results) = it
-                    results.fold(
-                            TestWithResults(name!!),
-                            { current, result -> current.addResult(result) })
+                    TestWithResults(name!!, results)
                 }
+    }
+
+    fun getTestWithResults(runId: UUID, testName: String): TestWithResults? {
+        return resultRepository.findAllByRunIdAndTestName(runId, testName)
+            .groupBy { it.testName }
+            .map {
+                val (name, results) = it
+                TestWithResults(name!!, results)
+            }.firstOrNull()
     }
 }
