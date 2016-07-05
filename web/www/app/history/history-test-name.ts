@@ -1,12 +1,17 @@
-export class HistoryTestName{
+export class HistoryTestName {
     longName: string;
     shortName: string;
+    allTestsPassed = true;
 
     private static maxLengthShort: number = 50;
 
     constructor(longName:string){
         this.longName = longName;
         this.shortName = HistoryTestName.shorten(longName);
+    }
+
+    addResult(result: String){
+        this.allTestsPassed = this.allTestsPassed && result == 'PASSED';
     }
 
     private static shorten(name: String) {

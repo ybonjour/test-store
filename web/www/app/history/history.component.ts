@@ -6,11 +6,13 @@ import {HistoryTestName} from "./history-test-name";
 import {TestResultService} from "../test-result/test-result.service";
 import {TestWithResults} from "../test-result/test-with-results";
 import {TestResultsComponent} from "../test-result/test-results.component";
+import {HistoryFilter} from "./history-filter.pipe";
 
 @Component({
     templateUrl: 'app/history/history.html',
     styleUrls: ['app/history/history.css'],
-    directives: [ROUTER_DIRECTIVES, TestResultsComponent]
+    directives: [ROUTER_DIRECTIVES, TestResultsComponent],
+    pipes: [HistoryFilter]
 })
 export class HistoryComponent implements OnInit {
     testSuiteId: string;
@@ -18,6 +20,7 @@ export class HistoryComponent implements OnInit {
     historyEntries: HistoryEntry[] = [];
     testNames: HistoryTestName[] = [];
     errorMessage: string;
+    hidePassed = false;
     
     currentResult: TestWithResults = null;
 
@@ -58,6 +61,10 @@ export class HistoryComponent implements OnInit {
             this.currentResult.testName == testName
     }
 
+    togglePassed() {
+        this.hidePassed = !this.hidePassed;
+    }
+
     private getHistory() {
         this._historyService.getHistory(this.testSuiteId, this.limit).subscribe(
             historyEntries => this.handleNewHistory(historyEntries),
@@ -71,14 +78,21 @@ export class HistoryComponent implements OnInit {
     }
 
     private loadShortTestNames(historyEntries: HistoryEntry[]) {
-        this.testNames = [];
-        let seenTests = {};
+
+        let tests = {};
         for(let historyEntry of historyEntries) {
             for(let test in historyEntry.results){
-                if(test in seenTests) continue;
-                seenTests[test] = true;
+                if(!(test in tests)){
+                    tests[test] = new HistoryTestName(test);
+                }
+                tests[test].addResult(historyEntry.results[test])
                 this.testNames.push(new HistoryTestName(test));
             }
+        }
+
+        this.testNames = [];
+        for(let test in tests){
+            this.testNames.push(tests[test]);
         }
     }
 }

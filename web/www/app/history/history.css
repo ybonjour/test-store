@@ -10,6 +10,7 @@ td {
 
 th.title {
     position: relative;
+    min-width: 380px;
 }
 
 th.title h1 {
@@ -18,10 +19,25 @@ th.title h1 {
     left: 0;
 }
 
-.limit-switcher {
+.controls {
     position: absolute;
     bottom: 0;
     right: 0;
+}
+
+.hide-toggle {
+    float: left;
+    margin-right: 10px;
+    padding-top: 2px;
+}
+
+.hide-toggle a {
+    color: #AAAAAA;
+}
+
+
+.limit-switcher {
+    float: left;
 }
 
 .limit-switcher div {
@@ -47,7 +63,6 @@ th.title h1 {
 
 .limit-switcher-button a {
     color: #AAAAAA;
-    cursor: pointer;
 }
 
 .limit-switcher .active {
@@ -107,6 +122,6 @@ tbody {
     padding-right: 10px;
 }
 
-.resultDetails a {
+a {
     cursor: pointer;
 }

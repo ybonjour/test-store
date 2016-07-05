@@ -40,7 +40,8 @@
 
 #page-content-wrapper {
     width: 100%;
-    position: absolute;
+    height: 100%;
+    position: fixed;
     padding: 15px;
     overflow-y: scroll;
 }
@@ -68,8 +69,7 @@
     }
 
     #page-content-wrapper {
-        padding: 20px;
-        position: relative;
+        padding: 20px
     }
 
     #wrapper.toggled #page-content-wrapper {
