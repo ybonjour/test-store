@@ -33,3 +33,11 @@ CREATE TABLE IF NOT EXISTS result (
 	stackTrace varchar,
 	PRIMARY KEY (run, testName, retryNum)
 );
+
+CREATE TABLE IF NOT EXISTS test_statistics (
+    testSuite uuid,
+    testName text,
+    numPassed int,
+    numFailed int,
+    PRIMARY KEY (testSuite, testName)
+);
