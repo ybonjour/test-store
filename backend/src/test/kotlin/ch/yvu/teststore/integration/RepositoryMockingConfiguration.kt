@@ -2,9 +2,11 @@ package ch.yvu.teststore.integration
 
 import ch.yvu.teststore.integration.result.ListBackedResultRepository
 import ch.yvu.teststore.integration.run.ListBackedRunRepository
+import ch.yvu.teststore.integration.statistics.ListBackedTestStatisticsRepository
 import ch.yvu.teststore.integration.testsuite.ListBackedTestSuiteRepository
 import ch.yvu.teststore.result.ResultRepository
 import ch.yvu.teststore.run.RunRepository
+import ch.yvu.teststore.statistics.TestStatisticsRepository
 import ch.yvu.teststore.testsuite.TestSuiteRepository
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration
 import org.springframework.boot.autoconfigure.data.cassandra.CassandraDataAutoConfiguration
@@ -38,5 +40,10 @@ open class RepositoryMockingConfiguration {
     @Bean
     open fun resultRepository(): ResultRepository {
         return ListBackedResultRepository(ListBackedRepository())
+    }
+
+    @Bean
+    open fun testStatisticsRepository(): TestStatisticsRepository {
+        return ListBackedTestStatisticsRepository(ListBackedRepository())
     }
 }

@@ -5,6 +5,8 @@ import ch.yvu.teststore.result.CassandraResultRepository
 import ch.yvu.teststore.result.ResultRepository
 import ch.yvu.teststore.run.CassandraRunRepository
 import ch.yvu.teststore.run.RunRepository
+import ch.yvu.teststore.statistics.CassandraTestStatisticsRepository
+import ch.yvu.teststore.statistics.TestStatisticsRepository
 import ch.yvu.teststore.testsuite.CassandraTestSuiteRepository
 import ch.yvu.teststore.testsuite.TestSuiteRepository
 import com.datastax.driver.core.Cluster
@@ -45,6 +47,10 @@ open class CassandraConfig {
 
     @Bean open fun resultRepository(): ResultRepository {
         return CassandraResultRepository(MappingManager(session))
+    }
+
+    @Bean open fun testStatisticsRepository(): TestStatisticsRepository {
+        return CassandraTestStatisticsRepository(MappingManager(session))
     }
 }
 

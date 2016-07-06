@@ -6,10 +6,14 @@ import ch.yvu.teststore.insert.dto.TestSuiteDto
 import ch.yvu.teststore.integration.ListBackedRepository
 import ch.yvu.teststore.integration.result.ListBackedResultRepository
 import ch.yvu.teststore.integration.run.ListBackedRunRepository
+import ch.yvu.teststore.integration.statistics.ListBackedTestStatisticsRepository
 import ch.yvu.teststore.integration.testsuite.ListBackedTestSuiteRepository
 import ch.yvu.teststore.matchers.ResultMatchers.resultWith
 import ch.yvu.teststore.result.ResultRepository
+import ch.yvu.teststore.run.Run
 import ch.yvu.teststore.run.RunRepository
+import ch.yvu.teststore.statistics.TestStatistics
+import ch.yvu.teststore.statistics.TestStatisticsRepository
 import ch.yvu.teststore.testsuite.TestSuiteRepository
 import org.hamcrest.Matchers.any
 import org.hamcrest.Matchers.hasItem
@@ -33,6 +37,7 @@ class InsertServiceTest {
     lateinit var testSuiteRepository: TestSuiteRepository
     lateinit var runRepository: RunRepository
     lateinit var resultRepository: ResultRepository
+    lateinit var testStatisticsRepository: TestStatisticsRepository
 
     lateinit var insertService: InsertService
 
@@ -40,7 +45,8 @@ class InsertServiceTest {
         testSuiteRepository = ListBackedTestSuiteRepository(ListBackedRepository())
         runRepository = ListBackedRunRepository(ListBackedRepository())
         resultRepository = ListBackedResultRepository(ListBackedRepository())
-        insertService = InsertService(testSuiteRepository, runRepository, resultRepository)
+        testStatisticsRepository = ListBackedTestStatisticsRepository(ListBackedRepository())
+        insertService = InsertService(testSuiteRepository, runRepository, resultRepository, testStatisticsRepository)
     }
 
     @Test fun insertsTestSuiteCorrectly() {
@@ -116,6 +122,57 @@ class InsertServiceTest {
         insertService.insertResults(resultDtos, runId)
 
         assertEquals(0, resultRepository.count())
+    }
+
+    @Test fun insertsTestStatisticsForNewPassedResultCorrectly() {
+        val run = Run(randomUUID(), randomUUID(), "abc-123", Date())
+        runRepository.save(run)
+
+        val resultDtos = listOf(A_TEST_DTO_PASSED)
+
+        insertService.insertResults(resultDtos, run.id!!)
+
+        verifyTestStatisticsStored(listOf(TestStatistics(run.testSuite!!, A_TEST_DTO_PASSED.testName, numPassed = 1, numFailed = 0)))
+    }
+
+    @Test fun insertsTestStatisticsForNewFailedResultCorrectly() {
+        val run = Run(randomUUID(), randomUUID(), "abc-123", Date())
+        runRepository.save(run)
+
+        val resultDtos = listOf(B_TEST_DTO_FAILED)
+
+        insertService.insertResults(resultDtos, run.id!!)
+
+        verifyTestStatisticsStored(listOf(TestStatistics(run.testSuite!!, B_TEST_DTO_FAILED.testName, numPassed = 0, numFailed = 1)))
+    }
+
+    @Test fun updatesExistingTestStatisticsCorrectly() {
+        val run = Run(randomUUID(), randomUUID(), "abc-123", Date())
+        runRepository.save(run)
+        val testStatistic = TestStatistics(run.testSuite, A_TEST_DTO_PASSED.testName, numPassed = 1, numFailed = 0)
+        testStatisticsRepository.save(testStatistic)
+        val resultDtos = listOf(A_TEST_DTO_PASSED)
+
+        insertService.insertResults(resultDtos, run.id!!)
+
+        verifyTestStatisticsStored(listOf(TestStatistics(run.testSuite, A_TEST_DTO_PASSED.testName, numPassed = 2, numFailed = 0)))
+    }
+
+    @Test fun multipleTestStatisticsAreStoredCorrectly() {
+        val run = Run(randomUUID(), randomUUID(), "abc-123", Date())
+        runRepository.save(run)
+        val resultDtos = listOf(A_TEST_DTO_PASSED, B_TEST_DTO_FAILED)
+
+        insertService.insertResults(resultDtos, run.id!!)
+
+        verifyTestStatisticsStored(listOf(
+                TestStatistics(run.testSuite, A_TEST_DTO_PASSED.testName, numPassed = 1, numFailed = 0),
+                TestStatistics(run.testSuite, B_TEST_DTO_FAILED.testName, numPassed = 0, numFailed = 1)))
+    }
+
+    private fun verifyTestStatisticsStored(expectedTestStatistics: List<TestStatistics>) {
+        val testStatistics = testStatisticsRepository.findAll()
+        assertEquals(expectedTestStatistics, testStatistics)
     }
 
     private fun verifyResultsSaved(vararg resultDtos: ResultDto) {
