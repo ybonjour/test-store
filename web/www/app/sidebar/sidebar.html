@@ -22,6 +22,7 @@
         <ul *ngIf="isCurrentTestSuite(testSuite)" class="sidebar-subnav">
             <li><a [routerLink]="['Runs', {testsuite_id: testSuite.id}]">Runs</a></li>
             <li><a [routerLink]="['History', {testsuite_id: testSuite.id}]">History</a></li>
+            <li><a [routerLink]="['Statistics', {testsuite_id: testSuite.id}]">Test Statistics</a></li>
         </ul>
     </li>
     <li>

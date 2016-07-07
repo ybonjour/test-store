@@ -15,6 +15,7 @@ import {TestSuiteOverviewComponent} from "./test-suite/overview/test-suite-overv
 import {Window} from './window'
 import {HistoryService} from "./history/history.service";
 import {TestResultDiffComponent} from "./test-result/diff/test-result-diff.component";
+import {TestStatisticsComponent} from "./statistics/test-statistics.component";
 
 @Component({
     selector: 'app',
@@ -62,6 +63,11 @@ import {TestResultDiffComponent} from "./test-result/diff/test-result-diff.compo
         path: 'testsuites/:testsuite_id/runs/:run_id/diff',
         name: 'Results Diff',
         component: TestResultDiffComponent
+    },
+    {
+        path: 'testsuites/:testsuite_id/statistics',
+        name: 'Statistics',
+        component: TestStatisticsComponent
     }
 ])
 export class AppComponent implements OnInit {
