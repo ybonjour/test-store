@@ -7,6 +7,10 @@ import java.util.*
 
 open class CassandraTestStatisticsRepository @Autowired constructor(mappingManager: MappingManager) :
         TestStatisticsRepository, CassandraRepository<TestStatistics>(mappingManager, "test_statistics", TestStatistics::class.java) {
+    override fun findAllByTestSuite(testSuiteId: UUID): List<TestStatistics> {
+        val resultSet = session.execute("select * from test_statistics where testsuite=?", testSuiteId)
+        return mapper.map(resultSet).all().toList()
+    }
 
     override fun findByTestSuiteAndTestName(testSuiteId: UUID, testName: String): TestStatistics? {
         val resultSet = session.execute("SELECT * from test_statistics WHERE testSuite=? AND testName=?", testSuiteId, testName)

@@ -9,4 +9,5 @@ interface TestStatisticsRepository : TestStoreRepository<TestStatistics> {
 
     fun findByTestSuiteAndTestName(testSuiteId: UUID, testName: String): TestStatistics?
 
+    fun findAllByTestSuite(testSuiteId: UUID): List<TestStatistics>
 }
