@@ -16,6 +16,7 @@ import {Window} from './window'
 import {HistoryService} from "./history/history.service";
 import {TestResultDiffComponent} from "./test-result/diff/test-result-diff.component";
 import {TestStatisticsComponent} from "./statistics/test-statistics.component";
+import {TestStatisticsService} from "./statistics/test-statistics.service";
 
 @Component({
     selector: 'app',
@@ -30,6 +31,7 @@ import {TestStatisticsComponent} from "./statistics/test-statistics.component";
         TestSuiteService,
         TestSuitesChangedEvent,
         HistoryService,
+        TestStatisticsService,
         provide(Window, {useValue: window})
     ]
 })

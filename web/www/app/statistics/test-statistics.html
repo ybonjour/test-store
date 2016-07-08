@@ -1,1 +1,7 @@
-<h1>Test Statistics {{testSuiteId}}</h1>
+<h1>Test Statistics</h1>
+
+<ul>
+    <li *ngFor="#testStatistic of testStatistics">
+        {{testStatistic.testName}}: {{testStatistic.numPassed}} Passed, {{testStatistic.numFailed}}
+    </li>
+</ul>
