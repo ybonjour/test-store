@@ -62,4 +62,29 @@ class CassandraResultRepositoryTest {
         assertEquals(listOf(aResult), actual)
     }
 
+    @Test fun findAllByRunIdAndTestNameSendsCorrectQuery() {
+        val resultSet = mock(ResultSet::class.java)
+        `when`(session.execute(anyString(), any(UUID::class.java), anyString())).thenReturn(resultSet)
+        `when`(mapper.map(resultSet)).thenReturn(result)
+        `when`(result.all()).thenReturn(emptyList<Result>())
+        val runId = randomUUID()
+        val testName = "myTest"
+
+        repository.findAllByRunIdAndTestName(runId, testName)
+
+        verify(session).execute("SELECT * FROM result WHERE run=? AND testName=?", runId, testName)
+    }
+
+    @Test fun findAllByRunIdAndTestNameReturnsCorrectResult() {
+        val aResult = Result(randomUUID(), "SomeTest", 0, true, 203)
+        val resultSet = mock(ResultSet::class.java)
+        `when`(session.execute(anyString(), any(UUID::class.java), anyString())).thenReturn(resultSet)
+        `when`(mapper.map(resultSet)).thenReturn(result)
+        `when`(result.all()).thenReturn(listOf(aResult))
+
+        val actual = repository.findAllByRunIdAndTestName(aResult.run!!, aResult.testName!!);
+
+        assertEquals(listOf(aResult), actual)
+    }
+
 }

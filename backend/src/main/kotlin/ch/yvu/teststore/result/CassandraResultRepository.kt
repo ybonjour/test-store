@@ -9,7 +9,7 @@ open class CassandraResultRepository @Autowired constructor(mappingManager: Mapp
         ResultRepository, CassandraRepository<Result>(mappingManager, "result", Result::class.java) {
 
     override fun findAllByRunIdAndTestName(runId: UUID, testName: String): List<Result> {
-        val results = session.execute("SELECT * FROM result WHERE run=? and testName=?", runId, testName)
+        val results = session.execute("SELECT * FROM result WHERE run=? AND testName=?", runId, testName)
         return mapper.map(results).all().toList()
     }
 
