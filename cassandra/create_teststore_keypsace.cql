@@ -34,6 +34,8 @@ CREATE TABLE IF NOT EXISTS result (
 	PRIMARY KEY (run, testName, retryNum)
 );
 
+CREATE INDEX IF NOT EXISTS resultByTestname ON result (testname);
+
 CREATE TABLE IF NOT EXISTS test_statistics (
     testSuite uuid,
     testName text,
