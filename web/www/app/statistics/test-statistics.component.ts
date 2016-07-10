@@ -4,7 +4,8 @@ import {TestStatisticsService} from "./test-statistics.service";
 import {TestStatistics} from "./test-statistics";
 
 @Component({
-    templateUrl: 'app/statistics/test-statistics.html'
+    templateUrl: 'app/statistics/test-statistics.html',
+    styleUrls: ['app/statistics/test-statistics.css']
 })
 export class TestStatisticsComponent implements OnInit{
     testSuiteId: string;
@@ -16,10 +17,15 @@ export class TestStatisticsComponent implements OnInit{
         private _routeParams: RouteParams) { }
 
     ngOnInit():any {
-        this.testSuiteId = this._routeParams.get('testsuite_id')
+        this.testSuiteId = this._routeParams.get('testsuite_id');
         this._testStatisticsService.getStatistics(this.testSuiteId).subscribe(
             statistics => this.testStatistics = statistics,
             error => this.errorMessage = <any>error);
     }
 
+    extractStatistics(testStatistics: TestStatistics[]) {
+        this.testStatistics = testStatistics.sort(function (statistic1, statistic2){
+            return statistic1.getPassRate() - statistic2.getPassRate();
+        })
+    }
 }

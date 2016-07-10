@@ -1,7 +1,10 @@
 <h1>Test Statistics</h1>
 
 <ul>
-    <li *ngFor="#testStatistic of testStatistics">
-        {{testStatistic.testName}}: {{testStatistic.numPassed}} Passed, {{testStatistic.numFailed}}
+    <li *ngFor="#statistics of testStatistics">
+        <span class="title">{{statistics.testName}}</span>
+        <div class="info">
+            {{statistics.getTotalResults()}} Results, Pass-Rate: {{statistics.getPassRate()*100}}%
+        </div>
     </li>
 </ul>

@@ -1,0 +1,23 @@
+ul{
+    list-style: none;
+    padding-left: 0;
+}
+
+li {
+    padding-left:10px;
+    padding-top:5px;
+    padding-bottom:5px;
+    margin-bottom: 2px;
+
+    border-left: 20px solid #aaaaaa;
+    border-bottom: 1px solid #aaaaaa;
+}
+
+li .title {
+    font-size: 18pt;
+}
+
+li .info {
+    font-size: 10pt;
+}
+
