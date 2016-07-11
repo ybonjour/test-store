@@ -11,7 +11,6 @@ import ch.yvu.teststore.run.Run
 import ch.yvu.teststore.run.RunRepository
 import com.natpryce.hamkrest.assertion.assertThat
 import com.natpryce.hamkrest.equalTo
-import com.natpryce.hamkrest.has
 import com.natpryce.hamkrest.hasSize
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
@@ -37,7 +36,7 @@ class HistoryServiceTest {
     @Before fun setUp() {
         runRepository = ListBackedRunRepository(ListBackedRepository())
         resultRepository = ListBackedResultRepository(ListBackedRepository())
-        resultService = ResultService(resultRepository)
+        resultService = ResultService(resultRepository, runRepository)
         historyService = HistoryService(runRepository, resultService)
 
     }

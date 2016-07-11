@@ -2,11 +2,14 @@ package ch.yvu.teststore.result
 
 import ch.yvu.teststore.integration.ListBackedRepository
 import ch.yvu.teststore.integration.result.ListBackedResultRepository
+import ch.yvu.teststore.integration.run.ListBackedRunRepository
 import ch.yvu.teststore.result.TestWithResults.TestResult
-import org.junit.Assert
+import ch.yvu.teststore.run.Run
+import ch.yvu.teststore.run.RunRepository
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
+import java.util.*
 import java.util.UUID.randomUUID
 
 class ResultServiceTest {
@@ -17,13 +20,15 @@ class ResultServiceTest {
     }
 
     lateinit var resultRepository: ResultRepository
+    lateinit var runRepository: RunRepository
 
     lateinit var resultService: ResultService
 
     @Before fun setUp() {
         resultRepository = ListBackedResultRepository(ListBackedRepository())
+        runRepository = ListBackedRunRepository(ListBackedRepository())
 
-        resultService = ResultService(resultRepository)
+        resultService = ResultService(resultRepository, runRepository)
     }
 
     @Test fun getTestsWithResultsReturnsTestResults() {
@@ -119,7 +124,46 @@ class ResultServiceTest {
         assertEquals(listOf(failedResult, retriedResult), result?.results)
     }
 
+    @Test fun getResultsByTestSuiteAndTestNameReturnsTestsForTestname() {
+        val testSuiteId = randomUUID()
+        val run = Run(randomUUID(), testSuiteId, "abc-123", Date())
+        runRepository.save(run)
+        val result = Result(run.id, "myTest", 0, true, 42)
+        resultRepository.save(result)
+
+        val results = resultService.getResultsByTestSuiteAndTestName(testSuiteId, passedResult.testName!!)
+
+        assertEquals(passedResult.testName!!, results.get(0).testName)
+        assertEquals(run.id!!, results.get(0).run)
+    }
+
+    @Test fun getResultsByTestSuiteAndTestNameDoesNotReturnResultsFromOtherTestSuite() {
+        val otherTestSuiteId = randomUUID()
+        val run = Run(randomUUID(), otherTestSuiteId, "abc-123", Date())
+        runRepository.save(run)
+        val result = Result(run.id, "mytest", 0, true, 42)
+        resultRepository.save(result)
+
+        val testSuiteId = randomUUID()
+
+        val results = resultService.getResultsByTestSuiteAndTestName(testSuiteId, result.testName!!)
+
+        assertEquals(0, results.size)
+    }
+
+    @Test fun getResultsByTestSuiteAndTestNameDoesNotReturnResultsFromOtherTestName() {
+        val testSuiteId = randomUUID()
+        val run = Run(randomUUID(), testSuiteId, "abc-124", Date())
+        runRepository.save(run)
+        val result = Result(run.id, "myTest", 0, true, 42)
+        resultRepository.save(result)
+
+        val results = resultService.getResultsByTestSuiteAndTestName(testSuiteId, "myOtherTest")
+
+        assertEquals(0, results.size)
+    }
+
     private fun fromResult(result: Result): TestWithResults {
-        return  TestWithResults(result.testName!!).addResult(result)
+        return TestWithResults(result.testName!!).addResult(result)
     }
 }

@@ -4,6 +4,7 @@ import ch.yvu.teststore.integration.ListBackedRepository
 import ch.yvu.teststore.integration.result.ListBackedResultRepository
 import ch.yvu.teststore.result.ResultDiffService.DiffCategory
 import ch.yvu.teststore.result.ResultDiffService.DiffCategory.*
+import ch.yvu.teststore.run.RunRepository
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
@@ -21,12 +22,14 @@ class ResultDiffServiceTest {
         val resultFailed = Result(run, "MyNewTestFailed", 0, false, duration)
     }
 
-    private lateinit var resultDiffService: ResultDiffService
     private lateinit var resultRepository: ResultRepository
+    private lateinit var runRepository: RunRepository
+
+    private lateinit var resultDiffService: ResultDiffService
 
     @Before fun setUp() {
         resultRepository = ListBackedResultRepository(ListBackedRepository())
-        val resultService = ResultService(resultRepository)
+        val resultService = ResultService(resultRepository, runRepository)
         resultDiffService = ResultDiffService(resultService)
     }
 
