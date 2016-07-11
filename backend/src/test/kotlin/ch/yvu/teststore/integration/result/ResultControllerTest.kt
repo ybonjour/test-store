@@ -176,6 +176,20 @@ class ResultControllerTest : BaseIntegrationTest() {
             .statusCode(404)
     }
 
+    @Test fun getResultsByTestSuiteAndTestNameReturnsResults() {
+        val testSutiteId = randomUUID()
+        val run = Run(randomUUID(), testSutiteId, "abc-123", Date())
+        runRepository.save(run)
+        val result = Result(run.id, "myTest", 0, true, 42)
+        saveResults(listOf(result))
+
+        given()
+            .get("/testsuites/$testSutiteId/tests/${result.testName!!}")
+        .then()
+            .statusCode(200)
+            .body("[0].testName", equalTo(result.testName!!))
+    }
+
     private fun saveResults(results: List<Result>) {
         results.forEach { resultRepository.save(it) }
     }
