@@ -14,7 +14,6 @@ import org.junit.Assert.assertThat
 import org.junit.Before
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
-import java.net.URLEncoder
 import java.util.*
 import java.util.UUID.randomUUID
 
@@ -91,7 +90,7 @@ class ResultControllerTest : BaseIntegrationTest() {
 
         given()
                 .get("/runs/$runId/results")
-        .then()
+                .then()
                 .statusCode(200)
                 .body("[0].testName", equalTo(result1.testName))
                 .body("[1].testName", equalTo(result2.testName))
@@ -113,7 +112,7 @@ class ResultControllerTest : BaseIntegrationTest() {
 
         given()
                 .get("/runs/$runId/results/grouped")
-        .then()
+                .then()
                 .statusCode(200)
                 .body("PASSED[0].testName", equalTo(resultPassingTest.testName))
                 .body("RETRIED[0].testName", equalTo(resultFlakyTest.testName))
@@ -131,10 +130,10 @@ class ResultControllerTest : BaseIntegrationTest() {
         val result = Result(run.id, resultPrev.testName, 0, true, 23)
         saveResults(listOf(resultPrev, result))
 
-       given()
-               .get("/runs/${run.id}/results/diff")
-       .then()
-               .statusCode(200)
+        given()
+                .get("/runs/${run.id}/results/diff")
+                .then()
+                .statusCode(200)
                 .body("FIXED[0].testName", equalTo(result.testName))
     }
 
@@ -142,9 +141,9 @@ class ResultControllerTest : BaseIntegrationTest() {
         val runId = randomUUID()
 
         given()
-            .get("/runs/$runId/results/diff")
-        .then()
-            .statusCode(404)
+                .get("/runs/$runId/results/diff")
+                .then()
+                .statusCode(404)
     }
 
     @Test fun getRunDiffReturnsResultsIfNoPreviousRun() {
@@ -152,9 +151,9 @@ class ResultControllerTest : BaseIntegrationTest() {
         runRepository.save(run)
 
         given()
-            .get("/runs/${run.id}/results/diff")
-        .then()
-            .statusCode(200)
+                .get("/runs/${run.id}/results/diff")
+                .then()
+                .statusCode(200)
     }
 
     @Test fun getResultByRunAndTestNameReturnsResult() {
@@ -163,18 +162,18 @@ class ResultControllerTest : BaseIntegrationTest() {
         saveResults(listOf(result))
 
         given()
-            .get("/runs/$runId/results/filtered?testname=${result.testName}")
-        .then()
-            .statusCode(200)
-            .body("testName", equalTo(result.testName))
+                .get("/runs/$runId/results/filtered?testname=${result.testName}")
+                .then()
+                .statusCode(200)
+                .body("testName", equalTo(result.testName))
     }
 
     @Test fun getResultsByRunAndTestNameReturns404IfNoResultCanBeFound() {
         val runId = randomUUID()
         given()
-            .get("/runs/$runId/results/filtered?testname=myTest")
-        .then()
-            .statusCode(404)
+                .get("/runs/$runId/results/filtered?testname=myTest")
+                .then()
+                .statusCode(404)
     }
 
     @Test fun getResultsByTestSuiteAndTestNameReturnsResults() {
@@ -185,24 +184,24 @@ class ResultControllerTest : BaseIntegrationTest() {
         saveResults(listOf(result))
 
         given()
-            .get("/testsuites/$testSutiteId/tests/${result.testName!!}")
-        .then()
-            .statusCode(200)
-            .body("[0].testName", equalTo(result.testName!!))
+                .get("/testsuites/$testSutiteId/tests/${result.testName!!}")
+                .then()
+                .statusCode(200)
+                .body("[0].testName", equalTo(result.testName!!))
     }
 
     @Test fun getResultsByTestSuiteAndTestNameDecodesTestName() {
         val testSuiteId = randomUUID()
         val run = Run(randomUUID(), testSuiteId, "abc-123", Date())
         runRepository.save(run)
-        val result = Result(run.id, "MyTestClass#myTest", 0, true, 42)
+        val result = Result(run.id, "ch.yvu.teststore.common.CassandraRepositoryTest#canSaveAnItem", 0, true, 42)
         saveResults(listOf(result))
 
         given()
-            .get("/testsuites/$testSuiteId/tests/${URLEncoder.encode(result.testName!!, "UTF-8")}")
-        .then()
-            .statusCode(200)
-            .body("[0].testName", equalTo(result.testName!!))
+                .get("/testsuites/$testSuiteId/tests/ch.yvu.teststore.common.CassandraRepositoryTest%23canSaveAnItem")
+                .then()
+                .statusCode(200)
+                .body("[0].testName", equalTo(result.testName!!))
     }
 
     private fun saveResults(results: List<Result>) {

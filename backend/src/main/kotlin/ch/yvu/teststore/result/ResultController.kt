@@ -45,10 +45,10 @@ class ResultController @Autowired constructor(
     @RequestMapping(method = arrayOf(GET), value = "/runs/{run}/results/filtered")
     fun getResultByRunAndTestName(
             @PathVariable run: UUID,
-            @RequestParam(value="testname", required=true) testName: String
+            @RequestParam(value = "testname", required = true) testName: String
     ): ResponseEntity<TestWithResults> {
         val result = resultService.getTestWithResults(run, testName)
-        if(result == null) return ResponseEntity(NOT_FOUND)
+        if (result == null) return ResponseEntity(NOT_FOUND)
         return ResponseEntity(result, OK)
     }
 
@@ -70,7 +70,7 @@ class ResultController @Autowired constructor(
         return ResponseEntity(resultDiffService.findDiff(prevRun?.id, currentRun.id!!), OK)
     }
 
-    @RequestMapping(method = arrayOf(GET), value = "/testsuites/{testSuite}/tests/{testName}")
+    @RequestMapping(method = arrayOf(GET), value = "/testsuites/{testSuite}/tests/{testName:.+}")
     fun getResultsByTestSuiteAndTestName(
             @PathVariable testSuite: UUID,
             @PathVariable testName: String
