@@ -2,6 +2,7 @@ package ch.yvu.teststore.result
 
 import ch.yvu.teststore.integration.ListBackedRepository
 import ch.yvu.teststore.integration.result.ListBackedResultRepository
+import ch.yvu.teststore.integration.run.ListBackedRunRepository
 import ch.yvu.teststore.result.ResultDiffService.DiffCategory
 import ch.yvu.teststore.result.ResultDiffService.DiffCategory.*
 import ch.yvu.teststore.run.RunRepository
@@ -29,6 +30,7 @@ class ResultDiffServiceTest {
 
     @Before fun setUp() {
         resultRepository = ListBackedResultRepository(ListBackedRepository())
+        runRepository = ListBackedRunRepository(ListBackedRepository())
         val resultService = ResultService(resultRepository, runRepository)
         resultDiffService = ResultDiffService(resultService)
     }
