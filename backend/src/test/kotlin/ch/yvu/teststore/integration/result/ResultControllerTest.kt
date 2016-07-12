@@ -14,6 +14,7 @@ import org.junit.Assert.assertThat
 import org.junit.Before
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
+import java.net.URLEncoder
 import java.util.*
 import java.util.UUID.randomUUID
 
@@ -185,6 +186,20 @@ class ResultControllerTest : BaseIntegrationTest() {
 
         given()
             .get("/testsuites/$testSutiteId/tests/${result.testName!!}")
+        .then()
+            .statusCode(200)
+            .body("[0].testName", equalTo(result.testName!!))
+    }
+
+    @Test fun getResultsByTestSuiteAndTestNameDecodesTestName() {
+        val testSuiteId = randomUUID()
+        val run = Run(randomUUID(), testSuiteId, "abc-123", Date())
+        runRepository.save(run)
+        val result = Result(run.id, "MyTestClass#myTest", 0, true, 42)
+        saveResults(listOf(result))
+
+        given()
+            .get("/testsuites/$testSuiteId/tests/${URLEncoder.encode(result.testName!!, "UTF-8")}")
         .then()
             .statusCode(200)
             .body("[0].testName", equalTo(result.testName!!))

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod.GET
 import org.springframework.web.bind.annotation.RequestMethod.POST
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
+import java.net.URLDecoder
 import java.util.*
 import javax.servlet.http.HttpServletResponse
 
@@ -74,7 +75,8 @@ class ResultController @Autowired constructor(
             @PathVariable testSuite: UUID,
             @PathVariable testName: String
     ): List<Result> {
-        return resultService.getResultsByTestSuiteAndTestName(testSuite, testName)
+        val decodedTestName = URLDecoder.decode(testName, "UTF-8")
+        return resultService.getResultsByTestSuiteAndTestName(testSuite, decodedTestName)
     }
 
 }
