@@ -2,7 +2,9 @@
 
 <ul>
     <li *ngFor="#statistics of testStatistics">
-        <span class="title">{{statistics.testName}}</span>
+        <span class="title">
+            <a [routerLink]="['Test Details', {testsuite_id: testSuiteId, test_name: statistics.testName}]">{{statistics.testName}}</a>
+        </span>
         <div class="info">
             {{statistics.getTotalResults()}} Results, Pass-Rate: {{statistics.getPassRate()*100}}%
         </div>

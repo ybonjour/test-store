@@ -1,11 +1,12 @@
 import {Component, OnInit} from 'angular2/core';
-import {RouteParams} from 'angular2/router';
+import {RouteParams, ROUTER_DIRECTIVES} from 'angular2/router';
 import {TestStatisticsService} from "./test-statistics.service";
 import {TestStatistics} from "./test-statistics";
 
 @Component({
     templateUrl: 'app/statistics/test-statistics.html',
-    styleUrls: ['app/statistics/test-statistics.css']
+    styleUrls: ['app/statistics/test-statistics.css'],
+    directives: ROUTER_DIRECTIVES
 })
 export class TestStatisticsComponent implements OnInit{
     testSuiteId: string;

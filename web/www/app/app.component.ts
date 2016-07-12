@@ -17,6 +17,7 @@ import {HistoryService} from "./history/history.service";
 import {TestResultDiffComponent} from "./test-result/diff/test-result-diff.component";
 import {TestStatisticsComponent} from "./statistics/test-statistics.component";
 import {TestStatisticsService} from "./statistics/test-statistics.service";
+import {TestDetailsComponent} from "./test/test-details.component";
 
 @Component({
     selector: 'app',
@@ -70,6 +71,11 @@ import {TestStatisticsService} from "./statistics/test-statistics.service";
         path: 'testsuites/:testsuite_id/statistics',
         name: 'Statistics',
         component: TestStatisticsComponent
+    },
+    {
+        path: 'testsuites/:testsuite_id/tests/:test_name',
+        name: 'Test Details',
+        component: TestDetailsComponent
     }
 ])
 export class AppComponent implements OnInit {
