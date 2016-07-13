@@ -1,5 +1,7 @@
 import {Component, OnInit} from 'angular2/core'
 import {RouteParams} from 'angular2/router'
+import {TestResultService} from "../test-result/test-result.service";
+import {TestResult} from "../test-result/test-result";
 
 @Component({
     templateUrl: 'app/test/test-details.html',
@@ -8,12 +10,24 @@ import {RouteParams} from 'angular2/router'
 export class TestDetailsComponent implements OnInit{
     testSuiteId: string;
     testName: string;
+    results: TestResult[] = [];
+    errorMessage: string;
 
-    constructor(private _routeParams: RouteParams) {}
+    constructor(
+        private _routeParams: RouteParams,
+        private _testResultService: TestResultService) {}
 
     ngOnInit():any {
         this.testSuiteId = this._routeParams.get('testsuite_id');
         this.testName = this._routeParams.get('test_name');
-        return undefined;
+
+        this._testResultService.getResultsByTestSuiteAndTestName(this.testSuiteId, this.testName).subscribe(
+            results => this.handleResults(results),
+            error => this.errorMessage = <any>error
+        );
+    }
+
+    private handleResults(results:TestResult[]) {
+        this.results = results;
     }
 }

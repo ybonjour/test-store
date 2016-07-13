@@ -9,6 +9,12 @@ export class TestResultService {
     constructor(private _http:Http) {
     }
 
+    getResultsByTestSuiteAndTestName(testSuiteId: string, testName: string): Observable<TestResult[]> {
+        return this._http.get("/api/testsuites/" + testSuiteId + "/tests/" + encodeURIComponent(testName))
+            .map(TestResultService.extractUngroupedResults)
+            .catch(TestResultService.extractError)
+    }
+
     getResultsDiff(runId:String):Observable<{string:TestWithResults[]}> {
         return this._http.get("/api/runs/" + runId + "/results/diff")
             .map(TestResultService.extractBody)
@@ -28,6 +34,12 @@ export class TestResultService {
         return this._http.get("/api/runs/" + runId + "/results/filtered", {search: params})
             .map(TestResultService.extractSingleResult)
             .catch(TestResultService.extractError);
+    }
+
+    private static extractUngroupedResults(response: Response): TestResult[] {
+        if(response.status != 200) throw new Error("Bad response status: " + response.status)
+
+        return TestResultService.convertResultsFromJson(response.json())
     }
 
     private static extractSingleResult(response: Response): TestWithResults {
@@ -67,17 +79,7 @@ export class TestResultService {
     }
 
     private static convertTestWithResultsFromJson(json:any):TestWithResults {
-        var results = [];
-        for (let resultJson of json.results) {
-            let result = new TestResult();
-            result.run = resultJson.run;
-            result.testName = resultJson.testName;
-            result.retryNum = resultJson.retryNum;
-            result.passed = resultJson.passed;
-            result.durationMillis = resultJson.durationMillis;
-            result.stackTrace = resultJson.stackTrace;
-            results.push(result);
-        }
+        var results = TestResultService.convertResultsFromJson(json.results);
 
         results.sort(function (result1, result2) {
             return result2.retryNum - result1.retryNum;
@@ -89,5 +91,26 @@ export class TestResultService {
         testWithResults.results = results;
 
         return testWithResults;
+    }
+
+    private static extractResultFromJson(json: any): TestResult {
+        let result = new TestResult();
+        result.run = json.run;
+        result.testName = json.testName;
+        result.retryNum = json.retryNum;
+        result.passed = json.passed;
+        result.durationMillis = json.durationMillis;
+        result.stackTrace = json.stackTrace;
+        return result;
+    }
+
+    private static convertResultsFromJson(json:any): TestResult[] {
+        var results = [];
+        for(let resultJson of json) {
+            let result = TestResultService.extractResultFromJson(resultJson);
+            results.push(result);
+        }
+
+        return results;
     }
 }

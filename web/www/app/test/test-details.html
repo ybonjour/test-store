@@ -1,4 +1,6 @@
-<h1>Test Details</h1>
+<h1>{{testName}}</h1>
 
-Test: {{testName}}
-Test Suite: {{testSuiteId}}
+<ul *ngFor="#result of results" class="results">
+    <li title="{{result.run}}" class="passed">
+    </li>
+</ul>

@@ -1,0 +1,21 @@
+h1 {
+    word-wrap: break-word;
+}
+
+ul.results {
+    list-style: none;
+    padding-left: 0;
+}
+
+ul li {
+    float: left;
+    width: 20px;
+    height: 20px;
+    margin: 2px;
+}
+
+li.passed {
+    background-color: #00AA00;
+    border: 1px solid #003300;
+}
+
