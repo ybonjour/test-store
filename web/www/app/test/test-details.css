@@ -19,3 +19,15 @@ li.passed {
     border: 1px solid #003300;
 }
 
+li.failed {
+    background-color: #AA0000;
+    border: 1px solid #330000;
+}
+
+span.passed {
+    color: #00AA00;
+}
+
+span.failed {
+    color: #AA0000;
+}

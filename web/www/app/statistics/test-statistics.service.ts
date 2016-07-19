@@ -16,10 +16,23 @@ export class TestStatisticsService {
             .catch(TestStatisticsService.extractError)
     }
 
+    getStatisticsByTestSuiteAndTestName(testSuiteId: String, testName: String): Observable<TestStatistics> {
+        let decodedTestName = encodeURIComponent(testName);
+        return this._http.get("/api/testsuites/" + testSuiteId + "/statistics/" + decodedTestName)
+            .map(TestStatisticsService.extractBodySingle)
+            .catch(TestStatisticsService.extractError)
+    }
+
     private static extractBody(response: Response): TestStatistics[] {
         if(response.status != 200) throw new Error("Bad response status: " + response.status);
 
         return TestStatisticsService.convertJsonToTestStatisticsList(response.json());
+    }
+
+    private static extractBodySingle(response: Response): TestStatistics {
+        if(response.status != 200) throw new Error("Bad response status: " + response.status);
+
+        return TestStatisticsService.convertJsonToTestStatistic(response.json())
     }
 
     private static extractError(error: any) {
@@ -31,14 +44,20 @@ export class TestStatisticsService {
     private static convertJsonToTestStatisticsList(json: any): TestStatistics[] {
         var testStatisticsList = [];
         for(var testStatisticsJson of json) {
-            var testStatistics = new TestStatistics();
-            testStatistics.testSuite = testStatisticsJson.testSuite;
-            testStatistics.testName = testStatisticsJson.testName;
-            testStatistics.numPassed = testStatisticsJson.numPassed;
-            testStatistics.numFailed = testStatisticsJson.numFailed;
+            let testStatistics = TestStatisticsService.convertJsonToTestStatistic(testStatisticsJson)
             testStatisticsList.push(testStatistics);
         }
         return testStatisticsList;
+    }
+
+    private static convertJsonToTestStatistic(json: any): TestStatistics {
+        var testStatistics = new TestStatistics();
+        testStatistics.testSuite = json.testSuite;
+        testStatistics.testName = json.testName;
+        testStatistics.numPassed = json.numPassed;
+        testStatistics.numFailed = json.numFailed;
+
+        return testStatistics;
     }
 
 }
