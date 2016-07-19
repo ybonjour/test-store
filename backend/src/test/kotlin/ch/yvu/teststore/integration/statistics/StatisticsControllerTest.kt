@@ -38,7 +38,7 @@ class StatisticsControllerTest : BaseIntegrationTest() {
 
     @Test fun getStatisticsByTestSuiteAndTestNameReturnsStatistics() {
         val testSuiteId = randomUUID()
-        val statistics = TestStatistics(testSuiteId, "MyTest#myTest", 1, 0)
+        val statistics = TestStatistics(testSuiteId, "ch.yvu.testsore.MyTest#myTest", 1, 0)
         statisticsRepository.save(statistics)
         val encodedTestName = URLEncoder.encode(statistics.testName, "UTF-8")
 

@@ -21,7 +21,7 @@ class StatisticsController @Autowired constructor(val testStatisticsRepository: 
         return testStatisticsRepository.findAllByTestSuite(testSuite)
     }
 
-    @RequestMapping(method = arrayOf(GET), value = "/testsuites/{testSuite}/statistics/{testName}")
+    @RequestMapping(method = arrayOf(GET), value = "/testsuites/{testSuite}/statistics/{testName:.+}")
     fun getStatisticsByTestSuiteAndTestName(
             @PathVariable testSuite: UUID,
             @PathVariable testName: String): ResponseEntity<TestStatistics> {
