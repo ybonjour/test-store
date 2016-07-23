@@ -5,6 +5,7 @@ import ch.yvu.teststore.revision.Revision
 import ch.yvu.teststore.revision.RevisionRepository
 import com.jayway.restassured.RestAssured.given
 import org.hamcrest.Description
+import org.hamcrest.Matchers.equalTo
 import org.hamcrest.Matchers.hasItem
 import org.hamcrest.TypeSafeMatcher
 import org.junit.Assert.assertThat
@@ -13,14 +14,15 @@ import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import java.text.SimpleDateFormat
 import java.util.*
+import java.util.UUID.randomUUID
 
 class RevisionControllerTest : BaseIntegrationTest() {
     companion object {
         val now = Date(1)
         val isoFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
         val nowString = SimpleDateFormat(isoFormat).format(now)
-        val runId = UUID.randomUUID()
-        val revision = "abc-123"
+        val runId = randomUUID()
+        val revisionHash = randomUUID().toString()
         val author = "Yves Bonjour"
         val comment = "Some comment"
         val url = "https://github.com/ybonjour/test-store"
@@ -37,7 +39,7 @@ class RevisionControllerTest : BaseIntegrationTest() {
     @Test fun createRevisionReturnsCorrectStatusCode() {
         given()
                 .queryParam("time", nowString)
-                .queryParam("revision", revision)
+                .queryParam("revision", revisionHash)
                 .queryParam("author", author)
                 .queryParam("comment", comment)
                 .queryParam("url", url)
@@ -48,29 +50,29 @@ class RevisionControllerTest : BaseIntegrationTest() {
     @Test fun createRevisionStoresRevisionCorrectly() {
         given()
                 .queryParam("time", nowString)
-                .queryParam("revision", revision)
+                .queryParam("revision", revisionHash)
                 .queryParam("author", author)
                 .queryParam("comment", comment)
                 .queryParam("url", url)
                 .post("/runs/$runId/revisions")
 
         val revisions = revisionRepository.findAll()
-        assertThat(revisions, hasItem(revisionWith(runId, now, revision, author, comment, url)))
+        assertThat(revisions, hasItem(revisionWith(runId, now, revisionHash, author, comment, url)))
     }
 
     @Test fun createRevisionStoresRunWithOnlyMandatoryFieldsCorrectly() {
         given()
                 .queryParam("time", nowString)
-                .queryParam("revision", revision)
+                .queryParam("revision", revisionHash)
                 .post("/runs/$runId/revisions")
 
         val revisions = revisionRepository.findAll()
-        assertThat(revisions, hasItem(revisionWith(runId, now, revision, null, null, null)))
+        assertThat(revisions, hasItem(revisionWith(runId, now, revisionHash, null, null, null)))
     }
 
     @Test fun createRevisionReturns400StatusCodeIfNoTimeProvided() {
         given()
-                .queryParam("revision", revision)
+                .queryParam("revision", revisionHash)
                 .post("/runs/$runId/revisions")
                 .then().statusCode(400)
     }
@@ -80,6 +82,22 @@ class RevisionControllerTest : BaseIntegrationTest() {
                 .queryParam("time", nowString)
                 .post("/runs/$runId/revisions")
                 .then().statusCode(400)
+    }
+
+    @Test fun getRevisionsByRunReturnsRevision() {
+        val revision = Revision(runId, now, revisionHash, author, comment, url)
+        revisionRepository.save(revision)
+
+        given()
+                .get("/runs/$runId/revisions")
+                .then()
+                .statusCode(200)
+                .body("[0].run", equalTo(runId.toString()))
+                .body("[0].time", equalTo(now.time.toInt()))
+                .body("[0].revision", equalTo(revisionHash))
+                .body("[0].author", equalTo(author))
+                .body("[0].comment", equalTo(comment))
+                .body("[0].url", equalTo(url))
     }
 
     private fun revisionWith(run: UUID, time: Date, revision: String, author: String?, comment: String?, url: String?) = object : TypeSafeMatcher<Revision>() {
