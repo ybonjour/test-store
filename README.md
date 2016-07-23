@@ -77,6 +77,16 @@ Content-Type: application/xml
 200 OK
 ```
 
+### Add revision to run
+```
+POST /runs/1b48b134-bb93-4bcd-9c02-92dd83d89157/revisions
+revision=e46ed71567d5da172b00ece3efd7019aab51d756
+time=2016-04-03T01:30:00.001-0200
+author=Yves Bonjour
+comment=Adds revision support
+url=https%3A%2F%2Fgithub.com%2Fybonjour%2Ftest-store%2Fcommit%2F4fd0b7ef01c02821b398e15281c7f810d9511be3
+```
+
 ## Use test-store with gradle and git
 
 ### Build the plugin
