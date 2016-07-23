@@ -50,7 +50,7 @@ class CassandraRunRepositoryTest {
         verify(session).execute("SELECT * FROM run WHERE testSuite=?", testSuiteId)
     }
 
-    @Test fun findAllByRunIdReturnsCorrectREsult() {
+    @Test fun findAllByRunIdReturnsCorrectResult() {
         val run = Run(randomUUID(), randomUUID(), "abc-123", Date())
         val resultSet = mock(ResultSet::class.java)
         `when`(session.execute(anyString(), any(UUID::class.java))).thenReturn(resultSet)
