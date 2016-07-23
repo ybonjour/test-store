@@ -24,6 +24,16 @@ CREATE TABLE IF NOT EXISTS runById (
 	PRIMARY KEY (id)
 );
 
+CREATE TABLE IF NOT EXISTS revision (
+    run uuid,
+    revision text,
+    time timestamp,
+    author text,
+    comment text,
+    url text,
+    PRIMARY KEY (run, time, revision)
+) WiTH CLUSTERING ORDER BY (time DESC);
+
 CREATE TABLE IF NOT EXISTS result (
 	run uuid,
 	testName text,
