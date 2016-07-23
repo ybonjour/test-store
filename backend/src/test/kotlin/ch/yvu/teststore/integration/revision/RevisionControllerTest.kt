@@ -5,9 +5,8 @@ import ch.yvu.teststore.revision.Revision
 import ch.yvu.teststore.revision.RevisionRepository
 import com.jayway.restassured.RestAssured.given
 import org.hamcrest.Description
-import org.hamcrest.Matchers.*
+import org.hamcrest.Matchers.hasItem
 import org.hamcrest.TypeSafeMatcher
-import org.junit.Assert
 import org.junit.Assert.assertThat
 import org.junit.Before
 import org.junit.Test
@@ -46,7 +45,7 @@ class RevisionControllerTest : BaseIntegrationTest() {
                 .then().statusCode(201)
     }
 
-    @Test fun storesRevisionCorrectly() {
+    @Test fun createRevisionStoresRevisionCorrectly() {
         given()
                 .queryParam("time", nowString)
                 .queryParam("revision", revision)
@@ -59,28 +58,28 @@ class RevisionControllerTest : BaseIntegrationTest() {
         assertThat(revisions, hasItem(revisionWith(runId, now, revision, author, comment, url)))
     }
 
-    @Test fun storesRunWithOnlyMandatoryFieldsCorrectly() {
+    @Test fun createRevisionStoresRunWithOnlyMandatoryFieldsCorrectly() {
         given()
-            .queryParam("time", nowString)
-            .queryParam("revision", revision)
-        .post("/runs/$runId/revisions")
+                .queryParam("time", nowString)
+                .queryParam("revision", revision)
+                .post("/runs/$runId/revisions")
 
         val revisions = revisionRepository.findAll()
         assertThat(revisions, hasItem(revisionWith(runId, now, revision, null, null, null)))
     }
 
-    @Test fun returns400StatusCodeIfNoTimeProvided() {
+    @Test fun createRevisionReturns400StatusCodeIfNoTimeProvided() {
         given()
-            .queryParam("revision", revision)
-            .post("/runs/$runId/revisions")
-        .then().statusCode(400)
+                .queryParam("revision", revision)
+                .post("/runs/$runId/revisions")
+                .then().statusCode(400)
     }
 
-    @Test fun returns400StatusCodeIfNoRevisionProvided() {
+    @Test fun createRevisionRreturns400StatusCodeIfNoRevisionProvided() {
         given()
-            .queryParam("time", nowString)
-            .post("/runs/$runId/revisions")
-        .then().statusCode(400)
+                .queryParam("time", nowString)
+                .post("/runs/$runId/revisions")
+                .then().statusCode(400)
     }
 
     private fun revisionWith(run: UUID, time: Date, revision: String, author: String?, comment: String?, url: String?) = object : TypeSafeMatcher<Revision>() {
