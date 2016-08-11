@@ -3,6 +3,8 @@ package ch.yvu.teststore.config
 
 import ch.yvu.teststore.result.CassandraResultRepository
 import ch.yvu.teststore.result.ResultRepository
+import ch.yvu.teststore.revision.CassandraRevisionRepository
+import ch.yvu.teststore.revision.RevisionRepository
 import ch.yvu.teststore.run.CassandraRunRepository
 import ch.yvu.teststore.run.RunRepository
 import ch.yvu.teststore.statistics.CassandraTestStatisticsRepository
@@ -51,6 +53,10 @@ open class CassandraConfig {
 
     @Bean open fun testStatisticsRepository(): TestStatisticsRepository {
         return CassandraTestStatisticsRepository(MappingManager(session))
+    }
+
+    @Bean open fun revisionRepository(): RevisionRepository {
+        return CassandraRevisionRepository(MappingManager(session))
     }
 }
 
