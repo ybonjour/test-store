@@ -1,14 +1,17 @@
-import {Component} from 'angular2/core';
-import {OnInit} from 'angular2/core';
-import { RouteParams } from 'angular2/router';
-import {TestResultService} from '../test-result.service.ts'
-import {TestWithResults} from '../test-with-results'
+import {Component, OnInit} from "angular2/core";
+import {RouteParams} from "angular2/router";
+import {TestResultService} from "../test-result.service.ts";
+import {TestWithResults} from "../test-with-results";
 import {TestResultsComponent} from "../test-results.component";
 import {TestResultsHeaderComponent} from "../header/test-results-header.component";
+import {RevisionComponent} from "../../revision/revision-list.component";
 
 @Component({
 	templateUrl: 'app/test-result/list/test-result-list.html',
-	directives: [TestResultsComponent, TestResultsHeaderComponent]
+	directives: [
+		TestResultsComponent,
+		TestResultsHeaderComponent,
+		RevisionComponent]
 })
 export class TestResultListComponent implements OnInit {
 	errorMessage: string;

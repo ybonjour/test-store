@@ -1,22 +1,22 @@
 import {Component, OnInit, provide} from "angular2/core";
 import {HTTP_PROVIDERS} from "angular2/http";
 import {Router, RouteConfig, ROUTER_DIRECTIVES, ROUTER_PROVIDERS} from "angular2/router";
-import {Component} from 'angular2/core';
 import {TestResultListComponent} from "./test-result/list/test-result-list.component.ts";
 import {RunListComponent} from "./run/run-list.component.ts";
 import {TestResultService} from "./test-result/test-result.service.ts";
 import {RunService} from "./run/run.service.ts";
-import {TestSuiteService} from "./test-suite/test-suite.service.ts"
+import {TestSuiteService} from "./test-suite/test-suite.service.ts";
 import {SidebarComponent} from "./sidebar/sidebar.component.ts";
 import {HistoryComponent} from "./history/history.component";
 import {AddTestSuiteComponent} from "./test-suite/add/add-test-suite.component.ts";
 import {TestSuitesChangedEvent} from "./test-suite/test-suites-changed-event.ts";
 import {TestSuiteOverviewComponent} from "./test-suite/overview/test-suite-overview.component";
-import {Window} from './window'
+import {Window} from "./window";
 import {HistoryService} from "./history/history.service";
 import {TestResultDiffComponent} from "./test-result/diff/test-result-diff.component";
 import {TestStatisticsComponent} from "./statistics/test-statistics.component";
 import {TestStatisticsService} from "./statistics/test-statistics.service";
+import {RevisionService} from "./revision/revision.service";
 import {TestDetailsComponent} from "./test/test-details.component";
 
 @Component({
@@ -33,6 +33,7 @@ import {TestDetailsComponent} from "./test/test-details.component";
         TestSuitesChangedEvent,
         HistoryService,
         TestStatisticsService,
+        RevisionService,
         provide(Window, {useValue: window})
     ]
 })

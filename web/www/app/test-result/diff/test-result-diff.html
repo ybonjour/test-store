@@ -3,6 +3,7 @@
     [numRetriedResults]="numRetriedResults"
     [numFailedResults]="numFailedResults"
 ></test-results-header>
+<revisions [runId]="runId"></revisions>
 <div *ngIf="errorMessage">{{errorMessage}}</div>
 
 <h4 *ngIf="results['NEW_FAILED']">Added Failed Tests</h4>

@@ -4,11 +4,12 @@ import {TestResultService} from "../test-result.service";
 import {TestWithResults} from "../test-with-results";
 import {TestResultsComponent} from "../test-results.component";
 import {TestResultsHeaderComponent} from "../header/test-results-header.component";
+import {RevisionComponent} from "../../revision/revision-list.component";
 
 @Component({
     templateUrl: 'app/test-result/diff/test-result-diff.html',
     styleUrls: ['app/test-result/diff/test-result-diff.css'],
-    directives: [TestResultsComponent, TestResultsHeaderComponent]
+    directives: [TestResultsComponent, TestResultsHeaderComponent, RevisionComponent]
 })
 export class TestResultDiffComponent implements OnInit {
 
