@@ -5,7 +5,7 @@ set -e
 dir=$(cd -P -- "$(dirname -- "$0")" && pwd -P)
 
 # Build backend
-$dir/../gradlew assemble
+docker run -v $dir/../:/workspace --rm java:8-jdk bash -ce "(cd workspace; ./gradlew assemble)"
 docker build -t test-store-backend $dir/../backend
 
 # Build web
