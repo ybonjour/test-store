@@ -6,3 +6,7 @@ ul {
 .heading {
     font-weight: bold;
 }
+
+a {
+    cursor: pointer;
+}
