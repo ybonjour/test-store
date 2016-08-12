@@ -20,6 +20,10 @@ li.result {
     width:100%;
 }
 
+li.result .name {
+    cursor: pointer;
+}
+
 li.result .name,
 li.try .name {
     float: left;

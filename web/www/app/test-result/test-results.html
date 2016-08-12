@@ -1,12 +1,12 @@
 <div class="results-container" *ngIf="results && results.length > 0">
     <ul class="results" *ngIf="type == 'PASSED'">
         <li *ngFor="#result of results" class="result passed">
-            <span class="name">{{result.testName}}</span> <span class="duration">{{(result.results[0].durationMillis / 1000) | number}} seconds</span>
+            <span class="name" [routerLink]="['Test Details', {testsuite_id: testSuiteId, test_name: result.testName}]">{{result.testName}}</span> <span class="duration">{{(result.results[0].durationMillis / 1000) | number}} seconds</span>
         </li>
     </ul>
     <ul class="results" *ngIf="type == 'FAILED'">
         <li  *ngFor="#result of results" class="result failed">
-            <span class="name">{{result.testName}}</span>
+            <span class="name" [routerLink]="['Test Details', {testsuite_id: testSuiteId, test_name: result.testName}]">{{result.testName}}</span>
 
             <ul class="tries">
                 <li *ngFor="#try of result.results" class="try">
@@ -21,7 +21,7 @@
     </ul>
     <ul class="results" *ngIf="type == 'RETRIED'">
         <li *ngFor="#result of results" class="result retried">
-            <span class="name">{{result.testName}}</span>
+            <span class="name" [routerLink]="['Test Details', {testsuite_id: testSuiteId, test_name: result.testName}]">{{result.testName}}</span>
 
             <ul class="tries">
                 <li *ngFor="#try of result.results" class="try" [ngClass]="{'passed': try.passed, 'failed': !try.passed}">
