@@ -16,7 +16,7 @@ export class TestStatisticsService {
             .catch(TestStatisticsService.extractError)
     }
 
-    getStatisticsByTestSuiteAndTestName(testSuiteId: String, testName: String): Observable<TestStatistics> {
+    getStatisticsByTestSuiteAndTestName(testSuiteId: string, testName: string): Observable<TestStatistics> {
         let decodedTestName = encodeURIComponent(testName);
         return this._http.get("/api/testsuites/" + testSuiteId + "/statistics/" + decodedTestName)
             .map(TestStatisticsService.extractBodySingle)

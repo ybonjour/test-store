@@ -14,7 +14,7 @@ export class TestSuiteService {
             .catch(TestSuiteService.extractError);
     }
 
-    createTestSuite(name: String): Observable<String> {
+    createTestSuite(name: string): Observable<string> {
         let headers = new Headers({'Content-Type': 'application/x-www-form-urlencoded'})
         let options = new RequestOptions({headers: headers});
         let body = "name=" + name;
@@ -29,7 +29,7 @@ export class TestSuiteService {
             .catch(TestSuiteService.extractError)
     }
 
-    private static extractCreateResponse(response: Response): String {
+    private static extractCreateResponse(response: Response): string {
         if(response.status != 201) throw new Error("Bad response status: " + response.status);
 
         return response.json().id
