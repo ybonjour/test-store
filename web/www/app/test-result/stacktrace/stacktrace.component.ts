@@ -12,7 +12,6 @@ export class StacktraceComponent {
 
     isExpandable(event: Event) {
         return this.stackTrace != null && this.stackTrace.length > 3500;
-        event.stopPropagation();
     }
 
     expand(event: Event) {
