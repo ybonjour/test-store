@@ -14,7 +14,7 @@ import {RevisionComponent} from "../../revision/revision-list.component";
 export class TestResultDiffComponent implements OnInit {
 
     runId:string;
-    results:{string:TestWithResults[]} = {};
+    results: {[category: string]: TestWithResults[]} = {};
     numPassedResults:number = 0;
     numRetriedResults:number = 0;
     numFailedResults:number = 0;
@@ -34,7 +34,7 @@ export class TestResultDiffComponent implements OnInit {
         );
     }
 
-    extractResults(results:{string:TestWithResults[]}) {
+    extractResults(results: {[category: string]: TestWithResults[]}) {
         this.results = results;
         this.numPassedResults = this.numResultsForCategory(results, "NEW_PASSED")
             + this.numResultsForCategory(results, "FIXED")
@@ -50,7 +50,7 @@ export class TestResultDiffComponent implements OnInit {
             + this.numResultsForCategory(results, "STILL_FAILING");
     }
 
-    private numResultsForCategory(results:{string:TestWithResults[]}, category:string) {
+    private numResultsForCategory(results:{[category: string]: TestWithResults[]}, category:string) {
         if (!(category in results)) return 0;
         return results[category].length;
     }

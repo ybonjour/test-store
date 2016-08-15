@@ -37,7 +37,7 @@ export class TestResultListComponent implements OnInit {
 						error => this.errorMessage = <any>error);
 	}
 
-	extractResults(results: Map<String, TestWithResults[]>) {
+	extractResults(results: {[category: string]: TestWithResults[]}) {
 		if(results["PASSED"] != null) {
 			this.passedResults = results["PASSED"];
 		}

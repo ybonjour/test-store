@@ -15,13 +15,13 @@ export class TestResultService {
             .catch(TestResultService.extractError)
     }
 
-    getResultsDiff(runId:String):Observable<{string:TestWithResults[]}> {
+    getResultsDiff(runId:String):Observable<{[id: string]:TestWithResults[]}> {
         return this._http.get("/api/runs/" + runId + "/results/diff")
             .map(TestResultService.extractBody)
             .catch(TestResultService.extractError)
     }
 
-    getResultsGrouped(runId:String):Observable<Map<String, TestWithResults[]>> {
+    getResultsGrouped(runId:String):Observable<{[id: string]: TestWithResults[]}> {
         return this._http.get("/api/runs/" + runId + "/results/grouped")
             .map(TestResultService.extractBody)
             .catch(TestResultService.extractError)
@@ -48,7 +48,7 @@ export class TestResultService {
         return TestResultService.convertTestWithResultsFromJson(response.json())
     }
 
-    private static extractBody(response:Response) {
+    private static extractBody(response:Response): {[category: string]: TestWithResults[]} {
         if (response.status != 200) throw new Error("Bad response status: " + response.status);
 
         return TestResultService.convertGroupedResults(response.json());
@@ -59,8 +59,8 @@ export class TestResultService {
         return Observable.throw(errorMessage);
     }
 
-    private static convertGroupedResults(json:any) {
-        var result = {};
+    private static convertGroupedResults(json:any): {[category: string]: TestWithResults[]} {
+        var result: {[category: string]: TestWithResults[]} = {};
         for (var key in json) {
             if (!json.hasOwnProperty(key)) continue;
             result[key] = TestResultService.convertTestsWithResultsFromJson(json[key]);
