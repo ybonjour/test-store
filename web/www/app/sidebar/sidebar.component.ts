@@ -16,7 +16,7 @@ export class SidebarComponent implements OnInit {
 
     @Input() sidebarVisible: boolean;
     @Input() currentTestSuiteId: string;
-    @Output() hideSidebar: EventEmitter = new EventEmitter();
+    @Output() hideSidebar: EventEmitter<any> = new EventEmitter<any>();
 
     constructor(
         private _testSuiteService: TestSuiteService,
