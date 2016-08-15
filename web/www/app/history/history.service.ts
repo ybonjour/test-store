@@ -39,8 +39,8 @@ export class HistoryService {
         return history;
     }
 
-    private static convertJsonToResultMap(json: any): {string: string} {
-        let results = {};
+    private static convertJsonToResultMap(json: any): { [id: string]: string} {
+        let results: {[id: string]: string} = {};
 
         for(var testName in json){
             if(!json.hasOwnProperty(testName)) continue;

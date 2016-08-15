@@ -1,7 +1,7 @@
 export class HistoryEntry {
     revision: string;
     runId: string;
-    results: {string: string};
+    results: {[id: string]: string};
 
     getShortRevision() {
         return this.revision.substring(0, 7);
