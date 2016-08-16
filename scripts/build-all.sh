@@ -9,7 +9,7 @@ docker run -v $dir/../:/workspace --rm java:8-jdk bash -ce "(cd workspace; ./gra
 docker build -t test-store-backend $dir/../backend
 
 # Build web
-docker run -v $dir/../web/www:/www --rm node bash -ce "(cd /www; npm install; npm install jspm -g; jspm install; npm run build)"
+docker run -v $dir/../web/www:/www --rm node bash -ce "(cd /www; npm install; npm run tsc)"
 docker build -t test-store-web $dir/../web
 
 # Build migration
