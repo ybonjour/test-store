@@ -1,8 +1,7 @@
-import {Component, OnInit} from 'angular2/core';
-import {ROUTER_DIRECTIVES} from 'angular2/router';
-import {Run} from './run';
-import {RunService} from './run.service.ts';
-import {RouteParams} from 'angular2/router';
+import {Component, OnInit} from "@angular/core";
+import {ROUTER_DIRECTIVES, RouteParams} from "@angular/router-deprecated";
+import {Run} from "./run";
+import {RunService} from "./run.service";
 
 @Component({
     templateUrl: 'app/run/run-list.html',

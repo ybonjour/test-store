@@ -1,6 +1,6 @@
-import {Component, OnInit} from "angular2/core";
-import {RouteParams} from "angular2/router";
-import {TestResultService} from "../test-result.service.ts";
+import {Component, OnInit} from "@angular/core";
+import {RouteParams} from "@angular/router-deprecated";
+import {TestResultService} from "../test-result.service";
 import {TestWithResults} from "../test-with-results";
 import {TestResultsComponent} from "../test-results.component";
 import {TestResultsHeaderComponent} from "../header/test-results-header.component";

@@ -1,9 +1,8 @@
-import {Component} from 'angular2/core'
+import {Component} from "@angular/core";
 import {TestSuite} from "./../test-suite";
-import {TestSuiteService} from "./../test-suite.service.ts";
-import {Router} from "angular2/router";
+import {TestSuiteService} from "./../test-suite.service";
+import {Router} from "@angular/router";
 import {TestSuitesChangedEvent} from "./../test-suites-changed-event";
-
 
 @Component({
     templateUrl: "app/test-suite/add/add-test-suite.html"

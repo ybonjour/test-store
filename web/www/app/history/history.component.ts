@@ -1,5 +1,5 @@
-import {Component, OnInit} from 'angular2/core'
-import {RouteParams, ROUTER_DIRECTIVES} from 'angular2/router';
+import {Component, OnInit} from "@angular/core";
+import {RouteParams, ROUTER_DIRECTIVES} from "@angular/router-deprecated";
 import {HistoryService} from "./history.service";
 import {HistoryEntry} from "./history-entry";
 import {HistoryTestName} from "./history-test-name";

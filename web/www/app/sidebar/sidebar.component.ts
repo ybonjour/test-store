@@ -1,8 +1,8 @@
-import {Component, OnInit, EventEmitter, Input, Output} from 'angular2/core'
-import {ROUTER_DIRECTIVES} from "angular2/router";
+import {Component, OnInit, EventEmitter, Input, Output} from "@angular/core";
+import {ROUTER_DIRECTIVES} from "@angular/router-deprecated";
 import {TestSuite} from "./../test-suite/test-suite";
-import {TestSuiteService} from "./../test-suite/test-suite.service.ts";
-import {TestSuitesChangedEvent} from "../test-suite/test-suites-changed-event.ts";
+import {TestSuiteService} from "./../test-suite/test-suite.service";
+import {TestSuitesChangedEvent} from "../test-suite/test-suites-changed-event";
 
 @Component({
     selector: 'sidebar',

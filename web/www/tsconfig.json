@@ -1,15 +1,16 @@
 {
  "compilerOptions": {
-    "target": "es5",                /* target of the compilation (es5) */
-    "module": "system",             /* System.register([dependencies], function) (in JS)*/
-    "moduleResolution": "jspm",     /* how module gets resolved (needed for Angular 2)*/
-    "emitDecoratorMetadata": true,  /* needed for decorators */
-    "experimentalDecorators": true, /* needed for decorators (@Injectable) */
-    "noImplicitAny": false          /* any has to be written explicity*/
+    "target": "es5",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "sourceMap": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "noImplicitAny": false,
+    "outDir": "dist"
   },
-  "exclude": [   /* since compiling these packages could take ages, we want to ignore them*/
-    "jspm_packages",
+  "exclude": [
     "node_modules"
   ],
-  "compileOnSave": false        /* on default the compiler will create js files */
+  "compileOnSave": false
 }

@@ -8,4 +8,4 @@
 *.pem
 /web/www/node_modules
 /web/www/typings
-/web/www/jspm_packages
+/web/www/dist

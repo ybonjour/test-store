@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from "angular2/core";
+import {Component, Input, OnInit} from "@angular/core";
 import {RevisionService} from "./revision.service";
 import {Revision} from "./revision";
 

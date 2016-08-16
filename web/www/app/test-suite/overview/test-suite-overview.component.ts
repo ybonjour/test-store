@@ -1,8 +1,8 @@
-import {Component, OnInit} from 'angular2/core';
-import {ROUTER_DIRECTIVES, RouteParams} from 'angular2/router';
+import {Component, OnInit} from "@angular/core";
+import {ROUTER_DIRECTIVES, RouteParams} from "@angular/router-deprecated";
 import {TestSuite} from "../test-suite";
 import {TestSuiteService} from "../test-suite.service";
-import {Window} from '../../window'
+import {Window} from "../../window";
 
 @Component({
     templateUrl: 'app/test-suite/overview/test-suite-overview.html',
