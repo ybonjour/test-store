@@ -14,9 +14,13 @@ import {StacktraceComponent} from "./test-result/stacktrace/stacktrace.component
 import {TestResultsComponent} from "./test-result/test-results.component";
 import {AddTestSuiteComponent} from "./test-suite/add/add-test-suite.component";
 import {TestSuiteOverviewComponent} from "./test-suite/overview/test-suite-overview.component";
+import {FormsModule} from "@angular/forms";
 
 @NgModule({
-    imports:      [ BrowserModule ],
+    imports:      [
+        BrowserModule,
+        FormsModule
+    ],
     declarations: [
         AppComponent,
         HistoryComponent,
