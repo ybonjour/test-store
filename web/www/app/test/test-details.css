@@ -31,3 +31,5 @@ span.passed {
 span.failed {
     color: #AA0000;
 }
+
+.chart {display: block; width: 100%;}
