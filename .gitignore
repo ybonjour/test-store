@@ -2,6 +2,7 @@
 /.idea/tasks.xml
 /.idea/libraries
 /.idea/shelf
+/.idea/misc.xml
 .gradle
 **/build
 .DS_Store
