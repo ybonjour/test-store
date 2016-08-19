@@ -18,6 +18,7 @@ export class TestDetailsComponent implements OnInit{
     testName: string;
     results: TestResult[] = [];
     durations: number[];
+    durationsSuggestedMax: number;
     labels: string[];
     statistics: TestStatistics;
     errorMessage: string;
@@ -45,10 +46,10 @@ export class TestDetailsComponent implements OnInit{
 
     private handleResults(results:TestResult[]) {
         this.results = results;
-        this.durations = [];
+        this.durations = results.map((r) => { return r.durationMillis / 1000 });
+        this.durationsSuggestedMax = Math.max.apply(null, this.durations) * 1.2;
         this.labels = [];
         for(let index in results) {
-            this.durations.push(results[index].durationMillis);
             this.labels.push(index);
         }
     }
