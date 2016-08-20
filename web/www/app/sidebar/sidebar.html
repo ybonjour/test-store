@@ -9,7 +9,7 @@
         test-store
     </li>
     <li class="testsuite"
-        *ngFor="#testSuite of testSuites"
+        *ngFor="let testSuite of testSuites"
         [ngClass]="{
             'passed': testSuite.lastRunResult=='PASSED',
             'retried': testSuite.lastRunResult=='PASSED_WITH_RETRIES',
