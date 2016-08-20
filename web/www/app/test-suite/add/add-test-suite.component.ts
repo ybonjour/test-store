@@ -1,7 +1,7 @@
 import {Component} from "@angular/core";
 import {TestSuite} from "./../test-suite";
 import {TestSuiteService} from "./../test-suite.service";
-import {Router} from "@angular/router";
+import {Router} from "@angular/router-deprecated";
 import {TestSuitesChangedEvent} from "./../test-suites-changed-event";
 
 @Component({
