@@ -20,6 +20,7 @@ export class TestDetailsComponent implements OnInit{
     durations: number[];
     durationsSuggestedMax: number;
     labels: string[];
+    pointBackgroundColors: string[];
     statistics: TestStatistics;
     errorMessage: string;
 
@@ -48,9 +49,16 @@ export class TestDetailsComponent implements OnInit{
         this.results = results;
         this.durations = results.map((r) => { return r.durationMillis / 1000 });
         this.durationsSuggestedMax = Math.max.apply(null, this.durations) * 1.2;
+        this.pointBackgroundColors = [];
         this.labels = [];
         for(let index in results) {
             this.labels.push(index);
+            let result = results[index];
+            if(result.passed) {
+                this.pointBackgroundColors.push("#00AA00");
+            } else {
+                this.pointBackgroundColors.push("#AA0000");
+            }
         }
     }
 }

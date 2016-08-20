@@ -10,10 +10,15 @@
 </ul>
 
 <base-chart *ngIf="durations" class="chart"
-            [datasets]="[{data: durations, label: 'Duration [seconds]'}]"
+            [datasets]="[{
+                    data: durations,
+                    pointBackgroundColor: pointBackgroundColors
+                }]"
             [labels]="labels"
             [colors]="[
-                {backgroundColor: '#EEEEEE'}
+                {
+                    backgroundColor: '#EEEEEE'
+                }
             ]"
             [options]="{
                 scales: {
