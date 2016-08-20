@@ -17,7 +17,7 @@
                     </div>
                 </div>
             </th>
-            <th class="rotate" *ngFor="#historyEntry of historyEntries">
+            <th class="rotate" *ngFor="let historyEntry of historyEntries">
                 <div>
                     <span><a [routerLink]="['Results', {testsuite_id: testSuiteId, run_id: historyEntry.runId}]">{{historyEntry.getShortRevision()}}</a></span>
                 </div>
@@ -25,11 +25,11 @@
         </tr>
     </thead>
     <tbody>
-        <tr *ngFor="#testName of testNames | filter: hidePassed">
+        <tr *ngFor="let testName of testNames | filter: hidePassed">
             <td title="{{testName.longName}}" class="front">
                 <a [routerLink]="['Test Details', {testsuite_id: testSuiteId, test_name: testName.longName}]">{{testName.shortName}}</a></td>
             <td class="result"
-                *ngFor="#historyEntry of historyEntries"
+                *ngFor="let historyEntry of historyEntries"
                 [ngClass]="{
             passed: historyEntry.results[testName.longName] == 'PASSED',
             failed: historyEntry.results[testName.longName] == 'FAILED',
