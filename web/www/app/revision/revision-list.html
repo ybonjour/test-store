@@ -2,7 +2,7 @@
 <a (click)="expanded = !expanded" class="heading">Changes:</a>
 <div *ngIf="expanded">
 <ul *ngIf="revisions.length > 0">
-    <li *ngFor="#revision of revisions">
+    <li *ngFor="let revision of revisions">
         <a href="{{revision.url}}">{{revision.revision}}:</a> {{revision.author}} - {{revision.comment}}
     </li>
 </ul>
