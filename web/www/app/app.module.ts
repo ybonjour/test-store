@@ -2,7 +2,7 @@ import {NgModule} from "@angular/core";
 import {BrowserModule} from "@angular/platform-browser";
 import {AppComponent} from "./app.component";
 import {HistoryComponent} from "./history/history.component";
-import {RevisionComponent} from "./revision/revision-list.component";
+import {RevisionListComponent} from "./revision/revision-list.component";
 import {RunListComponent} from "./run/run-list.component";
 import {SidebarComponent} from "./sidebar/sidebar.component";
 import {TestStatisticsComponent} from "./statistics/test-statistics.component";
@@ -24,7 +24,7 @@ import {FormsModule} from "@angular/forms";
     declarations: [
         AppComponent,
         HistoryComponent,
-        RevisionComponent,
+        RevisionListComponent,
         RunListComponent,
         SidebarComponent,
         TestStatisticsComponent,

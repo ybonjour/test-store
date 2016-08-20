@@ -4,14 +4,14 @@ import {TestResultService} from "../test-result.service";
 import {TestWithResults} from "../test-with-results";
 import {TestResultsComponent} from "../test-results.component";
 import {TestResultsHeaderComponent} from "../header/test-results-header.component";
-import {RevisionComponent} from "../../revision/revision-list.component";
+import {RevisionListComponent} from "../../revision/revision-list.component";
 
 @Component({
 	templateUrl: 'app/test-result/list/test-result-list.html',
 	directives: [
 		TestResultsComponent,
 		TestResultsHeaderComponent,
-		RevisionComponent]
+		RevisionListComponent]
 })
 export class TestResultListComponent implements OnInit {
 	errorMessage: string;

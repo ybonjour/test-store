@@ -7,7 +7,7 @@ import {Revision} from "./revision";
     templateUrl: 'app/revision/revision-list.html',
     styleUrls: ['app/revision/revision-list.css']
 })
-export class RevisionComponent implements OnInit{
+export class RevisionListComponent implements OnInit{
 
     @Input() runId: string;
     expanded: boolean = true;
