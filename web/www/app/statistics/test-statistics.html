@@ -1,7 +1,7 @@
 <h1>Test Statistics</h1>
 
 <ul>
-    <li *ngFor="#statistics of testStatistics">
+    <li *ngFor="let statistics of testStatistics">
         <span class="title">
             <a [routerLink]="['Test Details', {testsuite_id: testSuiteId, test_name: statistics.testName}]">{{statistics.testName}}</a>
         </span>
