@@ -2,7 +2,7 @@
 
 <ul class="runs">
     <li
-            *ngFor="#run of runs"
+            *ngFor="let run of runs"
             [ngClass]="{
                 'passed': run.runResult=='PASSED',
                 'retried': run.runResult=='PASSED_WITH_RETRIES',
