@@ -6,7 +6,7 @@
 </h2>
 
 <ul class="results">
-    <li *ngFor="#result of results" title="{{result.run}}" [ngClass]="{passed: result.passed, failed: !result.passed}"></li>
+    <li *ngFor="let result of results" title="{{result.run}}" [ngClass]="{passed: result.passed, failed: !result.passed}"></li>
 </ul>
 
 <base-chart *ngIf="durations" class="chart"
