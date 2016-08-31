@@ -100,6 +100,7 @@ export class TestResultService {
         result.retryNum = json.retryNum;
         result.passed = json.passed;
         result.durationMillis = json.durationMillis;
+        result.time = new Date(json.time);
         result.stackTrace = json.stackTrace;
         return result;
     }

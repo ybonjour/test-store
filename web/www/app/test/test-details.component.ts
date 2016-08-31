@@ -48,12 +48,12 @@ export class TestDetailsComponent implements OnInit{
     private handleResults(results:TestResult[]) {
         this.results = results;
         this.durations = results.map((r) => { return r.durationMillis / 1000 });
+        this.labels = results.map((r) => { return r.time.toLocaleDateString() + " " + r.time.toLocaleTimeString(); });
+
         this.durationsSuggestedMax = Math.max.apply(null, this.durations) * 1.2;
         this.pointBackgroundColors = [];
-        this.labels = [];
-        for(let index in results) {
-            this.labels.push(index);
-            let result = results[index];
+
+        for(let result of results) {
             if(result.passed) {
                 this.pointBackgroundColors.push("#00AA00");
             } else {

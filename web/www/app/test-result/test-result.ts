@@ -4,5 +4,6 @@ export class TestResult {
 	retryNum: number;
 	passed: boolean;
 	durationMillis: number;
+	time: Date;
 	stackTrace: string;
 }
