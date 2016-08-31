@@ -19,8 +19,8 @@ class RunOverviewServiceTest {
     companion object {
         val testSuiteId = randomUUID()
         val run = Run(randomUUID(), testSuiteId, "abc123", Date(1))
-        val passedResult = Result(run.id, "myTest", 0, true, 0)
-        val failedResult = Result(run.id, "myTest2", 0, false, 0)
+        val passedResult = Result(run.id, "myTest", 0, true, 0, Date(1))
+        val failedResult = Result(run.id, "myTest2", 0, false, 0, Date(1))
     }
 
     lateinit var runRepository: RunRepository
@@ -110,7 +110,7 @@ class RunOverviewServiceTest {
     @Test fun doesNotConsiderResultsFromOtherRuns() {
         val otherTestSuiteId = randomUUID()
         val otherRun = Run(randomUUID(), otherTestSuiteId, "def123", Date(1))
-        val otherFailedResult = Result(otherRun.id, "myOtherTest", 0, false, 0)
+        val otherFailedResult = Result(otherRun.id, "myOtherTest", 0, false, 0, Date(1))
         runRepository.save(run)
         runRepository.save(otherRun)
         resultRepository.save(otherFailedResult)
@@ -121,7 +121,7 @@ class RunOverviewServiceTest {
     }
 
     @Test fun returnsCorrectResultIfRetryPassed() {
-        val passedRetry = Result(run.id, failedResult.testName, 1, true, 0)
+        val passedRetry = Result(run.id, failedResult.testName, 1, true, 0, Date(1))
         runRepository.save(run)
         resultRepository.save(failedResult)
         resultRepository.save(passedRetry)
@@ -132,7 +132,7 @@ class RunOverviewServiceTest {
     }
 
     @Test fun returnsCorrectResultIfRunHasFailedRetry() {
-        val failedRetry = Result(run.id, failedResult.testName, 1, false, 0)
+        val failedRetry = Result(run.id, failedResult.testName, 1, false, 0, Date(1))
         runRepository.save(run)
         resultRepository.save(failedResult)
         resultRepository.save(failedRetry)
@@ -143,9 +143,9 @@ class RunOverviewServiceTest {
     }
 
     @Test fun returnsCorrectResultIfRunHasOnePassedWithRetriesAndOneFailedTest() {
-        val passedRetry = Result(run.id, failedResult.testName, 1, true, 0)
-        val failedResult2 = Result(run.id, "myFailedTest2", 0, false, 0)
-        val failedRetry = Result(run.id, failedResult2.testName, 1, false, 0)
+        val passedRetry = Result(run.id, failedResult.testName, 1, true, 0, Date(1))
+        val failedResult2 = Result(run.id, "myFailedTest2", 0, false, 0, Date(1))
+        val failedRetry = Result(run.id, failedResult2.testName, 1, false, 0, Date(1))
         runRepository.save(run)
         resultRepository.save(failedResult2)
         resultRepository.save(failedRetry)
@@ -166,8 +166,8 @@ class RunOverviewServiceTest {
     }
 
     @Test fun totalDurationIsSumOfAllResultDurations() {
-        val result1 = Result(run.id, "myTest", 0, true, 10)
-        val result2 = Result(run.id, "myTest", 0, true, 20)
+        val result1 = Result(run.id, "myTest", 0, true, 10, Date(1))
+        val result2 = Result(run.id, "myTest", 0, true, 20, Date(1))
         runRepository.save(run)
         resultRepository.save(result1)
         resultRepository.save(result2)
@@ -180,7 +180,7 @@ class RunOverviewServiceTest {
     @Test fun totalDurationDoesNotCountResultsFromOtherRuns() {
         val otherTestSuiteId = randomUUID()
         val otherRun = Run(randomUUID(), otherTestSuiteId, "def123", Date(2))
-        val otherResult = Result(otherRun.id, "myOtherTest", 0, true, 10)
+        val otherResult = Result(otherRun.id, "myOtherTest", 0, true, 10, Date(1))
         runRepository.save(run)
         runRepository.save(otherRun)
         resultRepository.save(otherResult)

@@ -79,7 +79,7 @@ class RunControllerTest : BaseIntegrationTest() {
 
     @Test fun getLastRunReturnsRunOverview() {
         val run = Run(randomUUID(), testSuite, "abc123", now)
-        val result = Result(run.id, "myTest", 0, true, 20)
+        val result = Result(run.id, "myTest", 0, true, 20, Date())
         runRepository.save(run)
         resultRepository.save(result)
 
@@ -101,7 +101,7 @@ class RunControllerTest : BaseIntegrationTest() {
 
     @Test fun getRunOverviewsReturnsRunOverviews() {
         val run = Run(randomUUID(), testSuite, "abc123", now)
-        val result = Result(run.id, "myTest", 0, true, 20)
+        val result = Result(run.id, "myTest", 0, true, 20, Date())
         runRepository.save(run)
         resultRepository.save(result)
 

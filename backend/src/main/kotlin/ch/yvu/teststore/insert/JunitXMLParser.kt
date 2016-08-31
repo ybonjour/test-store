@@ -3,7 +3,7 @@ package ch.yvu.teststore.insert
 import ch.yvu.teststore.insert.dto.ResultDto
 import org.w3c.dom.Node
 import org.w3c.dom.NodeList
-import java.util.*
+import java.text.SimpleDateFormat
 import javax.xml.parsers.DocumentBuilderFactory
 import kotlin.text.Charsets.UTF_8
 
@@ -22,6 +22,7 @@ object JunitXMLParser {
                     retryNum = 0,
                     passed = testResult.passed,
                     durationMillis = testResult.durationMs,
+                    time = testResult.time,
                     stackTrace = testResult.stackTrace
             )
         }
@@ -39,6 +40,9 @@ object JunitXMLParser {
     }
 
     private class TestResultNode(val node: Node) {
+        companion object {
+            val timeDateFormat: SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
+        }
 
         val name = node.attributes.getNamedItem("name").nodeValue
 
@@ -49,6 +53,8 @@ object JunitXMLParser {
         val passed = !hasChildWithName("failure", "error")
 
         val skipped = hasChildWithName("skipped")
+
+        val time = timeDateFormat.parse(node.parentNode.attributes.getNamedItem("timestamp").nodeValue)
 
         val stackTrace = getContentFromChildWithName("failure")
 

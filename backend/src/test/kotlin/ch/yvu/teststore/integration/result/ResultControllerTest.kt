@@ -14,10 +14,17 @@ import org.junit.Assert.assertThat
 import org.junit.Before
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
+import java.text.SimpleDateFormat
 import java.util.*
 import java.util.UUID.randomUUID
 
 class ResultControllerTest : BaseIntegrationTest() {
+
+    companion object {
+        val isoFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
+        val nowString = SimpleDateFormat(isoFormat).format(Date())
+        val now = SimpleDateFormat(isoFormat).parse(nowString)
+    }
 
     @Autowired lateinit var resultRepository: ResultRepository
 
@@ -35,6 +42,7 @@ class ResultControllerTest : BaseIntegrationTest() {
                 .queryParam("retryNum", 0)
                 .queryParam("passed", true)
                 .queryParam("durationMillis", 10)
+                .queryParam("time", nowString)
                 .post("/results")
                 .then().assertThat().statusCode(201)
     }
@@ -50,12 +58,13 @@ class ResultControllerTest : BaseIntegrationTest() {
                 .queryParam("retryNum", retryNum)
                 .queryParam("passed", passed)
                 .queryParam("durationMillis", durationMillis)
+                .queryParam("time", nowString)
                 .post("/results")
 
         val results = resultRepository.findAll()
         assertEquals(1, results.count())
         assertThat(results, hasItem(resultWith(
-                equalTo(run), testName, retryNum, passed, durationMillis, null)))
+                equalTo(run), testName, retryNum, passed, durationMillis, now, null)))
     }
 
     @Test fun createResultCanCreateFailedResult() {
@@ -70,22 +79,23 @@ class ResultControllerTest : BaseIntegrationTest() {
                 .queryParam("retryNum", retryNum)
                 .queryParam("passed", passed)
                 .queryParam("durationMillis", durationMillis)
+                .queryParam("time", nowString)
                 .queryParam("stackTrace", stackTrace)
                 .post("/results")
 
         val results = resultRepository.findAll()
         assertEquals(1, results.count())
         assertThat(results, hasItem(resultWith(
-                equalTo(run), testName, retryNum, passed, durationMillis, stackTrace)))
+                equalTo(run), testName, retryNum, passed, durationMillis, now, stackTrace)))
     }
 
     @Test fun findAllByRun() {
         val runId = randomUUID()
 
-        val result1 = Result(runId, "MyTest", 0, true, 204)
+        val result1 = Result(runId, "MyTest", 0, true, 204, Date())
         resultRepository.save(result1)
 
-        val result2 = Result(runId, "MyTest2", 0, true, 478)
+        val result2 = Result(runId, "MyTest2", 0, true, 478, Date())
         resultRepository.save(result2)
 
         given()
@@ -99,13 +109,13 @@ class ResultControllerTest : BaseIntegrationTest() {
     @Test fun findAllByRunGrouped() {
         val runId = randomUUID()
 
-        val resultFlakyTest = Result(runId, "FlakyTest", 0, false, 204)
-        val resultRetryFlakyTest = Result(runId, "FlakyTest", 1, true, 120)
+        val resultFlakyTest = Result(runId, "FlakyTest", 0, false, 204,  Date())
+        val resultRetryFlakyTest = Result(runId, "FlakyTest", 1, true, 120,  Date())
 
-        val resultPassingTest = Result(runId, "PassingTest", 0, true, 34)
+        val resultPassingTest = Result(runId, "PassingTest", 0, true, 34, Date())
 
-        val resultFailingTest = Result(runId, "FailingTest", 0, false, 23)
-        val resultRetryFailingTest = Result(runId, "FailingTest", 1, false, 30)
+        val resultFailingTest = Result(runId, "FailingTest", 0, false, 23, Date())
+        val resultRetryFailingTest = Result(runId, "FailingTest", 1, false, 30, Date())
 
         saveResults(listOf(resultFlakyTest, resultRetryFlakyTest, resultPassingTest, resultFailingTest, resultRetryFailingTest))
 
@@ -126,8 +136,8 @@ class ResultControllerTest : BaseIntegrationTest() {
         val run = Run(randomUUID(), testSuiteId, "def-456", Date(2))
         runRepository.save(run)
 
-        val resultPrev = Result(prevRun.id, "MyTest", 0, false, 120)
-        val result = Result(run.id, resultPrev.testName, 0, true, 23)
+        val resultPrev = Result(prevRun.id, "MyTest", 0, false, 120, Date())
+        val result = Result(run.id, resultPrev.testName, 0, true, 23, Date())
         saveResults(listOf(resultPrev, result))
 
         given()
@@ -147,7 +157,7 @@ class ResultControllerTest : BaseIntegrationTest() {
     }
 
     @Test fun getRunDiffReturnsResultsIfNoPreviousRun() {
-        val run = Run(randomUUID(), randomUUID(), "abc-123", Date(1))
+        val run = Run(randomUUID(), randomUUID(), "abc-123", Date())
         runRepository.save(run)
 
         given()
@@ -158,7 +168,7 @@ class ResultControllerTest : BaseIntegrationTest() {
 
     @Test fun getResultByRunAndTestNameReturnsResult() {
         val runId = randomUUID()
-        val result = Result(runId, "myTest", 0, true, 42)
+        val result = Result(runId, "myTest", 0, true, 42, Date())
         saveResults(listOf(result))
 
         given()
@@ -180,7 +190,7 @@ class ResultControllerTest : BaseIntegrationTest() {
         val testSutiteId = randomUUID()
         val run = Run(randomUUID(), testSutiteId, "abc-123", Date())
         runRepository.save(run)
-        val result = Result(run.id, "myTest", 0, true, 42)
+        val result = Result(run.id, "myTest", 0, true, 42,  Date())
         saveResults(listOf(result))
 
         given()
@@ -194,7 +204,7 @@ class ResultControllerTest : BaseIntegrationTest() {
         val testSuiteId = randomUUID()
         val run = Run(randomUUID(), testSuiteId, "abc-123", Date())
         runRepository.save(run)
-        val result = Result(run.id, "ch.yvu.teststore.common.CassandraRepositoryTest#canSaveAnItem", 0, true, 42)
+        val result = Result(run.id, "ch.yvu.teststore.common.CassandraRepositoryTest#canSaveAnItem", 0, true, 42, Date())
         saveResults(listOf(result))
 
         given()

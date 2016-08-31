@@ -9,6 +9,7 @@ import ch.yvu.teststore.run.RunRepository
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
+import java.util.*
 import java.util.UUID.randomUUID
 
 
@@ -19,8 +20,8 @@ class ResultDiffServiceTest {
 
         val duration:Long = 2
 
-        val resultPassed = Result(run, "MyNewTest", 0, true, duration)
-        val resultFailed = Result(run, "MyNewTestFailed", 0, false, duration)
+        val resultPassed = Result(run, "MyNewTest", 0, true, duration, Date())
+        val resultFailed = Result(run, "MyNewTestFailed", 0, false, duration, Date())
     }
 
     private lateinit var resultRepository: ResultRepository
@@ -53,7 +54,7 @@ class ResultDiffServiceTest {
 
     @Test fun newRetriedTestsCategorizedCorrectly() {
         resultRepository.save(resultFailed)
-        val resultRetried = Result(run, resultFailed.testName, 1, true, duration)
+        val resultRetried = Result(run, resultFailed.testName, 1, true, duration, Date())
         resultRepository.save(resultRetried)
 
         val results = resultDiffService.findDiff(prevRun, run)
@@ -62,7 +63,7 @@ class ResultDiffServiceTest {
     }
 
     @Test fun removedTestsCategorizedCorrectly() {
-        val resultPrev = Result(prevRun, "MyOldTest", 0, true, duration)
+        val resultPrev = Result(prevRun, "MyOldTest", 0, true, duration, Date())
         resultRepository.save(resultPrev)
 
         val results = resultDiffService.findDiff(prevRun, run)
@@ -71,7 +72,7 @@ class ResultDiffServiceTest {
     }
 
     @Test fun fixedTestsCategorizedCorrectly() {
-        val resultPrevFailed = Result(prevRun, resultPassed.testName, 0, false, duration)
+        val resultPrevFailed = Result(prevRun, resultPassed.testName, 0, false, duration, Date())
         resultRepository.save(resultPrevFailed)
         resultRepository.save(resultPassed)
 
@@ -81,7 +82,7 @@ class ResultDiffServiceTest {
     }
 
     @Test fun brokeTestCategorizedCorrectly() {
-        val resultPrevPassed = Result(prevRun, resultFailed.testName, 0, true, duration)
+        val resultPrevPassed = Result(prevRun, resultFailed.testName, 0, true, duration, Date())
         resultRepository.save(resultPrevPassed)
         resultRepository.save(resultFailed)
 
@@ -91,8 +92,8 @@ class ResultDiffServiceTest {
     }
 
     @Test fun brokeTestAfterRetriedIsCategorizedCorrectly() {
-        val resultPrevFailed = Result(prevRun, resultFailed.testName, 0, false, duration)
-        val resultPrevRetried = Result(prevRun, resultFailed.testName, 1, true, duration)
+        val resultPrevFailed = Result(prevRun, resultFailed.testName, 0, false, duration, Date())
+        val resultPrevRetried = Result(prevRun, resultFailed.testName, 1, true, duration, Date())
         resultRepository.save(resultPrevFailed)
         resultRepository.save(resultPrevRetried)
         resultRepository.save(resultFailed)
@@ -103,8 +104,8 @@ class ResultDiffServiceTest {
     }
 
     @Test fun fixedTestAfterRetriedIsCategorizedCorrectly() {
-        val resultPrevFailed = Result(prevRun, resultPassed.testName, 0, false, duration)
-        val resultPrevRetried = Result(prevRun, resultPassed.testName, 1, true, duration)
+        val resultPrevFailed = Result(prevRun, resultPassed.testName, 0, false, duration, Date())
+        val resultPrevRetried = Result(prevRun, resultPassed.testName, 1, true, duration, Date())
         resultRepository.save(resultPrevFailed)
         resultRepository.save(resultPrevRetried)
         resultRepository.save(resultPassed)
@@ -115,7 +116,7 @@ class ResultDiffServiceTest {
     }
 
     @Test fun stillFailingTestIsCategorizedCorrectly() {
-        val resultPrevFailed = Result(prevRun, resultFailed.testName, 0, false, duration)
+        val resultPrevFailed = Result(prevRun, resultFailed.testName, 0, false, duration, Date())
         resultRepository.save(resultPrevFailed)
         resultRepository.save(resultFailed)
 
@@ -125,7 +126,7 @@ class ResultDiffServiceTest {
     }
 
     @Test fun stillPassingTestIsCategorizedCorrectly() {
-        val resultPrevPassed = Result(prevRun, resultPassed.testName, 0, true, duration)
+        val resultPrevPassed = Result(prevRun, resultPassed.testName, 0, true, duration, Date())
         resultRepository.save(resultPrevPassed)
         resultRepository.save(resultPassed)
 
@@ -136,10 +137,10 @@ class ResultDiffServiceTest {
 
     @Test fun stillRetriedTestIsCategorizedCorrectly() {
         val testName = "MyRetriedTest"
-        val resultPrevFailed = Result(prevRun, testName, 0, false, duration)
-        val resultPrevPassed = Result(prevRun, testName, 1, true, duration)
-        val resultFailed = Result(run, testName, 0, false, duration)
-        val resultPassed = Result(run, testName, 1, true, duration)
+        val resultPrevFailed = Result(prevRun, testName, 0, false, duration, Date())
+        val resultPrevPassed = Result(prevRun, testName, 1, true, duration, Date())
+        val resultFailed = Result(run, testName, 0, false, duration, Date())
+        val resultPassed = Result(run, testName, 1, true, duration, Date())
         resultRepository.save(resultPrevFailed)
         resultRepository.save(resultPrevPassed)
         resultRepository.save(resultFailed)
@@ -151,8 +152,8 @@ class ResultDiffServiceTest {
     }
 
     @Test fun nowRetriedAfterPassedTestIsCategorizedCorrectly() {
-        val resultPrevPassed = Result(prevRun, resultFailed.testName, 0, true, duration)
-        val resultRetried = Result(run, resultFailed.testName, 1, true, duration)
+        val resultPrevPassed = Result(prevRun, resultFailed.testName, 0, true, duration, Date())
+        val resultRetried = Result(run, resultFailed.testName, 1, true, duration, Date())
         resultRepository.save(resultPrevPassed)
         resultRepository.save(resultFailed)
         resultRepository.save(resultRetried)
@@ -163,8 +164,8 @@ class ResultDiffServiceTest {
     }
 
     @Test fun nowRetriedAfterFailedTestIsCategorizedCorrectly() {
-        val resultPrevPassed = Result(prevRun, resultFailed.testName, 0, false, duration)
-        val resultRetried = Result(run, resultFailed.testName, 1, true, duration)
+        val resultPrevPassed = Result(prevRun, resultFailed.testName, 0, false, duration, Date())
+        val resultRetried = Result(run, resultFailed.testName, 1, true, duration, Date())
         resultRepository.save(resultPrevPassed)
         resultRepository.save(resultFailed)
         resultRepository.save(resultRetried)

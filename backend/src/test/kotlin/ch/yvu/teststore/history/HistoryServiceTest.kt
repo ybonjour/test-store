@@ -75,7 +75,7 @@ class HistoryServiceTest {
 
     @Test fun historyContainsTestResults() {
         runRepository.save(run)
-        val result = Result(run.id, "myTest", 0, true, 20)
+        val result = Result(run.id, "myTest", 0, true, 20, Date(1))
         resultRepository.save(result)
 
         val runHistory = historyService.getRunHistories(testSuiteId, defaultLImit)

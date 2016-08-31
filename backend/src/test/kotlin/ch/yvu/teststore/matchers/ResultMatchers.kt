@@ -8,7 +8,7 @@ import java.util.*
 
 object ResultMatchers {
 
-    fun resultWith(runId: Matcher<UUID>, testName: String, retryNum: Int, passed: Boolean, durationMillis: Long, stackTrace: String?) = object : TypeSafeMatcher<Result>() {
+    fun resultWith(runId: Matcher<UUID>, testName: String, retryNum: Int, passed: Boolean, durationMillis: Long, time: Date, stackTrace: String?) = object : TypeSafeMatcher<Result>() {
         override fun describeTo(description: Description?) {
             if (description == null) return
             description.appendText("Result with run ")
@@ -24,6 +24,7 @@ object ResultMatchers {
                     && item.retryNum == retryNum
                     && item.passed == passed
                     && item.durationMillis == durationMillis
+                    && item.time == time
                     && item.stackTrace == stackTrace
         }
     }

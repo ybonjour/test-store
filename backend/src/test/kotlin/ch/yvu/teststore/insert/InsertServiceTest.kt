@@ -29,8 +29,8 @@ class InsertServiceTest {
         val TODAY = Date()
         val TEST_SUITE_DTO = TestSuiteDto("My Test Suite")
         val EMPTY_RUN_DTO = RunDto(revision = "abc123", time = TODAY, results = emptyList())
-        val A_TEST_DTO_PASSED = ResultDto(testName = "ATest", retryNum = 0, passed = true, durationMillis = 10)
-        val B_TEST_DTO_FAILED = ResultDto(testName = "BTest", retryNum = 0, passed = false, durationMillis = 10, stackTrace = "stacktrace")
+        val A_TEST_DTO_PASSED = ResultDto(testName = "ATest", retryNum = 0, passed = true, durationMillis = 10, time=TODAY)
+        val B_TEST_DTO_FAILED = ResultDto(testName = "BTest", retryNum = 0, passed = false, durationMillis = 10, time=TODAY, stackTrace = "stacktrace")
         val TEST_SUITE_ID = randomUUID()
     }
 
@@ -186,6 +186,7 @@ class InsertServiceTest {
                     retryNum = it.retryNum,
                     passed = it.passed,
                     durationMillis = it.durationMillis,
+                    time = TODAY,
                     stackTrace = it.stackTrace
             )))
         }

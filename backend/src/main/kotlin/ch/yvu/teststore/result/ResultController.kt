@@ -2,6 +2,7 @@ package ch.yvu.teststore.result
 
 import ch.yvu.teststore.run.RunRepository
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.format.annotation.DateTimeFormat
 import org.springframework.http.HttpStatus.NOT_FOUND
 import org.springframework.http.HttpStatus.OK
 import org.springframework.http.ResponseEntity
@@ -29,9 +30,10 @@ class ResultController @Autowired constructor(
             @RequestParam(name = "retryNum") retryNum: Int,
             @RequestParam(name = "passed") passed: Boolean,
             @RequestParam(name = "durationMillis") durationMillis: Long,
+            @RequestParam(name = "time") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) time: Date,
             @RequestParam(name = "stackTrace", required = false) stackTrace: String?,
             response: HttpServletResponse): Result {
-        val result = Result(run, testName, retryNum, passed, durationMillis, stackTrace)
+        val result = Result(run, testName, retryNum, passed, durationMillis, time, stackTrace)
         resultRepository.save(result)
         response.status = 201
         return result

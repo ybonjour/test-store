@@ -40,6 +40,7 @@ CREATE TABLE IF NOT EXISTS result (
 	retryNum int,
 	passed boolean,
 	durationMillis bigint,
+	time timestamp,
 	stackTrace varchar,
 	PRIMARY KEY (run, testName, retryNum)
 );

@@ -15,8 +15,8 @@ import java.util.UUID.randomUUID
 class ResultServiceTest {
     companion object {
         val runId = randomUUID()
-        val passedResult = Result(runId, "myTest", 0, true, 10)
-        val failedResult = Result(runId, "myTest", 0, false, 10)
+        val passedResult = Result(runId, "myTest", 0, true, 10, Date())
+        val failedResult = Result(runId, "myTest", 0, false, 10, Date())
     }
 
     lateinit var resultRepository: ResultRepository
@@ -46,7 +46,7 @@ class ResultServiceTest {
     }
 
     @Test fun getTestsWithResultsGroupsResultsByTestName() {
-        val passedRetry = Result(failedResult.run, failedResult.testName, 1, true, 25)
+        val passedRetry = Result(failedResult.run, failedResult.testName, 1, true, 25, Date())
         resultRepository.save(failedResult)
         resultRepository.save(passedRetry)
 
@@ -59,7 +59,7 @@ class ResultServiceTest {
 
     @Test fun getTestsWithResultDoesNotReturnResultsFromOtherRuns() {
         val otherRunId = randomUUID()
-        val otherResult = Result(otherRunId, "myOtherTest", 0, true, 24)
+        val otherResult = Result(otherRunId, "myOtherTest", 0, true, 24, Date())
         resultRepository.save(otherResult)
 
         val testResults = resultService.getTestsWithResults(runId)
@@ -68,7 +68,7 @@ class ResultServiceTest {
     }
 
     @Test fun getGroupedResultsGroupsResultsByTestResult() {
-        val otherFailedResult = Result(runId, "myOtherTest", 0, false, 24)
+        val otherFailedResult = Result(runId, "myOtherTest", 0, false, 24, Date())
         resultRepository.save(passedResult)
         resultRepository.save(otherFailedResult)
 
@@ -97,7 +97,7 @@ class ResultServiceTest {
     }
 
     @Test fun getTestWithResultsDoesNotFindResultsFromOtherRuns() {
-        val otherResult = Result(randomUUID(), "Some other test", 0, true, 23)
+        val otherResult = Result(randomUUID(), "Some other test", 0, true, 23, Date())
         resultRepository.save(otherResult)
 
         val result = resultService.getTestWithResults(runId, "Some other test")
@@ -106,7 +106,7 @@ class ResultServiceTest {
     }
 
     @Test fun getTestWithResultsDoesNotFindResultsWithOtherName() {
-        val otherResult = Result(runId, "otherTest", 0, true, 24)
+        val otherResult = Result(runId, "otherTest", 0, true, 24, Date())
         resultRepository.save(otherResult)
 
         val result = resultService.getTestWithResults(runId, "myTest")
@@ -115,7 +115,7 @@ class ResultServiceTest {
     }
 
     @Test fun getTestWithResultsGroupsRetries() {
-        val retriedResult = Result(runId, failedResult.testName, 1, true, 42)
+        val retriedResult = Result(runId, failedResult.testName, 1, true, 42, Date())
         resultRepository.save(failedResult)
         resultRepository.save(retriedResult)
 
@@ -128,7 +128,7 @@ class ResultServiceTest {
         val testSuiteId = randomUUID()
         val run = Run(randomUUID(), testSuiteId, "abc-123", Date())
         runRepository.save(run)
-        val result = Result(run.id, "myTest", 0, true, 42)
+        val result = Result(run.id, "myTest", 0, true, 42, Date())
         resultRepository.save(result)
 
         val results = resultService.getResultsByTestSuiteAndTestName(testSuiteId, passedResult.testName!!)
@@ -141,7 +141,7 @@ class ResultServiceTest {
         val otherTestSuiteId = randomUUID()
         val run = Run(randomUUID(), otherTestSuiteId, "abc-123", Date())
         runRepository.save(run)
-        val result = Result(run.id, "mytest", 0, true, 42)
+        val result = Result(run.id, "mytest", 0, true, 42, Date())
         resultRepository.save(result)
 
         val testSuiteId = randomUUID()
@@ -155,7 +155,7 @@ class ResultServiceTest {
         val testSuiteId = randomUUID()
         val run = Run(randomUUID(), testSuiteId, "abc-124", Date())
         runRepository.save(run)
-        val result = Result(run.id, "myTest", 0, true, 42)
+        val result = Result(run.id, "myTest", 0, true, 42, Date())
         resultRepository.save(result)
 
         val results = resultService.getResultsByTestSuiteAndTestName(testSuiteId, "myOtherTest")

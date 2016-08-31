@@ -51,7 +51,7 @@ class TestSuiteControllerTest() : BaseIntegrationTest() {
     @Test fun getTestSuitesReturnsLastTestResult() {
         val testSuite = TestSuite(randomUUID(), "MyTestSuite")
         val run = Run(randomUUID(), testSuite.id, "abc-123", Date());
-        val result = Result(run.id, "MyTest", 0, true, 2)
+        val result = Result(run.id, "MyTest", 0, true, 2, Date())
         testSuiteRepository.save(testSuite)
         runRepository.save(run)
         resultRepository.save(result)
@@ -88,7 +88,7 @@ class TestSuiteControllerTest() : BaseIntegrationTest() {
     @Test fun getTestSuiteReturnsTestSuite() {
         val testSuite = TestSuite(randomUUID(), "MyTestSuite")
         val run = Run(randomUUID(), testSuite.id, "abc-123", Date());
-        val result = Result(run.id, "MyTest", 0, true, 2)
+        val result = Result(run.id, "MyTest", 0, true, 2, Date())
         testSuiteRepository.save(testSuite)
         runRepository.save(run)
         resultRepository.save(result)

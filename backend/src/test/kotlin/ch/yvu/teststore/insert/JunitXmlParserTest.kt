@@ -2,9 +2,20 @@ package ch.yvu.teststore.insert
 
 import ch.yvu.teststore.insert.dto.ResultDto
 import org.junit.Assert.assertEquals
+import org.junit.Before
 import org.junit.Test
+import java.text.SimpleDateFormat
+import java.util.*
 
 class JunitXmlParserTest {
+
+    lateinit var timestamp: Date;
+
+    @Before
+    fun setUp() {
+        val format = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
+        timestamp = format.parse("2016-03-31T17:51:02")
+    }
 
     @Test
     fun canParsePassedTest() {
@@ -17,6 +28,7 @@ class JunitXmlParserTest {
                         testName = "ch.yvu.teststore.MyTestClass#myTest",
                         retryNum = 0,
                         passed = true,
+                        time = timestamp,
                         durationMillis = 6
                 )
         ), parsed)
@@ -34,6 +46,7 @@ class JunitXmlParserTest {
                         retryNum = 0,
                         passed = false,
                         durationMillis = 6,
+                        time = timestamp,
                         stackTrace = "stacktrace"
                 )
         ), parsed)
@@ -50,7 +63,8 @@ class JunitXmlParserTest {
                         testName = "ch.yvu.teststore.MyTestClass#myTest",
                         retryNum = 0,
                         passed = false,
-                        durationMillis = 6
+                        durationMillis = 6,
+                        time = timestamp
                 )
         ), parsed)
     }
@@ -75,13 +89,15 @@ class JunitXmlParserTest {
                         testName = "ch.yvu.teststore.MyTestClass#myTest",
                         retryNum = 0,
                         passed = true,
-                        durationMillis = 6
+                        durationMillis = 6,
+                        time = timestamp
                 ),
                 ResultDto(
                         testName = "ch.yvu.teststore.MyTestClass2#myTest",
                         retryNum = 0,
                         passed = true,
-                        durationMillis = 10
+                        durationMillis = 10,
+                        time = timestamp
                 )
         ), parsed)
     }

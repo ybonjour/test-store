@@ -51,7 +51,7 @@ class CassandraResultRepositoryTest {
 
     @Test fun findAllByRunIdReturnsCorrectResult() {
         val runId = randomUUID()
-        val aResult = Result(runId, "SomeTest", 0, true, 203)
+        val aResult = Result(runId, "SomeTest", 0, true, 203, Date())
         val resultSet = mock(ResultSet::class.java)
         `when`(session.execute(anyString(), any(UUID::class.java))).thenReturn(resultSet)
         `when`(mapper.map(resultSet)).thenReturn(result)
@@ -76,7 +76,7 @@ class CassandraResultRepositoryTest {
     }
 
     @Test fun findAllByRunIdAndTestNameReturnsCorrectResult() {
-        val aResult = Result(randomUUID(), "SomeTest", 0, true, 203)
+        val aResult = Result(randomUUID(), "SomeTest", 0, true, 203, Date())
         val resultSet = mock(ResultSet::class.java)
         `when`(session.execute(anyString(), any(UUID::class.java), anyString())).thenReturn(resultSet)
         `when`(mapper.map(resultSet)).thenReturn(result)
@@ -100,7 +100,7 @@ class CassandraResultRepositoryTest {
     }
 
     @Test fun findAllByTestNameReturnsCorrectResult() {
-        val aResult = Result(randomUUID(), "SomeTest", 0, true, 203)
+        val aResult = Result(randomUUID(), "SomeTest", 0, true, 203, Date())
         val resultSet = mock(ResultSet::class.java)
         `when`(session.execute(anyString(), anyString())).thenReturn(resultSet)
         `when`(mapper.map(resultSet)).thenReturn(result)
