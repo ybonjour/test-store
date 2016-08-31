@@ -1,11 +1,13 @@
 package ch.yvu.teststore.run
 
+import ch.yvu.teststore.common.Page
 import ch.yvu.teststore.run.overview.RunOverview
 import ch.yvu.teststore.run.overview.RunOverviewService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.format.annotation.DateTimeFormat
 import org.springframework.format.annotation.DateTimeFormat.ISO
-import org.springframework.http.HttpStatus.*
+import org.springframework.http.HttpStatus.NOT_FOUND
+import org.springframework.http.HttpStatus.OK
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
@@ -37,6 +39,14 @@ class RunController @Autowired constructor(val runRepository: RunRepository, val
     @RequestMapping(method = arrayOf(GET), value = "/testsuites/{testSuite}/runs")
     fun findAllByTestSuite(@PathVariable testSuite: UUID): List<Run> {
         return runRepository.findAllByTestSuiteId(testSuite)
+    }
+
+    @RequestMapping(method = arrayOf(GET), value = "/testsuites/{testSuite}/runs/paged")
+    fun findAllByTestSuitePaged(
+            @PathVariable testSuite: UUID,
+            @RequestParam(name = "page", required = false) page: String?
+    ): Page<Run> {
+        return runRepository.findAllByTestSuiteIdPaged(testSuite, page)
     }
 
     @RequestMapping(method = arrayOf(GET), value = "/testsuites/{testSuite}/runs/last")

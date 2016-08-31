@@ -1,5 +1,6 @@
 package ch.yvu.teststore.run
 
+import ch.yvu.teststore.common.Page
 import ch.yvu.teststore.common.TestStoreRepository
 import org.springframework.stereotype.Repository
 import java.util.*
@@ -9,4 +10,5 @@ interface RunRepository : TestStoreRepository<Run> {
     fun findAllByTestSuiteId(testSuiteId: UUID): List<Run>
     fun findLastRunBefore(testSuiteId: UUID, time: Date): Run?
     fun findById(id: UUID): Run?
+    fun findAllByTestSuiteIdPaged(testSuiteId: UUID, page: String? = null): Page<Run>
 }
