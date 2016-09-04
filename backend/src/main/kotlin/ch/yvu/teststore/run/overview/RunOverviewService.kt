@@ -1,5 +1,6 @@
 package ch.yvu.teststore.run.overview
 
+import ch.yvu.teststore.common.Page
 import ch.yvu.teststore.result.Result
 import ch.yvu.teststore.result.ResultRepository
 import ch.yvu.teststore.run.Run
@@ -23,6 +24,10 @@ open class RunOverviewService @Autowired constructor(
 
     fun getRunOverviews(testSuiteId: UUID): List<RunOverview> {
         return runRepository.findAllByTestSuiteId(testSuiteId).map{getRunOverview(it)}
+    }
+
+    fun getRunOverviewsPaged(testSuiteId: UUID, page:String?): Page<RunOverview> {
+        return runRepository.findAllByTestSuiteIdPaged(testSuiteId).map{getRunOverview(it)}
     }
 
     private fun getRunOverview(run: Run): RunOverview {

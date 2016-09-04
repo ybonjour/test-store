@@ -208,4 +208,24 @@ class RunOverviewServiceTest {
 
         assertEquals(emptyList<RunOverview>(), runOverviews)
     }
+
+    @Test fun getRunOverviewsPagedReturnsRunOverviews() {
+        runRepository.save(run)
+        resultRepository.save(passedResult)
+
+        val runOverviewsPage = runOverviewService.getRunOverviewsPaged(testSuiteId, null)
+
+        assertEquals(listOf(RunOverview(run, PASSED, passedResult.durationMillis!!)), runOverviewsPage.results)
+
+    }
+
+    @Test fun getRunOverviewsPagedDoesNotFindRunsFromOtherTestSuites() {
+        val otherTestSuiteId = randomUUID()
+        val otherRun = Run(randomUUID(), otherTestSuiteId, "def123", Date(2))
+        runRepository.save(otherRun)
+
+        val runOverviewsPage = runOverviewService.getRunOverviewsPaged(testSuiteId, null)
+
+        assertEquals(emptyList<RunOverview>(), runOverviewsPage.results)
+    }
 }

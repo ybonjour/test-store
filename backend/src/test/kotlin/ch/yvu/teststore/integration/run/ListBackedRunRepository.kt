@@ -7,8 +7,9 @@ import ch.yvu.teststore.run.RunRepository
 import java.util.*
 
 open class ListBackedRunRepository(val genericRepository: ListBackedRepository<Run>) : RunRepository {
+
     override fun findAllByTestSuiteIdPaged(testSuiteId: UUID, page: String?): Page<Run> {
-        throw UnsupportedOperationException()
+        return Page(findAllByTestSuiteId(testSuiteId), null);
     }
 
     override fun findById(id: UUID): Run? {
