@@ -1,5 +1,9 @@
 package ch.yvu.teststore.run
 
+import ch.yvu.teststore.common.Page
+import ch.yvu.teststore.common.PagedResultFetcher
+import ch.yvu.teststore.common.QueryFactory
+import ch.yvu.teststore.common.SimpleQuery
 import com.datastax.driver.core.ResultSet
 import com.datastax.driver.core.Session
 import com.datastax.driver.mapping.Mapper
@@ -16,6 +20,10 @@ import java.util.UUID.randomUUID
 
 class CassandraRunRepositoryTest {
 
+    companion object {
+        val query = SimpleQuery("SELECT * FROM foo")
+    }
+
     @Mock
     lateinit var mappingManager: MappingManager
 
@@ -26,7 +34,13 @@ class CassandraRunRepositoryTest {
     lateinit var result: Result<Run>
 
     @Mock
+    lateinit var pagedResultFetcher: PagedResultFetcher<Run>
+
+    @Mock
     lateinit var mapper: Mapper<Run>
+
+    @Mock
+    lateinit var queryFactory: QueryFactory
 
     lateinit var repository: CassandraRunRepository
 
@@ -34,8 +48,10 @@ class CassandraRunRepositoryTest {
         initMocks(this)
         `when`(mappingManager.session).thenReturn(session)
         `when`(mappingManager.mapper(Run::class.java)).thenReturn(mapper)
+        `when`(queryFactory.createQuery(anyString(), anyCollection())).thenReturn(query)
 
-        repository = CassandraRunRepository(mappingManager)
+        repository = CassandraRunRepository(mappingManager, queryFactory)
+        repository.pagedResultFetcher = pagedResultFetcher
     }
 
     @Test fun findAllByRunIdSendsCorrectQuery() {
@@ -61,5 +77,31 @@ class CassandraRunRepositoryTest {
         val resultRun = repository.findAllByTestSuiteId(testSuiteId)
 
         assertEquals(listOf(run), resultRun)
+    }
+
+    @Test fun findAllByRunIdPagedReturnsCorrectResult() {
+        val page = Page(emptyList<Run>(), null)
+        `when`(pagedResultFetcher.fetch(query, null)).thenReturn(page)
+
+        val result = repository.findAllByTestSuiteIdPaged(randomUUID())
+
+        assertEquals(page, result)
+    }
+
+    @Test fun findAllSendsCorrectQuery() {
+        val testSuiteId = randomUUID()
+
+        repository.findAllByTestSuiteIdPaged(testSuiteId)
+
+        verify(queryFactory).createQuery("SELECT * FROM run WHERE testSuite=?", testSuiteId)
+        verify(pagedResultFetcher).fetch(query, null)
+    }
+
+    @Test fun findAllPassesOnPageStateCorrectly() {
+        val page = "abcdef"
+
+        repository.findAllByTestSuiteIdPaged(randomUUID(), page)
+
+        verify(pagedResultFetcher).fetch(query, page)
     }
 }

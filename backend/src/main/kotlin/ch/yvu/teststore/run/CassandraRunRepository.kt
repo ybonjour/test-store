@@ -2,13 +2,12 @@ package ch.yvu.teststore.run
 
 import ch.yvu.teststore.common.CassandraRepository
 import ch.yvu.teststore.common.Page
-import com.datastax.driver.core.PagingState
-import com.datastax.driver.core.SimpleStatement
+import ch.yvu.teststore.common.QueryFactory
 import com.datastax.driver.mapping.MappingManager
 import org.springframework.beans.factory.annotation.Autowired
 import java.util.*
 
-open class CassandraRunRepository @Autowired constructor(mappingManager: MappingManager) :
+open class CassandraRunRepository @Autowired constructor(mappingManager: MappingManager, val queryFactory: QueryFactory) :
         RunRepository, CassandraRepository<Run>(mappingManager, "run", Run::class.java) {
 
     override fun save(item: Run): Run {
@@ -37,21 +36,8 @@ open class CassandraRunRepository @Autowired constructor(mappingManager: Mapping
 
 
     override fun findAllByTestSuiteIdPaged(testSuiteId: UUID, page: String?): Page<Run> {
-        val statement = SimpleStatement("SELECT * FROM run WHERE testSuite=?", testSuiteId)
-        statement.fetchSize = 2
-        if(page != null) {
-            statement.setPagingState(PagingState.fromString(page))
-        }
-
-        val resultSet = session.execute(statement)
-        val remaining = resultSet.availableWithoutFetching
-        val results = mapper.map(resultSet)
-
-        var runs = emptyList<Run>();
-        (1..remaining).forEach { runs += results.one() }
-
-        return Page(runs, resultSet.executionInfo?.pagingState?.toString())
+        val query = queryFactory.createQuery("SELECT * FROM run WHERE testSuite=?", testSuiteId)
+        return pagedResultFetcher.fetch(query, page)
     }
-
 }
 

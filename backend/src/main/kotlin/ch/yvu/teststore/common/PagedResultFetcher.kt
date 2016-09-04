@@ -5,12 +5,12 @@ import com.datastax.driver.core.PagingState
 import com.datastax.driver.core.Session
 import com.datastax.driver.mapping.Mapper
 
-class PagedResultFetcher<T>(val session: Session, val mapper: Mapper<T>, val fetchSize: Int = defaultFetchSize) {
+open class PagedResultFetcher<T>(val session: Session, val mapper: Mapper<T>, val fetchSize: Int = defaultFetchSize) {
     companion object {
         val defaultFetchSize = 200
     }
 
-    fun fetch(query: Query, page: String? = null): Page<T> {
+    open fun fetch(query: Query, page: String? = null): Page<T> {
         val statement = query.createStatement()
         statement.fetchSize = fetchSize
         if(page != null) {

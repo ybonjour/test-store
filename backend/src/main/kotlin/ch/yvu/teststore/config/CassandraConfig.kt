@@ -1,6 +1,7 @@
 package ch.yvu.teststore.config
 
 
+import ch.yvu.teststore.common.QueryFactory
 import ch.yvu.teststore.result.CassandraResultRepository
 import ch.yvu.teststore.result.ResultRepository
 import ch.yvu.teststore.revision.CassandraRevisionRepository
@@ -30,6 +31,8 @@ open class CassandraConfig {
 
     @Autowired lateinit var session: Session
 
+    @Autowired lateinit var queryFactory: QueryFactory
+
 
     @Bean open fun session(): Session {
         val cluster = Cluster.builder()
@@ -39,12 +42,16 @@ open class CassandraConfig {
         return cluster.connect(environment.getRequiredProperty("cassandra.keyspace"))
     }
 
+    @Bean open fun queryFactory(): QueryFactory {
+        return QueryFactory()
+    }
+
     @Bean open fun testSuiteRepository(): TestSuiteRepository {
         return CassandraTestSuiteRepository(session)
     }
 
     @Bean open fun runRepository(): RunRepository {
-        return CassandraRunRepository(MappingManager(session))
+        return CassandraRunRepository(MappingManager(session), queryFactory)
     }
 
     @Bean open fun resultRepository(): ResultRepository {

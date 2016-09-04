@@ -5,7 +5,7 @@ import com.datastax.driver.mapping.MappingManager
 abstract class CassandraRepository<M : Model>(val mappingManager: MappingManager, val table: String, val modelClass: Class<M>) {
     val session = mappingManager.session
     val mapper = mappingManager.mapper(modelClass)
-
+    var pagedResultFetcher = PagedResultFetcher(session, mapper)
 
     open fun save(item: M): M {
         mapper.save(item)
