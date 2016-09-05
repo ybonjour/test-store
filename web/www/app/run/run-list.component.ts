@@ -21,17 +21,11 @@ export class RunListComponent implements OnInit {
 
     ngOnInit():any {
         this.testSuiteId = this._routeParams.get('testsuite_id');
-        this.getRunsPaged(this.testSuiteId, null);
+        this.getRuns(this.testSuiteId, null);
     }
 
-    getRuns(testSuiteId: string) {
-        this._runService.getRuns(testSuiteId).subscribe(
-            runs => this.runs = runs,
-            error => this.errorMessage = <any>error);
-    }
-
-    getRunsPaged(testSuiteId: string, nextPage: string) {
-        this._runService.getRunsPaged(testSuiteId, nextPage).subscribe(
+    getRuns(testSuiteId: string, nextPage: string) {
+        this._runService.getRuns(testSuiteId, nextPage).subscribe(
             runPage => this.extractPage(runPage),
             error => this.errorMessage = <any>error);
     }
@@ -42,7 +36,6 @@ export class RunListComponent implements OnInit {
     }
 
     more() {
-
-        this.getRunsPaged(this.testSuiteId, this.nextPage);
+        this.getRuns(this.testSuiteId, this.nextPage);
     }
 }
