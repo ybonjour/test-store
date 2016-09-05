@@ -63,6 +63,6 @@ class RunController @Autowired constructor(val runRepository: RunRepository, val
     fun getRunOverviewsPaged(
             @PathVariable testSuite: UUID,
             @RequestParam(name = "page", required=false) page: String?): Page<RunOverview> {
-        return runOverviewService.getRunOverviewsPaged(testSuite, page)
+        return runOverviewService.getRunOverviews(testSuite, page)
     }
 }

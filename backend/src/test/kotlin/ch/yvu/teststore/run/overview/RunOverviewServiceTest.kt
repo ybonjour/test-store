@@ -14,7 +14,7 @@ import org.junit.Test
 import java.util.*
 import java.util.UUID.randomUUID
 
-class RunOverviewServiceTest {
+class RunOvervieRwServiceTest {
 
     companion object {
         val testSuiteId = randomUUID()
@@ -194,8 +194,9 @@ class RunOverviewServiceTest {
         runRepository.save(run)
         resultRepository.save(passedResult)
 
-        val runOverviews = runOverviewService.getRunOverviews(testSuiteId)
-        assertEquals(listOf(RunOverview(run, PASSED, passedResult.durationMillis!!)), runOverviews)
+        val runOverviewsPage = runOverviewService.getRunOverviews(testSuiteId, null)
+
+        assertEquals(listOf(RunOverview(run, PASSED, passedResult.durationMillis!!)), runOverviewsPage.results)
 
     }
 
@@ -204,27 +205,7 @@ class RunOverviewServiceTest {
         val otherRun = Run(randomUUID(), otherTestSuiteId, "def123", Date(2))
         runRepository.save(otherRun)
 
-        val runOverviews = runOverviewService.getRunOverviews(testSuiteId)
-
-        assertEquals(emptyList<RunOverview>(), runOverviews)
-    }
-
-    @Test fun getRunOverviewsPagedReturnsRunOverviews() {
-        runRepository.save(run)
-        resultRepository.save(passedResult)
-
-        val runOverviewsPage = runOverviewService.getRunOverviewsPaged(testSuiteId, null)
-
-        assertEquals(listOf(RunOverview(run, PASSED, passedResult.durationMillis!!)), runOverviewsPage.results)
-
-    }
-
-    @Test fun getRunOverviewsPagedDoesNotFindRunsFromOtherTestSuites() {
-        val otherTestSuiteId = randomUUID()
-        val otherRun = Run(randomUUID(), otherTestSuiteId, "def123", Date(2))
-        runRepository.save(otherRun)
-
-        val runOverviewsPage = runOverviewService.getRunOverviewsPaged(testSuiteId, null)
+        val runOverviewsPage = runOverviewService.getRunOverviews(testSuiteId, null)
 
         assertEquals(emptyList<RunOverview>(), runOverviewsPage.results)
     }
