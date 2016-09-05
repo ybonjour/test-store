@@ -59,11 +59,6 @@ class RunController @Autowired constructor(val runRepository: RunRepository, val
         return ResponseEntity(lastRun.get(), OK)
     }
 
-    @RequestMapping(method = arrayOf(GET), value = "testsuites/{testSuite}/runs/overview")
-    fun getRunOverviews(@PathVariable testSuite: UUID): List<RunOverview> {
-        return runOverviewService.getRunOverviews(testSuite)
-    }
-
     @RequestMapping(method = arrayOf(GET), value = "testsuites/{testSuite}/runs/overview/paged")
     fun getRunOverviewsPaged(
             @PathVariable testSuite: UUID,
