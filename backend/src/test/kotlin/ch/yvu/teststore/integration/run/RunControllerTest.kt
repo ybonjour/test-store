@@ -99,14 +99,14 @@ class RunControllerTest : BaseIntegrationTest() {
             .statusCode(404)
     }
 
-    @Test fun getRunOverviewsPagedReturnsRunOverviews() {
+    @Test fun getRunOverviewsReturnsRunOverviews() {
         val run = Run(randomUUID(), testSuite, "abc123", now)
         val result = Result(run.id, "myTest", 0, true, 20, Date())
         runRepository.save(run)
         resultRepository.save(result)
 
         given()
-            .get("/testsuites/$testSuite/runs/overview/paged")
+            .get("/testsuites/$testSuite/runs/overview")
         .then()
             .statusCode(200)
             .body("results[0].run.revision", equalTo(run.revision))

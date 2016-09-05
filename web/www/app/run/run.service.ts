@@ -14,7 +14,7 @@ export class RunService {
         let params: URLSearchParams = new URLSearchParams();
         if(nextPage != null) params.set('page', nextPage);
 
-        return this._http.get("/api/testsuites/" + testSuiteId + "/runs/overview/paged", {
+        return this._http.get("/api/testsuites/" + testSuiteId + "/runs/overview", {
             search: params
         })
             .map(RunService.extractBodyPaged)
