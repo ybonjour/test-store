@@ -1,18 +1,17 @@
 package ch.yvu.teststore.common
 
-import ch.yvu.teststore.common.PagedResultFetcher.Companion.defaultFetchSize
 import com.datastax.driver.core.PagingState
 import com.datastax.driver.core.Session
 import com.datastax.driver.mapping.Mapper
 
-open class PagedResultFetcher<T>(val session: Session, val mapper: Mapper<T>, val fetchSize: Int = defaultFetchSize) {
+open class PagedResultFetcher<T>(val session: Session, val mapper: Mapper<T>) {
     companion object {
         val defaultFetchSize = 200
     }
 
-    open fun fetch(query: Query, page: String? = null): Page<T> {
+    open fun fetch(query: Query, page: String? = null, fetchSize: Int? = null): Page<T> {
         val statement = query.createStatement()
-        statement.fetchSize = fetchSize
+        statement.fetchSize = fetchSize ?: defaultFetchSize
         if(page != null) {
             statement.setPagingState(PagingState.fromString(page))
         }

@@ -72,9 +72,18 @@ class PagedResultFetcherTest {
     @Test fun usesCorrectFetchSize() {
         givenAResultWithNRows(n=0)
 
-        fetcher.fetch(query);
+        fetcher.fetch(query)
 
         verify(session).execute(argThat(statementWithFetchSize(PagedResultFetcher.defaultFetchSize)))
+    }
+
+    @Test fun overrideDefaultPageSizeIfPageSizeIsPrvoided() {
+        val fetchSize = 2
+        givenAResultWithNRows(n=0)
+
+        fetcher.fetch(query, fetchSize = fetchSize)
+
+        verify(session).execute(argThat(statementWithFetchSize(fetchSize)))
     }
 
     @Test fun onlyConsumesAsManyRowsAsFetched() {
