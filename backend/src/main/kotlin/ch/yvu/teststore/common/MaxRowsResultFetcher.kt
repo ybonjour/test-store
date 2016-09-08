@@ -1,6 +1,6 @@
 package ch.yvu.teststore.common
 
-class MaxRowsFetcher<T>(val pagedResultFetcher: PagedResultFetcher<T>) {
+class MaxRowsResultFetcher<T>(val pagedResultFetcher: PagedResultFetcher<T>) {
 
     fun fetch(query: Query, maxRows: Int): List<T> {
         var allResults = emptyList<T>()

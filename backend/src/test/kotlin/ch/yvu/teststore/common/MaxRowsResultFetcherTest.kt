@@ -11,7 +11,7 @@ import org.mockito.MockitoAnnotations.initMocks
 import java.util.*
 import java.util.UUID.randomUUID
 
-class MaxRowFetcherTest {
+class MaxRowsResultFetcherTest {
     companion object {
         val query = SimpleQuery("SELECT foo")
         val run = Run(randomUUID(), randomUUID(), "abc-123", Date(1))
@@ -22,18 +22,18 @@ class MaxRowFetcherTest {
     @Mock
     lateinit var pagedResultFetcher: PagedResultFetcher<Run>
 
-    lateinit var maxRowsFetcher: MaxRowsFetcher<Run>
+    lateinit var maxRowsResultFetcher: MaxRowsResultFetcher<Run>
 
     @Before fun setUp() {
         initMocks(this)
-        maxRowsFetcher = MaxRowsFetcher(pagedResultFetcher)
+        maxRowsResultFetcher = MaxRowsResultFetcher(pagedResultFetcher)
     }
 
     @Test fun fetchesAtLeastOnePageWithCorrectFetchSizeFromPageFetcher() {
         val maxRows = 1
         val page = Page(listOf(run), null)
         `when`(pagedResultFetcher.fetch(query, null, maxRows)).thenReturn(page)
-        val result = maxRowsFetcher.fetch(query, maxRows)
+        val result = maxRowsResultFetcher.fetch(query, maxRows)
 
         assertEquals(listOf(run), result)
     }
@@ -45,7 +45,7 @@ class MaxRowFetcherTest {
         `when`(pagedResultFetcher.fetch(query, null, maxRows)).thenReturn(page)
         `when`(pagedResultFetcher.fetch(query, nextPage, 1)).thenReturn(page)
 
-        maxRowsFetcher.fetch(query, maxRows)
+        maxRowsResultFetcher.fetch(query, maxRows)
 
         verify(pagedResultFetcher).fetch(query, null, maxRows)
         verify(pagedResultFetcher).fetch(query, nextPage, 1)
@@ -59,7 +59,7 @@ class MaxRowFetcherTest {
         `when`(pagedResultFetcher.fetch(query, null, maxRows)).thenReturn(page1)
         `when`(pagedResultFetcher.fetch(query, nextPage, 1)).thenReturn(page2)
 
-        val result = maxRowsFetcher.fetch(query, maxRows)
+        val result = maxRowsResultFetcher.fetch(query, maxRows)
 
         assertEquals(listOf(run, run2), result)
     }
@@ -75,7 +75,7 @@ class MaxRowFetcherTest {
         `when`(pagedResultFetcher.fetch(query, nextPage1, 2)).thenReturn(page2)
         `when`(pagedResultFetcher.fetch(query, nextPage2, 1)).thenReturn(page3)
 
-        maxRowsFetcher.fetch(query, maxRows)
+        maxRowsResultFetcher.fetch(query, maxRows)
 
         verify(pagedResultFetcher).fetch(query, null, 3)
         verify(pagedResultFetcher).fetch(query, nextPage1, 2)
@@ -87,7 +87,7 @@ class MaxRowFetcherTest {
         val page = Page(listOf(run, run2), null)
         `when`(pagedResultFetcher.fetch(query, null, maxRows)).thenReturn(page)
 
-        val result = maxRowsFetcher.fetch(query, maxRows)
+        val result = maxRowsResultFetcher.fetch(query, maxRows)
 
         assertEquals(listOf(run), result)
     }
@@ -97,7 +97,7 @@ class MaxRowFetcherTest {
         val page = Page(listOf(run), null)
         `when`(pagedResultFetcher.fetch(query, null, maxRows)).thenReturn(page)
 
-        val result = maxRowsFetcher.fetch(query, maxRows)
+        val result = maxRowsResultFetcher.fetch(query, maxRows)
 
         assertEquals(listOf(run), result)
     }
