@@ -83,7 +83,7 @@ class CassandraRunRepositoryTest {
         val page = Page(emptyList<Run>(), null)
         `when`(pagedResultFetcher.fetch(query, null)).thenReturn(page)
 
-        val result = repository.findAllByTestSuiteIdPaged(randomUUID())
+        val result = repository.findAllByTestSuiteId(randomUUID())
 
         assertEquals(page, result)
     }
@@ -91,7 +91,7 @@ class CassandraRunRepositoryTest {
     @Test fun findAllSendsCorrectQuery() {
         val testSuiteId = randomUUID()
 
-        repository.findAllByTestSuiteIdPaged(testSuiteId)
+        repository.findAllByTestSuiteId(testSuiteId)
 
         verify(queryFactory).createQuery("SELECT * FROM run WHERE testSuite=?", testSuiteId)
         verify(pagedResultFetcher).fetch(query, null)
@@ -100,7 +100,7 @@ class CassandraRunRepositoryTest {
     @Test fun findAllPassesOnPageStateCorrectly() {
         val page = "abcdef"
 
-        repository.findAllByTestSuiteIdPaged(randomUUID(), page)
+        repository.findAllByTestSuiteId(randomUUID(), page)
 
         verify(pagedResultFetcher).fetch(query, page)
     }

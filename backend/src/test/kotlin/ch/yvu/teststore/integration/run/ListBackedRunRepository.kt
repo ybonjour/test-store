@@ -8,7 +8,7 @@ import java.util.*
 
 open class ListBackedRunRepository(val genericRepository: ListBackedRepository<Run>) : RunRepository {
 
-    override fun findAllByTestSuiteIdPaged(testSuiteId: UUID, page: String?): Page<Run> {
+    override fun findAllByTestSuiteId(testSuiteId: UUID, page: String?): Page<Run> {
         return Page(findAllByTestSuiteId(testSuiteId), null);
     }
 

@@ -35,7 +35,7 @@ open class CassandraRunRepository @Autowired constructor(mappingManager: Mapping
     }
 
 
-    override fun findAllByTestSuiteIdPaged(testSuiteId: UUID, page: String?): Page<Run> {
+    override fun findAllByTestSuiteId(testSuiteId: UUID, page: String?): Page<Run> {
         val query = queryFactory.createQuery("SELECT * FROM run WHERE testSuite=?", testSuiteId)
         return pagedResultFetcher.fetch(query, page)
     }
