@@ -6,6 +6,7 @@ abstract class CassandraRepository<M : Model>(val mappingManager: MappingManager
     val session = mappingManager.session
     val mapper = mappingManager.mapper(modelClass)
     var pagedResultFetcher = PagedResultFetcher(session, mapper)
+    var maxRowsResultFetcher = MaxRowsResultFetcher(pagedResultFetcher)
 
     open fun save(item: M): M {
         mapper.save(item)

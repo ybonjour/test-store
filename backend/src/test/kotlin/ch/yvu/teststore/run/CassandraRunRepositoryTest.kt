@@ -1,9 +1,6 @@
 package ch.yvu.teststore.run
 
-import ch.yvu.teststore.common.Page
-import ch.yvu.teststore.common.PagedResultFetcher
-import ch.yvu.teststore.common.QueryFactory
-import ch.yvu.teststore.common.SimpleQuery
+import ch.yvu.teststore.common.*
 import com.datastax.driver.core.ResultSet
 import com.datastax.driver.core.Session
 import com.datastax.driver.mapping.Mapper
@@ -22,6 +19,7 @@ class CassandraRunRepositoryTest {
 
     companion object {
         val query = SimpleQuery("SELECT * FROM foo")
+        val run = Run(randomUUID(), randomUUID(), "abc-123", Date())
     }
 
     @Mock
@@ -35,6 +33,9 @@ class CassandraRunRepositoryTest {
 
     @Mock
     lateinit var pagedResultFetcher: PagedResultFetcher<Run>
+
+    @Mock
+    lateinit var maxRowsResultFetcher: MaxRowsResultFetcher<Run>
 
     @Mock
     lateinit var mapper: Mapper<Run>
@@ -52,6 +53,7 @@ class CassandraRunRepositoryTest {
 
         repository = CassandraRunRepository(mappingManager, queryFactory)
         repository.pagedResultFetcher = pagedResultFetcher
+        repository.maxRowsResultFetcher = maxRowsResultFetcher
     }
 
     @Test fun findAllByRunIdSendsCorrectQuery() {
@@ -67,7 +69,6 @@ class CassandraRunRepositoryTest {
     }
 
     @Test fun findAllByRunIdReturnsCorrectResult() {
-        val run = Run(randomUUID(), randomUUID(), "abc-123", Date())
         val resultSet = mock(ResultSet::class.java)
         `when`(session.execute(anyString(), any(UUID::class.java))).thenReturn(resultSet)
         `when`(mapper.map(resultSet)).thenReturn(result)
@@ -103,5 +104,24 @@ class CassandraRunRepositoryTest {
         repository.findAllByTestSuiteId(randomUUID(), page)
 
         verify(pagedResultFetcher).fetch(query, page)
+    }
+
+    @Test fun findAllByRunIdWithMaxRowsSendsCorrectQuery() {
+        val maxRows = 10
+        `when`(maxRowsResultFetcher.fetch(query, maxRows)).thenReturn(listOf(run))
+
+        val result = repository.findAllByTestSuiteId(run.testSuite!!, maxRows)
+
+        verify(queryFactory).createQuery("SELECT * FROM run WHERE testSuite=?", run.testSuite!!)
+        verify(maxRowsResultFetcher).fetch(query, maxRows)
+    }
+
+    @Test fun findAllByRunIdWithMaxRowsReturnsCorrectResult() {
+        val maxRows = 10
+        `when`(maxRowsResultFetcher.fetch(query, maxRows)).thenReturn(listOf(run))
+
+        val result = repository.findAllByTestSuiteId(run.testSuite!!, maxRows)
+
+        assertEquals(listOf(run), result)
     }
 }

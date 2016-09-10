@@ -23,7 +23,7 @@ open class RunOverviewService @Autowired constructor(
     }
 
     fun getRunOverviews(testSuiteId: UUID, page:String?): Page<RunOverview> {
-        return runRepository.findAllByTestSuiteId(testSuiteId).map{getRunOverview(it)}
+        return runRepository.findAllByTestSuiteId(testSuiteId, page).map{getRunOverview(it)}
     }
 
     private fun getRunOverview(run: Run): RunOverview {
