@@ -1,5 +1,8 @@
 package ch.yvu.teststore.common
 
+// This class is needed, because Cassandra does not guarantee to
+// fetch the exact amount of rows as specified in statement.fetchSize.
+// Therefore we have to ensure that we have the exact amount of rows.
 class MaxRowsResultFetcher<T>(val pagedResultFetcher: PagedResultFetcher<T>) {
 
     fun fetch(query: Query, maxRows: Int): List<T> {
