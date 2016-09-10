@@ -83,7 +83,7 @@ class CassandraRunRepositoryTest {
         val page = Page(emptyList<Run>(), null)
         `when`(pagedResultFetcher.fetch(query, null)).thenReturn(page)
 
-        val result = repository.findAllByTestSuiteId(randomUUID())
+        val result = repository.findAllByTestSuiteId(randomUUID(), null)
 
         assertEquals(page, result)
     }
@@ -91,7 +91,7 @@ class CassandraRunRepositoryTest {
     @Test fun findAllSendsCorrectQuery() {
         val testSuiteId = randomUUID()
 
-        repository.findAllByTestSuiteId(testSuiteId)
+        repository.findAllByTestSuiteId(testSuiteId, null)
 
         verify(queryFactory).createQuery("SELECT * FROM run WHERE testSuite=?", testSuiteId)
         verify(pagedResultFetcher).fetch(query, null)
