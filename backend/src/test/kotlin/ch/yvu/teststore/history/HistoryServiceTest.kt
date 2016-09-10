@@ -83,16 +83,4 @@ class HistoryServiceTest {
         assertThat(runHistory, hasSize(equalTo(1)));
         assertEquals(runHistory.get(0).results.get(result.testName), TestWithResults.TestResult.PASSED)
     }
-
-    @Test fun historyOnlyReturnsLatestNRuns() {
-        val run1 = Run(randomUUID(), testSuiteId, randomUUID().toString(), Date(1))
-        val run2 = Run(randomUUID(), testSuiteId, randomUUID().toString(), Date(2))
-        runRepository.save(run1)
-        runRepository.save(run2)
-
-        val runHistory = historyService.getRunHistories(testSuiteId, 1)
-
-        assertThat(runHistory, hasSize(equalTo(1)));
-        assertEquals(runHistory.get(0).revision, run2.revision)
-    }
 }
