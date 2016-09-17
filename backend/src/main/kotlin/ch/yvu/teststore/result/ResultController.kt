@@ -1,5 +1,6 @@
 package ch.yvu.teststore.result
 
+import ch.yvu.teststore.common.Page
 import ch.yvu.teststore.run.RunRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.format.annotation.DateTimeFormat
@@ -79,6 +80,16 @@ class ResultController @Autowired constructor(
     ): List<Result> {
         val decodedTestName = URLDecoder.decode(testName, "UTF-8")
         return resultService.getResultsByTestSuiteAndTestName(testSuite, decodedTestName)
+    }
+
+    @RequestMapping(method = arrayOf(GET), value = "/testsuites/{testSuite}/tests/paged/{testName:.+}")
+    fun getResultsByTestSuiteAndTestNamePaged(
+            @PathVariable testSuite: UUID,
+            @PathVariable testName: String,
+            @RequestParam(name = "page", required=false) page: String?
+    ): Page<Result> {
+        val decodedTestName = URLDecoder.decode(testName, "UTF-8")
+        return resultService.getResultsByTestSuiteAndTestNamePaged(testSuite, decodedTestName, page)
     }
 
 }

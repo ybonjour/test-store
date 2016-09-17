@@ -194,10 +194,10 @@ class ResultControllerTest : BaseIntegrationTest() {
         saveResults(listOf(result))
 
         given()
-                .get("/testsuites/$testSutiteId/tests/${result.testName!!}")
+                .get("/testsuites/$testSutiteId/tests/paged/${result.testName!!}")
                 .then()
                 .statusCode(200)
-                .body("[0].testName", equalTo(result.testName!!))
+                .body("results[0].testName", equalTo(result.testName!!))
     }
 
     @Test fun getResultsByTestSuiteAndTestNameDecodesTestName() {
@@ -208,10 +208,10 @@ class ResultControllerTest : BaseIntegrationTest() {
         saveResults(listOf(result))
 
         given()
-                .get("/testsuites/$testSuiteId/tests/ch.yvu.teststore.common.CassandraRepositoryTest%23canSaveAnItem")
+                .get("/testsuites/$testSuiteId/tests/paged/ch.yvu.teststore.common.CassandraRepositoryTest%23canSaveAnItem")
                 .then()
                 .statusCode(200)
-                .body("[0].testName", equalTo(result.testName!!))
+                .body("results[0].testName", equalTo(result.testName!!))
     }
 
     private fun saveResults(results: List<Result>) {
