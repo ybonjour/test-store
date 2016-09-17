@@ -1,5 +1,6 @@
 package ch.yvu.teststore.result
 
+import ch.yvu.teststore.common.Page
 import ch.yvu.teststore.run.RunRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -36,5 +37,13 @@ open class ResultService @Autowired constructor(
         return runRepository.findAllByTestSuiteId(testSuiteId).flatMap {
             resultRepository.findAllByRunIdAndTestName(it.id!!, testName)
         }
+    }
+
+    fun getResultsByTestSuiteAndTestNamePaged(testSuiteId: UUID, testName: String, page :String?=null): Page<Result> {
+        val runsPage = runRepository.findAllByTestSuiteId(testSuiteId, page)
+        val results = runsPage.results.flatMap {
+            resultRepository.findAllByRunIdAndTestName(it.id!!, testName)
+        }
+        return Page(results, runsPage.nextPage)
     }
 }

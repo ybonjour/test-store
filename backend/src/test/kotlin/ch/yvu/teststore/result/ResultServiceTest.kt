@@ -131,10 +131,10 @@ class ResultServiceTest {
         val result = Result(run.id, "myTest", 0, true, 42, Date())
         resultRepository.save(result)
 
-        val results = resultService.getResultsByTestSuiteAndTestName(testSuiteId, passedResult.testName!!)
+        val resultPage = resultService.getResultsByTestSuiteAndTestNamePaged(testSuiteId, passedResult.testName!!, null)
 
-        assertEquals(passedResult.testName!!, results.get(0).testName)
-        assertEquals(run.id!!, results.get(0).run)
+        assertEquals(passedResult.testName!!, resultPage.results.get(0).testName)
+        assertEquals(run.id!!, resultPage.results.get(0).run)
     }
 
     @Test fun getResultsByTestSuiteAndTestNameDoesNotReturnResultsFromOtherTestSuite() {
@@ -146,9 +146,9 @@ class ResultServiceTest {
 
         val testSuiteId = randomUUID()
 
-        val results = resultService.getResultsByTestSuiteAndTestName(testSuiteId, result.testName!!)
+        val resultPage = resultService.getResultsByTestSuiteAndTestNamePaged(testSuiteId, result.testName!!, null)
 
-        assertEquals(0, results.size)
+        assertEquals(0, resultPage.results.size)
     }
 
     @Test fun getResultsByTestSuiteAndTestNameDoesNotReturnResultsFromOtherTestName() {
@@ -158,9 +158,9 @@ class ResultServiceTest {
         val result = Result(run.id, "myTest", 0, true, 42, Date())
         resultRepository.save(result)
 
-        val results = resultService.getResultsByTestSuiteAndTestName(testSuiteId, "myOtherTest")
+        val resultPage = resultService.getResultsByTestSuiteAndTestNamePaged(testSuiteId, "myOtherTest", null)
 
-        assertEquals(0, results.size)
+        assertEquals(0, resultPage.results.size)
     }
 
     private fun fromResult(result: Result): TestWithResults {
