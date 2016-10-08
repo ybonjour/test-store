@@ -12,11 +12,30 @@ module.exports = function(config) {
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
     frameworks: ['jasmine'],
 
-    files: [
-        'dist/1st.spec.js'
-        // {pattern: 'dist/**/*.js', included: false, watched: true}
+    plugins: [
+      require('karma-jasmine'),
+      require('karma-chrome-launcher')
     ],
 
+
+    files: [
+      'node_modules/core-js/client/shim.min.js',
+      'node_modules/zone.js/dist/zone.js',
+      'node_modules/reflect-metadata/Reflect.js',
+      'node_modules/systemjs/dist/system.src.js',
+      'node_modules/chart.js/dist/Chart.min.js',
+      {pattern: 'systemjs.config.js', included: false, watched: false},
+      'karma-test-shim.js',
+      {pattern: 'dist/**/*.js', included: false, watched: false}
+
+      // 'node_modules/core-js/client/shim.js',
+      // 'node_modules/reflect-metadata/Reflect.js',
+
+      // {pattern: 'dist/**/*.js', included: false, watched: true},
+      // {pattern: 'node_modules/@angular/**/*.js', included: false, watched: false},
+      // {pattern: 'node_modules/@angular/**/*.js.map', included: false, watched: false},
+      // {pattern: 'dist/1st.spec.js', included: false, watched: true}
+    ],
 
     // list of files to exclude
     exclude: [],
