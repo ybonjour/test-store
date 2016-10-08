@@ -3,6 +3,7 @@ import {ROUTER_DIRECTIVES, RouteParams} from "@angular/router-deprecated";
 import {Run} from "./run";
 import {RunService} from "./run.service";
 import {RunPage} from "./run-page";
+import {Page} from "../common/page";
 
 @Component({
     templateUrl: 'app/run/run-list.html',
@@ -30,8 +31,8 @@ export class RunListComponent implements OnInit {
             error => this.errorMessage = <any>error);
     }
 
-    private extractPage(runPage: RunPage) {
-        this.runs = this.runs.concat(runPage.runs);
+    private extractPage(runPage: Page<Run>) {
+        this.runs = this.runs.concat(runPage.results);
         this.nextPage = runPage.nextPage;
     }
 
