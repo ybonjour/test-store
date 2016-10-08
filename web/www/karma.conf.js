@@ -27,14 +27,6 @@ module.exports = function(config) {
       {pattern: 'systemjs.config.js', included: false, watched: false},
       'karma-test-shim.js',
       {pattern: 'dist/**/*.js', included: false, watched: false}
-
-      // 'node_modules/core-js/client/shim.js',
-      // 'node_modules/reflect-metadata/Reflect.js',
-
-      // {pattern: 'dist/**/*.js', included: false, watched: true},
-      // {pattern: 'node_modules/@angular/**/*.js', included: false, watched: false},
-      // {pattern: 'node_modules/@angular/**/*.js.map', included: false, watched: false},
-      // {pattern: 'dist/1st.spec.js', included: false, watched: true}
     ],
 
     // list of files to exclude
