@@ -6,12 +6,11 @@ import {TestStatisticsService} from "../statistics/test-statistics.service";
 import {TestStatistics} from "../statistics/test-statistics";
 import {FORM_DIRECTIVES} from "@angular/forms";
 import {CORE_DIRECTIVES, NgClass} from "@angular/common";
-import {CHART_DIRECTIVES} from "ng2-charts/ng2-charts";
 
 @Component({
     templateUrl: 'app/test/test-details.html',
     styleUrls: ['app/test/test-details.css'],
-    directives: [CHART_DIRECTIVES, NgClass, CORE_DIRECTIVES, FORM_DIRECTIVES]
+    directives: [NgClass, CORE_DIRECTIVES, FORM_DIRECTIVES]
 })
 export class TestDetailsComponent implements OnInit{
     testSuiteId: string;

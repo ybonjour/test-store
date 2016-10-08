@@ -9,7 +9,7 @@
     <li *ngFor="let result of results" title="{{result.run}}" [ngClass]="{passed: result.passed, failed: !result.passed}"></li>
 </ul>
 
-<base-chart *ngIf="durations" class="chart"
+<canvas baseChart *ngIf="durations" class="chart"
             [datasets]="[{
                     data: durations,
                     pointBackgroundColor: pointBackgroundColors
@@ -45,4 +45,4 @@
                     display: false
                 }
             }"
-            [chartType]="'line'"></base-chart>
+            [chartType]="'line'"></canvas>
