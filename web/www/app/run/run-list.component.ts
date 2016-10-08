@@ -2,7 +2,6 @@ import {Component, OnInit} from "@angular/core";
 import {ROUTER_DIRECTIVES, RouteParams} from "@angular/router-deprecated";
 import {Run} from "./run";
 import {RunService} from "./run.service";
-import {RunPage} from "./run-page";
 import {Page} from "../common/page";
 
 @Component({
