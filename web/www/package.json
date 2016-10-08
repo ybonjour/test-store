@@ -2,7 +2,8 @@
   "scripts": {
     "postinstall": "typings install",
     "tsc": "tsc",
-    "typings": "typings"
+    "typings": "typings",
+    "test": "tsc && karma start karma.conf.js --single-run"
   },
   "devDependencies": {
     "core-js": "^1.1.4",
