@@ -186,6 +186,19 @@ class ResultControllerTest : BaseIntegrationTest() {
                 .statusCode(404)
     }
 
+    @Test fun getResultsByRunAndTestNameDecodesTestName() {
+        val runId = randomUUID()
+        val result = Result(runId, "package#test", 0, true, 42, Date())
+        saveResults(listOf(result))
+
+        given()
+                .get("/runs/$runId/results/filtered?testname=package%23test")
+                .then()
+                .statusCode(200)
+                .body("testName", equalTo(result.testName))
+
+    }
+
     @Test fun getResultsByTestSuiteAndTestNameReturnsResults() {
         val testSutiteId = randomUUID()
         val run = Run(randomUUID(), testSutiteId, "abc-123", Date())

@@ -50,7 +50,8 @@ class ResultController @Autowired constructor(
             @PathVariable run: UUID,
             @RequestParam(value = "testname", required = true) testName: String
     ): ResponseEntity<TestWithResults> {
-        val result = resultService.getTestWithResults(run, testName)
+        val decodedTestName = URLDecoder.decode(testName, "UTF-8")
+        val result = resultService.getTestWithResults(run, decodedTestName)
         if (result == null) return ResponseEntity(NOT_FOUND)
         return ResponseEntity(result, OK)
     }
