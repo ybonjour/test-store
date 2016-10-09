@@ -6,6 +6,7 @@ import {TestStatisticsService} from "../statistics/test-statistics.service";
 import {TestStatistics} from "../statistics/test-statistics";
 import {FORM_DIRECTIVES} from "@angular/forms";
 import {CORE_DIRECTIVES, NgClass} from "@angular/common";
+import {Page} from "../common/page";
 
 @Component({
     templateUrl: 'app/test/test-details.html',
@@ -33,7 +34,7 @@ export class TestDetailsComponent implements OnInit{
         this.testName = this._routeParams.get('test_name');
 
 
-        this._testResultService.getResultsByTestSuiteAndTestName(this.testSuiteId, this.testName).subscribe(
+        this._testResultService.getResultsByTestSuiteAndTestNamePaged(this.testSuiteId, this.testName, null).subscribe(
             results => this.handleResults(results),
             error => this.errorMessage = <any>error
         );
@@ -44,15 +45,15 @@ export class TestDetailsComponent implements OnInit{
         )
     }
 
-    private handleResults(results:TestResult[]) {
-        this.results = results;
-        this.durations = results.map((r) => { return r.durationMillis / 1000 });
-        this.labels = results.map((r) => { return r.time.toLocaleDateString() + " " + r.time.toLocaleTimeString(); });
+    private handleResults(page:Page<TestResult>) {
+        this.results = page.results;
+        this.durations = page.results.map((r) => { return r.durationMillis / 1000 });
+        this.labels = page.results.map((r) => { return r.time.toLocaleDateString() + " " + r.time.toLocaleTimeString(); });
 
         this.durationsSuggestedMax = Math.max.apply(null, this.durations) * 1.2;
         this.pointBackgroundColors = [];
 
-        for(let result of results) {
+        for(let result of page.results) {
             if(result.passed) {
                 this.pointBackgroundColors.push("#00AA00");
             } else {

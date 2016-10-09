@@ -3,10 +3,21 @@ import {Http, Response, URLSearchParams} from "@angular/http";
 import {Observable} from "rxjs/Observable";
 import {TestResult} from "./test-result";
 import {TestWithResults} from "./test-with-results";
+import {Page} from "../common/page";
+import {JsonPageExtractor} from "../common/json-page-extractor";
 
 @Injectable()
 export class TestResultService {
     constructor(private _http:Http) {
+    }
+
+    getResultsByTestSuiteAndTestNamePaged(testSuiteId: string, testName: string, nextPage: string): Observable<Page<TestResult>> {
+        let params = new URLSearchParams();
+        if(nextPage != null) params.set('page', nextPage);
+
+        return this._http.get("/api/testsuites/" + testSuiteId + "/tests/paged/" + encodeURIComponent(testName), {search: params})
+            .map(TestResultService.extractUngroupedResultsPaged)
+            .catch(TestResultService.extractError)
     }
 
     getResultsByTestSuiteAndTestName(testSuiteId: string, testName: string): Observable<TestResult[]> {
@@ -37,9 +48,15 @@ export class TestResultService {
     }
 
     private static extractUngroupedResults(response: Response): TestResult[] {
-        if(response.status != 200) throw new Error("Bad response status: " + response.status)
+        if(response.status != 200) throw new Error("Bad response status: " + response.status);
 
         return TestResultService.convertResultsFromJson(response.json())
+    }
+
+    private static extractUngroupedResultsPaged(response: Response): Page<TestResult> {
+        if(response.status != 200) throw new Error("Bad response status: " + response.status);
+
+        return JsonPageExtractor.extractFromJson(response.json(), TestResultService.extractResultFromJson)
     }
 
     private static extractSingleResult(response: Response): TestWithResults {
