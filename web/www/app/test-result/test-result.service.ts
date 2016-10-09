@@ -20,12 +20,6 @@ export class TestResultService {
             .catch(TestResultService.extractError)
     }
 
-    getResultsByTestSuiteAndTestName(testSuiteId: string, testName: string): Observable<TestResult[]> {
-        return this._http.get("/api/testsuites/" + testSuiteId + "/tests/" + encodeURIComponent(testName))
-            .map(TestResultService.extractUngroupedResults)
-            .catch(TestResultService.extractError)
-    }
-
     getResultsDiff(runId:String):Observable<{[id: string]:TestWithResults[]}> {
         return this._http.get("/api/runs/" + runId + "/results/diff")
             .map(TestResultService.extractBody)

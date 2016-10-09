@@ -33,12 +33,6 @@ open class ResultService @Autowired constructor(
                 }.firstOrNull()
     }
 
-    fun getResultsByTestSuiteAndTestName(testSuiteId: UUID, testName: String): List<Result> {
-        return runRepository.findAllByTestSuiteId(testSuiteId).flatMap {
-            resultRepository.findAllByRunIdAndTestName(it.id!!, testName)
-        }
-    }
-
     fun getResultsByTestSuiteAndTestNamePaged(testSuiteId: UUID, testName: String, page :String?=null): Page<Result> {
         val runsPage = runRepository.findAllByTestSuiteId(testSuiteId, page)
         val results = runsPage.results.flatMap {
