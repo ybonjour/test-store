@@ -11,12 +11,12 @@ export class TestResultService {
     constructor(private _http:Http) {
     }
 
-    getResultsByTestSuiteAndTestNamePaged(testSuiteId: string, testName: string, nextPage: string): Observable<Page<TestResult>> {
+    getResultsByTestSuiteAndTestName(testSuiteId: string, testName: string, nextPage: string): Observable<Page<TestResult>> {
         let params = new URLSearchParams();
         if(nextPage != null) params.set('page', nextPage);
 
-        return this._http.get("/api/testsuites/" + testSuiteId + "/tests/paged/" + encodeURIComponent(testName), {search: params})
-            .map(TestResultService.extractUngroupedResultsPaged)
+        return this._http.get("/api/testsuites/" + testSuiteId + "/tests/" + encodeURIComponent(testName), {search: params})
+            .map(TestResultService.extractUngroupedResults)
             .catch(TestResultService.extractError)
     }
 
@@ -41,13 +41,7 @@ export class TestResultService {
             .catch(TestResultService.extractError);
     }
 
-    private static extractUngroupedResults(response: Response): TestResult[] {
-        if(response.status != 200) throw new Error("Bad response status: " + response.status);
-
-        return TestResultService.convertResultsFromJson(response.json())
-    }
-
-    private static extractUngroupedResultsPaged(response: Response): Page<TestResult> {
+    private static extractUngroupedResults(response: Response): Page<TestResult> {
         if(response.status != 200) throw new Error("Bad response status: " + response.status);
 
         return JsonPageExtractor.extractFromJson(response.json(), TestResultService.extractResultFromJson)

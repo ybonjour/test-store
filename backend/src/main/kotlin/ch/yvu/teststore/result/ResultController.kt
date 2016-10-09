@@ -73,14 +73,14 @@ class ResultController @Autowired constructor(
         return ResponseEntity(resultDiffService.findDiff(prevRun?.id, currentRun.id!!), OK)
     }
 
-    @RequestMapping(method = arrayOf(GET), value = "/testsuites/{testSuite}/tests/paged/{testName:.+}")
-    fun getResultsByTestSuiteAndTestNamePaged(
+    @RequestMapping(method = arrayOf(GET), value = "/testsuites/{testSuite}/tests/{testName:.+}")
+    fun getResultsByTestSuiteAndTestName(
             @PathVariable testSuite: UUID,
             @PathVariable testName: String,
             @RequestParam(name = "page", required=false) page: String?
     ): Page<Result> {
         val decodedTestName = URLDecoder.decode(testName, "UTF-8")
-        return resultService.getResultsByTestSuiteAndTestNamePaged(testSuite, decodedTestName, page)
+        return resultService.getResultsByTestSuiteAndTestName(testSuite, decodedTestName, page)
     }
 
 }

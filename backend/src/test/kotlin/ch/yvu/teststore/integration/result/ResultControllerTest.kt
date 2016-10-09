@@ -194,7 +194,7 @@ class ResultControllerTest : BaseIntegrationTest() {
         saveResults(listOf(result))
 
         given()
-                .get("/testsuites/$testSutiteId/tests/paged/${result.testName!!}")
+                .get("/testsuites/$testSutiteId/tests/${result.testName!!}")
                 .then()
                 .statusCode(200)
                 .body("results[0].testName", equalTo(result.testName!!))
@@ -208,7 +208,7 @@ class ResultControllerTest : BaseIntegrationTest() {
         saveResults(listOf(result))
 
         given()
-                .get("/testsuites/$testSuiteId/tests/paged/ch.yvu.teststore.common.CassandraRepositoryTest%23canSaveAnItem")
+                .get("/testsuites/$testSuiteId/tests/ch.yvu.teststore.common.CassandraRepositoryTest%23canSaveAnItem")
                 .then()
                 .statusCode(200)
                 .body("results[0].testName", equalTo(result.testName!!))

@@ -34,7 +34,7 @@ export class TestDetailsComponent implements OnInit{
         this.testName = this._routeParams.get('test_name');
 
 
-        this._testResultService.getResultsByTestSuiteAndTestNamePaged(this.testSuiteId, this.testName, null).subscribe(
+        this._testResultService.getResultsByTestSuiteAndTestName(this.testSuiteId, this.testName, null).subscribe(
             results => this.handleResults(results),
             error => this.errorMessage = <any>error
         );

@@ -131,7 +131,7 @@ class ResultServiceTest {
         val result = Result(run.id, "myTest", 0, true, 42, Date())
         resultRepository.save(result)
 
-        val resultPage = resultService.getResultsByTestSuiteAndTestNamePaged(testSuiteId, passedResult.testName!!, null)
+        val resultPage = resultService.getResultsByTestSuiteAndTestName(testSuiteId, passedResult.testName!!, null)
 
         assertEquals(passedResult.testName!!, resultPage.results.get(0).testName)
         assertEquals(run.id!!, resultPage.results.get(0).run)
@@ -146,7 +146,7 @@ class ResultServiceTest {
 
         val testSuiteId = randomUUID()
 
-        val resultPage = resultService.getResultsByTestSuiteAndTestNamePaged(testSuiteId, result.testName!!, null)
+        val resultPage = resultService.getResultsByTestSuiteAndTestName(testSuiteId, result.testName!!, null)
 
         assertEquals(0, resultPage.results.size)
     }
@@ -158,7 +158,7 @@ class ResultServiceTest {
         val result = Result(run.id, "myTest", 0, true, 42, Date())
         resultRepository.save(result)
 
-        val resultPage = resultService.getResultsByTestSuiteAndTestNamePaged(testSuiteId, "myOtherTest", null)
+        val resultPage = resultService.getResultsByTestSuiteAndTestName(testSuiteId, "myOtherTest", null)
 
         assertEquals(0, resultPage.results.size)
     }
