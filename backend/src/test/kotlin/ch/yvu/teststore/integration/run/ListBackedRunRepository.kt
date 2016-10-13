@@ -23,10 +23,6 @@ open class ListBackedRunRepository(val genericRepository: ListBackedRepository<R
         return findAllByTestSuiteId(testSuiteId).find { it.time != null && it.time!!.compareTo(time) < 0 }
     }
 
-    override fun findAllByTestSuiteId(testSuiteId: UUID): List<Run> {
-        return sorted(genericRepository.findAll { run -> testSuiteId == run.testSuite })
-    }
-
     override fun deleteAll() {
         genericRepository.deleteAll()
     }
@@ -45,5 +41,9 @@ open class ListBackedRunRepository(val genericRepository: ListBackedRepository<R
 
     private fun sorted(results: List<Run>): List<Run> {
         return results.sortedByDescending { it.time }
+    }
+
+    private fun findAllByTestSuiteId(testSuiteId: UUID): List<Run> {
+        return sorted(genericRepository.findAll { run -> testSuiteId == run.testSuite })
     }
 }

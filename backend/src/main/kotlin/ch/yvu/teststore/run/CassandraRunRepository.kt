@@ -29,11 +29,6 @@ open class CassandraRunRepository @Autowired constructor(mappingManager: Mapping
         else return result.one()
     }
 
-    override fun findAllByTestSuiteId(testSuiteId: UUID): List<Run> {
-        val resultSet = session.execute("SELECT * FROM run WHERE testSuite=?", testSuiteId)
-        return mapper.map(resultSet).all().toList()
-    }
-
     override fun findAllByTestSuiteId(testSuiteId: UUID, maxRows: Int): List<Run> {
         val query = queryFactory.createQuery("SELECT * FROM run WHERE testSuite=?", testSuiteId)
         return maxRowsResultFetcher.fetch(query, maxRows)

@@ -1,7 +1,6 @@
 package ch.yvu.teststore.run
 
 import ch.yvu.teststore.common.*
-import com.datastax.driver.core.ResultSet
 import com.datastax.driver.core.Session
 import com.datastax.driver.mapping.Mapper
 import com.datastax.driver.mapping.MappingManager
@@ -56,31 +55,7 @@ class CassandraRunRepositoryTest {
         repository.maxRowsResultFetcher = maxRowsResultFetcher
     }
 
-    @Test fun findAllByRunIdSendsCorrectQuery() {
-        val resultSet = mock(ResultSet::class.java)
-        `when`(session.execute(anyString(), any(UUID::class.java))).thenReturn(resultSet)
-        `when`(mapper.map(resultSet)).thenReturn(result)
-        `when`(result.all()).thenReturn(emptyList<Run>())
-        val testSuiteId = randomUUID()
-
-        repository.findAllByTestSuiteId(testSuiteId)
-
-        verify(session).execute("SELECT * FROM run WHERE testSuite=?", testSuiteId)
-    }
-
-    @Test fun findAllByRunIdReturnsCorrectResult() {
-        val resultSet = mock(ResultSet::class.java)
-        `when`(session.execute(anyString(), any(UUID::class.java))).thenReturn(resultSet)
-        `when`(mapper.map(resultSet)).thenReturn(result)
-        `when`(result.all()).thenReturn(listOf(run))
-        val testSuiteId = randomUUID()
-
-        val resultRun = repository.findAllByTestSuiteId(testSuiteId)
-
-        assertEquals(listOf(run), resultRun)
-    }
-
-    @Test fun findAllByRunIdPagedReturnsCorrectResult() {
+    @Test fun findAllByTestSuiteIdPagedReturnsCorrectResult() {
         val page = Page(emptyList<Run>(), null)
         `when`(pagedResultFetcher.fetch(query, null)).thenReturn(page)
 
