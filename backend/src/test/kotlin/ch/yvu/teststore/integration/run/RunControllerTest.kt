@@ -61,22 +61,6 @@ class RunControllerTest : BaseIntegrationTest() {
                 .then().assertThat().body("id", not(isEmptyOrNullString()))
     }
 
-    @Test fun findAllByTestSuiteFindsCorrectTestSuites() {
-        val run1 = Run(randomUUID(), testSuite, "abc123", now)
-        val run2 = Run(randomUUID(), testSuite, "abc124", now)
-        val run3 = Run(randomUUID(), randomUUID(), "abc342", now)
-        runRepository.save(run1)
-        runRepository.save(run2)
-        runRepository.save(run3)
-
-        given()
-                .get("/testsuites/$testSuite/runs")
-        .then()
-                .statusCode(200)
-                .body("[0].revision", equalTo(run1.revision))
-                .body("[1].revision", equalTo(run2.revision))
-    }
-
     @Test fun getLastRunReturnsRunOverview() {
         val run = Run(randomUUID(), testSuite, "abc123", now)
         val result = Result(run.id, "myTest", 0, true, 20, Date())

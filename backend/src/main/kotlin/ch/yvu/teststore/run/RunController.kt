@@ -36,19 +36,6 @@ class RunController @Autowired constructor(val runRepository: RunRepository, val
         return run
     }
 
-    @RequestMapping(method = arrayOf(GET), value = "/testsuites/{testSuite}/runs")
-    fun findAllByTestSuite(@PathVariable testSuite: UUID): List<Run> {
-        return runRepository.findAllByTestSuiteId(testSuite)
-    }
-
-    @RequestMapping(method = arrayOf(GET), value = "/testsuites/{testSuite}/runs/paged")
-    fun findAllByTestSuitePaged(
-            @PathVariable testSuite: UUID,
-            @RequestParam(name = "page", required = false) page: String?
-    ): Page<Run> {
-        return runRepository.findAllByTestSuiteId(testSuite, page)
-    }
-
     @RequestMapping(method = arrayOf(GET), value = "/testsuites/{testSuite}/runs/last")
     fun getLastRunOverview(@PathVariable testSuite: UUID): ResponseEntity<RunOverview> {
         val lastRun = runOverviewService.getLastRunOverview(testSuite)
