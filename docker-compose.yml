@@ -28,7 +28,8 @@ services:
     volumes:
       - ./scripts:/scripts
       - ./cassandra:/cassandra
-    command: bash -c "/scripts/wait-for-cassandra.sh cassandra 9042 && cqlsh cassandra -f /cassandra/create_teststore_keypsace.cql"
+      - ./migration:/migration
+    command: bash -c "/scripts/wait-for-cassandra.sh cassandra 9042 && cqlsh cassandra -f /cassandra/create_keyspace.cql && (cd /migration; ruby migrate.rb /cassandra/migrations/ cassandra teststore 1)"
     depends_on:
       - cassandra
 
