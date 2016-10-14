@@ -9,7 +9,5 @@ interface ResultRepository : TestStoreRepository<Result> {
     fun findAllByRunId(runId: UUID): List<Result>
 
     fun findAllByRunIdAndTestName(runId: UUID, testName: String): List<Result>
-
-    fun findAllByTestName(testName: String): List<Result>
 }
 
