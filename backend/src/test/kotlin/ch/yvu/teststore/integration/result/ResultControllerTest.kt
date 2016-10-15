@@ -227,7 +227,7 @@ class ResultControllerTest : BaseIntegrationTest() {
     }
 
     @Test fun updateFailureReasonReturnsCorrectStatusCode() {
-        val result = Result(randomUUID(), "ch.yvu.test#MyTest", 1, false, 20, Date(1), "stacktrace")
+        val result = Result(randomUUID(), "test", 1, false, 20, Date(1), "stacktrace")
         saveResults(listOf(result))
         val failureReason = "Applicatiion Bug"
 
@@ -237,6 +237,22 @@ class ResultControllerTest : BaseIntegrationTest() {
             .queryParam("failureReason", failureReason)
             .put("/runs/${result.run}/tests/${result.testName}/${result.retryNum}")
             .then().statusCode(200)
+
+        assertEquals(failureReason, result.failureReason)
+    }
+
+
+    @Test fun updateFailureReasonDecodesTestNameCorreclty() {
+        val result = Result(randomUUID(), "ch.yvu.test#MyTest", 1, false, 20, Date(1), "stacktrace")
+        saveResults(listOf(result))
+        val failureReason = "Applicatiion Bug"
+
+        saveResults(listOf(result))
+
+        given()
+            .queryParam("failureReason", failureReason)
+            .put("/runs/${result.run}/tests/ch.yvu.test%23MyTest/${result.retryNum}")
+            .then()
 
         assertEquals(failureReason, result.failureReason)
     }

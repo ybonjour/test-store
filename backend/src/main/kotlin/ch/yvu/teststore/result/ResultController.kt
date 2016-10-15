@@ -90,6 +90,7 @@ class ResultController @Autowired constructor(
             @PathVariable retryNum: Int,
             @RequestParam failureReason: String
     ) {
-        resultRepository.updateFailureReason(run, testName, retryNum, failureReason)
+        val decodedTestName = URLDecoder.decode(testName, "UTF-8")
+        resultRepository.updateFailureReason(run, decodedTestName, retryNum, failureReason)
     }
 }
