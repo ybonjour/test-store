@@ -31,6 +31,9 @@
                 <li *ngFor="let try of result.results" class="try" [ngClass]="{'passed': try.passed, 'failed': !try.passed}">
                     <div class="title">
                         <span class="name">Try {{try.retryNum + 1}}</span>
+                        <span *ngIf="!try.passed" class="reason" *ngFor="let failureReason of failureReasons()">
+                            <span (click)="updateFailureReason(try, failureReason.name)" [ngClass]="{selected: try.failureReason == failureReason.name}">{{failureReason.name}}</span>
+                        </span>
                         <span class="duration">{{(try.durationMillis / 1000) | number}} seconds</span>
                     </div>
                     <stacktrace [stackTrace]="try.stackTrace"></stacktrace>
