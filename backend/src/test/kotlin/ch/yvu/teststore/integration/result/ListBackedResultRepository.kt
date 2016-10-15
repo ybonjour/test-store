@@ -6,6 +6,10 @@ import ch.yvu.teststore.result.ResultRepository
 import java.util.*
 
 open class ListBackedResultRepository(val genericRepository: ListBackedRepository<Result>) : ResultRepository {
+    override fun updateFailureReason(runId: UUID, testName: String, retryNum: Int, failureReason: String) {
+        throw UnsupportedOperationException()
+    }
+
     override fun findAllByRunIdAndTestName(runId: UUID, testName: String): List<Result> {
         return genericRepository.findAll { it.run == runId && it.testName == testName }
     }

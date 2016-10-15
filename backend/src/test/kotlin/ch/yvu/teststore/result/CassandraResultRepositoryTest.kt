@@ -86,4 +86,15 @@ class CassandraResultRepositoryTest {
 
         assertEquals(listOf(aResult), actual)
     }
+
+    @Test fun updateFailureReasonSendsCorrectQuery() {
+        val runId = randomUUID()
+        val testName = "myTest"
+        val retryNum = 0
+        val failureReason = "Flaky"
+
+        repository.updateFailureReason(runId, testName, retryNum, failureReason);
+
+        verify(session).execute("UPDATE result SET failureReason=? WHERE run=? AND testName=? AND retryNum=?", failureReason, runId, testName, retryNum)
+    }
 }

@@ -9,5 +9,7 @@ interface ResultRepository : TestStoreRepository<Result> {
     fun findAllByRunId(runId: UUID): List<Result>
 
     fun findAllByRunIdAndTestName(runId: UUID, testName: String): List<Result>
+
+    fun updateFailureReason(runId: UUID, testName: String, retryNum: Int, failureReason: String)
 }
 
