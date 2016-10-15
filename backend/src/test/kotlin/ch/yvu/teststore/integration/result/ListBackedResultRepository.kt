@@ -7,7 +7,9 @@ import java.util.*
 
 open class ListBackedResultRepository(val genericRepository: ListBackedRepository<Result>) : ResultRepository {
     override fun updateFailureReason(runId: UUID, testName: String, retryNum: Int, failureReason: String) {
-        throw UnsupportedOperationException()
+        genericRepository.findAll {
+            it.run == runId &&  it.testName == testName && it.retryNum == retryNum
+        }.forEach { it.failureReason = failureReason }
     }
 
     override fun findAllByRunIdAndTestName(runId: UUID, testName: String): List<Result> {

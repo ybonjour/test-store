@@ -196,7 +196,6 @@ class ResultControllerTest : BaseIntegrationTest() {
                 .then()
                 .statusCode(200)
                 .body("testName", equalTo(result.testName))
-
     }
 
     @Test fun getResultsByTestSuiteAndTestNameReturnsResults() {
@@ -225,6 +224,21 @@ class ResultControllerTest : BaseIntegrationTest() {
                 .then()
                 .statusCode(200)
                 .body("results[0].testName", equalTo(result.testName!!))
+    }
+
+    @Test fun updateFailureReasonReturnsCorrectStatusCode() {
+        val result = Result(randomUUID(), "ch.yvu.test#MyTest", 1, false, 20, Date(1), "stacktrace")
+        saveResults(listOf(result))
+        val failureReason = "Applicatiion Bug"
+
+        saveResults(listOf(result))
+
+        given()
+            .queryParam("failureReason", failureReason)
+            .put("/runs/${result.run}/tests/${result.testName}/${result.retryNum}")
+            .then().statusCode(200)
+
+        assertEquals(failureReason, result.failureReason)
     }
 
     private fun saveResults(results: List<Result>) {

@@ -9,8 +9,7 @@ import org.springframework.http.HttpStatus.OK
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestMethod.GET
-import org.springframework.web.bind.annotation.RequestMethod.POST
+import org.springframework.web.bind.annotation.RequestMethod.*
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import java.net.URLDecoder
@@ -84,4 +83,13 @@ class ResultController @Autowired constructor(
         return resultService.getResultsByTestSuiteAndTestName(testSuite, decodedTestName, page)
     }
 
+    @RequestMapping(method = arrayOf(PUT), value = "/runs/{run}/tests/{testName:.+}/{retryNum}")
+    fun updateFailureReason(
+            @PathVariable run: UUID,
+            @PathVariable testName: String,
+            @PathVariable retryNum: Int,
+            @RequestParam failureReason: String
+    ) {
+        resultRepository.updateFailureReason(run, testName, retryNum, failureReason)
+    }
 }

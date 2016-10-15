@@ -13,8 +13,10 @@ data class Result(
         var passed: Boolean?,
         var durationMillis: Long?,
         var time: Date?,
-        var stackTrace: String? = null) : Model {
-    constructor(): this(null, null, null, null, null, null) {}
+        var stackTrace: String? = null,
+        var failureReason: String? = null) : Model {
+    constructor() : this(null, null, null, null, null, null) {
+    }
 
     fun isRetry(): Boolean {
         return retryNum!! > 0
