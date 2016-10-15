@@ -8,10 +8,14 @@
         <li  *ngFor="let result of results" class="result failed">
             <span class="name" [routerLink]="['Test Details', {testsuite_id: testSuiteId, test_name: result.testName}]">{{result.testName}}</span>
 
+
             <ul class="tries">
                 <li *ngFor="let try of result.results" class="try">
                     <div class="title">
                         <span class="name">Try {{try.retryNum + 1}}</span>
+                        <span class="reason" *ngFor="let failureReason of failureReasons()">
+                            <span (click)="updateFailureReason(try, failureReason.name)" [ngClass]="{selected: try.failureReason == failureReason.name}">{{failureReason.name}}</span>
+                        </span>
                         <span class="duration">{{(try.durationMillis / 1000) | number}} seconds</span>
                     </div>
                     <stacktrace [stackTrace]="try.stackTrace"></stacktrace>

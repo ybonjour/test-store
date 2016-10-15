@@ -1,5 +1,5 @@
 import {Injectable} from "@angular/core";
-import {Http, Response, URLSearchParams} from "@angular/http";
+import {Http, Response, URLSearchParams, Headers, RequestOptions} from "@angular/http";
 import {Observable} from "rxjs/Observable";
 import {TestResult} from "./test-result";
 import {TestWithResults} from "./test-with-results";
@@ -9,6 +9,14 @@ import {JsonPageExtractor} from "../common/json-page-extractor";
 @Injectable()
 export class TestResultService {
     constructor(private _http:Http) {
+    }
+
+    updateFailureReason(result: TestResult) {
+        let headers = new Headers({'Content-Type': 'application/x-www-form-urlencoded'});
+        let options = new RequestOptions({headers: headers});
+        let body = "failureReason=" + result.failureReason;
+        let url = "/api/runs/" + result.run + "/tests/" + encodeURIComponent(result.testName) + "/" + result.retryNum;
+        this._http.put(url, body, options).subscribe(_ =>  {}, _ => {})
     }
 
     getResultsByTestSuiteAndTestName(testSuiteId: string, testName: string, nextPage: string): Observable<Page<TestResult>> {
@@ -98,6 +106,16 @@ export class TestResultService {
         return testWithResults;
     }
 
+    private static convertResultsFromJson(json:any): TestResult[] {
+        var results = [];
+        for(let resultJson of json) {
+            let result = TestResultService.extractResultFromJson(resultJson);
+            results.push(result);
+        }
+
+        return results;
+    }
+
     private static extractResultFromJson(json: any): TestResult {
         let result = new TestResult();
         result.run = json.run;
@@ -107,16 +125,7 @@ export class TestResultService {
         result.durationMillis = json.durationMillis;
         result.time = new Date(json.time);
         result.stackTrace = json.stackTrace;
+        result.failureReason = json.failureReason;
         return result;
-    }
-
-    private static convertResultsFromJson(json:any): TestResult[] {
-        var results = [];
-        for(let resultJson of json) {
-            let result = TestResultService.extractResultFromJson(resultJson);
-            results.push(result);
-        }
-
-        return results;
     }
 }

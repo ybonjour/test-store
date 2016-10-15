@@ -73,3 +73,21 @@ li.try .title {
     width: 100%;
     background: #FFFFFF;
 }
+
+li.try .title .reason {
+    border: 1px solid #DDDDDD;
+}
+
+
+li.try .title .reason span {
+    border: 1px solid #DDDDDD;
+    padding-left: 3px;
+    padding-right: 3px;
+    margin-left: 2px;
+    margin-right: 2px;
+}
+
+li.try .title .reason span.selected {
+    font-weight: bold;
+    background: #DDDDDD;
+}

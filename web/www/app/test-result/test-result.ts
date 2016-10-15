@@ -6,4 +6,5 @@ export class TestResult {
 	durationMillis: number;
 	time: Date;
 	stackTrace: string;
+	failureReason: string;
 }
