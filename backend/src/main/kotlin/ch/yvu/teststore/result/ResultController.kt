@@ -1,6 +1,8 @@
 package ch.yvu.teststore.result
 
 import ch.yvu.teststore.common.Page
+import ch.yvu.teststore.insert.InsertService
+import ch.yvu.teststore.insert.dto.ResultDto
 import ch.yvu.teststore.run.RunRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.format.annotation.DateTimeFormat
@@ -21,7 +23,8 @@ class ResultController @Autowired constructor(
         val resultRepository: ResultRepository,
         val resultService: ResultService,
         val runRepository: RunRepository,
-        val resultDiffService: ResultDiffService) {
+        val resultDiffService: ResultDiffService,
+        val insertService: InsertService) {
 
     @RequestMapping(method = arrayOf(POST), value = "/results")
     fun createResult(
@@ -32,11 +35,11 @@ class ResultController @Autowired constructor(
             @RequestParam(name = "durationMillis") durationMillis: Long,
             @RequestParam(name = "time") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) time: Date,
             @RequestParam(name = "stackTrace", required = false) stackTrace: String?,
-            response: HttpServletResponse): Result {
-        val result = Result(run, testName, retryNum, passed, durationMillis, time, stackTrace)
-        resultRepository.save(result)
+            response: HttpServletResponse) {
+
+        val result = ResultDto(testName, retryNum, passed, durationMillis, time, stackTrace)
+        insertService.insertResults(listOf(result), run)
         response.status = 201
-        return result
     }
 
     @RequestMapping(method = arrayOf(GET), value = "/runs/{run}/results")
