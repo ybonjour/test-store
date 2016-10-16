@@ -1,8 +1,6 @@
 package ch.yvu.teststore.plugin
 
-import org.gradle.api.Plugin
-import org.gradle.api.Project
-import org.gradle.api.Task
+import org.gradle.api.*
 
 class TestStorePlugin implements Plugin<Project> {
 
@@ -10,8 +8,7 @@ class TestStorePlugin implements Plugin<Project> {
     void apply(Project project) {
         project.extensions.create('teststore', TestStorePluginExtension)
         project.task(storeResultsTaskSettings(), 'storeResults') << {
-            def testSuiteId = UUID.fromString(project.teststore.testSuite)
-            def client = createClient(project.teststore.host, project.teststore.port, testSuiteId)
+            def client = createClient(project.teststore)
             def runId = client.createRun(project.teststore.revision, new Date())
             System.out.println("Created run $runId")
             def fileWalker = new FileWalker(baseDir: project.rootDir, pattern: project.teststore.xmlReports)
@@ -24,13 +21,14 @@ class TestStorePlugin implements Plugin<Project> {
                 }
             }
         }
+
+        project.gradle.addListener(new TestStoreTestListener(project.teststore, new TeststoreClientFactory(project.teststore)))
     }
 
-    private static createClient(String host, int port, UUID testSuiteId) {
-        def httpClient = new HttpClient(host, port)
-        return new TeststoreClient(httpClient: httpClient, testSuiteId: testSuiteId)
+    private static createClient(TestStorePluginExtension extension) {
+        def factory = new TeststoreClientFactory(extension)
+        return factory.createClient()
     }
-
 
     private static Map<String, String> storeResultsTaskSettings() {
         def settings = [:]

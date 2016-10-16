@@ -8,4 +8,5 @@ class TestStorePluginExtension {
     def Pattern xmlReports = ~/.*\/test-results\/.*\.xml/
     def String testSuite
     def String revision = ""
+    def boolean incremental = false
 }

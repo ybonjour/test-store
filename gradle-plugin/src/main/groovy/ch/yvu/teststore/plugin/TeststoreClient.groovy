@@ -18,4 +18,19 @@ class TeststoreClient {
     def insertTestResult(UUID runId, String junitXml) {
         httpClient.postXml("/runs/$runId/results", junitXml)
     }
+
+    def insertTestResult(UUID runId, String testName, boolean passed, long durationMillis, Date time, String stackTrace) {
+        def timeString = new SimpleDateFormat(ISO_DATE_FORMAT).format(time);
+        def parameters = [
+                run: runId.toString(),
+                testName: testName,
+                retryNum: String.valueOf(0),
+                passed: String.valueOf(passed),
+                durationMillis: String.valueOf(durationMillis),
+                time: timeString,
+                stackTrace: stackTrace
+        ]
+
+        httpClient.postForm("/results", parameters)
+    }
 }

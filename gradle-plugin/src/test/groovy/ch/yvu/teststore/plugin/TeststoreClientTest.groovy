@@ -32,7 +32,7 @@ class TeststoreClientTest {
     }
 
     @Test
-    public void canInsertAResult() {
+    public void canInsertAnXMLResult() {
         def runId = randomUUID()
         def mock = new MockFor(HttpClient)
         def junitXml = "<someXML />"
@@ -47,4 +47,27 @@ class TeststoreClientTest {
         }
 
     }
+
+    @Test
+    public void canInsertAResult() {
+        def runId = randomUUID()
+        def testName = "myPackage#MyTest"
+        def passed = false
+        def duration = 1234L
+        def time = NOW
+        def stackTracke = "Some stacktrace"
+        def mock = new MockFor(HttpClient)
+
+        mock.demand.postForm { String path, Map<String, String> parameters ->
+            assert path == "/results"
+            assert runId.toString() == parameters["run"]
+            assert testName == parameters["testName"]
+            assert passed == parameters["passed"].toBoolean()
+            assert duration == parameters["duration"].toLong()
+            assert new SimpleDateFormat(ISO_DATE_FORMAT).format(time) == parameters["time"]
+            assert stackTracke == parameters["stackTrace"]
+        }
+
+    }
+
 }

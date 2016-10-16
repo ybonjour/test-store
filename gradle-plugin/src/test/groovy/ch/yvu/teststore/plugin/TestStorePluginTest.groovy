@@ -67,6 +67,12 @@ class TestStorePluginTest {
     @Test
     public void testStoreExtensionDefaultRevisionIsEmptyString() {
         def revision = project.teststore.revision
-        assert revision == ""
+        assertEquals("", revision)
+    }
+
+    @Test
+    public void testStoreExtensionDefaultIncremantalIsFalse() {
+        def incremental = project.teststore.incremental
+        assertFalse(incremental)
     }
 }
