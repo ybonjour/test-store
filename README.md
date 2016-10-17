@@ -102,11 +102,12 @@ Adapt your build.gradle according to the following template
 buildscript {
     repositories {
         mavenCentral()
-        flatDir dirs: 'libs'
+        maven {
+            url 'https://plugins.gradle.org/m2/'
+        }
     }
     dependencies {
-        classpath 'org.ajoberstar:grgit:1.1.0'
-        classpath 'ch.yvu.teststore:gradle-plugin:0.1'
+        classpath 'gradle.plugin.ch.yvu.teststore:gradle-plugin:0.1'
     }
 }
 
@@ -114,11 +115,15 @@ teststore {
     host '<your test store host>'
     port  8080
     testSuite '<your test suite id>'
-    revision "${->project.ext.revision}"
+    revision System.properties['revision']
     xmlReports ~/.*\/test-results\/TEST-.*\.xml/
+    incremental false
 }
 ```
 
 ## Enjoy
 Run `./gradlew storeResults` to store your test results once you have executed your tests.
+
+## Incremental updates
+If you want to store the result of a test as soon as it finishes, you can set `incremental` to `true`. In this case you don't need to use the `storeResults` task.
 
