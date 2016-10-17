@@ -4,7 +4,6 @@ buildscript {
         flatDir dirs: "libs"
     }
     dependencies {
-        classpath 'org.ajoberstar:grgit:1.1.0'
         classpath 'ch.yvu.teststore:gradle-plugin:0.1'
     }
 }
