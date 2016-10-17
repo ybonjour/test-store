@@ -12,14 +12,12 @@ buildscript {
 apply plugin: 'idea'
 apply plugin: 'ch.yvu.teststore'
 
-ext {
-     revision = org.ajoberstar.grgit.Grgit.open(file('.')).head().id.toString()
-}
 
 teststore {
     host '52.28.29.237'
     port  8080
-    testSuite '5b5cf1c6-6672-4154-9cfb-15629dafc789'
-    revision "${->project.ext.revision}"
+    testSuite '02de82a0-72c9-49bb-a65e-e27ccb31e51e'
+    revision System.properties['revision']
     xmlReports ~/.*\/test-results\/TEST-.*\.xml/
+    incremental false
 }
