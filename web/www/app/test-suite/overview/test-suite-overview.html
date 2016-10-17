@@ -6,9 +6,9 @@
     host '{{hostname}}'
     port  8080
     testSuite '{{testSuite.id}}'
-    revision {{ "${->project.ext.revision}" }}
+    revision System.properties['revision']
     xmlReports ~/.*\/test-results\/TEST-.*\.xml/
     incremental false
-{{ '}' }}
+    {{ '}' }}
     </pre>
 </div>

@@ -2,4 +2,4 @@ language: java
 jdk:
   - oraclejdk8
 after_script:
-  - ./gradlew storeResults
+  - ./gradlew -Drevision=$(git rev-parse HEAD) storeResults
