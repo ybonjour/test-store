@@ -88,14 +88,6 @@ url=https%3A%2F%2Fgithub.com%2Fybonjour%2Ftest-store%2Fcommit%2F4fd0b7ef01c02821
 ```
 
 ## Use test-store with gradle and git
-
-### Build the plugin
-1. Clone the repository `git clone git@github.com:ybonjour/test-store`
-2. Build the gradle-plugin `cd teststore/gradle-plugin; ../gradlew assemble`
-3. Copy the created jar from `build/libs/teststore/gradle-plugin-0.1.jar` into your project (e.g. into the `libs` folder)
-
-
-## Integrate the gradle plugin into your build
 Adapt your build.gradle according to the following template
 
 ```
@@ -120,9 +112,9 @@ teststore {
 }
 ```
 
-## Enjoy
+## Store results at the end of a run
 Run `./gradlew storeResults` to store your test results once you have executed your tests.
 
-## Incremental updates
+## Store results as soon as they are available
 If you want to store the result of a test as soon as it finishes, you can set `incremental` to `true`. In this case you don't need to use the `storeResults` task.
 
