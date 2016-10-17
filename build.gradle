@@ -1,10 +1,12 @@
 buildscript {
     repositories {
         mavenCentral()
-        flatDir dirs: "libs"
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
     }
     dependencies {
-        classpath 'ch.yvu.teststore:gradle-plugin:0.1'
+        classpath 'gradle.plugin.ch.yvu.teststore:gradle-plugin:0.1'
     }
 }
 
@@ -13,7 +15,7 @@ apply plugin: 'ch.yvu.teststore'
 
 
 teststore {
-    host '52.28.29.237'
+    host 'localhost'
     port  8080
     testSuite '02de82a0-72c9-49bb-a65e-e27ccb31e51e'
     revision System.properties['revision']
