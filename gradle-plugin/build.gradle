@@ -3,11 +3,18 @@ group = 'ch.yvu.teststore'
 buildscript {
     repositories {
         mavenCentral()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+    dependencies {
+        classpath 'com.gradle.publish:plugin-publish-plugin:0.9.6'
     }
 }
 
 apply plugin: 'groovy'
 apply plugin: 'java-gradle-plugin'
+apply plugin: 'com.gradle.plugin-publish'
 
 sourceCompatibility = 1.8
 
@@ -20,10 +27,23 @@ jar {
     exclude 'META-INF/*.RSA', 'META-INF/*.SF','META-INF/*.DSA'
 }
 
-
 dependencies {
     compile localGroovy()
     compile 'org.codehaus.groovy.modules.http-builder:http-builder:0.6'
     testCompile group: 'junit', name: 'junit', version: '4.11'
     testCompile 'org.mockito:mockito-core:2.2.2'
+}
+
+pluginBundle {
+    website = 'https://github.com/ybonjour/test-store'
+    vcsUrl = 'https://github.com/ybonjour/test-store'
+    description = 'Stores your test results'
+    tags = ['tests', 'continious integration', 'store']
+
+    plugins {
+        testStorePlugin {
+            id = 'ch.yvu.teststore'
+            displayName = 'test-store'
+        }
+    }
 }
