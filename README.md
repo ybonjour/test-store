@@ -101,7 +101,6 @@ Adapt your build.gradle according to the following template
 ```
 buildscript {
     repositories {
-        mavenCentral()
         maven {
             url 'https://plugins.gradle.org/m2/'
         }
