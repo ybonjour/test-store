@@ -1,0 +1,38 @@
+version: '2'
+services:
+  cassandra:
+    image: cassandra
+    volumes:
+      - data:/var/lib/cassandra
+    ports:
+      - "9042:9042"
+
+  backend:
+    image: ybonjour/test-store-backend
+    volumes:
+      - ./scripts:/scripts
+    command: bash -c "/scripts/wait-for-cassandra.sh cassandra 9042 && java -jar /app/teststore.jar --cassandra.contactPoints=cassandra"
+    ports:
+      - "8080:8080"
+    depends_on:
+      - cassandra
+      - migration
+
+  web:
+    image: ybonjour/test-store-web
+    ports:
+      - "80:80"
+
+  migration:
+    image: ybonjour/test-store-migration
+    volumes:
+      - ./scripts:/scripts
+      - ./cassandra:/cassandra
+      - ./migration:/migration
+    command: bash -c "/scripts/wait-for-cassandra.sh cassandra 9042 && cqlsh cassandra -f /cassandra/create_keyspace.cql && (cd /migration; ruby migrate.rb /cassandra/migrations/ cassandra teststore 1)"
+    depends_on:
+      - cassandra
+
+volumes:
+  data:
+    driver: local
