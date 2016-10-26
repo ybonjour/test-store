@@ -13,4 +13,4 @@ docker run -v $dir/../web/www:/www --rm node bash -ce "(cd /www; npm install; np
 docker build -t test-store-web $dir/../web
 
 # Build migration
-docker build -t test-store-migration -f $dir/../migration/Dockerfile $dir/..
+docker build -t test-store-migration $dir/..
