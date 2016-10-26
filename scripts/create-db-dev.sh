@@ -14,7 +14,7 @@ docker run -p 9042:9042 --name cassandra -d cassandra
 docker run --rm -v $dir/../scripts:/scripts --link cassandra:cassandra test-store-migration-dev /scripts/wait-for-cassandra.sh cassandra 9042
 
 #Create keyspace
-docker run -it --link cassandra:cassandra --rm -v $dir/../cassandra/:/cassandra  cassandra cqlsh cassandra -f /cassandra/create_keyspace.cql
+docker run -it --link cassandra:cassandra --rm -v $dir/../migration/:/cassandra  cassandra cqlsh cassandra -f /cassandra/create_keyspace.cql
 
 #Migration
-docker run --rm -it -v $dir/../cassandra/migrations:/migrations -v $dir/../migration:/workspace --link cassandra:cassandra test-store-migration-dev bash -ce "(cd workspace; ruby migrate.rb /migrations/ cassandra teststore 1)"
+docker run --rm -it -v $dir/../migration/migrations:/migrations -v $dir/../migration:/workspace --link cassandra:cassandra test-store-migration-dev bash -ce "(cd workspace; ruby migrate.rb /migrations/ cassandra teststore 1)"
