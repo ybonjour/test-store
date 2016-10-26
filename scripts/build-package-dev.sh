@@ -6,11 +6,11 @@ dir=$(cd -P -- "$(dirname -- "$0")" && pwd -P)
 root=$dir/..
 
 # Build backend
-docker run -v $root/:/workspace --rm java:8-jdk bash -ce "(cd workspace; ./gradlew assemble)"
+$root/backend/scripts/build.sh
 docker build -t test-store-backend $root/backend
 
 # Build web
-docker run -v $root/web/www:/www --rm node bash -ce "(cd /www; npm install; npm run tsc)"
+$root/web/scripts/build.sh
 docker build -t test-store-web $root/web
 
 # Build migration
