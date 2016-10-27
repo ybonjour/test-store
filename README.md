@@ -102,6 +102,8 @@ buildscript {
     }
 }
 
+apply plugin: 'ch.yvu.teststore'
+
 teststore {
     host '<your test store host>'
     port  8080
