@@ -25,7 +25,7 @@
         </tr>
     </thead>
     <tbody>
-        <tr *ngFor="let testName of testNames | filter: hidePassed">
+        <tr *ngFor="let testName of testNames | historyFilterPassed:hidePassed">
             <td title="{{testName.longName}}" class="front">
                 <a [routerLink]="['Test Details', {testsuite_id: testSuiteId, test_name: testName.longName}]">{{testName.shortName}}</a></td>
             <td class="result"
