@@ -5,6 +5,6 @@ import {HistoryTestName} from "./history-test-name";
 export class HistoryFilter implements PipeTransform {
     transform(list: HistoryTestName[], applyFilter: boolean) {
         if(!applyFilter) return list;
-        return list.filter((item) => {return false});
+        return list.filter((item) => {return !item.allTestsPassed });
     }
 }
