@@ -48,6 +48,7 @@ export class TestDetailsComponent implements OnInit{
     private handleResults(page:Page<TestResult>) {
         this.results = page.results;
         this.durations = page.results.map((r) => { return r.durationMillis / 1000 });
+        console.log("Durations " + this.durations);
         this.labels = page.results.map((r) => { return r.time.toLocaleDateString() + " " + r.time.toLocaleTimeString(); });
 
         this.durationsSuggestedMax = Math.max.apply(null, this.durations) * 1.2;

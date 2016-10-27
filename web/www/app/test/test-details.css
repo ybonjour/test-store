@@ -32,8 +32,12 @@ span.failed {
     color: #AA0000;
 }
 
+.chart-container {
+    display: block;
+}
+
 .chart {
     clear: left;
-    display: block;
     margin: 20px;
+    width:80%;
 }
