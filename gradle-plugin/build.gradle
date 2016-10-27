@@ -1,4 +1,4 @@
-version = 0.1
+version = 0.2
 group = 'ch.yvu.teststore'
 buildscript {
     repositories {
@@ -16,7 +16,7 @@ apply plugin: 'groovy'
 apply plugin: 'java-gradle-plugin'
 apply plugin: 'com.gradle.plugin-publish'
 
-sourceCompatibility = 1.8
+sourceCompatibility = 1.7
 
 repositories {
     mavenCentral()
