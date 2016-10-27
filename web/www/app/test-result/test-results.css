@@ -91,3 +91,7 @@ li.try .title .reason span.selected {
     font-weight: bold;
     background: #DDDDDD;
 }
+
+span.reason {
+    cursor: pointer;
+}
