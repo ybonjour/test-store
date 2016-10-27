@@ -7,11 +7,11 @@ root=$dir/..
 
 # Build backend
 $root/backend/scripts/build.sh
-docker build -t test-store-backend $root/backend
+$root/backend/scripts/package-dev.sh
 
 # Build web
 $root/web/scripts/build.sh
-docker build -t test-store-web $root/web
+$root/web/scripts/package-dev.sh
 
 # Build migration
-docker build -t test-store-migration $root/migration
+$root/migration/scripts/package-dev.sh
