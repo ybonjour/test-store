@@ -1,5 +1,6 @@
 package ch.yvu.teststore.testsuite
 
+import ch.yvu.teststore.insert.dto.TestSuiteDto
 import ch.yvu.teststore.run.overview.RunOverview.RunResult.UNKNOWN
 import ch.yvu.teststore.run.overview.RunOverviewService
 import ch.yvu.teststore.testsuite.overview.TestSuiteOverview
@@ -7,12 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus.NOT_FOUND
 import org.springframework.http.HttpStatus.OK
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.*
 import org.springframework.web.bind.annotation.RequestMethod.GET
 import org.springframework.web.bind.annotation.RequestMethod.POST
-import org.springframework.web.bind.annotation.RequestParam
-import org.springframework.web.bind.annotation.RestController
 import java.util.*
 import java.util.UUID.randomUUID
 import javax.servlet.http.HttpServletResponse
@@ -23,6 +21,17 @@ class TestSuiteController @Autowired constructor(val testSuiteRepository: TestSu
     @RequestMapping(method = arrayOf(POST), value = "/testsuites")
     fun createTestSuite(@RequestParam(name = "name") name: String, response: HttpServletResponse): TestSuite {
         val testSuite = TestSuite(randomUUID(), name)
+        testSuiteRepository.save(testSuite)
+        response.status = 201
+        return testSuite
+    }
+
+    @RequestMapping(
+            method = arrayOf(POST),
+            value = "/testsuites/json",
+            headers = arrayOf("content-type=application/json"))
+    fun createTestSuiteJson(@RequestBody testSuite: TestSuiteDto, response: HttpServletResponse): TestSuite {
+        val testSuite = TestSuite(randomUUID(), testSuite.name)
         testSuiteRepository.save(testSuite)
         response.status = 201
         return testSuite

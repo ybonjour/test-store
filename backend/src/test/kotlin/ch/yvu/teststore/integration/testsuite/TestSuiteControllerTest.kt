@@ -11,6 +11,7 @@ import ch.yvu.teststore.run.overview.RunOverview.RunResult.UNKNOWN
 import ch.yvu.teststore.testsuite.TestSuite
 import ch.yvu.teststore.testsuite.TestSuiteRepository
 import com.jayway.restassured.RestAssured.given
+import com.jayway.restassured.http.ContentType.JSON
 import org.hamcrest.Matchers.*
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertThat
@@ -29,6 +30,26 @@ class TestSuiteControllerTest() : BaseIntegrationTest() {
     @Before override fun setUp() {
         super.setUp()
         testSuiteRepository.deleteAll()
+    }
+
+    @Test fun storesTestSuiteCorrectly(){
+        given()
+                .contentType(JSON)
+                .body("{\"name\": \"MyTestSuite\"}").post("/testsuites/json")
+
+        val testSuites = testSuiteRepository.findAll()
+
+        assertEquals(1, testSuites.count())
+        assertThat(testSuites, hasItem(testSuiteWithName("MyTestSuite")))
+    }
+
+    @Test fun returnsIdOfCreatedTestSuite() {
+        given()
+                .contentType(JSON)
+                .body("{\"name\": \"MyTestSuite\"}").post("/testsuites/json").then()
+                .assertThat()
+                .statusCode(201)
+                .body("id", not(isEmptyOrNullString()))
     }
 
     @Test fun storesTestSuiteWithCorrectName() {

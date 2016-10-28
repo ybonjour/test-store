@@ -1,3 +1,6 @@
 package ch.yvu.teststore.insert.dto
 
-data class TestSuiteDto(val name: String)
+import com.fasterxml.jackson.annotation.JsonProperty
+
+data class TestSuiteDto(
+        @JsonProperty("name") val name: String)
