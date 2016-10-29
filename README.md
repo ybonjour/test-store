@@ -36,7 +36,7 @@ teststore {
 ```
 
 ### Store results at the end of a run
-Run `./gradlew storeResults` to store your test results once you have executed your tests.
+Run `./gradlew storeResults` to store your test results once you have executed your tests. It will collect all test results (in JUnit XML format) according to the pattern specified in `teststore.xmlReports` in your `build.gradle` file and send them to the test-store server.
 
 ### Store results as soon as they are available
 If you want to store the result of a test as soon as it finishes, you can set `incremental` to `true`. In this case you don't need to use the `storeResults` task.
