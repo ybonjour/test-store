@@ -2,9 +2,9 @@
 Stores your test results
 
 ## Run test-store server
-1. Install `docker` and `docker-compose`.
+1. Install `docker` and `docker-compose`
 2. Download `docker-compose-prod.yml`
-3. Run `docker-compose -f /path/to/docker-compose-prod.yml`
+3. Run `docker-compose -f /path/to/docker-compose-prod.yml up -d`
 4. Access test-store on http://localhost
 
 
