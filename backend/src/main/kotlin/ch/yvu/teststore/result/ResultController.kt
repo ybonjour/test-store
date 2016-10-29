@@ -9,11 +9,8 @@ import org.springframework.format.annotation.DateTimeFormat
 import org.springframework.http.HttpStatus.NOT_FOUND
 import org.springframework.http.HttpStatus.OK
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.*
 import org.springframework.web.bind.annotation.RequestMethod.*
-import org.springframework.web.bind.annotation.RequestParam
-import org.springframework.web.bind.annotation.RestController
 import java.net.URLDecoder
 import java.util.*
 import javax.servlet.http.HttpServletResponse
@@ -39,6 +36,20 @@ class ResultController @Autowired constructor(
 
         val result = ResultDto(testName, retryNum, passed, durationMillis, time, stackTrace)
         insertService.insertResults(listOf(result), run)
+        response.status = 201
+    }
+
+    @RequestMapping(
+            method = arrayOf(POST),
+            value = "/runs/{run}/results",
+            headers = arrayOf("content-type=application/json")
+    )
+    fun createResultJson(
+            @PathVariable run:UUID,
+            @RequestBody resultDto: ResultDto,
+            response: HttpServletResponse
+    ) {
+        insertService.insertResults(listOf(resultDto), run)
         response.status = 201
     }
 

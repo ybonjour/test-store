@@ -1,12 +1,15 @@
 package ch.yvu.teststore.integration.result
 
+import ch.yvu.teststore.insert.dto.ResultDto
 import ch.yvu.teststore.integration.BaseIntegrationTest
 import ch.yvu.teststore.matchers.ResultMatchers.resultWith
 import ch.yvu.teststore.result.Result
 import ch.yvu.teststore.result.ResultRepository
 import ch.yvu.teststore.run.Run
 import ch.yvu.teststore.run.RunRepository
+import com.fasterxml.jackson.databind.ObjectMapper
 import com.jayway.restassured.RestAssured.given
+import com.jayway.restassured.http.ContentType.JSON
 import org.hamcrest.Matchers.equalTo
 import org.hamcrest.Matchers.hasItem
 import org.junit.Assert.assertEquals
@@ -34,6 +37,27 @@ class ResultControllerTest : BaseIntegrationTest() {
         super.setUp()
         resultRepository.deleteAll()
         runRepository.deleteAll()
+    }
+
+    @Test fun createResultJsonReturnsCorrectStatusCode() {
+        val runId = randomUUID()
+        val result = ResultDto(
+                testName="MyTest",
+                retryNum = 0,
+                passed = true,
+                durationMillis = 10,
+                time = Date(1)
+        )
+
+        val mapper = ObjectMapper()
+        mapper.dateFormat = SimpleDateFormat(isoFormat)
+        val json = mapper.writeValueAsString(result)
+
+        given()
+                .contentType(JSON)
+                .body(json)
+                .post("/runs/$runId/results")
+                .then().assertThat().statusCode(201)
     }
 
     @Test fun createResultReturnsCorrectStatusCode() {
