@@ -39,7 +39,7 @@ class ResultControllerTest : BaseIntegrationTest() {
         runRepository.deleteAll()
     }
 
-    @Test fun createResultJsonReturnsCorrectStatusCode() {
+    @Test fun createResultReturnsCorrectStatusCode() {
         val runId = randomUUID()
         val result = ResultDto(
                 testName="MyTest",
@@ -60,57 +60,55 @@ class ResultControllerTest : BaseIntegrationTest() {
                 .then().assertThat().statusCode(201)
     }
 
-    @Test fun createResultReturnsCorrectStatusCode() {
-        given().queryParam("run", randomUUID())
-                .queryParam("testName", "MyTest")
-                .queryParam("retryNum", 0)
-                .queryParam("passed", true)
-                .queryParam("durationMillis", 10)
-                .queryParam("time", nowString)
-                .post("/results")
-                .then().assertThat().statusCode(201)
-    }
-
     @Test fun createResultStoresResultWithCorrectAttributes() {
-        val run = randomUUID()
-        val testName = "MyTest"
-        val retryNum = 0
-        val passed = true
-        val durationMillis = 10L
-        given().queryParam("run", run)
-                .queryParam("testName", testName)
-                .queryParam("retryNum", retryNum)
-                .queryParam("passed", passed)
-                .queryParam("durationMillis", durationMillis)
-                .queryParam("time", nowString)
-                .post("/results")
+        val runId = randomUUID()
+        val result = ResultDto(
+                testName="MyTest",
+                retryNum = 0,
+                passed = true,
+                durationMillis = 10,
+                time = Date(1)
+        )
+
+        val mapper = ObjectMapper()
+        mapper.dateFormat = SimpleDateFormat(isoFormat)
+        val json = mapper.writeValueAsString(result)
+
+        given()
+                .contentType(JSON)
+                .body(json)
+                .post("/runs/$runId/results")
 
         val results = resultRepository.findAll()
         assertEquals(1, results.count())
         assertThat(results, hasItem(resultWith(
-                equalTo(run), testName, retryNum, passed, durationMillis, now, null)))
+                equalTo(runId), result.testName, result.retryNum, result.passed, result.durationMillis, result.time, null)))
     }
 
     @Test fun createResultCanCreateFailedResult() {
-        val run = randomUUID()
-        val testName = "MyTest"
-        val retryNum = 0
-        val passed = false
-        val durationMillis = 10L
-        val stackTrace = "stacktrace";
-        given().queryParam("run", run)
-                .queryParam("testName", testName)
-                .queryParam("retryNum", retryNum)
-                .queryParam("passed", passed)
-                .queryParam("durationMillis", durationMillis)
-                .queryParam("time", nowString)
-                .queryParam("stackTrace", stackTrace)
-                .post("/results")
+        val runId = randomUUID()
+        val result = ResultDto(
+                testName="MyTest",
+                retryNum = 0,
+                passed = false,
+                durationMillis = 10L,
+                time = Date(1),
+                stackTrace = "stacktrace"
+        )
+
+        val mapper = ObjectMapper()
+        mapper.dateFormat = SimpleDateFormat(isoFormat)
+        val json = mapper.writeValueAsString(result)
+
+        given()
+                .contentType(JSON)
+                .body(json)
+                .post("/runs/$runId/results")
 
         val results = resultRepository.findAll()
         assertEquals(1, results.count())
         assertThat(results, hasItem(resultWith(
-                equalTo(run), testName, retryNum, passed, durationMillis, now, stackTrace)))
+                equalTo(runId), result.testName, result.retryNum, result.passed, result.durationMillis, result.time, result.stackTrace)))
     }
 
     @Test fun findAllByRun() {

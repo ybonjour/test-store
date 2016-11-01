@@ -5,7 +5,6 @@ import ch.yvu.teststore.insert.InsertService
 import ch.yvu.teststore.insert.dto.ResultDto
 import ch.yvu.teststore.run.RunRepository
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.format.annotation.DateTimeFormat
 import org.springframework.http.HttpStatus.NOT_FOUND
 import org.springframework.http.HttpStatus.OK
 import org.springframework.http.ResponseEntity
@@ -22,22 +21,6 @@ class ResultController @Autowired constructor(
         val runRepository: RunRepository,
         val resultDiffService: ResultDiffService,
         val insertService: InsertService) {
-
-    @RequestMapping(method = arrayOf(POST), value = "/results")
-    fun createResult(
-            @RequestParam(name = "run") run: UUID,
-            @RequestParam(name = "testName") testName: String,
-            @RequestParam(name = "retryNum") retryNum: Int,
-            @RequestParam(name = "passed") passed: Boolean,
-            @RequestParam(name = "durationMillis") durationMillis: Long,
-            @RequestParam(name = "time") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) time: Date,
-            @RequestParam(name = "stackTrace", required = false) stackTrace: String?,
-            response: HttpServletResponse) {
-
-        val result = ResultDto(testName, retryNum, passed, durationMillis, time, stackTrace)
-        insertService.insertResults(listOf(result), run)
-        response.status = 201
-    }
 
     @RequestMapping(
             method = arrayOf(POST),
