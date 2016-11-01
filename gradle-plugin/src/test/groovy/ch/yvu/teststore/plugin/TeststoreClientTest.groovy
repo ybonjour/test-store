@@ -1,5 +1,6 @@
 package ch.yvu.teststore.plugin
 
+import groovy.json.JsonSlurper
 import groovy.mock.interceptor.MockFor
 import org.junit.Test
 
@@ -58,16 +59,25 @@ class TeststoreClientTest {
         def stackTracke = "Some stacktrace"
         def mock = new MockFor(HttpClient)
 
-        mock.demand.postForm { String path, Map<String, String> parameters ->
-            assert path == "/results"
-            assert runId.toString() == parameters["run"]
-            assert testName == parameters["testName"]
-            assert passed == parameters["passed"].toBoolean()
-            assert duration == parameters["duration"].toLong()
-            assert new SimpleDateFormat(ISO_DATE_FORMAT).format(time) == parameters["time"]
-            assert stackTracke == parameters["stackTrace"]
+        mock.demand.postJson { String path, String json ->
+            assert path == "/runs/$runId/results"
+
+            def slurper = new JsonSlurper();
+            def result = slurper.parse(json.bytes)
+
+            assert runId.toString() == result.run
+            assert testName == result.testName
+            assert 0 == result.retryNum
+            assert passed == result.passed
+            assert duration == result.durationMillis
+            assert new SimpleDateFormat(ISO_DATE_FORMAT).format(time) == result.time
+            assert stackTracke == result.stackTrace
         }
 
+        mock.use {
+            def client = new TeststoreClient(httpClient: new HttpClient("", 0), testSuiteId: TEST_SUITE)
+            client.insertTestResult(runId, testName, passed, duration, time, stackTracke)
+        }
     }
 
 }

@@ -1,5 +1,7 @@
 package ch.yvu.teststore.plugin
 
+import groovy.json.JsonBuilder
+
 import java.text.SimpleDateFormat
 
 class TeststoreClient {
@@ -21,16 +23,17 @@ class TeststoreClient {
 
     def insertTestResult(UUID runId, String testName, boolean passed, long durationMillis, Date time, String stackTrace) {
         def timeString = new SimpleDateFormat(ISO_DATE_FORMAT).format(time);
-        def parameters = [
+        def result = [
                 run: runId.toString(),
                 testName: testName,
-                retryNum: String.valueOf(0),
-                passed: String.valueOf(passed),
-                durationMillis: String.valueOf(durationMillis),
+                retryNum: 0,
+                passed: passed,
+                durationMillis: durationMillis,
                 time: timeString,
                 stackTrace: stackTrace
         ]
+        def jsonBuilder = new JsonBuilder(result)
 
-        httpClient.postForm("/results", parameters)
+        httpClient.postJson("/runs/$runId/results", jsonBuilder.toString())
     }
 }
