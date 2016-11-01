@@ -35,7 +35,7 @@ class TestSuiteControllerTest() : BaseIntegrationTest() {
     @Test fun storesTestSuiteCorrectly(){
         given()
                 .contentType(JSON)
-                .body("{\"name\": \"MyTestSuite\"}").post("/testsuites/json")
+                .body("{\"name\": \"MyTestSuite\"}").post("/testsuites")
 
         val testSuites = testSuiteRepository.findAll()
 
@@ -46,24 +46,7 @@ class TestSuiteControllerTest() : BaseIntegrationTest() {
     @Test fun returnsIdOfCreatedTestSuite() {
         given()
                 .contentType(JSON)
-                .body("{\"name\": \"MyTestSuite\"}").post("/testsuites/json").then()
-                .assertThat()
-                .statusCode(201)
-                .body("id", not(isEmptyOrNullString()))
-    }
-
-    @Test fun storesTestSuiteWithCorrectName() {
-        val testSuiteName = "MyTestSuite"
-
-        given().queryParam("name", testSuiteName).`when`().post("/testsuites")
-
-        val tests = testSuiteRepository.findAll()
-        assertEquals(1, tests.count())
-        assertThat(tests, hasItem(testSuiteWithName(testSuiteName)))
-    }
-
-    @Test fun returnsIdOfStoredTestSuite() {
-        given().queryParam("name", "MyTestSuite").`when`().post("/testsuites").then()
+                .body("{\"name\": \"MyTestSuite\"}").post("/testsuites").then()
                 .assertThat()
                 .statusCode(201)
                 .body("id", not(isEmptyOrNullString()))

@@ -7,19 +7,19 @@ import {TestSuite} from "./test-suite";
 export class TestSuiteService {
     constructor(private _http: Http) {}
 
+    createTestSuite(name: string): Observable<string> {
+        let headers = new Headers({'Content-Type': 'application/json'});
+        let options = new RequestOptions({headers: headers});
+        let body = {name: name};
+        return this._http.post("/api/testsuites", body, options)
+            .map(TestSuiteService.extractCreateResponse)
+            .catch(TestSuiteService.extractError)
+    }
+
     getTestSuites(): Observable<TestSuite[]> {
         return this._http.get("/api/testsuites")
             .map(TestSuiteService.extractTestSuites)
             .catch(TestSuiteService.extractError);
-    }
-
-    createTestSuite(name: string): Observable<string> {
-        let headers = new Headers({'Content-Type': 'application/x-www-form-urlencoded'})
-        let options = new RequestOptions({headers: headers});
-        let body = "name=" + name;
-        return this._http.post("/api/testsuites", body, options)
-            .map(TestSuiteService.extractCreateResponse)
-            .catch(TestSuiteService.extractError)
     }
 
     getTestSuite(id: string): Observable<TestSuite> {
