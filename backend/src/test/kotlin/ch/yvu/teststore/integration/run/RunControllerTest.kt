@@ -1,12 +1,16 @@
 package ch.yvu.teststore.integration.run
 
+import ch.yvu.teststore.insert.dto.RunDto
 import ch.yvu.teststore.integration.BaseIntegrationTest
+import ch.yvu.teststore.integration.result.ResultControllerTest
 import ch.yvu.teststore.matchers.RunMatchers.runWith
 import ch.yvu.teststore.result.Result
 import ch.yvu.teststore.result.ResultRepository
 import ch.yvu.teststore.run.Run
 import ch.yvu.teststore.run.RunRepository
+import com.fasterxml.jackson.databind.ObjectMapper
 import com.jayway.restassured.RestAssured.given
+import com.jayway.restassured.http.ContentType.JSON
 import org.hamcrest.Matchers.*
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertThat
@@ -35,29 +39,41 @@ class RunControllerTest : BaseIntegrationTest() {
     }
 
     @Test fun createRunReturnsCorrectStatusCode() {
-        given().queryParam("revision", "abcd123")
-                .queryParam("time", nowString)
-                .post("/testsuites/$testSuite/runs")
+        val run = RunDto("abc123", Date(1))
+        val mapper = ObjectMapper()
+        mapper.dateFormat = SimpleDateFormat(ResultControllerTest.isoFormat)
+        val json = mapper.writeValueAsString(run)
+
+        given().contentType(JSON)
+                .body(json)
+                .post("/testsuites/$testSuite/runs/sync")
                 .then().assertThat().statusCode(201)
     }
 
     @Test fun storesRunWithCorrectRevisionAndTestSuite() {
-        val revision = "abcd123"
-        val time = nowString
+        val run = RunDto("abc123", Date(1))
+        val mapper = ObjectMapper()
+        mapper.dateFormat = SimpleDateFormat(ResultControllerTest.isoFormat)
+        val json = mapper.writeValueAsString(run)
 
-        given().queryParam("revision", revision)
-                .queryParam("time", time)
-                .post("/testsuites/$testSuite/runs")
+        given().contentType(JSON)
+                .body(json)
+                .post("/testsuites/$testSuite/runs/sync")
 
         val runs = runRepository.findAll()
         assertEquals(1, runs.count())
-        assertThat(runs, hasItem(runWith(revision = revision, testSuite = testSuite, time = now)))
+        assertThat(runs, hasItem(runWith(revision = run.revision, testSuite = testSuite, time = run.time)))
     }
 
     @Test fun runIdIsReturnedWhenCreatingARun() {
-        given().queryParam("revision", "abcd123")
-                .queryParam("time", nowString)
-                .post("/testsuites/$testSuite/runs")
+        val run = RunDto("abc123", Date(1))
+        val mapper = ObjectMapper()
+        mapper.dateFormat = SimpleDateFormat(ResultControllerTest.isoFormat)
+        val json = mapper.writeValueAsString(run)
+
+        given().contentType(JSON)
+                .body(json)
+                .post("/testsuites/$testSuite/runs/sync")
                 .then().assertThat().body("id", not(isEmptyOrNullString()))
     }
 

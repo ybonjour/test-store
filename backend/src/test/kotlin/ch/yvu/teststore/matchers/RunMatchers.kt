@@ -6,7 +6,7 @@ import org.hamcrest.TypeSafeMatcher
 import java.util.*
 
 object RunMatchers {
-    fun runWith(revision: String, testSuite: UUID, time: Date) = object : TypeSafeMatcher<Run>() {
+    fun runWith(revision: String?, testSuite: UUID, time: Date) = object : TypeSafeMatcher<Run>() {
         override fun matchesSafely(item: Run?): Boolean {
             if (item == null) return false
 

@@ -8,7 +8,7 @@ import java.util.*
 class JsonConversionTest {
     @Test fun convertRun() {
         val mapper = ObjectMapper()
-        val runDto = RunDto(
+        val runDto = RunWithResultsDto(
                 revision = "abc123",
                 time = Date(),
                 results = listOf(ResultDto(
@@ -20,7 +20,7 @@ class JsonConversionTest {
         )
         val json = mapper.writeValueAsString(runDto)
 
-        val result = mapper.readValue(json, RunDto::class.java)
+        val result = mapper.readValue(json, RunWithResultsDto::class.java)
 
         assertEquals(runDto, result)
     }

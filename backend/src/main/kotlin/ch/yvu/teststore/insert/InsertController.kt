@@ -1,6 +1,6 @@
 package ch.yvu.teststore.insert
 
-import ch.yvu.teststore.insert.dto.RunDto
+import ch.yvu.teststore.insert.dto.RunWithResultsDto
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestBody
@@ -16,8 +16,8 @@ class InsertController @Autowired constructor(val insertService: InsertService) 
             method = arrayOf(POST),
             value = "/testsuites/{testSuite}/runs",
             headers = arrayOf("content-type=application/json"))
-    fun insert(@PathVariable testSuite: UUID, @RequestBody runDto: RunDto) {
-        insertService.insertRun(runDto, testSuite)
+    fun insert(@PathVariable testSuite: UUID, @RequestBody runWithResultsDto: RunWithResultsDto) {
+        insertService.insertRun(runWithResultsDto, testSuite)
     }
 
     @RequestMapping(

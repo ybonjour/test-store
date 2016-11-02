@@ -16,18 +16,24 @@ class TeststoreClientTest {
     @Test
     public void canCreateARun() {
         String revision = "abc123"
+        def time = NOW
         UUID runId = randomUUID()
         def response = [id:runId.toString()]
         def mock = new MockFor(HttpClient)
-        mock.demand.postForm { String path, Map<String, String> parameters ->
-            assert path == "/testsuites/$TEST_SUITE/runs"
-            assert parameters == [revision: revision, time: new SimpleDateFormat(ISO_DATE_FORMAT).format(NOW)]
+        mock.demand.postJson { String path, String json ->
+            assert path == "/testsuites/$TEST_SUITE/runs/sync"
+
+            def slurper = new JsonSlurper();
+            def run = slurper.parse(json.bytes)
+            assert revision == run.revision
+            assert new SimpleDateFormat(ISO_DATE_FORMAT).format(time) == run.time
+
             return response
         }
 
         mock.use {
             def client = new TeststoreClient(httpClient: new HttpClient("", 0), testSuiteId: TEST_SUITE)
-            def result = client.createRun(revision, NOW)
+            def result = client.createRun(revision, time)
             assert result == runId
         }
     }

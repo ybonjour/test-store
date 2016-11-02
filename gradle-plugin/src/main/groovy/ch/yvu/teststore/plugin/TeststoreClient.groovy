@@ -12,8 +12,11 @@ class TeststoreClient {
 
     def createRun(String revision, Date time) {
         def timeString = new SimpleDateFormat(ISO_DATE_FORMAT).format(time);
-        def params = [revision: revision, time: timeString]
-        def response = httpClient.postForm("/testsuites/${testSuiteId.toString()}/runs", params)
+
+        def run = [revision: revision, time: timeString]
+        def jsonBuilder = new JsonBuilder(run)
+
+        def response = httpClient.postJson("/testsuites/${testSuiteId.toString()}/runs/sync", jsonBuilder.toString())
         return UUID.fromString(response.id)
     }
 

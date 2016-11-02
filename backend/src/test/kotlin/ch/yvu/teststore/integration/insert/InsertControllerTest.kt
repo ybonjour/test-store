@@ -1,7 +1,7 @@
 package ch.yvu.teststore.integration.insert
 
 import ch.yvu.teststore.insert.dto.ResultDto
-import ch.yvu.teststore.insert.dto.RunDto
+import ch.yvu.teststore.insert.dto.RunWithResultsDto
 import ch.yvu.teststore.integration.BaseIntegrationTest
 import ch.yvu.teststore.result.ResultRepository
 import ch.yvu.teststore.run.RunRepository
@@ -29,7 +29,7 @@ class InsertControllerTest : BaseIntegrationTest() {
 
     @Test fun canInsertARun() {
         val testSuite = randomUUID()
-        val runDto = RunDto(
+        val runDto = RunWithResultsDto(
                 revision = "abc123",
                 time = Date(),
                 results = listOf(ResultDto(

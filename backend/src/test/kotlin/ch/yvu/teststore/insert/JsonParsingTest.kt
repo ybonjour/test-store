@@ -1,7 +1,7 @@
 package ch.yvu.teststore.insert
 
 import ch.yvu.teststore.insert.dto.ResultDto
-import ch.yvu.teststore.insert.dto.RunDto
+import ch.yvu.teststore.insert.dto.RunWithResultsDto
 import ch.yvu.teststore.insert.dto.TestSuiteDto
 import ch.yvu.teststore.integration.result.ResultControllerTest
 import com.fasterxml.jackson.databind.ObjectMapper
@@ -32,14 +32,14 @@ class JsonParsingTest {
 
     @Test
     fun canParseRun() {
-        val runDto = RunDto(
+        val runDto = RunWithResultsDto(
                 revision = "abc123",
                 time = Date(1)
         )
 
         val json = mapper.writeValueAsString(runDto)
 
-        val actualDto = mapper.readValue(json, RunDto::class.java)
+        val actualDto = mapper.readValue(json, RunWithResultsDto::class.java)
 
         assertEquals(runDto, actualDto)
     }

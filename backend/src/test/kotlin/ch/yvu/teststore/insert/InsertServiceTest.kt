@@ -1,7 +1,7 @@
 package ch.yvu.teststore.insert
 
 import ch.yvu.teststore.insert.dto.ResultDto
-import ch.yvu.teststore.insert.dto.RunDto
+import ch.yvu.teststore.insert.dto.RunWithResultsDto
 import ch.yvu.teststore.insert.dto.TestSuiteDto
 import ch.yvu.teststore.integration.ListBackedRepository
 import ch.yvu.teststore.integration.result.ListBackedResultRepository
@@ -28,7 +28,7 @@ class InsertServiceTest {
     companion object {
         val TODAY = Date()
         val TEST_SUITE_DTO = TestSuiteDto("My Test Suite")
-        val EMPTY_RUN_DTO = RunDto(revision = "abc123", time = TODAY, results = emptyList())
+        val EMPTY_RUN_DTO = RunWithResultsDto(revision = "abc123", time = TODAY, results = emptyList())
         val A_TEST_DTO_PASSED = ResultDto(testName = "ATest", retryNum = 0, passed = true, durationMillis = 10, time=TODAY)
         val B_TEST_DTO_FAILED = ResultDto(testName = "BTest", retryNum = 0, passed = false, durationMillis = 10, time=TODAY, stackTrace = "stacktrace")
         val TEST_SUITE_ID = randomUUID()
@@ -66,7 +66,7 @@ class InsertServiceTest {
     }
 
     @Test fun insertsRunWithOneTestResultCorrectly() {
-        val runDto = RunDto(revision = "abcd123", results = listOf(A_TEST_DTO_PASSED), time = TODAY)
+        val runDto = RunWithResultsDto(revision = "abcd123", results = listOf(A_TEST_DTO_PASSED), time = TODAY)
 
         insertService.insertRun(runDto, TEST_SUITE_ID)
 
@@ -89,7 +89,7 @@ class InsertServiceTest {
     }
 
     @Test fun insertRunWithMultipleTestResultsCorrectly() {
-        val runDto = RunDto(revision = "abcd123", results = listOf(A_TEST_DTO_PASSED, B_TEST_DTO_FAILED), time = TODAY)
+        val runDto = RunWithResultsDto(revision = "abcd123", results = listOf(A_TEST_DTO_PASSED, B_TEST_DTO_FAILED), time = TODAY)
 
         insertService.insertRun(runDto, TEST_SUITE_ID)
 
@@ -192,12 +192,12 @@ class InsertServiceTest {
         }
     }
 
-    private fun verifyRunSaved(runDto: RunDto, testSuiteId: UUID) {
+    private fun verifyRunSaved(runWithResultsDto: RunWithResultsDto, testSuiteId: UUID) {
         val runs = runRepository.findAll()
         assertEquals(1, runs.size)
         val run = runs[0]
-        assertEquals(runDto.revision, run.revision)
-        assertEquals(runDto.time, run.time)
+        assertEquals(runWithResultsDto.revision, run.revision)
+        assertEquals(runWithResultsDto.time, run.time)
         assertEquals(testSuiteId, run.testSuite)
     }
 }
