@@ -46,7 +46,7 @@ class RunControllerTest : BaseIntegrationTest() {
 
         given().contentType(JSON)
                 .body(json)
-                .post("/testsuites/$testSuite/runs/sync")
+                .post("/testsuites/$testSuite/runs")
                 .then().assertThat().statusCode(201)
     }
 
@@ -58,7 +58,7 @@ class RunControllerTest : BaseIntegrationTest() {
 
         given().contentType(JSON)
                 .body(json)
-                .post("/testsuites/$testSuite/runs/sync")
+                .post("/testsuites/$testSuite/runs")
 
         val runs = runRepository.findAll()
         assertEquals(1, runs.count())
@@ -73,7 +73,7 @@ class RunControllerTest : BaseIntegrationTest() {
 
         given().contentType(JSON)
                 .body(json)
-                .post("/testsuites/$testSuite/runs/sync")
+                .post("/testsuites/$testSuite/runs")
                 .then().assertThat().body("id", not(isEmptyOrNullString()))
     }
 

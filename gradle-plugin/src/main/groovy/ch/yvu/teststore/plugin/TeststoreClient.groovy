@@ -16,7 +16,7 @@ class TeststoreClient {
         def run = [revision: revision, time: timeString]
         def jsonBuilder = new JsonBuilder(run)
 
-        def response = httpClient.postJson("/testsuites/${testSuiteId.toString()}/runs/sync", jsonBuilder.toString())
+        def response = httpClient.postJson("/testsuites/${testSuiteId.toString()}/runs", jsonBuilder.toString())
         return UUID.fromString(response.id)
     }
 

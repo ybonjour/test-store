@@ -20,7 +20,7 @@ class RunController @Autowired constructor(val runRepository: RunRepository, val
 
     @RequestMapping(
             method=arrayOf(POST),
-            value = "/testsuites/{testSuite}/runs/sync",
+            value = "/testsuites/{testSuite}/runs",
             headers = arrayOf("content-type=application/json"))
     fun createRunJson(
             @PathVariable testSuite: UUID,

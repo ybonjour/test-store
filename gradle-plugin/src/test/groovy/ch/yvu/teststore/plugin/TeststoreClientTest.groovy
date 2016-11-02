@@ -21,7 +21,7 @@ class TeststoreClientTest {
         def response = [id:runId.toString()]
         def mock = new MockFor(HttpClient)
         mock.demand.postJson { String path, String json ->
-            assert path == "/testsuites/$TEST_SUITE/runs/sync"
+            assert path == "/testsuites/$TEST_SUITE/runs"
 
             def slurper = new JsonSlurper();
             def run = slurper.parse(json.bytes)
