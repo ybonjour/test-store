@@ -1,8 +1,5 @@
-package ch.yvu.teststore.insert
+package ch.yvu.teststore.insert.dto
 
-import ch.yvu.teststore.insert.dto.ResultDto
-import ch.yvu.teststore.insert.dto.RunWithResultsDto
-import ch.yvu.teststore.insert.dto.TestSuiteDto
 import ch.yvu.teststore.integration.result.ResultControllerTest
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.junit.Assert.assertEquals
@@ -17,7 +14,7 @@ class JsonParsingTest {
     @Before
     fun setUp() {
         mapper = ObjectMapper()
-        mapper.dateFormat = SimpleDateFormat(ResultControllerTest.isoFormat)
+        mapper.dateFormat = SimpleDateFormat(ResultControllerTest.Companion.isoFormat)
     }
 
     @Test
@@ -32,14 +29,14 @@ class JsonParsingTest {
 
     @Test
     fun canParseRun() {
-        val runDto = RunWithResultsDto(
+        val runDto = RunDto(
                 revision = "abc123",
                 time = Date(1)
         )
 
         val json = mapper.writeValueAsString(runDto)
 
-        val actualDto = mapper.readValue(json, RunWithResultsDto::class.java)
+        val actualDto = mapper.readValue(json, RunDto::class.java)
 
         assertEquals(runDto, actualDto)
     }
@@ -47,7 +44,7 @@ class JsonParsingTest {
     @Test
     fun canParseResult() {
         val resultDto = ResultDto(
-                testName="MyTest",
+                testName = "MyTest",
                 retryNum = 0,
                 passed = true,
                 durationMillis = 10,
@@ -63,7 +60,7 @@ class JsonParsingTest {
     @Test
     fun canParseResultWithStacktrace() {
         val resultDto = ResultDto(
-                testName="MyTest",
+                testName = "MyTest",
                 retryNum = 0,
                 passed = false,
                 durationMillis = 10,
