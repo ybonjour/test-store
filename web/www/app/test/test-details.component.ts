@@ -7,11 +7,13 @@ import {TestStatistics} from "../statistics/test-statistics";
 import {FORM_DIRECTIVES} from "@angular/forms";
 import {CORE_DIRECTIVES, NgClass} from "@angular/common";
 import {Page} from "../common/page";
+import {TestResultsComponent} from "../test-result/test-results.component";
+import {TestWithResults} from "../test-result/test-with-results";
 
 @Component({
     templateUrl: 'app/test/test-details.html',
     styleUrls: ['app/test/test-details.css'],
-    directives: [NgClass, CORE_DIRECTIVES, FORM_DIRECTIVES]
+    directives: [NgClass, CORE_DIRECTIVES, FORM_DIRECTIVES, TestResultsComponent],
 })
 export class TestDetailsComponent implements OnInit{
     testSuiteId: string;
@@ -23,6 +25,8 @@ export class TestDetailsComponent implements OnInit{
     pointBackgroundColors: string[];
     statistics: TestStatistics;
     errorMessage: string;
+
+    currentResult: TestWithResults = null;
 
     constructor(
         private _routeParams: RouteParams,
@@ -43,6 +47,24 @@ export class TestDetailsComponent implements OnInit{
             statistics => this.statistics = statistics,
             error => this.errorMessage = <any>error
         )
+    }
+
+    selectResult(runId: string, testName: string){
+        this._testResultService.getResult(runId, testName).subscribe(
+            result => this.currentResult = result
+        )
+    }
+
+    unselectResult(event: Event) {
+        this.currentResult = null;
+        event.stopPropagation();
+    }
+
+    isCurrentResult(runId: string, testName: string): boolean{
+        if(this.currentResult == null) return false;
+
+        return this.currentResult.getRunId() == runId &&
+            this.currentResult.testName == testName
     }
 
     private handleResults(page:Page<TestResult>) {

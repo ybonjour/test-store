@@ -41,3 +41,15 @@ span.failed {
     margin: 20px;
     width:80%;
 }
+
+.resultDetails {
+    position: absolute;
+    background-color:#FFFFFF;
+    border: 2px solid #AAAAAA;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+a {
+    cursor: pointer;
+}
