@@ -1,6 +1,6 @@
 <div class="stacktrace"
      [class.height-limited]="!expanded && isExpandable()">
-    {{stackTrace}}
+    <pre>{{stackTrace}}</pre>
     <div class="stacktrace-gradient"
          *ngIf="!expanded && isExpandable()"
          (mouseover)="showCollapseIcon=true"
