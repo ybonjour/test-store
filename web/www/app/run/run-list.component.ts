@@ -3,11 +3,12 @@ import {ROUTER_DIRECTIVES, RouteParams} from "@angular/router-deprecated";
 import {Run} from "./run";
 import {RunService} from "./run.service";
 import {Page} from "../common/page";
+import {DurationComponent} from "../duration/duration.component";
 
 @Component({
     templateUrl: 'app/run/run-list.html',
     styleUrls: ['app/run/run-list.css'],
-    directives: [ROUTER_DIRECTIVES]
+    directives: [ROUTER_DIRECTIVES, DurationComponent]
 })
 export class RunListComponent implements OnInit {
     errorMessage: string;

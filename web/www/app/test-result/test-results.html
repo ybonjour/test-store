@@ -1,7 +1,10 @@
 <div class="results-container" *ngIf="results && results.length > 0">
     <ul class="results" *ngIf="type == 'PASSED'">
         <li *ngFor="let result of results" class="result passed">
-            <span class="name" [routerLink]="['Test Details', {testsuite_id: testSuiteId, test_name: result.testName}]">{{result.testName}}</span> <span class="duration">{{(result.results[0].durationMillis / 1000) | number}} seconds</span>
+            <span class="name" [routerLink]="['Test Details', {testsuite_id: testSuiteId, test_name: result.testName}]">{{result.testName}}</span>
+            <span class="duration">
+                <duration [durationMillis]="result.results[0].durationMillis"></duration>
+            </span>
         </li>
     </ul>
     <ul class="results" *ngIf="type == 'FAILED'">
@@ -16,7 +19,9 @@
                         <span class="reason" *ngFor="let failureReason of failureReasons()">
                             <span (click)="updateFailureReason(try, failureReason.name)" [ngClass]="{selected: try.failureReason == failureReason.name}">{{failureReason.name}}</span>
                         </span>
-                        <span class="duration">{{(try.durationMillis / 1000) | number}} seconds</span>
+                        <span class="duration">
+                            <duration [durationMillis]="try.durationMillis"></duration>
+                        </span>
                     </div>
                     <stacktrace [stackTrace]="try.stackTrace"></stacktrace>
                 </li>
@@ -34,7 +39,9 @@
                         <span class="reason" *ngFor="let failureReason of failureReasons()">
                             <span *ngIf="!try.passed" (click)="updateFailureReason(try, failureReason.name)" [ngClass]="{selected: try.failureReason == failureReason.name}">{{failureReason.name}}</span>
                         </span>
-                        <span class="duration">{{(try.durationMillis / 1000) | number}} seconds</span>
+                        <span class="duration">
+                            <duration [durationMillis]="try.durationMillis"></duration>
+                        </span>
                     </div>
                     <stacktrace [stackTrace]="try.stackTrace"></stacktrace>
                 </li>
