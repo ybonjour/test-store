@@ -7,4 +7,5 @@ export class TestResult {
 	time: Date;
 	stackTrace: string;
 	failureReason: string;
+	log: string;
 }

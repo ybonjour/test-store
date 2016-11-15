@@ -7,6 +7,7 @@ import {Component, Input} from "@angular/core";
 })
 export class StacktraceComponent {
     @Input() stackTrace: String;
+    @Input() log: String;
     expanded = false;
     showCollapseIcon = false;
 

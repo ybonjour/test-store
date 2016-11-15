@@ -126,6 +126,7 @@ export class TestResultService {
         result.time = new Date(json.time);
         result.stackTrace = json.stackTrace;
         result.failureReason = json.failureReason;
+        result.log = json.log;
         return result;
     }
 }
