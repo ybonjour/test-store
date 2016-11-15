@@ -21,7 +21,7 @@ open class InsertService @Autowired constructor(
     open fun insertResults(resultDtos: List<ResultDto>, runId: UUID) {
         val run = runRepository.findById(runId)
         resultDtos.forEach {
-            val result = Result(runId, it.testName, it.retryNum, it.passed, it.durationMillis, it.time, it.stackTrace)
+            val result = Result(runId, it.testName, it.retryNum, it.passed, it.durationMillis, it.time, it.stackTrace, it.log)
             resultRepository.save(result)
             if(run != null && run.testSuite != null) {
                 storeTestStatistics(run.testSuite!!, result)

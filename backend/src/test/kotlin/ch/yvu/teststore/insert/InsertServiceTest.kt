@@ -131,7 +131,9 @@ class InsertServiceTest {
                     passed = it.passed,
                     durationMillis = it.durationMillis,
                     time = TODAY,
-                    stackTrace = it.stackTrace
+                    stackTrace = it.stackTrace,
+                    log = it.log
+
             )))
         }
     }

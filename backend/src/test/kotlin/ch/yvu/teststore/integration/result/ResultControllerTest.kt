@@ -82,7 +82,7 @@ class ResultControllerTest : BaseIntegrationTest() {
         val results = resultRepository.findAll()
         assertEquals(1, results.count())
         assertThat(results, hasItem(resultWith(
-                equalTo(runId), result.testName, result.retryNum, result.passed, result.durationMillis, result.time, null)))
+                equalTo(runId), result.testName, result.retryNum, result.passed, result.durationMillis, result.time, null, null)))
     }
 
     @Test fun createResultCanCreateFailedResult() {
@@ -93,7 +93,8 @@ class ResultControllerTest : BaseIntegrationTest() {
                 passed = false,
                 durationMillis = 10L,
                 time = Date(1),
-                stackTrace = "stacktrace"
+                stackTrace = "stacktrace",
+                log = "log"
         )
 
         val mapper = ObjectMapper()
@@ -108,7 +109,7 @@ class ResultControllerTest : BaseIntegrationTest() {
         val results = resultRepository.findAll()
         assertEquals(1, results.count())
         assertThat(results, hasItem(resultWith(
-                equalTo(runId), result.testName, result.retryNum, result.passed, result.durationMillis, result.time, result.stackTrace)))
+                equalTo(runId), result.testName, result.retryNum, result.passed, result.durationMillis, result.time, result.stackTrace, result.log)))
     }
 
     @Test fun findAllByRun() {

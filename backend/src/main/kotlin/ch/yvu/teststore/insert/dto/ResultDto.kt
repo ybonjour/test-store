@@ -9,4 +9,5 @@ data class ResultDto(
         @JsonProperty("passed") val passed: Boolean,
         @JsonProperty("durationMillis") val durationMillis: Long,
         @JsonProperty("time") val time: Date,
-        @JsonProperty(value="stackTrace", required = false) val stackTrace: String?=null)
+        @JsonProperty(value="stackTrace", required = false) val stackTrace: String?=null,
+        @JsonProperty(value="log", required = false) val log: String?=null)

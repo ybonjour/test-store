@@ -14,6 +14,7 @@ data class Result(
         var durationMillis: Long?,
         var time: Date?,
         var stackTrace: String? = null,
+        var log: String? = null,
         var failureReason: String? = null) : Model {
     constructor() : this(null, null, null, null, null, null) {
     }
