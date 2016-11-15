@@ -24,6 +24,9 @@ class TestStoreTestListenerTest {
     @Mock
     private TeststoreClientFactory factory;
 
+    @Mock
+    private TestStoreTestOutputListener testOutputListener;
+
     private TestStorePluginExtension extension;
 
     private TestStoreTestListener listener;
@@ -36,7 +39,7 @@ class TestStoreTestListenerTest {
         extension = new TestStorePluginExtension()
         extension.revision = "abc-123"
 
-        listener = new TestStoreTestListener(extension, factory)
+        listener = new TestStoreTestListener(extension, factory, testOutputListener)
     }
 
     @Test
@@ -77,6 +80,7 @@ class TestStoreTestListenerTest {
         when(result.endTime).thenReturn(10L)
         when(result.resultType).thenReturn(FAILURE)
         when(result.exception).thenReturn(e)
+        when(testOutputListener.getLogOutput(TEST_DESCRIPTOR_1)).thenReturn("logMessage")
 
         listener.beforeTest(TEST_DESCRIPTOR_1)
         listener.afterTest(TEST_DESCRIPTOR_1, result)
@@ -87,7 +91,8 @@ class TestStoreTestListenerTest {
                 eq(false),
                 eq(9L),
                 any(Date.class),
-                eq(stackTrace(e)))
+                eq(stackTrace(e)),
+                eq("logMessage"))
     }
 
     @Test
@@ -98,6 +103,7 @@ class TestStoreTestListenerTest {
         when(result.startTime).thenReturn(1L)
         when(result.endTime).thenReturn(10L)
         when(result.resultType).thenReturn(SUCCESS)
+        when(testOutputListener.getLogOutput(TEST_DESCRIPTOR_1)).thenReturn("")
 
         listener.beforeTest(TEST_DESCRIPTOR_1)
         listener.afterTest(TEST_DESCRIPTOR_1, result)
@@ -108,6 +114,7 @@ class TestStoreTestListenerTest {
                 eq(true),
                 eq(9L),
                 any(Date.class),
+                eq(""),
                 eq(""))
     }
 
@@ -121,7 +128,7 @@ class TestStoreTestListenerTest {
         listener.beforeTest(TEST_DESCRIPTOR_1)
         listener.afterTest(TEST_DESCRIPTOR_1, result)
 
-        verify(client, never()).insertTestResult(any(UUID.class), anyString(), anyBoolean(), anyLong(), any(Date.class), anyString())
+        verify(client, never()).insertTestResult(any(UUID.class), anyString(), anyBoolean(), anyLong(), any(Date.class), anyString(), anyString())
     }
 
     @Test

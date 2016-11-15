@@ -22,7 +22,9 @@ class TestStorePlugin implements Plugin<Project> {
             }
         }
 
-        project.gradle.addListener(new TestStoreTestListener(project.teststore, new TeststoreClientFactory(project.teststore)))
+        TestStoreTestOutputListener testOutputListener = new TestStoreTestOutputListener()
+        project.gradle.addListener(testOutputListener)
+        project.gradle.addListener(new TestStoreTestListener(project.teststore, new TeststoreClientFactory(project.teststore), testOutputListener))
     }
 
     private static createClient(TestStorePluginExtension extension) {

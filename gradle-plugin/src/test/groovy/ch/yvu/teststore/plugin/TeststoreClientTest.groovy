@@ -63,6 +63,7 @@ class TeststoreClientTest {
         def duration = 1234L
         def time = NOW
         def stackTracke = "Some stacktrace"
+        def log = "Log message"
         def mock = new MockFor(HttpClient)
 
         mock.demand.postJson { String path, String json ->
@@ -78,11 +79,12 @@ class TeststoreClientTest {
             assert duration == result.durationMillis
             assert new SimpleDateFormat(ISO_DATE_FORMAT).format(time) == result.time
             assert stackTracke == result.stackTrace
+            assert log == result.log
         }
 
         mock.use {
             def client = new TeststoreClient(httpClient: new HttpClient("", 0), testSuiteId: TEST_SUITE)
-            client.insertTestResult(runId, testName, passed, duration, time, stackTracke)
+            client.insertTestResult(runId, testName, passed, duration, time, stackTracke, log)
         }
     }
 

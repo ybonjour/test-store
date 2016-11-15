@@ -24,7 +24,7 @@ class TeststoreClient {
         httpClient.postXml("/runs/$runId/results", junitXml)
     }
 
-    def insertTestResult(UUID runId, String testName, boolean passed, long durationMillis, Date time, String stackTrace) {
+    def insertTestResult(UUID runId, String testName, boolean passed, long durationMillis, Date time, String stackTrace, String log) {
         def timeString = new SimpleDateFormat(ISO_DATE_FORMAT).format(time);
         def result = [
                 run: runId.toString(),
@@ -33,7 +33,8 @@ class TeststoreClient {
                 passed: passed,
                 durationMillis: durationMillis,
                 time: timeString,
-                stackTrace: stackTrace
+                stackTrace: stackTrace,
+                log: log
         ]
         def jsonBuilder = new JsonBuilder(result)
 
