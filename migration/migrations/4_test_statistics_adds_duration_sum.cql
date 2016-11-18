@@ -1,0 +1,1 @@
+ALTER TABLE test_statistics ADD durationSum bigint;

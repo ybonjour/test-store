@@ -23,8 +23,8 @@ class StatisticsControllerTest : BaseIntegrationTest() {
 
     @Test fun getStatisticsByTestSuiteReturnsStatistics() {
         val testSuiteId = randomUUID()
-        val statistics1 = TestStatistics(testSuiteId, "myTest1", 1, 0)
-        val statistics2 = TestStatistics(testSuiteId, "myTest2", 1, 0)
+        val statistics1 = TestStatistics(testSuiteId, "myTest1", 1, 0, 100)
+        val statistics2 = TestStatistics(testSuiteId, "myTest2", 1, 0, 100)
         statisticsRepository.save(statistics1)
         statisticsRepository.save(statistics2)
 
@@ -38,7 +38,7 @@ class StatisticsControllerTest : BaseIntegrationTest() {
 
     @Test fun getStatisticsByTestSuiteAndTestNameReturnsStatistics() {
         val testSuiteId = randomUUID()
-        val statistics = TestStatistics(testSuiteId, "ch.yvu.testsore.MyTest#myTest", 1, 0)
+        val statistics = TestStatistics(testSuiteId, "ch.yvu.testsore.MyTest#myTest", 1, 0, 100)
         statisticsRepository.save(statistics)
         val encodedTestName = URLEncoder.encode(statistics.testName, "UTF-8")
 

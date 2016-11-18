@@ -38,6 +38,8 @@ open class InsertService @Autowired constructor(
             testStatistics.numFailed = testStatistics.numFailed!! + 1
         }
 
+        testStatistics.durationSum = (testStatistics.durationSum?: 0) + (result.durationMillis?: 0)
+
         testStatisticsRepository.save(testStatistics);
     }
 
@@ -45,7 +47,7 @@ open class InsertService @Autowired constructor(
         val statistics = testStatisticsRepository.findByTestSuiteAndTestName(testSuie, testName)
         if(statistics != null) return statistics
 
-        return TestStatistics(testSuie, testName, 0, 0)
+        return TestStatistics(testSuie, testName, 0, 0, 0)
 
 
     }

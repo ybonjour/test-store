@@ -10,6 +10,7 @@ data class TestStatistics(
         @PartitionKey(0) var testSuite: UUID?,
         @PartitionKey(1) var testName: String?,
         var numPassed: Int?,
-        var numFailed: Int?): Model {
-    constructor(): this(null, null, null, null)
+        var numFailed: Int?,
+        var durationSum: Long?): Model {
+    constructor(): this(null, null, null, null, null)
 }
