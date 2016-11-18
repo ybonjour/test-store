@@ -39,7 +39,7 @@ open class InsertService @Autowired constructor(
         }
 
         testStatistics.durationSum = (testStatistics.durationSum?: 0) + (result.durationMillis?: 0)
-        testStatistics.durationNum = testStatistics.durationNum?: 0 + 1
+        testStatistics.durationNum = (testStatistics.durationNum?:0) + 1
 
         testStatisticsRepository.save(testStatistics);
     }
