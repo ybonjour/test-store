@@ -6,7 +6,7 @@ buildscript {
         }
     }
     dependencies {
-        classpath 'gradle.plugin.ch.yvu.teststore:gradle-plugin:0.7'
+        classpath 'gradle.plugin.ch.yvu.teststore:gradle-plugin:0.8'
     }
 }
 
