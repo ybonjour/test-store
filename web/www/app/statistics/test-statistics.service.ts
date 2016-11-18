@@ -56,6 +56,8 @@ export class TestStatisticsService {
         testStatistics.testName = json.testName;
         testStatistics.numPassed = json.numPassed;
         testStatistics.numFailed = json.numFailed;
+        testStatistics.durationSum = json.durationSum != null ? json.durationSum : 0;
+        testStatistics.durationNum = json.durationNum != null ? json.durationNum : 0;
 
         return testStatistics;
     }

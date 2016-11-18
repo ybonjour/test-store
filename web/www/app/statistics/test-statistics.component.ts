@@ -2,11 +2,12 @@ import {Component, OnInit} from "@angular/core";
 import {RouteParams, ROUTER_DIRECTIVES} from "@angular/router-deprecated";
 import {TestStatisticsService} from "./test-statistics.service";
 import {TestStatistics} from "./test-statistics";
+import {DurationComponent} from "../duration/duration.component";
 
 @Component({
     templateUrl: 'app/statistics/test-statistics.html',
     styleUrls: ['app/statistics/test-statistics.css'],
-    directives: ROUTER_DIRECTIVES
+    directives: [ROUTER_DIRECTIVES, DurationComponent]
 })
 export class TestStatisticsComponent implements OnInit{
     testSuiteId: string;
