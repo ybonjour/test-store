@@ -76,7 +76,7 @@ class InsertServiceTest {
 
         insertService.insertResults(resultDtos, run.id!!)
 
-        verifyTestStatisticsStored(listOf(TestStatistics(run.testSuite!!, A_TEST_DTO_PASSED.testName, numPassed = 1, numFailed = 0, durationSum = 10)))
+        verifyTestStatisticsStored(listOf(TestStatistics(run.testSuite!!, A_TEST_DTO_PASSED.testName, numPassed = 1, numFailed = 0, durationSum = 10, durationNum = 1)))
     }
 
     @Test fun insertsTestStatisticsForNewFailedResultCorrectly() {
@@ -87,19 +87,19 @@ class InsertServiceTest {
 
         insertService.insertResults(resultDtos, run.id!!)
 
-        verifyTestStatisticsStored(listOf(TestStatistics(run.testSuite!!, B_TEST_DTO_FAILED.testName, numPassed = 0, numFailed = 1, durationSum = 10)))
+        verifyTestStatisticsStored(listOf(TestStatistics(run.testSuite!!, B_TEST_DTO_FAILED.testName, numPassed = 0, numFailed = 1, durationSum = 10, durationNum = 1)))
     }
 
     @Test fun updatesExistingTestStatisticsCorrectly() {
         val run = Run(randomUUID(), randomUUID(), "abc-123", Date())
         runRepository.save(run)
-        val testStatistic = TestStatistics(run.testSuite, A_TEST_DTO_PASSED.testName, numPassed = 1, numFailed = 0, durationSum = 5)
+        val testStatistic = TestStatistics(run.testSuite, A_TEST_DTO_PASSED.testName, numPassed = 1, numFailed = 0, durationSum = 5, durationNum = 1)
         testStatisticsRepository.save(testStatistic)
         val resultDtos = listOf(A_TEST_DTO_PASSED)
 
         insertService.insertResults(resultDtos, run.id!!)
 
-        verifyTestStatisticsStored(listOf(TestStatistics(run.testSuite, A_TEST_DTO_PASSED.testName, numPassed = 2, numFailed = 0, durationSum = 15)))
+        verifyTestStatisticsStored(listOf(TestStatistics(run.testSuite, A_TEST_DTO_PASSED.testName, numPassed = 2, numFailed = 0, durationSum = 15, durationNum = 2)))
     }
 
     @Test fun multipleTestStatisticsAreStoredCorrectly() {
@@ -110,8 +110,8 @@ class InsertServiceTest {
         insertService.insertResults(resultDtos, run.id!!)
 
         verifyTestStatisticsStored(listOf(
-                TestStatistics(run.testSuite, A_TEST_DTO_PASSED.testName, numPassed = 1, numFailed = 0, durationSum = 10),
-                TestStatistics(run.testSuite, B_TEST_DTO_FAILED.testName, numPassed = 0, numFailed = 1, durationSum = 10)))
+                TestStatistics(run.testSuite, A_TEST_DTO_PASSED.testName, numPassed = 1, numFailed = 0, durationSum = 10, durationNum = 1),
+                TestStatistics(run.testSuite, B_TEST_DTO_FAILED.testName, numPassed = 0, numFailed = 1, durationSum = 10, durationNum = 1)))
     }
 
     private fun verifyTestStatisticsStored(expectedTestStatistics: List<TestStatistics>) {
