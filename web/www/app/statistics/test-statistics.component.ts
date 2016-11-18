@@ -30,4 +30,8 @@ export class TestStatisticsComponent implements OnInit{
             return statistic1.getPassRate() - statistic2.getPassRate();
         })
     }
+
+    sortByDurationAsc() {
+        this.testStatistics.sort((s1, s2) => s2.getAverageDuration() - s1.getAverageDuration())
+    }
 }
