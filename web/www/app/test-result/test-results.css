@@ -20,10 +20,6 @@ li.result {
     width:100%;
 }
 
-li.result .name {
-    cursor: pointer;
-}
-
 li.result .name,
 li.try .name {
     float: left;
@@ -94,4 +90,10 @@ li.try .title .reason span.selected {
 
 span.reason {
     cursor: pointer;
+}
+
+img.history-icon {
+    cursor: pointer;
+    width: 20px;
+    height: 20px;
 }

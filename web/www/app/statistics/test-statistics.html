@@ -2,7 +2,7 @@
 
 Sort by:
     <a [routerLink]="['Statistics', {testsuite_id: testSuiteId, order_by: 'duration', order_direction: 'desc'}]">Duration</a> |
-<a [routerLink]="['Statistics', {testsuite_id: testSuiteId, order_by: 'passrate', order_direction: 'desc'}]">Pass-Rate</a>
+    <a [routerLink]="['Statistics', {testsuite_id: testSuiteId, order_by: 'passrate', order_direction: 'desc'}]">Pass-Rate</a>
 <ul>
     <li *ngFor="let statistics of testStatistics">
         <span class="title">

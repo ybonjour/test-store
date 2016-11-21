@@ -1,7 +1,7 @@
 <div class="results-container" *ngIf="results && results.length > 0">
     <ul class="results" *ngIf="type == 'PASSED'">
         <li *ngFor="let result of results" class="result passed">
-            <span class="name" [routerLink]="['Test Details', {testsuite_id: testSuiteId, test_name: result.testName}]">{{result.testName}}</span>
+            <span class="name">{{result.testName}} <img class="history-icon" [routerLink]="['Test Details', {testsuite_id: testSuiteId, test_name: result.testName}]" src="img/history.png"/></span>
             <span class="duration">
                 <duration [durationMillis]="result.results[0].durationMillis"></duration>
             </span>
@@ -9,7 +9,7 @@
     </ul>
     <ul class="results" *ngIf="type == 'FAILED'">
         <li  *ngFor="let result of results" class="result failed">
-            <span class="name" [routerLink]="['Test Details', {testsuite_id: testSuiteId, test_name: result.testName}]">{{result.testName}}</span>
+            <span class="name">{{result.testName}} <img class="history-icon" [routerLink]="['Test Details', {testsuite_id: testSuiteId, test_name: result.testName}]" src="img/history.png"/></span>
 
 
             <ul class="tries">
@@ -30,7 +30,7 @@
     </ul>
     <ul class="results" *ngIf="type == 'RETRIED'">
         <li *ngFor="let result of results" class="result retried">
-            <span class="name" [routerLink]="['Test Details', {testsuite_id: testSuiteId, test_name: result.testName}]">{{result.testName}}</span>
+            <span class="name">{{result.testName}} <img class="history-icon" [routerLink]="['Test Details', {testsuite_id: testSuiteId, test_name: result.testName}]" src="img/history.png"/></span>
 
             <ul class="tries">
                 <li *ngFor="let try of result.results" class="try" [ngClass]="{'passed': try.passed, 'failed': !try.passed}">
