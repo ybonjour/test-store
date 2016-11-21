@@ -1,6 +1,8 @@
 <h1>Test Statistics</h1>
 
-Sort by: <a (click)="sortByDurationAsc()">Duration</a>
+Sort by:
+    <a [routerLink]="['Statistics', {testsuite_id: testSuiteId, order_by: 'duration', order_direction: 'desc'}]">Duration</a> |
+<a [routerLink]="['Statistics', {testsuite_id: testSuiteId, order_by: 'passrate', order_direction: 'desc'}]">Pass-Rate</a>
 <ul>
     <li *ngFor="let statistics of testStatistics">
         <span class="title">

@@ -11,6 +11,8 @@ import {DurationComponent} from "../duration/duration.component";
 })
 export class TestStatisticsComponent implements OnInit{
     testSuiteId: string;
+    orderBy: string;
+    orderDirection: string;
     testStatistics: TestStatistics[];
     errorMessage: string;
 
@@ -20,18 +22,43 @@ export class TestStatisticsComponent implements OnInit{
 
     ngOnInit():any {
         this.testSuiteId = this._routeParams.get('testsuite_id');
+        this.orderBy = this._routeParams.get('order_by');
+        this.orderDirection = this._routeParams.get('order_direction');
         this._testStatisticsService.getStatistics(this.testSuiteId).subscribe(
-            statistics => this.testStatistics = statistics,
+            statistics => this.extractStatistics(statistics),
             error => this.errorMessage = <any>error);
     }
 
-    extractStatistics(testStatistics: TestStatistics[]) {
-        this.testStatistics = testStatistics.sort(function (statistic1, statistic2){
-            return statistic1.getPassRate() - statistic2.getPassRate();
-        })
+    private static getExtractor(orderBy:string): (TestStatistics) => number {
+        if(!orderBy) return null;
+
+        if ("duration" == orderBy.toLowerCase()) {
+            return s => s.getAverageDuration();
+        } else if("passrate" == orderBy.toLowerCase()) {
+            return s => s.getPassRate();
+        } else {
+            return null;
+        }
     }
 
-    sortByDurationAsc() {
-        this.testStatistics.sort((s1, s2) => s2.getAverageDuration() - s1.getAverageDuration())
+    extractStatistics(testStatistics: TestStatistics[]) {
+        this.testStatistics = testStatistics;
+
+        let extractor = TestStatisticsComponent.getExtractor(this.orderBy);
+        if(extractor) {
+            this.testStatistics.sort(this.comparator(extractor))
+        }
+    }
+
+    comparator(extractor: (TestStatistics) => number) {
+        return (s1: TestStatistics, s2: TestStatistics) => {
+            let n1 = extractor(s1);
+            let n2 = extractor(s2);
+            if(this.orderDirection && this.orderDirection.toLowerCase() == "desc") {
+                return n2 - n1;
+            } else {
+                return n1 - n2;
+            }
+        }
     }
 }
