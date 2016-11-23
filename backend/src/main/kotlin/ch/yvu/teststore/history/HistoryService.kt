@@ -17,7 +17,7 @@ class HistoryService @Autowired constructor(
             val results = resultService.getTestsWithResults(it.id!!)
             val simpleResults = mutableMapOf<String, TestWithResults.TestResult>()
             results.forEach { simpleResults.put(it.testName, it.getTestResult()) }
-            RunHistory(it.revision!!, it.id!!, simpleResults)
+            RunHistory(it.revision ?: "Unknown", it.id!!, simpleResults)
         }
     }
 }
