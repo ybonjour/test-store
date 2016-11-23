@@ -35,7 +35,7 @@ export class TestDetailsComponent implements OnInit{
 
     ngOnInit():any {
         this.testSuiteId = this._routeParams.get('testsuite_id');
-        this.testName = this._routeParams.get('test_name');
+        this.testName = decodeURIComponent(this._routeParams.get('test_name'));
 
 
         this._testResultService.getResultsByTestSuiteAndTestName(this.testSuiteId, this.testName, null).subscribe(

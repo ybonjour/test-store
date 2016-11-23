@@ -61,4 +61,8 @@ export class TestStatisticsComponent implements OnInit{
             }
         }
     }
+
+    encode(input:string) {
+        return encodeURIComponent(input)
+    }
 }

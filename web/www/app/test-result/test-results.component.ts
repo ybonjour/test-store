@@ -34,4 +34,9 @@ export class TestResultsComponent implements OnInit {
     failureReasons(): FailureReason[] {
         return FailureReason.all()
     }
+
+    encode(input:string) {
+        return encodeURIComponent(input)
+    }
+
 }

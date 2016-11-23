@@ -65,6 +65,10 @@ export class HistoryComponent implements OnInit {
         this.hidePassed = !this.hidePassed;
     }
 
+    encode(input:string) {
+        return encodeURIComponent(input)
+    }
+
     private getHistory() {
         this._historyService.getHistory(this.testSuiteId, this.limit).subscribe(
             historyEntries => this.handleNewHistory(historyEntries),
