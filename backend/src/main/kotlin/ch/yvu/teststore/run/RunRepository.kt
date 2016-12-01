@@ -9,6 +9,6 @@ import java.util.*
 interface RunRepository : TestStoreRepository<Run> {
     fun findLastRunBefore(testSuiteId: UUID, time: Date): Run?
     fun findById(id: UUID): Run?
-    fun findAllByTestSuiteId(testSuiteId: UUID, page: String? = null): Page<Run>
+    fun findAllByTestSuiteId(testSuiteId: UUID, page: String? = null, fetchSize: Int? = null): Page<Run>
     fun findAllByTestSuiteId(testSuiteId: UUID, maxRows: Int): List<Run>
 }

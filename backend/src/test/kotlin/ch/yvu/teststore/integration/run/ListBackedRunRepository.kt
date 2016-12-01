@@ -11,7 +11,7 @@ open class ListBackedRunRepository(val genericRepository: ListBackedRepository<R
         return findAllByTestSuiteId(testSuiteId).take(maxRows)
     }
 
-    override fun findAllByTestSuiteId(testSuiteId: UUID, page: String?): Page<Run> {
+    override fun findAllByTestSuiteId(testSuiteId: UUID, page: String?, fetchSize: Int?): Page<Run> {
         return Page(findAllByTestSuiteId(testSuiteId), null);
     }
 

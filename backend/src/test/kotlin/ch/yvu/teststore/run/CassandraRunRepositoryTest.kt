@@ -81,6 +81,15 @@ class CassandraRunRepositoryTest {
         verify(pagedResultFetcher).fetch(query, page)
     }
 
+
+    @Test fun findAllPassesOnFetchSizeCorrectly() {
+        val fetchSize = 2
+
+        repository.findAllByTestSuiteId(randomUUID(), fetchSize = fetchSize)
+
+        verify(pagedResultFetcher).fetch(query, fetchSize = fetchSize)
+    }
+
     @Test fun findAllByRunIdWithMaxRowsSendsCorrectQuery() {
         val maxRows = 10
         `when`(maxRowsResultFetcher.fetch(query, maxRows)).thenReturn(listOf(run))
