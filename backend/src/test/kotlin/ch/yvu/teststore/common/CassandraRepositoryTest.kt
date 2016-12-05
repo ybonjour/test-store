@@ -6,9 +6,15 @@ import com.datastax.driver.mapping.Mapper
 import com.datastax.driver.mapping.MappingManager
 import com.datastax.driver.mapping.Result
 import com.datastax.driver.mapping.annotations.Table
+import org.hamcrest.Description
+import org.hamcrest.Matcher
+import org.hamcrest.TypeSafeMatcher
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
+import org.mockito.Matchers
+import org.mockito.Matchers.any
+import org.mockito.Matchers.eq
 import org.mockito.Mock
 import org.mockito.Mockito.*
 import org.mockito.MockitoAnnotations.initMocks
@@ -45,7 +51,7 @@ class CassandraRepositoryTest {
     @Test fun canSaveAnItem() {
         repository.save(ITEM)
 
-        verify(mapper).save(ITEM);
+        verify(mapper).save(eq(ITEM), any(Mapper.Option::class.java));
     }
 
     @Test fun returnsSavedItem() {
