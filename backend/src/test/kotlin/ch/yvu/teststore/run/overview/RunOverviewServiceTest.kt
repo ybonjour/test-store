@@ -14,7 +14,7 @@ import org.junit.Test
 import java.util.*
 import java.util.UUID.randomUUID
 
-class RunOvervieRwServiceTest {
+class RunOverviewServiceTest {
 
     companion object {
         val testSuiteId = randomUUID()

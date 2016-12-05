@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletResponse
 class RunController @Autowired constructor(val runRepository: RunRepository, val runOverviewService: RunOverviewService) {
 
     @RequestMapping(
-            method=arrayOf(POST),
+            method = arrayOf(POST),
             value = "/testsuites/{testSuite}/runs",
             headers = arrayOf("content-type=application/json"))
     fun createRunJson(
@@ -37,7 +37,7 @@ class RunController @Autowired constructor(val runRepository: RunRepository, val
     @RequestMapping(method = arrayOf(GET), value = "/testsuites/{testSuite}/runs/last")
     fun getLastRunOverview(@PathVariable testSuite: UUID): ResponseEntity<RunOverview> {
         val lastRun = runOverviewService.getLastRunOverview(testSuite)
-        if(!lastRun.isPresent){
+        if (!lastRun.isPresent) {
             return ResponseEntity<RunOverview>(NOT_FOUND)
         }
 
@@ -47,7 +47,8 @@ class RunController @Autowired constructor(val runRepository: RunRepository, val
     @RequestMapping(method = arrayOf(GET), value = "testsuites/{testSuite}/runs/overview")
     fun getRunOverviewsPaged(
             @PathVariable testSuite: UUID,
-            @RequestParam(name = "page", required=false) page: String?): Page<RunOverview> {
-        return runOverviewService.getRunOverviews(testSuite, page)
+            @RequestParam(name = "page", required = false) page: String?,
+            @RequestParam(name = "fetchSize", required = false) fetchSize: Int?): Page<RunOverview> {
+        return runOverviewService.getRunOverviews(testSuite, page, fetchSize)
     }
 }
