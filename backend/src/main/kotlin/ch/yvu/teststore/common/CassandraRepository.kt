@@ -1,5 +1,6 @@
 package ch.yvu.teststore.common
 
+import com.datastax.driver.mapping.Mapper.Option.saveNullFields
 import com.datastax.driver.mapping.MappingManager
 
 abstract class CassandraRepository<M : Model>(val mappingManager: MappingManager, val table: String, val modelClass: Class<M>) {
@@ -9,7 +10,7 @@ abstract class CassandraRepository<M : Model>(val mappingManager: MappingManager
     var maxRowsResultFetcher = MaxRowsResultFetcher(pagedResultFetcher)
 
     open fun save(item: M): M {
-        mapper.save(item)
+        mapper.save(item, saveNullFields(false))
         return item
     }
 
