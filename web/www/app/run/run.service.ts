@@ -10,10 +10,11 @@ export class RunService {
 
     constructor(private _http: Http) {}
 
-    getRuns(testSuiteId: String, nextPage: string): Observable<Page<Run>> {
+    getRuns(testSuiteId: string, nextPage: string, fetchSize: number): Observable<Page<Run>> {
 
         let params: URLSearchParams = new URLSearchParams();
         if(nextPage != null) params.set('page', nextPage);
+        if(fetchSize != null) params.set('fetchSize', fetchSize.toString());
 
 
         return this._http.get("/api/testsuites/" + testSuiteId + "/runs/overview", {

@@ -11,9 +11,11 @@ import {DurationComponent} from "../duration/duration.component";
     directives: [ROUTER_DIRECTIVES, DurationComponent]
 })
 export class RunListComponent implements OnInit {
+    numEntriesExpected: number = 200;
+    numEntriesPerFetch: number = 10;
     errorMessage: string;
     runs: Run[] = [];
-    nextPage: string;
+    nextPage: string = null;
     testSuiteId: string;
     constructor(
         private _runService: RunService,
@@ -22,11 +24,11 @@ export class RunListComponent implements OnInit {
 
     ngOnInit():any {
         this.testSuiteId = this._routeParams.get('testsuite_id');
-        this.getRuns(this.testSuiteId, null);
+        this.fetchRuns();
     }
 
-    getRuns(testSuiteId: string, nextPage: string) {
-        this._runService.getRuns(testSuiteId, nextPage).subscribe(
+    fetchRuns() {
+        this._runService.getRuns(this.testSuiteId, this.nextPage, this.numEntriesPerFetch).subscribe(
             runPage => this.extractPage(runPage),
             error => this.errorMessage = <any>error);
     }
@@ -34,9 +36,14 @@ export class RunListComponent implements OnInit {
     private extractPage(runPage: Page<Run>) {
         this.runs = this.runs.concat(runPage.results);
         this.nextPage = runPage.nextPage;
+
+        if(this.nextPage && this.numEntriesExpected > this.runs.length) {
+            this.fetchRuns();
+        }
     }
 
     more() {
-        this.getRuns(this.testSuiteId, this.nextPage);
+        this.numEntriesExpected = 2 * this.numEntriesExpected;
+        this.fetchRuns();
     }
 }
