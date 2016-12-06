@@ -6,8 +6,8 @@ import ch.yvu.teststore.result.Result
 import ch.yvu.teststore.result.ResultRepository
 import ch.yvu.teststore.run.Run
 import ch.yvu.teststore.run.RunRepository
-import ch.yvu.teststore.run.overview.RunOverview.RunResult.PASSED
-import ch.yvu.teststore.run.overview.RunOverview.RunResult.UNKNOWN
+import ch.yvu.teststore.run.overview.RunStatistics.RunResult.PASSED
+import ch.yvu.teststore.run.overview.RunStatistics.RunResult.UNKNOWN
 import ch.yvu.teststore.testsuite.TestSuite
 import ch.yvu.teststore.testsuite.TestSuiteRepository
 import com.jayway.restassured.RestAssured.given

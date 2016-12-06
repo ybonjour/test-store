@@ -1,6 +1,6 @@
 package ch.yvu.teststore.run.overview
 
-import ch.yvu.teststore.run.overview.RunOverview.RunResult.*
+import ch.yvu.teststore.run.overview.RunStatistics.RunResult.*
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test

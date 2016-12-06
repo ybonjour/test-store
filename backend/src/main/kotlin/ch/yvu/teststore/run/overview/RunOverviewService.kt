@@ -5,7 +5,7 @@ import ch.yvu.teststore.result.Result
 import ch.yvu.teststore.result.ResultRepository
 import ch.yvu.teststore.run.Run
 import ch.yvu.teststore.run.RunRepository
-import ch.yvu.teststore.run.overview.RunOverview.RunResult.*
+import ch.yvu.teststore.run.overview.RunStatistics.RunResult.*
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.util.*
@@ -15,27 +15,27 @@ open class RunOverviewService @Autowired constructor(
         open val runRepository: RunRepository,
         open val resultRepository: ResultRepository) {
 
-    fun getLastRunOverview(testSuiteId: UUID): Optional<RunOverview> {
+    fun getLastRunOverview(testSuiteId: UUID): Optional<RunStatistics> {
         val run = runRepository.findAllByTestSuiteId(testSuiteId, 1).firstOrNull()
         if (run == null) return Optional.empty()
 
         return Optional.of(getRunOverview(run))
     }
 
-    fun getRunOverviews(testSuiteId: UUID, page:String?, fetchSize: Int?=null): Page<RunOverview> {
+    fun getRunOverviews(testSuiteId: UUID, page:String?, fetchSize: Int?=null): Page<RunStatistics> {
         return runRepository.findAllByTestSuiteId(testSuiteId, page, fetchSize).map{getRunOverview(it)}
     }
 
-    private fun getRunOverview(run: Run): RunOverview {
+    private fun getRunOverview(run: Run): RunStatistics {
         val results = resultRepository.findAllByRunId(run.id!!)
         val runResult = extractRunResult(results);
         val totalDuration = results.map { it.durationMillis!! }.sum()
 
-        return RunOverview(run, runResult, totalDuration)
+        return RunStatistics(run, runResult, totalDuration)
     }
 
-    private fun extractRunResult(results: List<Result>): RunOverview.RunResult {
-        if (results.isEmpty()) return RunOverview.RunResult.UNKNOWN
+    private fun extractRunResult(results: List<Result>): RunStatistics.RunResult {
+        if (results.isEmpty()) return RunStatistics.RunResult.UNKNOWN
 
         val testsWithResults = results.groupBy { it.testName }
         var runResult = PASSED
@@ -49,7 +49,7 @@ open class RunOverviewService @Autowired constructor(
         return runResult
     }
 
-    private fun getRunResultForTest(results: List<Result>): RunOverview.RunResult {
+    private fun getRunResultForTest(results: List<Result>): RunStatistics.RunResult {
         val lastResult = results.sortedBy { it.retryNum }.last()
         if (!lastResult.passed!!) return FAILED
 
