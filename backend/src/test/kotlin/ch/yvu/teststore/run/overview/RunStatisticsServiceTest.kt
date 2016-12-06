@@ -26,26 +26,26 @@ class RunStatisticsServiceTest {
     lateinit var runRepository: RunRepository
     lateinit var resultRepository: ResultRepository
 
-    lateinit var runOverviewService: RunOverviewService
+    lateinit var runStatisticsService: RunStatisticsService
 
     @Before fun setUp() {
         runRepository = ListBackedRunRepository(ListBackedRepository())
         resultRepository = ListBackedResultRepository(ListBackedRepository())
 
-        runOverviewService = RunOverviewService(runRepository, resultRepository)
+        runStatisticsService = RunStatisticsService(runRepository, resultRepository)
     }
 
     @Test fun returnsRunOverview() {
         runRepository.save(run)
 
-        val runOverview = runOverviewService.getLastRunOverview(testSuiteId)
+        val runOverview = runStatisticsService.getLastRunOverview(testSuiteId)
 
         assertTrue(runOverview.isPresent)
         assertEquals(run, runOverview.get().run)
     }
 
     @Test fun returnsNoRunOverviewIfThereAreNoRuns() {
-        val runOverview = runOverviewService.getLastRunOverview(testSuiteId)
+        val runOverview = runStatisticsService.getLastRunOverview(testSuiteId)
 
         assertFalse(runOverview.isPresent)
     }
@@ -55,7 +55,7 @@ class RunStatisticsServiceTest {
         val otherRun = Run(randomUUID(), otherTestSuitedId, "def123", Date())
         runRepository.save(otherRun)
 
-        val runOverview = runOverviewService.getLastRunOverview(testSuiteId)
+        val runOverview = runStatisticsService.getLastRunOverview(testSuiteId)
 
         assertFalse(runOverview.isPresent)
     }
@@ -65,7 +65,7 @@ class RunStatisticsServiceTest {
         runRepository.save(run)
         runRepository.save(latestRun)
 
-        val runOverview = runOverviewService.getLastRunOverview(testSuiteId)
+        val runOverview = runStatisticsService.getLastRunOverview(testSuiteId)
 
         assertEquals(latestRun, runOverview.get().run)
     }
@@ -75,7 +75,7 @@ class RunStatisticsServiceTest {
 
         resultRepository.save(passedResult)
 
-        val runOverview = runOverviewService.getLastRunOverview(testSuiteId)
+        val runOverview = runStatisticsService.getLastRunOverview(testSuiteId)
 
         assertEquals(PASSED, runOverview.get().result)
     }
@@ -84,7 +84,7 @@ class RunStatisticsServiceTest {
         runRepository.save(run)
         resultRepository.save(failedResult)
 
-        val runOverview = runOverviewService.getLastRunOverview(testSuiteId)
+        val runOverview = runStatisticsService.getLastRunOverview(testSuiteId)
 
         assertEquals(FAILED, runOverview.get().result)
     }
@@ -94,7 +94,7 @@ class RunStatisticsServiceTest {
         resultRepository.save(passedResult)
         resultRepository.save(failedResult)
 
-        val runOverview = runOverviewService.getLastRunOverview(testSuiteId)
+        val runOverview = runStatisticsService.getLastRunOverview(testSuiteId)
 
         assertEquals(FAILED, runOverview.get().result)
     }
@@ -102,7 +102,7 @@ class RunStatisticsServiceTest {
     @Test fun returnsCorrectResultIfRunHasNoResults() {
         runRepository.save(run)
 
-        val runOverview = runOverviewService.getLastRunOverview(testSuiteId)
+        val runOverview = runStatisticsService.getLastRunOverview(testSuiteId)
 
         assertEquals(UNKNOWN, runOverview.get().result)
     }
@@ -115,7 +115,7 @@ class RunStatisticsServiceTest {
         runRepository.save(otherRun)
         resultRepository.save(otherFailedResult)
 
-        val runOverview = runOverviewService.getLastRunOverview(testSuiteId)
+        val runOverview = runStatisticsService.getLastRunOverview(testSuiteId)
 
         assertEquals(UNKNOWN, runOverview.get().result)
     }
@@ -126,7 +126,7 @@ class RunStatisticsServiceTest {
         resultRepository.save(failedResult)
         resultRepository.save(passedRetry)
 
-        val runOverview = runOverviewService.getLastRunOverview(testSuiteId)
+        val runOverview = runStatisticsService.getLastRunOverview(testSuiteId)
 
         assertEquals(PASSED_WITH_RETRIES, runOverview.get().result)
     }
@@ -137,7 +137,7 @@ class RunStatisticsServiceTest {
         resultRepository.save(failedResult)
         resultRepository.save(failedRetry)
 
-        val runOverview = runOverviewService.getLastRunOverview(testSuiteId)
+        val runOverview = runStatisticsService.getLastRunOverview(testSuiteId)
 
         assertEquals(FAILED, runOverview.get().result)
     }
@@ -152,7 +152,7 @@ class RunStatisticsServiceTest {
         resultRepository.save(failedResult)
         resultRepository.save(passedRetry)
 
-        val runOverview = runOverviewService.getLastRunOverview(testSuiteId)
+        val runOverview = runStatisticsService.getLastRunOverview(testSuiteId)
 
         assertEquals(FAILED, runOverview.get().result)
     }
@@ -160,7 +160,7 @@ class RunStatisticsServiceTest {
     @Test fun totalDurationIsZeroIfThereAreNoResults() {
         runRepository.save(run)
 
-        val runOverview = runOverviewService.getLastRunOverview(testSuiteId)
+        val runOverview = runStatisticsService.getLastRunOverview(testSuiteId)
 
         assertEquals(0, runOverview.get().totalDurationMillis)
     }
@@ -172,7 +172,7 @@ class RunStatisticsServiceTest {
         resultRepository.save(result1)
         resultRepository.save(result2)
 
-        val runOverview = runOverviewService.getLastRunOverview(testSuiteId)
+        val runOverview = runStatisticsService.getLastRunOverview(testSuiteId)
 
         assertEquals(30, runOverview.get().totalDurationMillis)
     }
@@ -185,7 +185,7 @@ class RunStatisticsServiceTest {
         runRepository.save(otherRun)
         resultRepository.save(otherResult)
 
-        val runOverview = runOverviewService.getLastRunOverview(testSuiteId)
+        val runOverview = runStatisticsService.getLastRunOverview(testSuiteId)
 
         assertEquals(0, runOverview.get().totalDurationMillis)
     }
@@ -194,7 +194,7 @@ class RunStatisticsServiceTest {
         runRepository.save(run)
         resultRepository.save(passedResult)
 
-        val runOverviewsPage = runOverviewService.getRunOverviews(testSuiteId, null)
+        val runOverviewsPage = runStatisticsService.getRunOverviews(testSuiteId, null)
 
         assertEquals(listOf(RunStatistics(run, PASSED, passedResult.durationMillis!!)), runOverviewsPage.results)
 
@@ -205,7 +205,7 @@ class RunStatisticsServiceTest {
         val otherRun = Run(randomUUID(), otherTestSuiteId, "def123", Date(2))
         runRepository.save(otherRun)
 
-        val runOverviewsPage = runOverviewService.getRunOverviews(testSuiteId, null)
+        val runOverviewsPage = runStatisticsService.getRunOverviews(testSuiteId, null)
 
         assertEquals(emptyList<RunStatistics>(), runOverviewsPage.results)
     }

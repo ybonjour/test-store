@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service
 import java.util.*
 
 @Service
-open class RunOverviewService @Autowired constructor(
+open class RunStatisticsService @Autowired constructor(
         open val runRepository: RunRepository,
         open val resultRepository: ResultRepository) {
 
