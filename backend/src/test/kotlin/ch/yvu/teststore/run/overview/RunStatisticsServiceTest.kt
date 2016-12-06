@@ -196,7 +196,7 @@ class RunStatisticsServiceTest {
 
         val runOverviewsPage = runStatisticsService.getRunOverviews(testSuiteId, null)
 
-        assertEquals(listOf(RunStatistics(run, PASSED, passedResult.durationMillis!!)), runOverviewsPage.results)
+        assertEquals(listOf(RunStatistics(run, PASSED, passedResult.durationMillis!!, 0, 0, null, null)), runOverviewsPage.results)
 
     }
 

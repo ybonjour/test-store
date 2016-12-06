@@ -31,7 +31,7 @@ open class RunStatisticsService @Autowired constructor(
         val runResult = extractRunResult(results);
         val totalDuration = results.map { it.durationMillis!! }.sum()
 
-        return RunStatistics(run, runResult, totalDuration)
+        return RunStatistics(run, runResult, totalDuration, 0, 0, null, null)
     }
 
     private fun extractRunResult(results: List<Result>): RunStatistics.RunResult {
