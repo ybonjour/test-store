@@ -2,7 +2,7 @@ package ch.yvu.teststore.run
 
 import ch.yvu.teststore.common.Page
 import ch.yvu.teststore.insert.dto.RunDto
-import ch.yvu.teststore.run.overview.RunOverview
+import ch.yvu.teststore.run.overview.RunStatistics
 import ch.yvu.teststore.run.overview.RunOverviewService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus.NOT_FOUND
@@ -35,10 +35,10 @@ class RunController @Autowired constructor(val runRepository: RunRepository, val
     }
 
     @RequestMapping(method = arrayOf(GET), value = "/testsuites/{testSuite}/runs/last")
-    fun getLastRunOverview(@PathVariable testSuite: UUID): ResponseEntity<RunOverview> {
+    fun getLastRunOverview(@PathVariable testSuite: UUID): ResponseEntity<RunStatistics> {
         val lastRun = runOverviewService.getLastRunOverview(testSuite)
         if (!lastRun.isPresent) {
-            return ResponseEntity<RunOverview>(NOT_FOUND)
+            return ResponseEntity<RunStatistics>(NOT_FOUND)
         }
 
         return ResponseEntity(lastRun.get(), OK)
@@ -48,7 +48,7 @@ class RunController @Autowired constructor(val runRepository: RunRepository, val
     fun getRunOverviewsPaged(
             @PathVariable testSuite: UUID,
             @RequestParam(name = "page", required = false) page: String?,
-            @RequestParam(name = "fetchSize", required = false) fetchSize: Int?): Page<RunOverview> {
+            @RequestParam(name = "fetchSize", required = false) fetchSize: Int?): Page<RunStatistics> {
         return runOverviewService.getRunOverviews(testSuite, page, fetchSize)
     }
 }

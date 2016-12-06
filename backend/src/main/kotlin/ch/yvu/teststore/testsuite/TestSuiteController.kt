@@ -1,7 +1,7 @@
 package ch.yvu.teststore.testsuite
 
 import ch.yvu.teststore.insert.dto.TestSuiteDto
-import ch.yvu.teststore.run.overview.RunOverview.RunResult.UNKNOWN
+import ch.yvu.teststore.run.overview.RunStatistics.RunResult.UNKNOWN
 import ch.yvu.teststore.run.overview.RunOverviewService
 import ch.yvu.teststore.testsuite.overview.TestSuiteOverview
 import org.springframework.beans.factory.annotation.Autowired

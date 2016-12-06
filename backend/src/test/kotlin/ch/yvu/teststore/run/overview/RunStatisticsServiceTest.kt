@@ -7,14 +7,14 @@ import ch.yvu.teststore.result.Result
 import ch.yvu.teststore.result.ResultRepository
 import ch.yvu.teststore.run.Run
 import ch.yvu.teststore.run.RunRepository
-import ch.yvu.teststore.run.overview.RunOverview.RunResult.*
+import ch.yvu.teststore.run.overview.RunStatistics.RunResult.*
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
 import java.util.*
 import java.util.UUID.randomUUID
 
-class RunOverviewServiceTest {
+class RunStatisticsServiceTest {
 
     companion object {
         val testSuiteId = randomUUID()
@@ -196,7 +196,7 @@ class RunOverviewServiceTest {
 
         val runOverviewsPage = runOverviewService.getRunOverviews(testSuiteId, null)
 
-        assertEquals(listOf(RunOverview(run, PASSED, passedResult.durationMillis!!)), runOverviewsPage.results)
+        assertEquals(listOf(RunStatistics(run, PASSED, passedResult.durationMillis!!)), runOverviewsPage.results)
 
     }
 
@@ -207,6 +207,6 @@ class RunOverviewServiceTest {
 
         val runOverviewsPage = runOverviewService.getRunOverviews(testSuiteId, null)
 
-        assertEquals(emptyList<RunOverview>(), runOverviewsPage.results)
+        assertEquals(emptyList<RunStatistics>(), runOverviewsPage.results)
     }
 }

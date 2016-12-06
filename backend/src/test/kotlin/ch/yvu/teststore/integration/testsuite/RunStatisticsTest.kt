@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import java.util.*
 import java.util.UUID.randomUUID
 
-class RunOverviewTest : BaseIntegrationTest() {
+class RunStatisticsTest : BaseIntegrationTest() {
 
     companion object {
         val testSuite = TestSuite(randomUUID(), "MyTestSuite");
