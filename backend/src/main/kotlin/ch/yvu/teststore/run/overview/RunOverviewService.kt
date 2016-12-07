@@ -11,27 +11,27 @@ import org.springframework.stereotype.Service
 import java.util.*
 
 @Service
-open class RunStatisticsService @Autowired constructor(
+open class RunOverviewService @Autowired constructor(
         open val runRepository: RunRepository,
         open val resultRepository: ResultRepository) {
 
-    fun getLastRunOverview(testSuiteId: UUID): Optional<RunStatistics> {
+    fun getLastRunOverview(testSuiteId: UUID): Optional<RunOverview> {
         val run = runRepository.findAllByTestSuiteId(testSuiteId, 1).firstOrNull()
         if (run == null) return Optional.empty()
 
         return Optional.of(getRunOverview(run))
     }
 
-    fun getRunOverviews(testSuiteId: UUID, page:String?, fetchSize: Int?=null): Page<RunStatistics> {
+    fun getRunOverviews(testSuiteId: UUID, page:String?, fetchSize: Int?=null): Page<RunOverview> {
         return runRepository.findAllByTestSuiteId(testSuiteId, page, fetchSize).map{getRunOverview(it)}
     }
 
-    private fun getRunOverview(run: Run): RunStatistics {
+    private fun getRunOverview(run: Run): RunOverview {
         val results = resultRepository.findAllByRunId(run.id!!)
         val runResult = extractRunResult(results);
         val totalDuration = results.map { it.durationMillis!! }.sum()
 
-        return RunStatistics(run, runResult, totalDuration, 0, 0, null, null)
+        return RunOverview(run, RunStatistics(run.id, runResult, totalDuration, 0, 0, null, null))
     }
 
     private fun extractRunResult(results: List<Result>): RunStatistics.RunResult {

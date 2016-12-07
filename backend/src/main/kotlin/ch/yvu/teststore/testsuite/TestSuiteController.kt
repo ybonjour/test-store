@@ -2,7 +2,7 @@ package ch.yvu.teststore.testsuite
 
 import ch.yvu.teststore.insert.dto.TestSuiteDto
 import ch.yvu.teststore.run.overview.RunStatistics.RunResult.UNKNOWN
-import ch.yvu.teststore.run.overview.RunStatisticsService
+import ch.yvu.teststore.run.overview.RunOverviewService
 import ch.yvu.teststore.testsuite.overview.TestSuiteOverview
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus.NOT_FOUND
@@ -19,7 +19,7 @@ import java.util.UUID.randomUUID
 import javax.servlet.http.HttpServletResponse
 
 @RestController
-class TestSuiteController @Autowired constructor(val testSuiteRepository: TestSuiteRepository, val runStatisticsService: RunStatisticsService) {
+class TestSuiteController @Autowired constructor(val testSuiteRepository: TestSuiteRepository, val runOverviewService: RunOverviewService) {
 
     @RequestMapping(
             method = arrayOf(POST),
@@ -35,8 +35,8 @@ class TestSuiteController @Autowired constructor(val testSuiteRepository: TestSu
     @RequestMapping(method = arrayOf(GET), value = "/testsuites")
     fun getAllTestSuites(): List<TestSuiteOverview> {
         return testSuiteRepository.findAll().map {
-            val runOverview = runStatisticsService.getLastRunOverview(it.id!!);
-            val runResult = if (runOverview.isPresent) runOverview.get().result else UNKNOWN;
+            val runOverview = runOverviewService.getLastRunOverview(it.id!!);
+            val runResult = if (runOverview.isPresent) runOverview.get().runStatistics.result else UNKNOWN;
             TestSuiteOverview(it, runResult)
         };
     }
@@ -46,8 +46,8 @@ class TestSuiteController @Autowired constructor(val testSuiteRepository: TestSu
         val testSuite = testSuiteRepository.findById(testSuiteId)
         if (testSuite == null) return ResponseEntity(NOT_FOUND)
 
-        val runOverview = runStatisticsService.getLastRunOverview(testSuite.id!!)
-        val runResult = if (runOverview.isPresent) runOverview.get().result else UNKNOWN;
+        val runOverview = runOverviewService.getLastRunOverview(testSuite.id!!)
+        val runResult = if (runOverview.isPresent) runOverview.get().runStatistics.result else UNKNOWN;
         return ResponseEntity(TestSuiteOverview(testSuite, runResult), OK)
     }
 }

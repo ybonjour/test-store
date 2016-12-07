@@ -88,8 +88,8 @@ class RunControllerTest : BaseIntegrationTest() {
         .then()
             .statusCode(200)
             .body("run.revision", equalTo(run.revision))
-            .body("result", equalTo("PASSED"))
-            .body("totalDurationMillis", equalTo(20))
+            .body("runStatistics.result", equalTo("PASSED"))
+            .body("runStatistics.totalDurationMillis", equalTo(20))
     }
 
     @Test fun getLastRunReturns404IfTherIsNoRunForTheTestSuite() {
@@ -110,8 +110,8 @@ class RunControllerTest : BaseIntegrationTest() {
         .then()
             .statusCode(200)
             .body("results[0].run.revision", equalTo(run.revision))
-            .body("results[0].result", equalTo("PASSED"))
-            .body("results[0].totalDurationMillis", equalTo(20))
+            .body("results[0].runStatistics.result", equalTo("PASSED"))
+            .body("results[0].runStatistics.totalDurationMillis", equalTo(20))
     }
 }
 

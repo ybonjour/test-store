@@ -1,17 +1,22 @@
 package ch.yvu.teststore.run.overview
 
-import ch.yvu.teststore.run.Run
+import ch.yvu.teststore.common.Model
+import com.datastax.driver.mapping.annotations.Table
 import java.util.*
 
-data class RunStatistics(val run: Run,
-                         val result: RunResult,
-                         val totalDurationMillis: Long,
-                         val numPassed: Int,
-                         val numFailed: Int,
+@Table(name = "run_statistics")
+data class RunStatistics(val run: UUID?,
+                         val result: RunResult?,
+                         val totalDurationMillis: Long?,
+                         val numPassed: Int?,
+                         val numFailed: Int?,
                          val firstResultTime: Date?,
-                         val lastResultTime: Date?) {
+                         val lastResultTime: Date?) : Model {
 
-    constructor(run: Run,
+    constructor() : this(null, null, null, null, null, null, null) {
+    }
+
+    constructor(run: UUID,
                 result: String,
                 totalDurationMillis: Long,
                 numPassed: Int,
