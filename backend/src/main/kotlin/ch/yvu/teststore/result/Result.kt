@@ -33,4 +33,10 @@ data class Result(
             else return passed!!
         })
     }
+
+    fun endTime(): Date? {
+        if(this.time == null) return null
+
+        return Date(this.time!!.time + (this.durationMillis ?: 0))
+    }
 }
