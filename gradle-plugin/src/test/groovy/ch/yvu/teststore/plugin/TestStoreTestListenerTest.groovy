@@ -1,7 +1,5 @@
 package ch.yvu.teststore.plugin
 
-import junit.framework.Assert
-import org.apache.maven.wagon.ConnectionException
 import org.gradle.api.internal.tasks.testing.DefaultTestMethodDescriptor
 import org.gradle.api.tasks.testing.TestResult
 import org.junit.Before
@@ -118,6 +116,26 @@ class TestStoreTestListenerTest {
                 any(Date.class),
                 eq(""),
                 eq(""))
+    }
+
+    @Test
+    public void doesNotStoreLogWhenTestIsPassed() {
+        extension.incremental = true
+
+        TestResult result = mock(TestResult.class)
+        when(result.resultType).thenReturn(SUCCESS)
+        when(testOutputListener.getLogOutput(TEST_DESCRIPTOR_1)).thenReturn("Some log message")
+
+        listener.beforeTest(TEST_DESCRIPTOR_1);
+        listener.afterTest(TEST_DESCRIPTOR_1, result);
+
+        verify(client).insertTestResult(
+                any(UUID.class),
+                anyString(),
+                anyBoolean(),
+                anyLong(),
+                any(Date.class),
+                anyString(), eq(""))
     }
 
     @Test
