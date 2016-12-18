@@ -1,4 +1,4 @@
-version = 0.8
+version = 0.9
 group = 'ch.yvu.teststore'
 buildscript {
     repositories {
