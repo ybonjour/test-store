@@ -45,16 +45,21 @@ class TestStoreTestListener implements TestListener {
 
         def passed = result.resultType == SUCCESS
         def stackTrace = result.exception != null ? stackTrace(result.exception) : ""
-        def log = outputListener.getLogOutput(testDescriptor)
-        factory.createClient().insertTestResult(
-                runId,
-                testDescriptor.className + "#" + testDescriptor.name,
-                passed,
-                result.endTime - result.startTime,
-                new Date(),
-                stackTrace,
-                log
-        )
+        def log = passed ? "" : outputListener.getLogOutput(testDescriptor)
+
+        try {
+            factory.createClient().insertTestResult(
+                    runId,
+                    testDescriptor.className + "#" + testDescriptor.name,
+                    passed,
+                    result.endTime - result.startTime,
+                    new Date(),
+                    stackTrace,
+                    log
+            )
+        } catch(Exception e) {
+            LOGGER
+        }
     }
 
     private static String stackTrace(Throwable t) {
