@@ -46,9 +46,9 @@ class TestStoreTestListener implements TestListener {
         def passed = result.resultType == SUCCESS
         def stackTrace = result.exception != null ? stackTrace(result.exception) : ""
         def log = passed ? "" : outputListener.getLogOutput(testDescriptor)
-
+        def client = factory.createClient()
         try {
-            factory.createClient().insertTestResult(
+            client.insertTestResult(
                     runId,
                     testDescriptor.className + "#" + testDescriptor.name,
                     passed,
@@ -58,7 +58,7 @@ class TestStoreTestListener implements TestListener {
                     log
             )
         } catch(Exception e) {
-            LOGGER
+            System.err.println("Result could not be sent to test-store")
         }
     }
 

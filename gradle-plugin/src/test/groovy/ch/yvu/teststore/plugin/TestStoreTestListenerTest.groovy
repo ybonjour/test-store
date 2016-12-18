@@ -1,5 +1,7 @@
 package ch.yvu.teststore.plugin
 
+import junit.framework.Assert
+import org.apache.maven.wagon.ConnectionException
 import org.gradle.api.internal.tasks.testing.DefaultTestMethodDescriptor
 import org.gradle.api.tasks.testing.TestResult
 import org.junit.Before
@@ -132,7 +134,7 @@ class TestStoreTestListenerTest {
     }
 
     @Test
-    public void doesNOtStoreResultsWhenIncrementalIsNotSet() {
+    public void doesNotStoreResultsWhenIncrementalIsNotSet() {
         extension.incremental = false
 
         TestResult result = mock(TestResult.class)
@@ -144,13 +146,30 @@ class TestStoreTestListenerTest {
         verifyZeroInteractions(client)
     }
 
+    @Test
+    public void swallowsExceptionWhenInsertingTestResult() {
+        extension.incremental = true
+        doThrow(new RuntimeException()).when(client).insertTestResult(
+                any(UUID.class),
+                anyString(),
+                anyBoolean(),
+                anyLong(),
+                any(Date.class),
+                anyString(),
+                anyString())
+        TestResult result = mock(TestResult.class)
+        when(result.resultType).thenReturn(SUCCESS)
+
+        listener.beforeTest(TEST_DESCRIPTOR_1)
+        listener.afterTest(TEST_DESCRIPTOR_1, result)
+
+        // success if no exception has been thrown
+    }
+
     private static String stackTrace(Throwable t) {
         StringWriter sw = new StringWriter();
         PrintWriter pw = new PrintWriter(sw);
         t.printStackTrace(pw);
         return sw.toString();
     }
-
-
-
 }
