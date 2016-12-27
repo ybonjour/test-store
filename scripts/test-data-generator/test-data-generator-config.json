@@ -1,0 +1,9 @@
+{
+  "num_of_test_classes": 100,
+  "num_of_test_cases_for_class": 10,
+  "test_fail_probability": 0.1,
+  "test_runs": 5000,
+  "teststore_server_url": "http://localhost:8080",
+  "teststore_testsuite_id": "d0d8e177-18ff-4854-a18c-b98e2d0c730d",
+  "revision": "1"
+}
