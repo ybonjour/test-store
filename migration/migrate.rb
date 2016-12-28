@@ -1,11 +1,12 @@
-Migration = Struct.new(:order, :file)
+Migration = Struct.new(:order, :file, :type)
 def ordered_migration_files(path)
-    Dir.glob(path + "*.cql").map { |file_path|
+    (Dir.glob(path + "*.cql") + Dir.glob(path + "*.rb")).map { |file_path|
         file_name = File.basename(file_path)
         tokens = file_name.split("_")
         migration = Migration.new
         migration.order = Integer(tokens.first)
         migration.file = file_path
+        migration.type = File.extname(file_name)
         migration
     }.sort_by { |m| m.order }
 end
@@ -28,8 +29,18 @@ def create_migration_table(host, keyspace)
     `cqlsh #{host} -k #{keyspace} -f create_migrations.cql`
 end
 
+def execute_migration(host, keyspace, migration)
+    if(migration.type == ".cql")
+        system("cqlsh #{host} -k #{keyspace} -f #{migration.file}")
+    elsif(migration.type == ".rb")
+        system("ruby ruby_migration.rb #{host} #{keyspace} #{migration.file}")
+    else
+        puts "Migration #{migration.file} has unknown type #{migration.type}"
+    end
+end
+
 def execute(host, keyspace, base_version, migration)
-    success = system("cqlsh #{host} -k #{keyspace} -f #{migration.file}")
+    success = execute_migration(host, keyspace, migration)
     unless success
         raise "Migration #{migration.file} failed"
     end
