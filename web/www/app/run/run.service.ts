@@ -42,8 +42,8 @@ export class RunService {
         run.testSuite = runJson.run.testSuite;
         run.revision = runJson.run.revision;
         run.time = new Date(runJson.run.time);
-        run.runResult = runJson.result;
-        run.totalDurationMillis = runJson.totalDurationMillis;
+        run.runResult = runJson.runStatistics.result;
+        run.totalDurationMillis = runJson.runStatistics.totalDurationMillis;
 
         return run;
     }
