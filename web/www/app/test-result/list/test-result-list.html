@@ -5,6 +5,6 @@
 ></test-results-header>
 <div *ngIf="errorMessage">{{errorMessage}}</div>
 <revisions [runId]="runId"></revisions>
-<test-results [results]="failedResults" [type]="'FAILED'"></test-results>
-<test-results [results]="retriedResults" [type]="'RETRIED'"></test-results>
-<test-results [results]="passedResults" [type]="'PASSED'"></test-results>
+<test-results [results]="failedResults"></test-results>
+<test-results [results]="retriedResults"></test-results>
+<test-results [results]="passedResults"></test-results>

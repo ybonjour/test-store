@@ -1,19 +1,10 @@
 <div class="results-container" *ngIf="results && results.length > 0">
-    <ul class="results" *ngIf="type == 'PASSED'">
-        <li *ngFor="let result of results" class="result passed">
-            <span class="name">{{result.testName}} <img class="history-icon" [routerLink]="['Test Details', {testsuite_id: testSuiteId, test_name: encode(result.testName)}]" src="img/history.png"/></span>
-            <span class="duration">
-                <duration [durationMillis]="result.results[0].durationMillis"></duration>
-            </span>
-        </li>
-    </ul>
-    <ul class="results" *ngIf="type == 'FAILED'">
-        <li  *ngFor="let result of results" class="result failed">
-            <span class="name">{{result.testName}} <img class="history-icon" [routerLink]="['Test Details', {testsuite_id: testSuiteId, test_name: encode(result.testName)}]" src="img/history.png"/></span>
+    <ul class="results">
+        <li *ngFor="let result of results" class="result" [ngClass]="{'passed': result.testResult == 'PASSED', 'failed': result.testResult == 'FAILED', 'retried': result.testResult == 'RETRIED'}">
 
-
-            <ul class="tries">
-                <li *ngFor="let try of result.results" class="try">
+            <span class="name">{{result.testName}} <img class="history-icon" [routerLink]="['Test Details', {testsuite_id: testSuiteId, test_name: encode(result.testName)}]" src="img/history.png"/></span>
+            <ul *ngIf="result.testResult == 'FAILED' || result.testResult == 'RETRIED'" class="tries">
+                <li *ngFor="let try of result.results" class="try"  [ngClass]="{'passed': result.testResult == 'RETRIED' && try.passed, 'failed': result.testResult == 'RETRIED' && !try.passed}">
                     <div class="title">
                         <span class="name">Try {{try.retryNum + 1}}</span>
                         <span class="reason" *ngFor="let failureReason of failureReasons()">
@@ -26,26 +17,10 @@
                     <stacktrace [stackTrace]="try.stackTrace" [log]="try.log"></stacktrace>
                 </li>
             </ul>
-        </li>
-    </ul>
-    <ul class="results" *ngIf="type == 'RETRIED'">
-        <li *ngFor="let result of results" class="result retried">
-            <span class="name">{{result.testName}} <img class="history-icon" [routerLink]="['Test Details', {testsuite_id: testSuiteId, test_name: encode(result.testName)}]" src="img/history.png"/></span>
 
-            <ul class="tries">
-                <li *ngFor="let try of result.results" class="try" [ngClass]="{'passed': try.passed, 'failed': !try.passed}">
-                    <div class="title">
-                        <span class="name">Try {{try.retryNum + 1}}</span>
-                        <span class="reason" *ngFor="let failureReason of failureReasons()">
-                            <span *ngIf="!try.passed" (click)="updateFailureReason(try, failureReason.name)" [ngClass]="{selected: try.failureReason == failureReason.name}">{{failureReason.name}}</span>
-                        </span>
-                        <span class="duration">
-                            <duration [durationMillis]="try.durationMillis"></duration>
-                        </span>
-                    </div>
-                    <stacktrace [stackTrace]="try.stackTrace" [log]="try.log"></stacktrace>
-                </li>
-            </ul>
+            <span *ngIf="result.testResult == 'PASSED'" class="duration">
+                <duration [durationMillis]="result.results[0].durationMillis"></duration>
+            </span>
         </li>
     </ul>
 </div>

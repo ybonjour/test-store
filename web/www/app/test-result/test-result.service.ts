@@ -72,7 +72,7 @@ export class TestResultService {
         return Observable.throw(errorMessage);
     }
 
-    private static convertGroupedResults(json:any): {[category: string]: TestWithResults[]} {
+    private static  convertGroupedResults(json:any): {[category: string]: TestWithResults[]} {
         var result: {[category: string]: TestWithResults[]} = {};
         for (var key in json) {
             if (!json.hasOwnProperty(key)) continue;

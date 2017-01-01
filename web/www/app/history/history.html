@@ -39,7 +39,7 @@
             >
                 <div class="resultDetails" *ngIf="isCurrentResult(historyEntry.runId, testName.longName)">
                     <a (click)="unselectResult($event)">Close</a>
-                    <test-results [results]="[currentResult]" [type]="currentResult.testResult"></test-results>
+                    <test-results [results]="[currentResult]"></test-results>
                 </div>
             </td>
         </tr>

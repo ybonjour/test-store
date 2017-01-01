@@ -7,30 +7,30 @@
 <div *ngIf="errorMessage">{{errorMessage}}</div>
 
 <h4 *ngIf="results['NEW_FAILED']">Added Failed Tests</h4>
-<test-results [results]="results['NEW_FAILED']" [type]="'FAILED'"></test-results>
+<test-results [results]="results['NEW_FAILED']"></test-results>
 
 <h4 *ngIf="results['BROKE']">Broken Tests</h4>
-<test-results [results]="results['BROKE']" [type]="'FAILED'"></test-results>
+<test-results [results]="results['BROKE']"></test-results>
 
 <h4 *ngIf="results['STILL_FAILING']">Still Failing Tests</h4>
-<test-results [results]="results['STILL_FAILING']" [type]="'FAILED'"></test-results>
+<test-results [results]="results['STILL_FAILING']"></test-results>
 
 <h4 *ngIf="results['NEW_RETRIED']">Added Retried Tests</h4>
-<test-results [results]="results['NEW_RETRIED']" [type]="'RETRIED'"></test-results>
+<test-results [results]="results['NEW_RETRIED']"></test-results>
 
 <h4
     *ngIf="results['NEW_RETRIED'] || results['RETRIED_AFTER_PASSED'] || results['STILL_RETRIED'] || results['RETRIED_AFTER_FAILED']">
     Retried tests
 </h4>
-<test-results [results]="results['RETRIED_AFTER_PASSED']" [type]="'RETRIED'"></test-results>
-<test-results [results]="results['STILL_RETRIED']" [type]="'RETRIED'"></test-results>
-<test-results [results]="results['RETRIED_AFTER_FAILED']" [type]="'RETRIED'"></test-results>
+<test-results [results]="results['RETRIED_AFTER_PASSED']"></test-results>
+<test-results [results]="results['STILL_RETRIED']"></test-results>
+<test-results [results]="results['RETRIED_AFTER_FAILED']"></test-results>
 
 <h4 *ngIf="results['NEW_PASSED']">Added Passed Tests</h4>
-<test-results [results]="results['NEW_PASSED']" [type]="'PASSED'"></test-results>
+<test-results [results]="results['NEW_PASSED']"></test-results>
 
 <h4 *ngIf="results['FIXED']">Fixed Tests</h4>
-<test-results [results]="results['FIXED']" [type]="'PASSED'"></test-results>
+<test-results [results]="results['FIXED']"></test-results>
 
 <h4 *ngIf="results['STILL_PASSING']">Still Passing Tests</h4>
-<test-results [results]="results['STILL_PASSING']" [type]="'PASSED'"></test-results>
+<test-results [results]="results['STILL_PASSING']"></test-results>

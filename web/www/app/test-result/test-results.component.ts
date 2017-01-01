@@ -15,7 +15,6 @@ import {DurationComponent} from "../duration/duration.component";
 })
 export class TestResultsComponent implements OnInit {
     @Input() results: TestWithResults[];
-    @Input() type: string;
     testSuiteId: string;
 
     constructor(
