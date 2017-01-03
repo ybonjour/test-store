@@ -35,7 +35,6 @@ export class ExecutionOrderComponent implements OnInit {
     }
 
     extractResults(results: {[category: string]: TestWithResults[]}) {
-        console.log("Got results: " + results);
         this.results = [];
         for(var category in results) {
             this.results = this.results.concat(ExecutionOrderComponent.expandResults(results[category]));
