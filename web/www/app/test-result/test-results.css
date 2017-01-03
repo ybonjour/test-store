@@ -37,18 +37,18 @@ li.try .duration
 }
 
 li.passed {
-    border-left: 10px solid #00AA00;
-    border-bottom: 1px solid #00AA00;
+    border-left: 10px solid #00AA00 !important;
+    border-bottom: 1px solid #00AA00 !important;
 }
 
 li.failed {
-    border-left: 10px solid #AA0000;
-    border-bottom: 1px solid #AA0000;
+    border-left: 10px solid #AA0000 !important;
+    border-bottom: 1px solid #AA0000 !important;
 }
 
 li.retried {
-    border-left: 10px solid #ffc520;
-    border-bottom: 1px solid #ffc520;
+    border-left: 10px solid #ffc520 !important;
+    border-bottom: 1px solid #ffc520 !important;
 }
 
 ul.tries {
@@ -59,15 +59,18 @@ ul.tries {
 }
 
 li.try {
+    border:1px solid #DDDDDD;
+    background: #FFFFFF;
     margin-bottom: 10px;
+    width: 100%;
+    display: inline-block;
 }
 
 li.try .title {
-    border:1px solid #DDDDDD;
+
     clear: left;
     float:left;
     width: 100%;
-    background: #FFFFFF;
 }
 
 li.try .title .reason {

@@ -3,18 +3,20 @@
         <li *ngFor="let result of results" class="result" [ngClass]="{'passed': result.testResult == 'PASSED', 'failed': result.testResult == 'FAILED', 'retried': result.testResult == 'RETRIED'}">
 
             <span class="name">{{result.testName}} <img class="history-icon" [routerLink]="['Test Details', {testsuite_id: testSuiteId, test_name: encode(result.testName)}]" src="img/history.png"/></span>
-            <ul *ngIf="result.testResult == 'FAILED' || result.testResult == 'RETRIED'" class="tries">
-                <li *ngFor="let try of result.results" class="try"  [ngClass]="{'passed': result.testResult == 'RETRIED' && try.passed, 'failed': result.testResult == 'RETRIED' && !try.passed}">
+
+            <ul *ngIf="result.testResult == 'FAILED' || result.testResult == 'RETRIED" class="tries">
+                <li *ngFor="let try of result.results" class="try" [ngClass]="{'passed': result.testResult == 'RETRIED' && try.passed, 'failed': result.testResult == 'RETRIED' && !try.passed}">
                     <div class="title">
                         <span class="name">Try {{try.retryNum + 1}}</span>
-                        <span class="reason" *ngFor="let failureReason of failureReasons()">
+                        <span *ngIf="!try.passed">
+                            <span class="reason" *ngFor="let failureReason of failureReasons()">
                             <span (click)="updateFailureReason(try, failureReason.name)" [ngClass]="{selected: try.failureReason == failureReason.name}">{{failureReason.name}}</span>
                         </span>
                         <span class="duration">
                             <duration [durationMillis]="try.durationMillis"></duration>
                         </span>
                     </div>
-                    <stacktrace [stackTrace]="try.stackTrace" [log]="try.log"></stacktrace>
+                    <stacktrace *ngIf="!try.passed" [stackTrace]="try.stackTrace" [log]="try.log"></stacktrace>
                 </li>
             </ul>
 
