@@ -3,7 +3,7 @@ import {TestResult} from "./test-result";
 export class TestWithResults {
     testName: string;
     results: TestResult[];
-    testResult: String;
+    testResult: string;
 
     getRunId(): string {
         if(this.results == null || this.results.length == 0) {

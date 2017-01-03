@@ -18,6 +18,7 @@ import {TestStatisticsComponent} from "./statistics/test-statistics.component";
 import {TestStatisticsService} from "./statistics/test-statistics.service";
 import {RevisionService} from "./revision/revision.service";
 import {TestDetailsComponent} from "./test/test-details.component";
+import {ExecutionOrderComponent} from "./test-result/execution-order/execution-order.component";
 
 @Component({
     selector: 'app',
@@ -67,6 +68,11 @@ import {TestDetailsComponent} from "./test/test-details.component";
         path: 'testsuites/:testsuite_id/runs/:run_id/diff',
         name: 'Results Diff',
         component: TestResultDiffComponent
+    },
+    {
+        path: 'testsuites/:testsuite_id/runs/:run_id/results/execution_order',
+        name: 'Execution Order',
+        component: ExecutionOrderComponent
     },
     {
         path: 'testsuites/:testsuite_id/statistics',

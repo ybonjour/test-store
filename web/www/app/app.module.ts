@@ -15,7 +15,8 @@ import {TestResultsComponent} from "./test-result/test-results.component";
 import {AddTestSuiteComponent} from "./test-suite/add/add-test-suite.component";
 import {TestSuiteOverviewComponent} from "./test-suite/overview/test-suite-overview.component";
 import {FormsModule} from "@angular/forms";
-import {ChartsModule} from 'ng2-charts/ng2-charts';
+import {ChartsModule} from "ng2-charts/ng2-charts";
+import {ExecutionOrderComponent} from "./test-result/execution-order/execution-order.component";
 
 @NgModule({
     imports:      [
@@ -37,7 +38,8 @@ import {ChartsModule} from 'ng2-charts/ng2-charts';
         StacktraceComponent,
         TestResultsComponent,
         AddTestSuiteComponent,
-        TestSuiteOverviewComponent
+        TestSuiteOverviewComponent,
+        ExecutionOrderComponent
     ],
     bootstrap:    [ AppComponent ]
 })
