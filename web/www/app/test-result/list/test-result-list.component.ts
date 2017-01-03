@@ -16,7 +16,6 @@ import {RevisionListComponent} from "../../revision/revision-list.component";
 export class TestResultListComponent implements OnInit {
 	errorMessage: string;
 	runId: string;
-	testSuiteId: string;
 	passedResults: TestWithResults[] = [];
 	failedResults: TestWithResults[] = [];
 	retriedResults: TestWithResults[] = [];
@@ -27,7 +26,6 @@ export class TestResultListComponent implements OnInit {
 	}
 
 	ngOnInit() {
-		this.testSuiteId = this._routeParams.get('testsuite_id');
 		this.runId = this._routeParams.get('run_id');
 		this.getResults(this.runId);
 	}

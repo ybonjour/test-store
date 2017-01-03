@@ -2,4 +2,5 @@
     <h1 class="failed" *ngIf="numFailedResults > 0">Failed: {{numFailedResults}}</h1>
     <h1 class="retried" *ngIf="numRetriedResults > 0">Retried: {{numRetriedResults}}</h1>
     <h1 class="passed" *ngIf="numPassedResults > 0">Passed: {{numPassedResults}}</h1>
+    <a [routerLink]="['Execution Order', {testsuite_id: testSuiteId, run_id: runId}]">Execution Order</a>
 </div>

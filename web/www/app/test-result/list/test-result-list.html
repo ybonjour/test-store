@@ -5,7 +5,6 @@
 ></test-results-header>
 <div *ngIf="errorMessage">{{errorMessage}}</div>
 <revisions [runId]="runId"></revisions>
-<a [routerLink]="['Execution Order', {testsuite_id: testSuiteId, run_id: runId}]">Execution Order</a>
 <test-results [results]="failedResults"></test-results>
 <test-results [results]="retriedResults"></test-results>
 <test-results [results]="passedResults"></test-results>

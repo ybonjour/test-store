@@ -10,6 +10,11 @@
     margin-left: 20px;
 }
 
+.header a {
+    float: right;
+    margin-right: 5px;
+}
+
 .header .failed {
     color: #AA0000;
 }
