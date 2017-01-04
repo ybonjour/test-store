@@ -4,6 +4,7 @@ import ch.yvu.teststore.integration.ListBackedRepository
 import ch.yvu.teststore.integration.result.ListBackedResultRepository
 import ch.yvu.teststore.integration.run.ListBackedRunRepository
 import ch.yvu.teststore.result.TestWithResults.TestResult
+import ch.yvu.teststore.result.TestWithResults.TestResult.PASSED
 import ch.yvu.teststore.run.Run
 import ch.yvu.teststore.run.RunRepository
 import org.junit.Assert.*
@@ -16,7 +17,9 @@ class ResultServiceTest {
     companion object {
         val runId = randomUUID()
         val passedResult = Result(runId, "myTest", 0, true, 10, Date())
-        val failedResult = Result(runId, "myTest", 0, false, 10, Date())
+        val failedResult = Result(runId, "myOtherTest", 0, false, 10, Date())
+        val retriedResultFirst = Result(runId, "myRetriedTest", 0, false, 10, Date())
+        val retriedResultSecond = Result(runId, "myRetriedTest", 1, true, 10, Date())
     }
 
     lateinit var resultRepository: ResultRepository
@@ -43,6 +46,26 @@ class ResultServiceTest {
         val testResults = resultService.getTestsWithResults(runId)
 
         assertEquals(emptyList<TestWithResults>(), testResults)
+    }
+
+    @Test fun getTestWithResultsReturnsAllResultsIfNoFilterProvided() {
+        resultRepository.save(passedResult)
+        resultRepository.save(failedResult)
+        resultRepository.save(retriedResultFirst)
+        resultRepository.save(retriedResultSecond)
+
+        val testResults = resultService.getTestsWithResults(runId)
+
+        assertEquals(3, testResults.size)
+    }
+
+    @Test fun getTestWithResultsReturnsOnlyResultsThatMatchFilter() {
+        resultRepository.save(passedResult)
+        resultRepository.save(failedResult)
+
+        val testResults = resultService.getTestsWithResults(runId, PASSED)
+
+        assertEquals(listOf(fromResult(passedResult)), testResults)
     }
 
     @Test fun getTestsWithResultsGroupsResultsByTestName() {
@@ -75,7 +98,7 @@ class ResultServiceTest {
         val groupedResults = resultService.getGroupedResults(runId)
 
         val expected = mapOf(
-                Pair(TestResult.PASSED, listOf(fromResult(passedResult))),
+                Pair(PASSED, listOf(fromResult(passedResult))),
                 Pair(TestResult.FAILED, listOf(fromResult(otherFailedResult))))
         assertEquals(expected, groupedResults)
     }

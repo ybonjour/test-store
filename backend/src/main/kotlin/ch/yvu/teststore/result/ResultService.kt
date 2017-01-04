@@ -1,6 +1,7 @@
 package ch.yvu.teststore.result
 
 import ch.yvu.teststore.common.Page
+import ch.yvu.teststore.result.TestWithResults.TestResult
 import ch.yvu.teststore.run.RunRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -11,16 +12,19 @@ open class ResultService @Autowired constructor(
         open val resultRepository: ResultRepository,
         open val runRepository: RunRepository
 ) {
-    fun getGroupedResults(runId: UUID): Map<TestWithResults.TestResult, List<TestWithResults>> {
+    fun getGroupedResults(runId: UUID): Map<TestResult, List<TestWithResults>> {
         return getTestsWithResults(runId).groupBy { it.getTestResult() }
     }
 
-    fun getTestsWithResults(runId: UUID): List<TestWithResults> {
+    fun getTestsWithResults(runId: UUID, resultFilter: TestResult? = null): List<TestWithResults> {
         return resultRepository.findAllByRunId(runId)
                 .groupBy { it.testName }
                 .map {
                     val (name, results) = it
                     TestWithResults(name!!, results)
+                }
+                .filter {
+                    resultFilter == null || it.getTestResult() == resultFilter
                 }
     }
 
