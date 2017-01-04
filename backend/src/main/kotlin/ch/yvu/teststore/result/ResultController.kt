@@ -37,8 +37,8 @@ class ResultController @Autowired constructor(
     }
 
     @RequestMapping(method = arrayOf(GET), value = "/runs/{run}/results")
-    fun getAllResults(@PathVariable run: UUID): List<Result> {
-        return resultRepository.findAllByRunId(run)
+    fun getResults(@PathVariable run: UUID): List<TestWithResults> {
+        return resultService.getTestsWithResults(run);
     }
 
     @RequestMapping(method = arrayOf(GET), value = "/runs/{run}/results/filtered")

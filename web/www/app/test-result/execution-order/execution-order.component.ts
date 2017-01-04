@@ -28,19 +28,15 @@ export class ExecutionOrderComponent implements OnInit {
         this.getResults(this.runId);
     }
 
-    getResults(runId: String) {
-        this._testResultService.getResultsGrouped(runId).subscribe(
+    getResults(runId: string) {
+        this._testResultService.getResults(runId).subscribe(
             results => this.extractResults(results),
             error => this.errorMessage = <any>error);
     }
 
-    extractResults(results: {[category: string]: TestWithResults[]}) {
-        this.results = [];
-        for(var category in results) {
-            this.results = this.results.concat(ExecutionOrderComponent.expandResults(results[category]));
-        }
-
-        this.results.sort((r1: TestWithResults, r2: TestWithResults) => { return r1.results[0].time.getTime() - r2.results[0].time.getTime() })
+    extractResults(results: TestWithResults[]) {
+        this.results = ExecutionOrderComponent.expandResults(results);
+        this.results = this.results.sort((r1: TestWithResults, r2: TestWithResults) => { return r1.results[0].time.getTime() - r2.results[0].time.getTime() })
     }
 
     private static expandResults(testWithResults: TestWithResults[]): TestWithResults[] {

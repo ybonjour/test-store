@@ -19,6 +19,12 @@ export class TestResultService {
         this._http.put(url, body, options).subscribe(_ =>  {}, _ => {})
     }
 
+    getResults(runId: string): Observable<TestWithResults[]> {
+        return this._http.get("/api/runs/" + runId + "/results")
+            .map(TestResultService.extractBodyUngroupedTestWithResults)
+            .catch(TestResultService.extractError)
+    }
+
     getResultsByTestSuiteAndTestName(testSuiteId: string, testName: string, nextPage: string): Observable<Page<TestResult>> {
         let params = new URLSearchParams();
         if(nextPage != null) params.set('page', nextPage);
@@ -59,6 +65,12 @@ export class TestResultService {
         if(response.status != 200) throw new Error("Bad response status: " + response.status);
 
         return TestResultService.convertTestWithResultsFromJson(response.json())
+    }
+
+    private static extractBodyUngroupedTestWithResults(response: Response): TestWithResults[] {
+        if(response.status != 200) throw new Error("BadResponse status: " + response.status);
+
+        return TestResultService.convertTestsWithResultsFromJson(response.json())
     }
 
     private static extractBody(response:Response): {[category: string]: TestWithResults[]} {
