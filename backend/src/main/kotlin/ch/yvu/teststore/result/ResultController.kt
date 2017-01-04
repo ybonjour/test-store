@@ -3,6 +3,7 @@ package ch.yvu.teststore.result
 import ch.yvu.teststore.common.Page
 import ch.yvu.teststore.insert.InsertService
 import ch.yvu.teststore.insert.dto.ResultDto
+import ch.yvu.teststore.result.TestWithResults.TestResult
 import ch.yvu.teststore.run.RunRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus.NOT_FOUND
@@ -37,8 +38,10 @@ class ResultController @Autowired constructor(
     }
 
     @RequestMapping(method = arrayOf(GET), value = "/runs/{run}/results")
-    fun getResults(@PathVariable run: UUID): List<TestWithResults> {
-        return resultService.getTestsWithResults(run);
+    fun getResults(
+            @PathVariable run: UUID,
+            @RequestParam(value = "testresult", required = false) testResult: TestResult?): List<TestWithResults> {
+        return resultService.getTestsWithResults(run, testResult);
     }
 
     @RequestMapping(method = arrayOf(GET), value = "/runs/{run}/results/filtered")
@@ -54,7 +57,7 @@ class ResultController @Autowired constructor(
 
     @RequestMapping(method = arrayOf(GET), value = "/runs/{run}/results/grouped")
     fun getAllResultsGrouped(
-            @PathVariable run: UUID): Map<TestWithResults.TestResult, List<TestWithResults>> {
+            @PathVariable run: UUID): Map<TestResult, List<TestWithResults>> {
         return resultService.getGroupedResults(run)
     }
 

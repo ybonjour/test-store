@@ -129,6 +129,22 @@ class ResultControllerTest : BaseIntegrationTest() {
                 .body("[1].testName", equalTo(result2.testName))
     }
 
+    @Test fun findAllByRunFiltered() {
+        val runId = randomUUID()
+
+        val resultPassed = Result(runId, "MyTestPassed", 0, true, 204, Date())
+        resultRepository.save(resultPassed)
+
+        val resultFailed = Result(runId, "MyTestFailed", 0, false, 204, Date())
+        resultRepository.save(resultFailed)
+
+        given()
+                .get("/runs/$runId/results?testresult=FAILED")
+                .then()
+                .statusCode(200)
+                .body("[0].testName", equalTo(resultFailed.testName))
+    }
+
     @Test fun findAllByRunGrouped() {
         val runId = randomUUID()
 
