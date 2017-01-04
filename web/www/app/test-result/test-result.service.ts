@@ -19,8 +19,11 @@ export class TestResultService {
         this._http.put(url, body, options).subscribe(_ =>  {}, _ => {})
     }
 
-    getResults(runId: string): Observable<TestWithResults[]> {
-        return this._http.get("/api/runs/" + runId + "/results")
+    getResults(runId: string, testResult: string = null): Observable<TestWithResults[]> {
+        let params = new URLSearchParams();
+        if(testResult != null) params.set('testresult', testResult);
+
+        return this._http.get("/api/runs/" + runId + "/results", {search: params})
             .map(TestResultService.extractBodyUngroupedTestWithResults)
             .catch(TestResultService.extractError)
     }

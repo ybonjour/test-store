@@ -30,24 +30,20 @@ export class TestResultListComponent implements OnInit {
 		this.getResults(this.runId);
 	}
 
-	getResults(runId: String) {
-		this._testResultService.getResultsGrouped(runId)
+	getResults(runId: string) {
+		this._testResultService.getResults(runId, "FAILED")
 					.subscribe(
-						results => this.extractResults(results),
+						results => this.failedResults = results,
 						error => this.errorMessage = <any>error);
-	}
 
-	extractResults(results: {[category: string]: TestWithResults[]}) {
-		if(results["PASSED"] != null) {
-			this.passedResults = results["PASSED"];
-		}
+		this._testResultService.getResults(runId, "RETRIED")
+			.subscribe(
+				results => this.retriedResults = results,
+				error => this.errorMessage = <any>error);
 
-		if(results["FAILED"] != null) {
-			this.failedResults = results["FAILED"];
-		}
-
-		if(results["RETRIED"] != null) {
-			this.retriedResults = results["RETRIED"];
-		}
+		this._testResultService.getResults(runId, "PASSED")
+			.subscribe(
+				results => this.passedResults = results,
+				error => this.errorMessage = <any>error);
 	}
 }
