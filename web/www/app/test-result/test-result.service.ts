@@ -43,12 +43,6 @@ export class TestResultService {
             .catch(TestResultService.extractError)
     }
 
-    getResultsGrouped(runId:String):Observable<{[id: string]: TestWithResults[]}> {
-        return this._http.get("/api/runs/" + runId + "/results/grouped")
-            .map(TestResultService.extractBody)
-            .catch(TestResultService.extractError)
-    }
-
     getResult(runId: string, testName: string): Observable<TestWithResults> {
         let params: URLSearchParams = new URLSearchParams();
         params.set('testname', encodeURIComponent(testName));
