@@ -67,7 +67,7 @@ class ScmChangesTest {
         List<ScmChange> changes = scmChanges.getChanges()
 
         Date expectedDate = new Date((1484740451L + 3600L) * 1000L);
-        assertEquals(expectedDate, changes.get(0).date)
+        assertEquals(expectedDate, changes.get(0).time)
     }
 
     @Test

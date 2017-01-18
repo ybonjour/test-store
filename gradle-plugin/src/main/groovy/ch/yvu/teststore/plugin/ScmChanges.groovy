@@ -17,7 +17,7 @@ class ScmChanges {
                     revision: hgChange.node,
                     author: hgChange.user,
                     description: hgChange.desc,
-                    date: getDate(hgChange)
+                    time: getDate(hgChange)
             )
             scmChanges.add(scmChange)
         }
@@ -34,7 +34,7 @@ class ScmChanges {
         String revision
         String author
         String description
-        Date date
+        Date time
     }
 
 }
