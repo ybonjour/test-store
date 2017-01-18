@@ -78,7 +78,7 @@ class RevisionControllerTest : BaseIntegrationTest() {
                 .post("/runs/$runId/revisions")
 
         val revisions = revisionRepository.findAll()
-        assertThat(revisions, hasItem(revisionWith(runId, now, revisionHash, "", "", "")))
+        assertThat(revisions, hasItem(revisionWith(runId, now, revisionHash, null, null, null)))
     }
 
     @Test fun createRevisionReturns400StatusCodeIfNoTimeProvided() {
