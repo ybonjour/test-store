@@ -7,6 +7,6 @@ import java.util.*
 data class RevisionDto @JsonCreator constructor(
         @JsonProperty("revision") val revision: String,
         @JsonProperty("time") val time: Date,
-        @JsonProperty(value = "author", required = false) val author: String = "",
-        @JsonProperty(value = "comment", required = false) val comment: String = "",
-        @JsonProperty(value = "url", required = false) val url: String = "")
+        @JsonProperty(value = "author", required = false) val author: String? = null,
+        @JsonProperty(value = "comment", required = false) val comment: String? = null,
+        @JsonProperty(value = "url", required = false) val url: String? = null)
