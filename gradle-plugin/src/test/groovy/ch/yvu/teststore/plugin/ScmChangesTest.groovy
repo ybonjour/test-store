@@ -72,7 +72,16 @@ class ScmChangesTest {
 
     @Test
     void canReadEmptyListOfChanges(){
-        when(jsonProvider.get()).thenReturn('[]]')
+        when(jsonProvider.get()).thenReturn('[]')
+
+        List<ScmChange> changes = scmChanges.getChanges()
+
+        assertEquals(0, changes.size())
+    }
+
+    @Test
+    void returnsEmptyListOfChangesIfJsonProviderDoesNotReturnJson() {
+        when(jsonProvider.get()).thenReturn(null)
 
         List<ScmChange> changes = scmChanges.getChanges()
 
