@@ -25,6 +25,15 @@ class ScmChangesTest {
     }
 
     @Test
+    void canReadMultipleChanges() {
+        when(jsonProvider.get()).thenReturn('[{}, {}]')
+
+        List<ScmChange> changes = scmChanges.getChanges()
+
+        assertEquals(2, changes.size())
+    }
+
+    @Test
     void canReadRevision() {
         when(jsonProvider.get()).thenReturn('[{"node": "abcd"}]')
 
@@ -59,6 +68,14 @@ class ScmChangesTest {
 
         Date expectedDate = new Date((1484740451L + 3600L) * 1000L);
         assertEquals(expectedDate, changes.get(0).date)
+    }
 
+    @Test
+    void canReadEmptyListOfChanges(){
+        when(jsonProvider.get()).thenReturn('[]]')
+
+        List<ScmChange> changes = scmChanges.getChanges()
+
+        assertEquals(0, changes.size())
     }
 }
