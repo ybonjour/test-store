@@ -17,16 +17,16 @@ class ScmChanges {
                     revision: hgChange.node,
                     author: hgChange.user,
                     description: hgChange.desc,
-                    time: getTime(hgChange)
+                    time: getDate(hgChange)
             )
             scmChanges.add(scmChange)
         }
         return scmChanges
     }
 
-    private static Date getTime(hgChange) {
-        if(hgChange.time == null) return null
-        return new Date((hgChange.time.get(0) - hgChange.time.get(1)) * 1000L)
+    private static Date getDate(hgChange) {
+        if(hgChange.date == null) return null
+        return new Date((hgChange.date.get(0) - hgChange.date.get(1)) * 1000L)
     }
 
 
