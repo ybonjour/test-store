@@ -9,13 +9,15 @@ class TestStoreTestListener implements TestListener {
     private final TestStoreTestOutputListener outputListener
     private final TestStorePluginExtension pluginExtension
     private final TeststoreClientFactory factory
+    private final ScmChanges scmChanges
 
     private UUID runId
 
-    public TestStoreTestListener(TestStorePluginExtension pluginExtension, TeststoreClientFactory factory, TestStoreTestOutputListener outputListener) {
+    public TestStoreTestListener(TestStorePluginExtension pluginExtension, TeststoreClientFactory factory, TestStoreTestOutputListener outputListener, ScmChanges scmChanges) {
         this.factory = factory
         this.pluginExtension = pluginExtension
         this.outputListener = outputListener
+        this.scmChanges = scmChanges
     }
 
     @Override
@@ -34,7 +36,11 @@ class TestStoreTestListener implements TestListener {
         if (!pluginExtension.incremental) return
 
         if (runId == null) {
-            runId = factory.createClient().createRun(pluginExtension.revision, new Date());
+            TeststoreClient client = factory.createClient();
+            runId = client.createRun(pluginExtension.revision, new Date());
+            for(ScmChanges.ScmChange scmChange : scmChanges.getChanges()) {
+                client.insertScmChange(runId, scmChange)
+            }
         }
     }
 

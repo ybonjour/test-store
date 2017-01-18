@@ -27,6 +27,9 @@ class TestStoreTestListenerTest {
     @Mock
     private TestStoreTestOutputListener testOutputListener;
 
+    @Mock
+    private ScmChanges scmChanges
+
     private TestStorePluginExtension extension;
 
     private TestStoreTestListener listener;
@@ -39,7 +42,7 @@ class TestStoreTestListenerTest {
         extension = new TestStorePluginExtension()
         extension.revision = "abc-123"
 
-        listener = new TestStoreTestListener(extension, factory, testOutputListener)
+        listener = new TestStoreTestListener(extension, factory, testOutputListener, scmChanges)
     }
 
     @Test
@@ -68,6 +71,42 @@ class TestStoreTestListenerTest {
         listener.beforeTest(TEST_DESCRIPTOR_1)
 
         verify(client, never()).createRun(anyString(), any(Date.class))
+    }
+
+    @Test
+    public void createsScmChangeForRun() {
+        extension.incremental = true
+        ScmChanges.ScmChange scmChange = new ScmChanges.ScmChange()
+        when(scmChanges.getChanges()).thenReturn([scmChange])
+
+        listener.beforeTest(TEST_DESCRIPTOR_1)
+
+        verify(client).insertScmChange(RUN_ID, scmChange)
+    }
+
+    @Test
+    public void onlyCreateScmChangesOnce() {
+        extension.incremental = true
+        ScmChanges.ScmChange scmChange = new ScmChanges.ScmChange()
+        when(scmChanges.getChanges()).thenReturn([scmChange])
+
+        listener.beforeTest(TEST_DESCRIPTOR_1)
+        listener.beforeTest(TEST_DESCRIPTOR_2)
+
+        verify(client).insertScmChange(RUN_ID, scmChange)
+    }
+
+    @Test
+    public void createsMultipleScmChangeForRun() {
+        extension.incremental = true
+        ScmChanges.ScmChange scmChange1 = new ScmChanges.ScmChange()
+        ScmChanges.ScmChange scmChange2 = new ScmChanges.ScmChange()
+        when(scmChanges.getChanges()).thenReturn([scmChange1, scmChange2])
+
+        listener.beforeTest(TEST_DESCRIPTOR_1)
+
+        verify(client).insertScmChange(RUN_ID, scmChange1)
+        verify(client).insertScmChange(RUN_ID, scmChange2)
     }
 
     @Test
