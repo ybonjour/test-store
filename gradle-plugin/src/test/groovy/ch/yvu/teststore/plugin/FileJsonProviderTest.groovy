@@ -37,4 +37,13 @@ class FileJsonProviderTest {
 
         assertNull(content)
     }
+
+    @Test
+    void returnsNullIfFilePathIsEmptyString() {
+        def jsonProvider = new FileJsonProvider(filePath: "")
+
+        String content = jsonProvider.get()
+
+        assertNull(content)
+    }
 }
