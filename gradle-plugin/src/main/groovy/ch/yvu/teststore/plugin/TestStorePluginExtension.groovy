@@ -9,4 +9,5 @@ class TestStorePluginExtension {
     def String testSuite
     def String revision = ""
     def boolean incremental = false
+    def String changesFile = ""
 }

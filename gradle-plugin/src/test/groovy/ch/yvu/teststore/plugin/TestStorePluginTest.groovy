@@ -75,4 +75,10 @@ class TestStorePluginTest {
         def incremental = project.teststore.incremental
         assertFalse(incremental)
     }
+
+    @Test
+    public void testStoreExtensionDefaultChangesFileIsEmptyString() {
+        def changesFile = project.teststore.changesFile
+        assertEquals("", changesFile)
+    }
 }
