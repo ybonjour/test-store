@@ -24,7 +24,6 @@ class TeststoreClient {
     def insertScmChange(UUID runId, ScmChange scmChange) {
         def timeString = new SimpleDateFormat(ISO_DATE_FORMAT).format(scmChange.getTime())
         def revision = [
-                run: runId,
                 revision: scmChange.getRevision(),
                 time: timeString,
                 author: scmChange.getAuthor(),

@@ -107,7 +107,6 @@ class TeststoreClientTest {
             def slurper = new JsonSlurper()
             def result = slurper.parse(json.bytes)
 
-            assert runId.toString() == result.run
             assert scmChange.getRevision() == result.revision
             assert new SimpleDateFormat(ISO_DATE_FORMAT).format(scmChange.time) == result.time
             assert scmChange.author == result.author
