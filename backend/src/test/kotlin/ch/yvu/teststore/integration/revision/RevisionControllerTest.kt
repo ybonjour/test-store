@@ -1,9 +1,14 @@
 package ch.yvu.teststore.integration.revision
 
 import ch.yvu.teststore.integration.BaseIntegrationTest
+import ch.yvu.teststore.integration.result.ResultControllerTest
 import ch.yvu.teststore.revision.Revision
+import ch.yvu.teststore.revision.RevisionDto
 import ch.yvu.teststore.revision.RevisionRepository
+import com.fasterxml.jackson.databind.ObjectMapper
 import com.jayway.restassured.RestAssured.given
+import com.jayway.restassured.http.ContentType
+import com.jayway.restassured.http.ContentType.JSON
 import org.hamcrest.Description
 import org.hamcrest.Matchers.equalTo
 import org.hamcrest.Matchers.hasItem
@@ -37,49 +42,57 @@ class RevisionControllerTest : BaseIntegrationTest() {
     }
 
     @Test fun createRevisionReturnsCorrectStatusCode() {
-        given()
-                .queryParam("time", nowString)
-                .queryParam("revision", revisionHash)
-                .queryParam("author", author)
-                .queryParam("comment", comment)
-                .queryParam("url", url)
+        val revision = RevisionDto(revisionHash, now, author, comment, url)
+        val mapper = ObjectMapper()
+        mapper.dateFormat = SimpleDateFormat(RevisionControllerTest.isoFormat)
+        val json = mapper.writeValueAsString(revision)
+
+        given().contentType(JSON)
+                .body(json)
                 .post("/runs/$runId/revisions")
                 .then().statusCode(201)
     }
 
     @Test fun createRevisionStoresRevisionCorrectly() {
-        given()
-                .queryParam("time", nowString)
-                .queryParam("revision", revisionHash)
-                .queryParam("author", author)
-                .queryParam("comment", comment)
-                .queryParam("url", url)
+        val revision = RevisionDto(revisionHash, now, author, comment, url)
+        val mapper = ObjectMapper()
+        mapper.dateFormat = SimpleDateFormat(RevisionControllerTest.isoFormat)
+        val json = mapper.writeValueAsString(revision)
+
+        given().contentType(JSON)
+                .body(json)
                 .post("/runs/$runId/revisions")
 
         val revisions = revisionRepository.findAll()
         assertThat(revisions, hasItem(revisionWith(runId, now, revisionHash, author, comment, url)))
     }
 
-    @Test fun createRevisionStoresRunWithOnlyMandatoryFieldsCorrectly() {
-        given()
-                .queryParam("time", nowString)
-                .queryParam("revision", revisionHash)
+    @Test fun createRevisionStoresRevisionWithOnlyMandatoryFieldsCorrectly() {
+        val revision = RevisionDto(revisionHash, now)
+        val mapper = ObjectMapper()
+        mapper.dateFormat = SimpleDateFormat(RevisionControllerTest.isoFormat)
+        val json = mapper.writeValueAsString(revision)
+
+        given().contentType(JSON)
+                .body(json)
                 .post("/runs/$runId/revisions")
 
         val revisions = revisionRepository.findAll()
-        assertThat(revisions, hasItem(revisionWith(runId, now, revisionHash, null, null, null)))
+        assertThat(revisions, hasItem(revisionWith(runId, now, revisionHash, "", "", "")))
     }
 
     @Test fun createRevisionReturns400StatusCodeIfNoTimeProvided() {
-        given()
-                .queryParam("revision", revisionHash)
+
+
+        given().contentType(JSON)
+                .body("{\"revision\": \"${revisionHash}\"}")
                 .post("/runs/$runId/revisions")
                 .then().statusCode(400)
     }
 
     @Test fun createRevisionRreturns400StatusCodeIfNoRevisionProvided() {
-        given()
-                .queryParam("time", nowString)
+        given().contentType(JSON)
+                .body("{\"time\": \"${nowString}\"}")
                 .post("/runs/$runId/revisions")
                 .then().statusCode(400)
     }
