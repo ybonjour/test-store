@@ -8,16 +8,16 @@ import static org.gradle.api.tasks.testing.TestResult.ResultType.SUCCESS
 class TestStoreTestListener implements TestListener {
     private final TestStoreTestOutputListener outputListener
     private final TestStorePluginExtension pluginExtension
-    private final TeststoreClientFactory factory
-    private final ScmChanges scmChanges
+    private final TeststoreClientFactory clientFactory
+    private final ScmChangesFactory scmChangesFactory
 
     private UUID runId
 
-    public TestStoreTestListener(TestStorePluginExtension pluginExtension, TeststoreClientFactory factory, TestStoreTestOutputListener outputListener, ScmChanges scmChanges) {
-        this.factory = factory
+    public TestStoreTestListener(TestStorePluginExtension pluginExtension, TeststoreClientFactory clientFactory, TestStoreTestOutputListener outputListener, ScmChangesFactory scmChangesFactory) {
+        this.clientFactory = clientFactory
         this.pluginExtension = pluginExtension
         this.outputListener = outputListener
-        this.scmChanges = scmChanges
+        this.scmChangesFactory = scmChangesFactory
     }
 
     @Override
@@ -36,8 +36,9 @@ class TestStoreTestListener implements TestListener {
         if (!pluginExtension.incremental) return
 
         if (runId == null) {
-            TeststoreClient client = factory.createClient();
+            TeststoreClient client = clientFactory.createClient();
             runId = client.createRun(pluginExtension.revision, new Date());
+            ScmChanges scmChanges = scmChangesFactory.createScmChanges();
             for(ScmChanges.ScmChange scmChange : scmChanges.getChanges()) {
                 client.insertScmChange(runId, scmChange)
             }
@@ -52,7 +53,7 @@ class TestStoreTestListener implements TestListener {
         def passed = result.resultType == SUCCESS
         def stackTrace = result.exception != null ? stackTrace(result.exception) : ""
         def log = passed ? "" : outputListener.getLogOutput(testDescriptor)
-        def client = factory.createClient()
+        def client = clientFactory.createClient()
         try {
             client.insertTestResult(
                     runId,

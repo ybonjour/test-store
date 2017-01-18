@@ -22,10 +22,9 @@ class TestStorePlugin implements Plugin<Project> {
             }
         }
 
-        ScmChanges scmChanges = new ScmChanges(jsonProvider: new FileJsonProvider(filePath: project.teststore.changesFile))
         TestStoreTestOutputListener testOutputListener = new TestStoreTestOutputListener()
         project.gradle.addListener(testOutputListener)
-        project.gradle.addListener(new TestStoreTestListener(project.teststore, new TeststoreClientFactory(project.teststore), testOutputListener, scmChanges))
+        project.gradle.addListener(new TestStoreTestListener(project.teststore, new TeststoreClientFactory(project.teststore), testOutputListener, new ScmChangesFactory(project.teststore)))
     }
 
     private static createClient(TestStorePluginExtension extension) {

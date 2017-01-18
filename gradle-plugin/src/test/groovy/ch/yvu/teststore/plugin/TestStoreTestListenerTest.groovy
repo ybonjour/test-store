@@ -8,7 +8,6 @@ import org.mockito.Mock
 
 import static java.util.UUID.randomUUID
 import static org.gradle.api.tasks.testing.TestResult.ResultType.*
-import static org.mockito.ArgumentMatchers.*
 import static org.mockito.Mockito.*
 import static org.mockito.MockitoAnnotations.initMocks
 
@@ -22,10 +21,13 @@ class TestStoreTestListenerTest {
     private TeststoreClient client;
 
     @Mock
-    private TeststoreClientFactory factory;
+    private TeststoreClientFactory clientFactory;
 
     @Mock
     private TestStoreTestOutputListener testOutputListener;
+
+    @Mock
+    private ScmChangesFactory scmChangesFactory;
 
     @Mock
     private ScmChanges scmChanges
@@ -38,11 +40,12 @@ class TestStoreTestListenerTest {
     public void setUp() {
         initMocks(this)
         when(client.createRun(anyString(), any(Date.class))).thenReturn(RUN_ID)
-        when(factory.createClient()).thenReturn(client)
+        when(clientFactory.createClient()).thenReturn(client)
+        when(scmChangesFactory.createScmChanges()).thenReturn(scmChanges)
         extension = new TestStorePluginExtension()
         extension.revision = "abc-123"
 
-        listener = new TestStoreTestListener(extension, factory, testOutputListener, scmChanges)
+        listener = new TestStoreTestListener(extension, clientFactory, testOutputListener, scmChangesFactory)
     }
 
     @Test
