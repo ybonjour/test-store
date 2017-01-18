@@ -1,5 +1,6 @@
 package ch.yvu.teststore.plugin
 
+import ch.yvu.teststore.plugin.ScmChanges.ScmChange
 import groovy.json.JsonBuilder
 
 import java.text.SimpleDateFormat
@@ -20,6 +21,19 @@ class TeststoreClient {
         return UUID.fromString(response.id)
     }
 
+    def insertScmChange(UUID runId, ScmChange scmChange) {
+        def timeString = new SimpleDateFormat(ISO_DATE_FORMAT).format(scmChange.getTime())
+        def revision = [
+                run: runId,
+                revision: scmChange.getRevision(),
+                time: timeString,
+                author: scmChange.getAuthor(),
+                comment: scmChange.getDescription()]
+
+        def jsonBuilder = new JsonBuilder(revision)
+        httpClient.postJson("/runs/${runId.toString()}/revisions", jsonBuilder.toString())
+    }
+
     def insertTestResult(UUID runId, String junitXml) {
         httpClient.postXml("/runs/$runId/results", junitXml)
     }
@@ -27,14 +41,14 @@ class TeststoreClient {
     def insertTestResult(UUID runId, String testName, boolean passed, long durationMillis, Date time, String stackTrace, String log) {
         def timeString = new SimpleDateFormat(ISO_DATE_FORMAT).format(time);
         def result = [
-                run: runId.toString(),
-                testName: testName,
-                retryNum: 0,
-                passed: passed,
+                run           : runId.toString(),
+                testName      : testName,
+                retryNum      : 0,
+                passed        : passed,
                 durationMillis: durationMillis,
-                time: timeString,
-                stackTrace: stackTrace,
-                log: log
+                time          : timeString,
+                stackTrace    : stackTrace,
+                log           : log
         ]
         def jsonBuilder = new JsonBuilder(result)
 

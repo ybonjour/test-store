@@ -88,4 +88,36 @@ class TeststoreClientTest {
         }
     }
 
+    @Test
+    public void canInsertARevision() {
+        def runId = randomUUID()
+        def scmChange = new ScmChanges.ScmChange(
+                revision: "abcd",
+                author: "Yves Bonjour",
+                description: "Changes the world",
+                time: NOW
+        )
+
+        def mock = new MockFor(HttpClient)
+
+        mock.demand.postJson { String path, String json ->
+
+            assert path == "/runs/$runId/revisions"
+
+            def slurper = new JsonSlurper()
+            def result = slurper.parse(json.bytes)
+
+            assert runId.toString() == result.run
+            assert scmChange.getRevision() == result.revision
+            assert new SimpleDateFormat(ISO_DATE_FORMAT).format(scmChange.time) == result.time
+            assert scmChange.author == result.author
+            assert scmChange.description == result.comment
+        }
+
+        mock.use {
+            def client = new TeststoreClient(httpClient: new HttpClient("", 0), testSuiteId: TEST_SUITE)
+            client.insertScmChange(runId, scmChange)
+        }
+    }
+
 }
