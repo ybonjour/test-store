@@ -86,10 +86,10 @@ class TeststoreClientTest {
             def client = new TeststoreClient(httpClient: new HttpClient("", 0), testSuiteId: TEST_SUITE)
             client.insertTestResult(runId, testName, passed, duration, time, stackTracke, log)
         }
-    }
+    }\
 
     @Test
-    public void canInsertARevision() {
+    public void canInsertARevisionWithoutUrl() {
         def runId = randomUUID()
         def scmChange = new ScmChanges.ScmChange(
                 revision: "abcd",
@@ -115,7 +115,33 @@ class TeststoreClientTest {
 
         mock.use {
             def client = new TeststoreClient(httpClient: new HttpClient("", 0), testSuiteId: TEST_SUITE)
-            client.insertScmChange(runId, scmChange)
+            client.insertScmChange(runId, scmChange, null)
+        }
+    }
+
+    @Test
+    public void canInsertARevisionWithUrl() {
+        def runId = randomUUID()
+        def scmChange = new ScmChanges.ScmChange(
+                revision: "abcd",
+                time: NOW
+        )
+
+        def mock = new MockFor(HttpClient)
+
+        mock.demand.postJson { String path, String json ->
+
+            assert path == "/runs/$runId/revisions"
+
+            def slurper = new JsonSlurper()
+            def result = slurper.parse(json.bytes)
+
+            assert "http://myUrl.com/abcd" == result.url
+        }
+
+        mock.use {
+            def client = new TeststoreClient(httpClient: new HttpClient("", 0), testSuiteId: TEST_SUITE)
+            client.insertScmChange(runId, scmChange, 'http://myUrl.com/${revision}')
         }
     }
 

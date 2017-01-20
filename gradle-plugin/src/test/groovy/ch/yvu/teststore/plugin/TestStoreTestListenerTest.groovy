@@ -44,6 +44,7 @@ class TestStoreTestListenerTest {
         when(scmChangesFactory.createScmChanges()).thenReturn(scmChanges)
         extension = new TestStorePluginExtension()
         extension.revision = "abc-123"
+        extension.changesUrlTemplate = 'http://url.com/${revision}'
 
         listener = new TestStoreTestListener(extension, clientFactory, testOutputListener, scmChangesFactory)
     }
@@ -84,7 +85,7 @@ class TestStoreTestListenerTest {
 
         listener.beforeTest(TEST_DESCRIPTOR_1)
 
-        verify(client).insertScmChange(RUN_ID, scmChange)
+        verify(client).insertScmChange(RUN_ID, scmChange, extension.changesUrlTemplate)
     }
 
     @Test
@@ -96,7 +97,7 @@ class TestStoreTestListenerTest {
         listener.beforeTest(TEST_DESCRIPTOR_1)
         listener.beforeTest(TEST_DESCRIPTOR_2)
 
-        verify(client).insertScmChange(RUN_ID, scmChange)
+        verify(client).insertScmChange(RUN_ID, scmChange, extension.changesUrlTemplate)
     }
 
     @Test
@@ -108,8 +109,8 @@ class TestStoreTestListenerTest {
 
         listener.beforeTest(TEST_DESCRIPTOR_1)
 
-        verify(client).insertScmChange(RUN_ID, scmChange1)
-        verify(client).insertScmChange(RUN_ID, scmChange2)
+        verify(client).insertScmChange(RUN_ID, scmChange1, extension.changesUrlTemplate)
+        verify(client).insertScmChange(RUN_ID, scmChange2, extension.changesUrlTemplate)
     }
 
     @Test

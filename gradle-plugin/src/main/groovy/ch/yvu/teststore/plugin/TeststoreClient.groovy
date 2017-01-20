@@ -2,6 +2,7 @@ package ch.yvu.teststore.plugin
 
 import ch.yvu.teststore.plugin.ScmChanges.ScmChange
 import groovy.json.JsonBuilder
+import groovy.text.SimpleTemplateEngine
 
 import java.text.SimpleDateFormat
 
@@ -21,13 +22,17 @@ class TeststoreClient {
         return UUID.fromString(response.id)
     }
 
-    def insertScmChange(UUID runId, ScmChange scmChange) {
+    def insertScmChange(UUID runId, ScmChange scmChange, String urlTemplate) {
         def timeString = new SimpleDateFormat(ISO_DATE_FORMAT).format(scmChange.getTime())
         def revision = [
                 revision: scmChange.getRevision(),
                 time: timeString,
                 author: scmChange.getAuthor(),
                 comment: scmChange.getDescription()]
+
+        if (urlTemplate != null) {
+            revision.put("url", new SimpleTemplateEngine().createTemplate(urlTemplate).make([revision: scmChange.getRevision()]).toString())
+        }
 
         def jsonBuilder = new JsonBuilder(revision)
         httpClient.postJson("/runs/${runId.toString()}/revisions", jsonBuilder.toString())

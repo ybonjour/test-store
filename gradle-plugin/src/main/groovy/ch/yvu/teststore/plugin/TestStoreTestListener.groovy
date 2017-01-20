@@ -40,7 +40,7 @@ class TestStoreTestListener implements TestListener {
             runId = client.createRun(pluginExtension.revision, new Date());
             ScmChanges scmChanges = scmChangesFactory.createScmChanges();
             for(ScmChanges.ScmChange scmChange : scmChanges.getChanges()) {
-                client.insertScmChange(runId, scmChange)
+                client.insertScmChange(runId, scmChange, pluginExtension.changesUrlTemplate)
             }
         }
     }
