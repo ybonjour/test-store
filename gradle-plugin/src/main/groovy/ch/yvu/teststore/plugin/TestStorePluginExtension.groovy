@@ -10,4 +10,5 @@ class TestStorePluginExtension {
     def String revision = ""
     def boolean incremental = false
     def String changesFile = ""
+    def String changesUrlTemplate = null
 }

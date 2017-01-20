@@ -81,4 +81,10 @@ class TestStorePluginTest {
         def changesFile = project.teststore.changesFile
         assertEquals("", changesFile)
     }
+
+    @Test
+    public void testStoreExtensionDefaultChangesUrlTemplateIsNull() {
+        def changesUrlTemplate = project.teststore.changesUrlTemplate
+        assertNull(changesUrlTemplate)
+    }
 }
