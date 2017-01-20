@@ -20,6 +20,6 @@ teststore {
     testSuite '353dd648-e27f-4673-8b9f-901600b82890'
     revision System.properties['revision']
     xmlReports ~/.*\/test-results\/TEST-.*\.xml/
-    changesFile rootProject.hasProperty('changesFile') ? rootProject.getProperty('changesFile') : ""
-    incremental true
+    changesFile ""
+    incremental false
 }
