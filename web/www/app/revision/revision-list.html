@@ -4,7 +4,7 @@
 <ul *ngIf="revisions.length > 0">
     <li *ngFor="let revision of revisions">
         {{revision.author}} - {{revision.comment}}
-        (<a href="{{revision.url}}" *ngIf="revision.url">{{revision.getShortRevision()}}, {{revision.time.toLocaleString()}}</a>
+        (<a href="{{revision.url}}" *ngIf="revision.url">{{revision.getShortRevision()}}</a>, {{revision.time.toLocaleString()}}
         <span *ngIf="! revision.url">{{revision.getShortRevision()}}, {{revision.time.toLocaleString()}}</span>)
     </li>
 </ul>
