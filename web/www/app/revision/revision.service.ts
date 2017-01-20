@@ -33,7 +33,7 @@ export class RevisionService {
             var revision = new Revision();
             revision.run = revisionJson.run;
             revision.revision = revisionJson.revision;
-            revision.time = revisionJson.time;
+            revision.time = new Date(revisionJson.time);
             revision.author = revisionJson.author;
             revision.comment = revisionJson.comment;
             revision.url = revisionJson.url;

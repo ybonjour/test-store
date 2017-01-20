@@ -5,4 +5,8 @@ export class Revision {
     author: string;
     comment: string;
     url: string;
+
+    getShortRevision() {
+        return this.revision.substring(0, 12)
+    }
 }

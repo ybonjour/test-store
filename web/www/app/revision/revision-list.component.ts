@@ -10,7 +10,7 @@ import {Revision} from "./revision";
 export class RevisionListComponent implements OnInit{
 
     @Input() runId: string;
-    expanded: boolean = true;
+    expanded: boolean = false;
     revisions: Revision[] = [];
     errorMessage: string;
 
@@ -18,7 +18,7 @@ export class RevisionListComponent implements OnInit{
 
     ngOnInit():any {
         this._revisionService.getRevisions(this.runId).subscribe(
-            revisions => this.revisions = revisions,
+            revisions => this.revisions = revisions.sort( (r1:Revision, r2:Revision) => r2.time.getTime() - r1.time.getTime()),
             error => this.errorMessage = <any> error
         );
     }

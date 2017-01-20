@@ -3,7 +3,9 @@
 <div *ngIf="expanded">
 <ul *ngIf="revisions.length > 0">
     <li *ngFor="let revision of revisions">
-        <a href="{{revision.url}}">{{revision.revision}}:</a> {{revision.author}} - {{revision.comment}}
+        {{revision.author}} - {{revision.comment}}
+        (<a href="{{revision.url}}" *ngIf="revision.url">{{revision.getShortRevision()}}, {{revision.time.toLocaleString()}}</a>
+        <span *ngIf="! revision.url">{{revision.getShortRevision()}}, {{revision.time.toLocaleString()}}</span>)
     </li>
 </ul>
 <div *ngIf="revisions.length == 0">No changes</div>

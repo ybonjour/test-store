@@ -1,6 +1,18 @@
 ul {
     list-style: none;
     padding-left: 0px;
+    border-left: 1px solid black;
+    border-bottom: 1px solid black;
+}
+
+li {
+    padding-left: 5px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+}
+
+li:nth-child(odd) {
+    background-color: #EEEEEE;
 }
 
 .heading {
