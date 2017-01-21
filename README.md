@@ -31,6 +31,8 @@ teststore {
     testSuite '<your test suite id>'
     revision System.properties['revision']
     xmlReports ~/.*\/test-results\/TEST-.*\.xml/
+    changesFile 'git.log'
+    changesUrlTemplate 'https://github.com/ybonjour/test-store/commit/${revision}'
     incremental false
 }
 ```
