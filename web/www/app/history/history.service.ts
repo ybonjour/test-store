@@ -13,13 +13,6 @@ export class HistoryService {
             .catch(HistoryService.extractError)
     }
 
-    getHistory(testsuite_id: string, limit: number): Observable<HistoryEntry[]> {
-        return this._http.get("/api/testsuites/" + testsuite_id + "/history?limit=" + limit)
-            .map(HistoryService.extractBody)
-            .catch(HistoryService.extractError)
-    }
-
-
     private static extractBodyNew(response: Response): HistoryEntry[]{
         if(response.status != 200) throw new Error("Bad response status: " + response.status);
 
@@ -56,37 +49,4 @@ export class HistoryService {
         console.error(errorMessage);
         return Observable.throw(errorMessage)
     }
-
-    private static extractBody(response: Response): HistoryEntry[] {
-        if(response.status != 200) throw new Error("Bad response status: " + response.status);
-
-        return HistoryService.convertJsonToHistoryEntries(response.json());
-    }
-
-    private static convertJsonToHistoryEntries(json: any): HistoryEntry[] {
-        var history = [];
-        for(var historyEntryJson of json) {
-            let historyEntry = new HistoryEntry();
-            historyEntry.revision = historyEntryJson.revision;
-            historyEntry.runId = historyEntryJson.runId;
-            historyEntry.results = HistoryService.convertJsonToResultMap(historyEntryJson.results);
-            history.push(historyEntry);
-        }
-
-        return history;
-    }
-
-    private static convertJsonToResultMap(json: any): { [id: string]: string} {
-        let results: {[id: string]: string} = {};
-
-        for(var testName in json){
-            if(!json.hasOwnProperty(testName)) continue;
-
-            results[testName] = json[testName];
-        }
-
-        return results;
-    }
-
-
 }
