@@ -31,7 +31,7 @@ class HistoryControllerTest : BaseIntegrationTest() {
         resultRepository.save(result)
 
         given()
-            .get("/testsuites/$testSuite/history-new?limit=1")
+            .get("/testsuites/$testSuite/history?limit=1")
         .then()
             .statusCode(200)
             .body("testnames[0]", equalTo("myTest"))
@@ -39,7 +39,7 @@ class HistoryControllerTest : BaseIntegrationTest() {
     }
 
     @Test fun getHistoryReturns400IfLimitIsNotProvided() {
-        given().get("/testsuites/${randomUUID()}/history-new").then().statusCode(400)
+        given().get("/testsuites/${randomUUID()}/history").then().statusCode(400)
     }
 }
 

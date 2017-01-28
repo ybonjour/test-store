@@ -10,7 +10,7 @@ import java.util.*
 
 @RestController
 class HistoryController @Autowired constructor(val historyService: HistoryService) {
-    @RequestMapping(method = arrayOf(GET), value = "/testsuites/{testSuite}/history-new")
+    @RequestMapping(method = arrayOf(GET), value = "/testsuites/{testSuite}/history")
     fun getHistoryNew(
             @PathVariable testSuite: UUID,
             @RequestParam(value = "limit") limit: Int): TestnamesAndResults {

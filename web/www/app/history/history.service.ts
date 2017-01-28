@@ -8,7 +8,7 @@ export class HistoryService {
     constructor(private _http: Http) {}
 
     getHistory(testsuite_id: string, limit: number): Observable<HistoryEntry[]> {
-        return this._http.get("/api/testsuites/" + testsuite_id + "/history-new?limit=" + limit)
+        return this._http.get("/api/testsuites/" + testsuite_id + "/history?limit=" + limit)
             .map(HistoryService.extractBody)
             .catch(HistoryService.extractError)
     }
