@@ -18,6 +18,7 @@ class HistoryService @Autowired constructor(
             val simpleResults = mutableMapOf<String, TestWithResults.TestResult>()
             results.forEach { simpleResults.put(it.testName, it.getTestResult()) }
             RunHistory(it.revision ?: "Unknown", it.id!!, simpleResults)
+
         }
     }
 
@@ -27,5 +28,22 @@ class HistoryService @Autowired constructor(
                     val results = resultService.getTestsWithResults(run.id!!)
                     testNames.plus(results.map { it.testName })
                 }).toList()
+    }
+
+    fun getResultsForTests(testSuiteId: UUID, testnames: List<String>, numRuns: Int): List<RunHistory> {
+        return runRepository.findAllByTestSuiteId(testSuiteId, numRuns).map {
+            val results = resultService.getTestsWithResults(it.id!!)
+            val simpleResults = mutableMapOf<String, TestWithResults.TestResult>()
+            results.forEach {
+                simpleResults.put(it.testName, it.getTestResult())
+            }
+
+            val testResults = testnames.map {
+                simpleResults.getOrElse(it, { TestWithResults.TestResult.UNKNOWN })
+            }
+
+            RunHistory(it.revision ?: "Unknown", it.id!!, emptyMap(), testResults)
+
+        }
     }
 }

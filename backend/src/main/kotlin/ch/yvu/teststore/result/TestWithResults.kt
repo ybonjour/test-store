@@ -2,7 +2,7 @@ package ch.yvu.teststore.result
 
 data class TestWithResults(val testName: String, val results: List<Result> = emptyList()) {
     enum class TestResult {
-        PASSED, FAILED, RETRIED
+        PASSED, FAILED, RETRIED, UNKNOWN
     }
 
     fun addResult(result: Result): TestWithResults {
