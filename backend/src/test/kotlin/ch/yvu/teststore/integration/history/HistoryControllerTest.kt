@@ -7,7 +7,6 @@ import ch.yvu.teststore.run.Run
 import ch.yvu.teststore.run.RunRepository
 import com.jayway.restassured.RestAssured.given
 import org.hamcrest.Matchers.equalTo
-import org.hamcrest.Matchers.hasSize
 import org.junit.Before
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -23,21 +22,6 @@ class HistoryControllerTest : BaseIntegrationTest() {
         resultRepository.deleteAll()
         runRepository.deleteAll()
     }
-
-    @Test fun getHistoryReturnsHistoryWithLimit() {
-        val testSuite = randomUUID()
-        val run = Run(randomUUID(), testSuite, "abc-123", Date())
-        runRepository.save(run)
-        val otherRun = Run(randomUUID(), testSuite, "abc-123", Date())
-        runRepository.save(otherRun)
-
-        given()
-                .get("/testsuites/$testSuite/history?limit=1")
-        .then()
-                .statusCode(200)
-                .body(".", hasSize<Collection<String>>(1))
-    }
-
 
     @Test fun getHistoryReturnsTestNamesAnResults() {
         val testSuite = randomUUID()
