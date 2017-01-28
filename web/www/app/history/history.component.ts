@@ -70,7 +70,7 @@ export class HistoryComponent implements OnInit {
     }
 
     private getHistory() {
-        this._historyService.getHistory(this.testSuiteId, this.limit).subscribe(
+        this._historyService.getHistoryNew(this.testSuiteId, this.limit).subscribe(
             historyEntries => this.handleNewHistory(historyEntries),
             error => this.errorMessage = <any>error
         )
