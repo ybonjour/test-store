@@ -12,6 +12,8 @@ import ch.yvu.teststore.run.RunRepository
 import com.natpryce.hamkrest.assertion.assertThat
 import com.natpryce.hamkrest.equalTo
 import com.natpryce.hamkrest.hasSize
+import org.hamcrest.MatcherAssert.assertThat
+import org.hamcrest.Matchers.hasItem
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Before
@@ -82,5 +84,55 @@ class HistoryServiceTest {
 
         assertThat(runHistory, hasSize(equalTo(1)));
         assertEquals(runHistory.get(0).results.get(result.testName), TestWithResults.TestResult.PASSED)
+    }
+
+    @Test fun getAllTestNamesReturnsTestNamesFromDifferentRuns() {
+        val run1 = Run(randomUUID(), testSuiteId, "abc-123", Date(1))
+        runRepository.save(run1)
+        val result1 = Result(run1.id, "test1", 0, true, 20, Date(1))
+        resultRepository.save(result1)
+
+        val run2 = Run(randomUUID(), testSuiteId, "def-456", Date(2))
+        runRepository.save(run2)
+        val result2 = Result(run2.id, "test2", 0, true, 24, Date(2))
+        resultRepository.save(result2)
+
+        val testNames = historyService.getAllTestnames(testSuiteId, numRuns = 2)
+
+        assertThat(testNames, hasSize(equalTo(2)))
+        assertThat(testNames, hasItem(result1.testName))
+        assertThat(testNames, hasItem(result2.testName))
+    }
+
+    @Test fun getAllTestNamesDoesNotContainduplicates() {
+        val run1 = Run(randomUUID(), testSuiteId, "abc-123", Date(1))
+        runRepository.save(run1)
+        val result1 = Result(run1.id, "test", 0, true, 20, Date(1))
+        resultRepository.save(result1)
+
+        val run2 = Run(randomUUID(), testSuiteId, "def-456", Date(2))
+        runRepository.save(run2)
+        val result2 = Result(run2.id, "test", 0, true, 24, Date(2))
+        resultRepository.save(result2)
+
+        val testNames = historyService.getAllTestnames(testSuiteId, numRuns=2)
+
+        assertThat(testNames, hasSize(equalTo(1)))
+    }
+
+    @Test fun getAllTestNamesOnlyConsidersFirstNRuns() {
+        val run1 = Run(randomUUID(), testSuiteId, "abc-123", Date(1))
+        runRepository.save(run1)
+        val result1 = Result(run1.id, "test1", 0, true, 20, Date(1))
+        resultRepository.save(result1)
+
+        val run2 = Run(randomUUID(), testSuiteId, "def-456", Date(2))
+        runRepository.save(run2)
+        val result2 = Result(run2.id, "test2", 0, true, 24, Date(2))
+        resultRepository.save(result2)
+
+        val testNames = historyService.getAllTestnames(testSuiteId, numRuns = 1)
+
+        assertThat(testNames, hasSize(equalTo(1)))
     }
 }

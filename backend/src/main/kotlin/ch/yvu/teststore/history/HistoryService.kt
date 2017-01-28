@@ -20,4 +20,12 @@ class HistoryService @Autowired constructor(
             RunHistory(it.revision ?: "Unknown", it.id!!, simpleResults)
         }
     }
+
+    fun getAllTestnames(testSuiteId: UUID, numRuns: Int): List<String> {
+        return runRepository.findAllByTestSuiteId(testSuiteId, numRuns).fold(emptySet<String>(),
+                { testNames, run ->
+                    val results = resultService.getTestsWithResults(run.id!!)
+                    testNames.plus(results.map { it.testName })
+                }).toList()
+    }
 }
