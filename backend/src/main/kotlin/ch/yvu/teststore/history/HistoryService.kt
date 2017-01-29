@@ -13,7 +13,7 @@ class HistoryService @Autowired constructor(
         open val runRepository: RunRepository,
         open val resultService: ResultService) {
 
-    fun getResultsForTests(testSuiteId: UUID, testnames: List<String>, page: String?, fetchSize: Int): Page<RunHistory> {
+    fun getResultsForTests(testSuiteId: UUID, testnames: List<String>, page: String?, fetchSize: Int? = null): Page<RunHistory> {
         return runRepository.findAllByTestSuiteId(testSuiteId, page, fetchSize).map {
             val results = resultService.getTestsWithResults(it.id!!)
             val simpleResults = mutableMapOf<String, TestWithResults.TestResult>()
