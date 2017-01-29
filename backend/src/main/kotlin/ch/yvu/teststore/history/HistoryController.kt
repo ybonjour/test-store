@@ -32,14 +32,4 @@ class HistoryController @Autowired constructor(val historyService: HistoryServic
     ): Page<RunHistory> {
         return historyService.getResultsForTests(testSuite, testnames, page, fetchSize)
     }
-
-    @RequestMapping(method = arrayOf(GET), value = "/testsuites/{testSuite}/history")
-    fun getHistoryNew(
-            @PathVariable testSuite: UUID,
-            @RequestParam(value = "limit") limit: Int): TestnamesAndResults {
-
-        val testnames = historyService.getAllTestnames(testSuite, limit)
-        val runHistory = historyService.getResultsForTests(testSuite, testnames, limit)
-        return TestnamesAndResults(testnames = testnames, runHistory = runHistory)
-    }
 }

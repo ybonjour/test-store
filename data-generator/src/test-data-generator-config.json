@@ -4,6 +4,6 @@
   "test_fail_probability": 0.1,
   "test_runs": 5000,
   "teststore_server_url": "http://localhost:8080",
-  "teststore_testsuite_id": "d0d8e177-18ff-4854-a18c-b98e2d0c730d",
+  "teststore_testsuite_id": "d8d16d41-8622-4985-b299-8db709c597ce",
   "revision": "1"
 }

@@ -30,25 +30,6 @@ class HistoryControllerTest : BaseIntegrationTest() {
         runRepository.deleteAll()
     }
 
-    @Test fun getHistoryReturnsTestNamesAnResults() {
-        val testSuite = randomUUID()
-        val run = Run(randomUUID(), testSuite, "abc-123", Date(1))
-        runRepository.save(run)
-        val result = Result(run.id, "myTest", 0, true, 42, Date(1))
-        resultRepository.save(result)
-
-        given()
-            .get("/testsuites/$testSuite/history?limit=1")
-        .then()
-            .statusCode(200)
-            .body("testnames[0]", equalTo("myTest"))
-            .body("runHistory[0].results2[0]", equalTo("PASSED"))
-    }
-
-    @Test fun getHistoryReturns400IfLimitIsNotProvided() {
-        given().get("/testsuites/${randomUUID()}/history").then().statusCode(400)
-    }
-
     @Test fun getTestNames() {
         val testSuite = randomUUID()
         val run = Run(randomUUID(), testSuite, "abc-123", Date(1))
