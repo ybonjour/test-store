@@ -10,6 +10,13 @@ import java.util.*
 
 @RestController
 class HistoryController @Autowired constructor(val historyService: HistoryService) {
+    @RequestMapping(method = arrayOf(GET), value = "/testsuites/{testSuite}/history/testnames")
+    fun getTestNames(
+            @PathVariable testSuite: UUID,
+            @RequestParam(value="limit") limit:Int): List<String> {
+        return historyService.getAllTestnames(testSuite, limit);
+    }
+
     @RequestMapping(method = arrayOf(GET), value = "/testsuites/{testSuite}/history")
     fun getHistoryNew(
             @PathVariable testSuite: UUID,

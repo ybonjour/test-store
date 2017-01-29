@@ -1,5 +1,6 @@
 package ch.yvu.teststore.history
 
+import ch.yvu.teststore.common.Page
 import ch.yvu.teststore.result.ResultService
 import ch.yvu.teststore.result.TestWithResults
 import ch.yvu.teststore.run.RunRepository
@@ -11,6 +12,22 @@ import java.util.*
 class HistoryService @Autowired constructor(
         open val runRepository: RunRepository,
         open val resultService: ResultService) {
+
+    fun getResultsForTests(testSuiteId: UUID, testnames: List<String>, page: String?, fetchSize: Int): Page<RunHistory> {
+        return runRepository.findAllByTestSuiteId(testSuiteId, page, fetchSize).map {
+            val results = resultService.getTestsWithResults(it.id!!)
+            val simpleResults = mutableMapOf<String, TestWithResults.TestResult>()
+            results.forEach {
+                simpleResults.put(it.testName, it.getTestResult())
+            }
+
+            val testResults = testnames.map {
+                simpleResults.getOrElse(it, { TestWithResults.TestResult.UNKNOWN })
+            }
+
+            RunHistory(it.revision ?: "Unknown", it.id!!, emptyMap(), testResults)
+        }
+    }
 
     fun getAllTestnames(testSuiteId: UUID, numRuns: Int): List<String> {
         return runRepository.findAllByTestSuiteId(testSuiteId, numRuns).fold(emptySet<String>(),
