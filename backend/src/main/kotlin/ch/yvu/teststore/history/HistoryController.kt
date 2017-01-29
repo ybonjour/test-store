@@ -4,6 +4,7 @@ import ch.yvu.teststore.common.Page
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.bind.annotation.RequestMethod.GET
+import org.springframework.web.bind.annotation.RequestMethod.POST
 import java.util.*
 
 @RestController
@@ -15,7 +16,14 @@ class HistoryController @Autowired constructor(val historyService: HistoryServic
         return historyService.getAllTestnames(testSuite, limit);
     }
 
-    @RequestMapping(method = arrayOf(GET), value = "/testsuites/{testSuite}/history/results")
+    // HACK: This is a POST method, since not all clients support a body in a GET request
+    // A list of testnames is sent in the body to specify the order of the results
+    // (without repeating the testnames for every run).
+    // Need to find a better solution for that.
+    @RequestMapping(
+            method = arrayOf(POST),
+            value = "/testsuites/{testSuite}/history/results",
+            headers = arrayOf("content-type=application/json"))
     fun getResults(
             @PathVariable testSuite: UUID,
             @RequestParam(value = "page", required = false) page: String?,

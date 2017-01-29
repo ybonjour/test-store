@@ -80,7 +80,7 @@ class HistoryControllerTest : BaseIntegrationTest() {
         val json = mapper.writeValueAsString(listOf(result.testName))
 
         given().contentType(JSON).body(json)
-            .get("/testsuites/$testSuite/history/results")
+            .post("/testsuites/$testSuite/history/results")
         .then()
                 .statusCode(200)
                 .body("results[0].runId", equalTo(run.id.toString()))
