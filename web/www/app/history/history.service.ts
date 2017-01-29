@@ -1,37 +1,58 @@
 import {Injectable} from "@angular/core";
-import {Http, Response} from "@angular/http";
+import {Http, Response, URLSearchParams, RequestOptions, Headers} from "@angular/http";
 import {HistoryEntry} from "./history-entry";
 import {Observable} from "rxjs/Rx";
+import {Page} from "../common/page";
+import {JsonPageExtractor} from "../common/json-page-extractor";
 
 @Injectable()
 export class HistoryService {
     constructor(private _http: Http) {}
 
-    getHistory(testsuite_id: string, limit: number): Observable<HistoryEntry[]> {
-        return this._http.get("/api/testsuites/" + testsuite_id + "/history?limit=" + limit)
-            .map(HistoryService.extractBody)
+    getTestnames(testSuiteId: string, limit: number): Observable<string[]> {
+        let params: URLSearchParams = new URLSearchParams();
+        params.set('limit', limit.toString());
+
+        return this._http.get("/api/testsuites/" + testSuiteId + "/history/testnames", { search: params })
+            .map(HistoryService.extractBodyTestnames)
+            .catch(HistoryService.extractError)    }
+
+    getResults(testSuiteId: string, nextPage: string, fetchSize: number, testnames: string[]): Observable<Page<HistoryEntry>> {
+        let params: URLSearchParams = new URLSearchParams();
+        if (nextPage != null) params.set('page', nextPage);
+        if (fetchSize != null) params.set('fetchSize', fetchSize.toString());
+
+        let headers = new Headers({'Content-Type': 'application/json'});
+        let options = new RequestOptions({headers: headers, search: params});
+
+        return this._http.post("/api/testsuites/" + testSuiteId + "/history/results", testnames, options)
+            .map(HistoryService.extractBodyPaged(testnames))
             .catch(HistoryService.extractError)
     }
 
-    private static extractBody(response: Response): HistoryEntry[]{
-        if(response.status != 200) throw new Error("Bad response status: " + response.status);
+    private static extractBodyPaged(testnames: string[]): (Response) => Page<HistoryEntry> {
+        return function (response: Response) {
+            if(response.status != 200) throw new Error("Bad response status: " + response.status);
 
-        return HistoryService.convertJsonToHistoryEntries(response.json());
+
+            return JsonPageExtractor.extractFromJson(response.json(), HistoryService.convertJsonToHistoryEntriesPaged(testnames));
+        }
     }
 
-    private static convertJsonToHistoryEntries(json: any): HistoryEntry[] {
-        let history = [];
-        let testnames = json.testnames;
-        for(var historyEntryJson of json.runHistory) {
+    private static convertJsonToHistoryEntriesPaged(testnames: string[]): (json: any) => HistoryEntry {
+        return function(json: any) {
             let historyEntry = new HistoryEntry();
-            historyEntry.revision = historyEntryJson.revision;
-            historyEntry.runId = historyEntryJson.runId;
-            historyEntry.results = HistoryService.convertJsonToResultMap(historyEntryJson.results2, testnames);
+            historyEntry.revision = json.revision;
+            historyEntry.runId = json.runId;
+            historyEntry.results = HistoryService.convertJsonToResultMap(json.results2, testnames);
+            return historyEntry;
+        };
+    }
 
-            history.push(historyEntry);
-        }
+    private static extractBodyTestnames(response: Response): string[] {
+        if(response.status != 200) throw new Error("Bad response status: " + response.status);
 
-        return history;
+        return response.json();
     }
 
     private static convertJsonToResultMap(json: any, testnames: string[]): {[id: string]: string} {

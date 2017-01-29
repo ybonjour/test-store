@@ -7,6 +7,7 @@ import {TestResultService} from "../test-result/test-result.service";
 import {TestWithResults} from "../test-result/test-with-results";
 import {TestResultsComponent} from "../test-result/test-results.component";
 import {HistoryFilter} from "./history-filter.pipe";
+import {Page} from "../common/page";
 
 @Component({
     templateUrl: 'app/history/history.html',
@@ -19,6 +20,8 @@ export class HistoryComponent implements OnInit {
     limit: number;
     historyEntries: HistoryEntry[] = [];
     testNames: HistoryTestName[] = [];
+    nextPage: string = null;
+    numEntriesPerPage = 5;
     errorMessage: string;
     hidePassed = false;
     
@@ -70,33 +73,31 @@ export class HistoryComponent implements OnInit {
     }
 
     private getHistory() {
-        this._historyService.getHistory(this.testSuiteId, this.limit).subscribe(
-            historyEntries => this.handleNewHistory(historyEntries),
+        this.nextPage = null;
+        this._historyService.getTestnames(this.testSuiteId, this.limit).subscribe(
+            testnames => this.handleTestnamesReceived(testnames),
+            error => this.errorMessage = <any>error
+        );
+    }
+
+    private handleTestnamesReceived(testnames: string[]) {
+        this.testNames = testnames.map((name) => new HistoryTestName(name));
+        this.getResults(testnames);
+    }
+
+    private getResults(testnames: string[]) {
+        this._historyService.getResults(this.testSuiteId, this.nextPage, this.numEntriesPerPage, testnames).subscribe(
+            resultPage => this.handleResultsReceived(resultPage, testnames),
             error => this.errorMessage = <any>error
         )
     }
 
-    private handleNewHistory(historyEntries: HistoryEntry[]) {
-        this.loadShortTestNames(historyEntries);
-        this.historyEntries = historyEntries;
-    }
+    private handleResultsReceived(resultPage: Page<HistoryEntry>, testnames: string[]) {
+        this.historyEntries = this.historyEntries.concat(resultPage.results).slice(0, this.limit);
+        this.nextPage = resultPage.nextPage;
 
-    private loadShortTestNames(historyEntries: HistoryEntry[]) {
-
-        let tests = {};
-        for(let historyEntry of historyEntries) {
-            for(let test in historyEntry.results){
-                if(!(test in tests)){
-                    tests[test] = new HistoryTestName(test);
-                }
-                tests[test].addResult(historyEntry.results[test])
-                this.testNames.push(new HistoryTestName(test));
-            }
-        }
-
-        this.testNames = [];
-        for(let test in tests){
-            this.testNames.push(tests[test]);
+        if (this.nextPage && this.historyEntries.length < this.limit) {
+            this.getResults(testnames);
         }
     }
 }
