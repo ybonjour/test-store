@@ -24,7 +24,7 @@
             </th>
         </tr>
     </thead>
-    <tbody>
+    <tbody (click)="selectResult($event)">
         <tr *ngFor="let testName of testNames | historyFilterPassed:hidePassed">
             <td title="{{testName.longName}}" class="front">
                 <a [routerLink]="['Test Details', {testsuite_id: testSuiteId, test_name: encode(testName.longName)}]">{{testName.shortName}}</a></td>
@@ -35,7 +35,9 @@
             failed: historyEntry.results[testName.longName] == 'FAILED',
             retried: historyEntry.results[testName.longName] == 'RETRIED'}"
                 title="{{testName.longName}}@{{historyEntry.getShortRevision()}}"
-                (click)="selectResult(historyEntry.runId, testName.longName)"
+                attr.data-run="{{historyEntry.runId}}"
+                attr.data-testname="{{testName.longName}}"
+                attr.data-result="{{historyEntry.results[testName.longName]}}"
             >
                 <div class="resultDetails" *ngIf="isCurrentResult(historyEntry.runId, testName.longName)">
                     <a (click)="unselectResult($event)">Close</a>

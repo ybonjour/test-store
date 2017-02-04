@@ -47,8 +47,13 @@ export class HistoryComponent implements OnInit {
         this.getHistory()
     }
 
-    selectResult(runId: string, testName: string){
-        this._testResultService.getResult(runId, testName).subscribe(
+    selectResult(event: Event){
+        let result = event.srcElement.getAttribute("data-result");
+        if(result == "UNKNOWN") return; //no data available, no need to query the server
+
+        let run = event.srcElement.getAttribute("data-run");
+        let testname = event.srcElement.getAttribute("data-testname");
+        this._testResultService.getResult(run, testname).subscribe(
             result => this.currentResult = result
         )
     }

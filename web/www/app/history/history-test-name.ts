@@ -11,7 +11,6 @@ export class HistoryTestName {
     }
 
     addResult(result: String){
-        console.log("Adding result " + result);
         this.allTestsPassed = this.allTestsPassed && (result == 'PASSED' || result == 'UNKNOWN');
     }
 
