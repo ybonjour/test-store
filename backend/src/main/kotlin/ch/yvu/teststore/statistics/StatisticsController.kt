@@ -29,7 +29,7 @@ class StatisticsController @Autowired constructor(val testStatisticsRepository: 
             @RequestParam(name = "page", required = false) page: String?,
             @RequestParam(name = "fetchSize", required = false) fetchSize: Int?
     ): Page<TestStatistics> {
-        return testStatisticsRepository.findAllByTestSuitePaged(testSuite)
+        return testStatisticsRepository.findAllByTestSuitePaged(testSuite, page, fetchSize)
     }
 
     @RequestMapping(method = arrayOf(GET), value = "/testsuites/{testSuite}/statistics/{testName:.+}")
