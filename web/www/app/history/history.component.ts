@@ -79,11 +79,19 @@ export class HistoryComponent implements OnInit {
     }
 
     private getHistory() {
-        this.nextPage = null;
+        this.clear();
         this._historyService.getTestnames(this.testSuiteId, this.limit).subscribe(
             testnames => this.handleTestnamesReceived(testnames),
             error => this.errorMessage = <any>error
         );
+    }
+
+    private clear() {
+        this.testNames = [];
+        this.testNamesByLongName = {};
+        this.historyEntries = [];
+        this.nextPage = null;
+        this.hidePassed = false;
     }
 
     private handleTestnamesReceived(testnames: string[]) {
