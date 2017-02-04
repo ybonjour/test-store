@@ -22,21 +22,6 @@ class StatisticsControllerTest : BaseIntegrationTest() {
         statisticsRepository.deleteAll()
     }
 
-    @Test fun getStatisticsByTestSuiteReturnsStatistics() {
-        val testSuiteId = randomUUID()
-        val statistics1 = TestStatistics(testSuiteId, "myTest1", 1, 0, 100, 1)
-        val statistics2 = TestStatistics(testSuiteId, "myTest2", 1, 0, 100, 1)
-        statisticsRepository.save(statistics1)
-        statisticsRepository.save(statistics2)
-
-        given()
-                .get("/testsuites/$testSuiteId/statistics-old")
-                .then()
-                .statusCode(200)
-                .body("[0].testName", equalTo("myTest1"))
-                .body("[1].testName", equalTo("myTest2"))
-    }
-
     @Test fun getStatisticsByTestSuiteAndTestNameReturnsStatistics() {
         val testSuiteId = randomUUID()
         val statistics = TestStatistics(testSuiteId, "ch.yvu.testsore.MyTest#myTest", 1, 0, 100, 1)
