@@ -16,7 +16,7 @@ export class TestStatisticsService {
         if(nextPage != null) params.set('page', nextPage);
         if(fetchSize != null) params.set('fetchSize', fetchSize.toString());
 
-        return this._http.get("/api/testsuites/" + testSuiteId + "/statistics-paged", { search: params })
+        return this._http.get("/api/testsuites/" + testSuiteId + "/statistics", { search: params })
             .map(TestStatisticsService.extractBodyPaged)
             .catch(TestStatisticsService.extractError)
     }

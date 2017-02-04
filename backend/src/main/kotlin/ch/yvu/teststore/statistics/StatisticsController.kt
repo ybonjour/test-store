@@ -16,14 +16,14 @@ import java.util.*
 @RestController
 class StatisticsController @Autowired constructor(val testStatisticsRepository: TestStatisticsRepository){
 
-    @RequestMapping(method = arrayOf(GET), value = "/testsuites/{testSuite}/statistics")
+    @RequestMapping(method = arrayOf(GET), value = "/testsuites/{testSuite}/statistics-old")
     fun getStatisticsByTestSuite(
             @PathVariable testSuite: UUID
     ): List<TestStatistics> {
         return testStatisticsRepository.findAllByTestSuite(testSuite)
     }
 
-    @RequestMapping(method = arrayOf(GET), value = "/testsuites/{testSuite}/statistics-paged")
+    @RequestMapping(method = arrayOf(GET), value = "/testsuites/{testSuite}/statistics")
     fun getStatisticsByTestSuitePaged(
             @PathVariable testSuite: UUID,
             @RequestParam(name = "page", required = false) page: String?,

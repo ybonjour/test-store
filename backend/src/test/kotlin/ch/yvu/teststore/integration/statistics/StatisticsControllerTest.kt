@@ -30,7 +30,7 @@ class StatisticsControllerTest : BaseIntegrationTest() {
         statisticsRepository.save(statistics2)
 
         given()
-                .get("/testsuites/$testSuiteId/statistics")
+                .get("/testsuites/$testSuiteId/statistics-old")
                 .then()
                 .statusCode(200)
                 .body("[0].testName", equalTo("myTest1"))
@@ -66,7 +66,7 @@ class StatisticsControllerTest : BaseIntegrationTest() {
         statisticsRepository.save(statistics)
 
         given()
-            .get("/testsuites/$testSuiteId/statistics-paged")
+            .get("/testsuites/$testSuiteId/statistics")
         .then()
             .statusCode(200)
             .body("results[0].testName", equalTo(statistics.testName))
