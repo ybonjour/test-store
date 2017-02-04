@@ -7,6 +7,7 @@ import com.jayway.restassured.RestAssured.given
 import org.hamcrest.Matchers.equalTo
 import org.junit.Before
 import org.junit.Test
+import org.mockito.BDDMockito.then
 import org.springframework.beans.factory.annotation.Autowired
 import java.net.URLEncoder
 import java.util.UUID.randomUUID
@@ -56,5 +57,18 @@ class StatisticsControllerTest : BaseIntegrationTest() {
             .get("/testsuites/$testSuiteId/statistics/myTest")
         .then()
             .statusCode(404)
+    }
+
+    @Test fun getStatisticsByTestSuitePaged() {
+        val testSuiteId = randomUUID()
+
+        val statistics = TestStatistics(testSuiteId, "ch.yvu.testsore.MyTest#myTest", 1, 0, 100, 1)
+        statisticsRepository.save(statistics)
+
+        given()
+            .get("/testsuites/$testSuiteId/statistics-paged")
+        .then()
+            .statusCode(200)
+            .body("results[0].testName", equalTo(statistics.testName))
     }
 }

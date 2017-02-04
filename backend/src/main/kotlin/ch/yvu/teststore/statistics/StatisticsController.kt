@@ -1,5 +1,6 @@
 package ch.yvu.teststore.statistics
 
+import ch.yvu.teststore.common.Page
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus.NOT_FOUND
 import org.springframework.http.HttpStatus.OK
@@ -7,6 +8,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod.GET
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import java.net.URLDecoder
 import java.util.*
@@ -19,6 +21,15 @@ class StatisticsController @Autowired constructor(val testStatisticsRepository: 
             @PathVariable testSuite: UUID
     ): List<TestStatistics> {
         return testStatisticsRepository.findAllByTestSuite(testSuite)
+    }
+
+    @RequestMapping(method = arrayOf(GET), value = "/testsuites/{testSuite}/statistics-paged")
+    fun getStatisticsByTestSuitePaged(
+            @PathVariable testSuite: UUID,
+            @RequestParam(name = "page", required = false) page: String?,
+            @RequestParam(name = "fetchSize", required = false) fetchSize: Int?
+    ): Page<TestStatistics> {
+        return testStatisticsRepository.findAllByTestSuitePaged(testSuite)
     }
 
     @RequestMapping(method = arrayOf(GET), value = "/testsuites/{testSuite}/statistics/{testName:.+}")
