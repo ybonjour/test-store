@@ -20,6 +20,7 @@ export class HistoryComponent implements OnInit {
     limit: number;
     historyEntries: HistoryEntry[] = [];
     testNames: HistoryTestName[] = [];
+    testNamesByLongName: {[longName: string]: HistoryTestName} = {};
     nextPage: string = null;
     numEntriesPerPage = 5;
     errorMessage: string;
@@ -82,6 +83,9 @@ export class HistoryComponent implements OnInit {
 
     private handleTestnamesReceived(testnames: string[]) {
         this.testNames = testnames.map((name) => new HistoryTestName(name));
+        for(let testName of this.testNames) {
+            this.testNamesByLongName[testName.longName] = testName;
+        }
         this.getResults(testnames);
     }
 
@@ -95,6 +99,12 @@ export class HistoryComponent implements OnInit {
     private handleResultsReceived(resultPage: Page<HistoryEntry>, testnames: string[]) {
         this.historyEntries = this.historyEntries.concat(resultPage.results).slice(0, this.limit);
         this.nextPage = resultPage.nextPage;
+
+        for(let historyEntry of this.historyEntries) {
+            for(let testname in historyEntry.results) {
+                this.testNamesByLongName[testname].addResult(historyEntry.results[testname]);
+            }
+        }
 
         if (this.nextPage && this.historyEntries.length < this.limit) {
             this.getResults(testnames);
