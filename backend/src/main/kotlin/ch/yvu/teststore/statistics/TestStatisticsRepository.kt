@@ -9,7 +9,5 @@ import java.util.*
 interface TestStatisticsRepository : TestStoreRepository<TestStatistics> {
 
     fun findByTestSuiteAndTestName(testSuiteId: UUID, testName: String): TestStatistics?
-
-    fun findAllByTestSuite(testSuiteId: UUID): List<TestStatistics>
     fun findAllByTestSuitePaged(testSuiteId: UUID, page: String? = null, fetchSize: Int? = null): Page<TestStatistics>
 }

@@ -9,10 +9,6 @@ import java.util.*
 
 open class CassandraTestStatisticsRepository @Autowired constructor(mappingManager: MappingManager, val queryFactory: QueryFactory) :
         TestStatisticsRepository, CassandraRepository<TestStatistics>(mappingManager, "test_statistics", TestStatistics::class.java) {
-    override fun findAllByTestSuite(testSuiteId: UUID): List<TestStatistics> {
-        val resultSet = session.execute("select * from test_statistics where testsuite=?", testSuiteId)
-        return mapper.map(resultSet).all().toList()
-    }
 
     override fun findAllByTestSuitePaged(testSuiteId: UUID, page: String?, fetchSize: Int?): Page<TestStatistics> {
         val query = queryFactory.createQuery("SELECT * FROM test_statistics WHERE testsuite=?", testSuiteId)
