@@ -59,7 +59,7 @@ open class CassandraConfig {
     }
 
     @Bean open fun testStatisticsRepository(): TestStatisticsRepository {
-        return CassandraTestStatisticsRepository(MappingManager(session))
+        return CassandraTestStatisticsRepository(MappingManager(session), queryFactory)
     }
 
     @Bean open fun revisionRepository(): RevisionRepository {

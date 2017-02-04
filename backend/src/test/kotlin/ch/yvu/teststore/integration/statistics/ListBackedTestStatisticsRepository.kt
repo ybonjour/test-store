@@ -1,5 +1,6 @@
 package ch.yvu.teststore.integration.statistics
 
+import ch.yvu.teststore.common.Page
 import ch.yvu.teststore.integration.ListBackedRepository
 import ch.yvu.teststore.statistics.TestStatistics
 import ch.yvu.teststore.statistics.TestStatisticsRepository
@@ -8,6 +9,10 @@ import java.util.*
 open class ListBackedTestStatisticsRepository(val genericRepository: ListBackedRepository<TestStatistics>) : TestStatisticsRepository {
     override fun findAllByTestSuite(testSuiteId: UUID): List<TestStatistics> {
         return genericRepository.findAll() { it.testSuite == testSuiteId }
+    }
+
+    override fun findAllByTestSuitePaged(testSuiteId: UUID, page: String?, fetchSize: Int?): Page<TestStatistics> {
+        return Page(findAllByTestSuite(testSuiteId), null)
     }
 
     override fun findByTestSuiteAndTestName(testSuiteId: UUID, testName: String): TestStatistics? {
