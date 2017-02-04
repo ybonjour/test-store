@@ -1,7 +1,9 @@
 import {Injectable} from "@angular/core";
-import {Http, Response} from "@angular/http";
+import {Http, Response, URLSearchParams} from "@angular/http";
 import {Observable} from "rxjs/Observable";
 import {TestStatistics} from "./test-statistics";
+import {Page} from "../common/page";
+import {JsonPageExtractor} from "../common/json-page-extractor";
 
 
 @Injectable()
@@ -9,6 +11,15 @@ export class TestStatisticsService {
 
     constructor(private _http: Http) {}
 
+    getStatisticsPaged(testSuiteId: string, nextPage: string, fetchSize: number): Observable<Page<TestStatistics>> {
+        let params: URLSearchParams = new URLSearchParams();
+        if(nextPage != null) params.set('page', nextPage);
+        if(fetchSize != null) params.set('fetchSize', fetchSize.toString());
+
+        return this._http.get("/api/testsuites/" + testSuiteId + "/statistics-paged", { search: params })
+            .map(TestStatisticsService.extractBodyPaged)
+            .catch(TestStatisticsService.extractError)
+    }
 
     getStatistics(testSuiteId: String): Observable<TestStatistics[]> {
         return this._http.get("/api/testsuites/" + testSuiteId + "/statistics")
@@ -21,6 +32,12 @@ export class TestStatisticsService {
         return this._http.get("/api/testsuites/" + testSuiteId + "/statistics/" + decodedTestName)
             .map(TestStatisticsService.extractBodySingle)
             .catch(TestStatisticsService.extractError)
+    }
+
+    private static extractBodyPaged(response: Response): Page<TestStatistics> {
+        if(response.status != 200) throw new Error("Bad response status: " + response.status);
+
+        return JsonPageExtractor.extractFromJson(response.json(), TestStatisticsService.convertJsonToTestStatistic)
     }
 
     private static extractBody(response: Response): TestStatistics[] {

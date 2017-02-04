@@ -3,6 +3,7 @@ import {RouteParams, ROUTER_DIRECTIVES} from "@angular/router-deprecated";
 import {TestStatisticsService} from "./test-statistics.service";
 import {TestStatistics} from "./test-statistics";
 import {DurationComponent} from "../duration/duration.component";
+import {Page} from "../common/page";
 
 @Component({
     templateUrl: 'app/statistics/test-statistics.html',
@@ -13,7 +14,9 @@ export class TestStatisticsComponent implements OnInit{
     testSuiteId: string;
     orderBy: string;
     orderDirection: string;
-    testStatistics: TestStatistics[];
+    nextPage: string = null;
+    fetchSize: number = 10;
+    testStatistics: TestStatistics[] = [];
     errorMessage: string;
 
     constructor(
@@ -24,7 +27,11 @@ export class TestStatisticsComponent implements OnInit{
         this.testSuiteId = this._routeParams.get('testsuite_id');
         this.orderBy = this._routeParams.get('order_by');
         this.orderDirection = this._routeParams.get('order_direction');
-        this._testStatisticsService.getStatistics(this.testSuiteId).subscribe(
+        this.getStatistics(this.testSuiteId);
+    }
+
+    getStatistics(testSuiteId: string) {
+        this._testStatisticsService.getStatisticsPaged(this.testSuiteId, this.nextPage, this.fetchSize).subscribe(
             statistics => this.extractStatistics(statistics),
             error => this.errorMessage = <any>error);
     }
@@ -41,12 +48,16 @@ export class TestStatisticsComponent implements OnInit{
         }
     }
 
-    extractStatistics(testStatistics: TestStatistics[]) {
-        this.testStatistics = testStatistics;
-
+    extractStatistics(testStatisticsPage: Page<TestStatistics>) {
+        this.testStatistics = this.testStatistics.concat(testStatisticsPage.results);
+        this.nextPage = testStatisticsPage.nextPage;
         let extractor = TestStatisticsComponent.getExtractor(this.orderBy);
         if(extractor) {
             this.testStatistics.sort(this.comparator(extractor))
+        }
+
+        if(this.nextPage != null) {
+            this.getStatistics(this.testSuiteId);
         }
     }
 
