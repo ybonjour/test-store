@@ -1,5 +1,8 @@
 package ch.yvu.teststore.idea.plugin;
 
+import static ch.yvu.teststore.idea.plugin.TreeUtils.getAllChildren;
+import static ch.yvu.teststore.idea.plugin.TreeUtils.removeAll;
+
 import ch.yvu.teststore.idea.plugin.load.LoadTask;
 import ch.yvu.teststore.idea.plugin.model.Loading;
 import ch.yvu.teststore.idea.plugin.model.Model;
@@ -16,7 +19,6 @@ import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreePath;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.LinkedList;
 import java.util.List;
 
 public class TestStoreTree implements TreeWillExpandListener {
@@ -70,10 +72,7 @@ public class TestStoreTree implements TreeWillExpandListener {
 
 			@Override
 			public void onSuccess(List<Model> children) {
-				List<MutableTreeNode> oldChildren = new LinkedList<>();
-				for (int i = 0; i < node.getChildCount(); i++) {
-					oldChildren.add((MutableTreeNode) node.getChildAt(i));
-				}
+				List<MutableTreeNode> oldChildren = getAllChildren(node);
 
 				int i = 0;
 				for (Model child : children) {
@@ -85,23 +84,16 @@ public class TestStoreTree implements TreeWillExpandListener {
 					i += 1;
 				}
 
-				for (MutableTreeNode oldChild : oldChildren) {
-					model.removeNodeFromParent(oldChild);
-				}
+				removeAll(model, oldChildren);
 			}
 
 			@Override
 			public void onError(Throwable error) {
-				List<MutableTreeNode> children = new LinkedList<>();
-				for (int i = 0; i < node.getChildCount(); i++) {
-					children.add((MutableTreeNode) node.getChildAt(i));
-				}
+				List<MutableTreeNode> children = getAllChildren(node);
 
 				model.insertNodeInto(new DefaultMutableTreeNode(ERROR), node, 0);
 
-				for (MutableTreeNode child : children) {
-					model.removeNodeFromParent(child);
-				}
+				removeAll(model, children);
 			}
 		});
 
@@ -115,14 +107,7 @@ public class TestStoreTree implements TreeWillExpandListener {
 		DefaultMutableTreeNode node = (DefaultMutableTreeNode) path.getLastPathComponent();
 		Model nodeModel = (Model) node.getUserObject();
 
-		List<MutableTreeNode> children = new LinkedList<>();
-		for (int i = 0; i < node.getChildCount(); i++) {
-			children.add((MutableTreeNode) node.getChildAt(i));
-		}
-
-		for (MutableTreeNode child : children) {
-			model.removeNodeFromParent(child);
-		}
+		removeAll(model, getAllChildren(node));
 
 		if (nodeModel.loadChildrenTask() != null) {
 			model.insertNodeInto(loading(), node, 0);
@@ -147,7 +132,7 @@ public class TestStoreTree implements TreeWillExpandListener {
 		DefaultMutableTreeNode node = (DefaultMutableTreeNode) path.getLastPathComponent();
 		Model model = (Model) node.getUserObject();
 		Runnable action = model.rightClickAction(e);
-		if(action == null) {
+		if (action == null) {
 			return;
 		}
 		tree.setSelectionPath(path);
