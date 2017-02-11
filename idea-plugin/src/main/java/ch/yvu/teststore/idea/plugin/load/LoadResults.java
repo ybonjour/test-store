@@ -28,7 +28,10 @@ public class LoadResults extends LoadTask<Result> {
 		Gson gson = new Gson();
 		ResultDto[] resultDtos = gson.fromJson(json, ResultDto[].class);
 
-		List<Result> results = stream(resultDtos).map((ResultDto dto) -> new Result(dto.getTestName(), dto.getTestResult())).collect(toList());
+		List<Result> results = stream(resultDtos).map((ResultDto dto) -> new Result(
+				dto.getTestName(),
+				dto.getTestResult(),
+				dto.getResults().get(0).getStackTrace())).collect(toList());
 		results.sort((r1, r2) -> {
 			int priorityR1 = RESULT_ORDER.indexOf(r1.getResult());
 			int priorityR2 = RESULT_ORDER.indexOf(r2.getResult());

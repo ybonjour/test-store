@@ -4,8 +4,13 @@ import ch.yvu.teststore.idea.plugin.WindowFactory;
 import ch.yvu.teststore.idea.plugin.action.JumpToTest;
 import ch.yvu.teststore.idea.plugin.load.LoadTask;
 import com.intellij.icons.AllIcons;
+import com.intellij.openapi.project.Project;
+import com.intellij.openapi.ui.DialogWrapper;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.HashMap;
 import java.util.Map;
@@ -14,6 +19,7 @@ public class Result implements Model {
 
 	private final String result;
 	private final String testName;
+	private final String stackTrace;
 
 	private final static Map<String, Icon> ICONS = new HashMap<>();
 
@@ -24,9 +30,10 @@ public class Result implements Model {
 		ICONS.put("RETRIED", AllIcons.RunConfigurations.TestTerminated);
 	}
 
-	public Result(String testName, String result) {
+	public Result(String testName, String result, String stackTrace) {
 		this.result = result;
 		this.testName = testName;
+		this.stackTrace = stackTrace;
 	}
 
 	public String getResult() {
@@ -45,7 +52,8 @@ public class Result implements Model {
 
 	@Override
 	public String getText() {
-		if(testName.length() <= 50) return testName;
+		if (testName.length() <= 50)
+			return testName;
 
 		String firstPart = safeSubstring(testName, 0, 17);
 		String secondPart = safeSubstring(testName, testName.length() - 30, testName.length());
@@ -71,7 +79,20 @@ public class Result implements Model {
 	public Runnable rightClickAction(MouseEvent e) {
 		return () -> {
 			JPopupMenu popup = new JPopupMenu();
-			popup.add(new JMenuItem("Show Details..."));
+			if (stackTrace != null && !stackTrace.equals("")) {
+				JMenuItem item = new JMenuItem("Show Stacktrace...");
+				item.addMouseListener(new MouseAdapter() {
+
+					@Override
+					public void mousePressed(MouseEvent e) {
+						TextDialog dialog = new TextDialog(WindowFactory.currentProject, "Stacktrace", stackTrace);
+						dialog.show();
+					}
+				});
+
+				popup.add(item);
+			}
+
 			popup.show(e.getComponent(), e.getX(), e.getY());
 		};
 	}
@@ -82,5 +103,30 @@ public class Result implements Model {
 
 	private String getMethodName() {
 		return testName.split("#")[1];
+	}
+
+	private class TextDialog extends DialogWrapper {
+
+		private final String text;
+
+		TextDialog(@Nullable Project project, String title, String text) {
+			super(project, false);
+			this.text = text;
+
+			init();
+			setTitle(title);
+		}
+
+		@Nullable
+		@Override
+		protected JComponent createCenterPanel() {
+			return new JScrollPane(new JTextArea(text));
+		}
+
+		@NotNull
+		@Override
+		protected Action[] createActions() {
+			return new Action[0];
+		}
 	}
 }
