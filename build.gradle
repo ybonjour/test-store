@@ -22,5 +22,5 @@ teststore {
     xmlReports ~/.*\/test-results\/TEST-.*\.xml/
     changesFile "hg.log"
     changesUrlTemplate 'http://scm.ergon.ch/hg/coop.mws/rev/${revision}'
-    incremental true
+    incremental false
 }
