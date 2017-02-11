@@ -20,6 +20,7 @@ public class Result implements Model {
 	private final String result;
 	private final String testName;
 	private final String stackTrace;
+	private final String log;
 
 	private final static Map<String, Icon> ICONS = new HashMap<>();
 
@@ -30,10 +31,11 @@ public class Result implements Model {
 		ICONS.put("RETRIED", AllIcons.RunConfigurations.TestTerminated);
 	}
 
-	public Result(String testName, String result, String stackTrace) {
+	public Result(String testName, String result, String stackTrace, String log) {
 		this.result = result;
 		this.testName = testName;
 		this.stackTrace = stackTrace;
+		this.log = log;
 	}
 
 	public String getResult() {
@@ -91,6 +93,17 @@ public class Result implements Model {
 				});
 
 				popup.add(item);
+			}
+
+			if (log != null && !log.equals("")) {
+				JMenuItem item = new JMenuItem("Show Log...");
+				item.addMouseListener(new MouseAdapter() {
+					@Override
+					public void mousePressed(MouseEvent e) {
+						TextDialog dialog = new TextDialog(WindowFactory.currentProject, "Log", log);
+						dialog.show();
+					}
+				});
 			}
 
 			popup.show(e.getComponent(), e.getX(), e.getY());
