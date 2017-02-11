@@ -5,6 +5,7 @@ import ch.yvu.teststore.idea.plugin.load.LoadTask;
 import com.intellij.icons.AllIcons;
 
 import javax.swing.*;
+import java.awt.event.MouseEvent;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
@@ -57,6 +58,11 @@ public class Run implements Model {
 
 	@Override
 	public Runnable doubleClickAction() {
+		return null;
+	}
+
+	@Override
+	public Runnable rightClickAction(MouseEvent e) {
 		return null;
 	}
 }

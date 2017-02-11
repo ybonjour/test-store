@@ -8,8 +8,6 @@ import com.intellij.openapi.progress.ProgressManager;
 
 import javax.swing.*;
 import javax.swing.event.TreeExpansionEvent;
-import javax.swing.event.TreeSelectionEvent;
-import javax.swing.event.TreeSelectionListener;
 import javax.swing.event.TreeWillExpandListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
@@ -39,9 +37,15 @@ public class TestStoreTree implements TreeWillExpandListener {
 			@Override
 			public void mousePressed(MouseEvent e) {
 				int selectedRow = tree.getRowForLocation(e.getX(), e.getY());
-				if (selectedRow == -1) return;
+				if (selectedRow == -1)
+					return;
 				TreePath path = tree.getPathForLocation(e.getX(), e.getY());
-				if (e.getClickCount() > 1) {
+
+				if (SwingUtilities.isRightMouseButton(e)) {
+					nodeRightClicked(path, e);
+				}
+
+				if (SwingUtilities.isLeftMouseButton(e) && e.getClickCount() > 1) {
 					nodeDoubleClicked(path);
 				}
 			}
@@ -129,12 +133,24 @@ public class TestStoreTree implements TreeWillExpandListener {
 		return new DefaultMutableTreeNode(LOADING);
 	}
 
-	public void nodeDoubleClicked(TreePath path) {
+	private void nodeDoubleClicked(TreePath path) {
 		DefaultMutableTreeNode node = (DefaultMutableTreeNode) path.getLastPathComponent();
 		Model model = (Model) node.getUserObject();
 		Runnable action = model.doubleClickAction();
-		if(action == null) return;
+		if (action == null)
+			return;
 
+		action.run();
+	}
+
+	private void nodeRightClicked(TreePath path, MouseEvent e) {
+		DefaultMutableTreeNode node = (DefaultMutableTreeNode) path.getLastPathComponent();
+		Model model = (Model) node.getUserObject();
+		Runnable action = model.rightClickAction(e);
+		if(action == null) {
+			return;
+		}
+		tree.setSelectionPath(path);
 		action.run();
 	}
 }

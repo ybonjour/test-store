@@ -6,6 +6,7 @@ import ch.yvu.teststore.idea.plugin.load.LoadTask;
 import com.intellij.icons.AllIcons;
 
 import javax.swing.*;
+import java.awt.event.MouseEvent;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -64,6 +65,15 @@ public class Result implements Model {
 	@Override
 	public Runnable doubleClickAction() {
 		return new JumpToTest(WindowFactory.currentProject, getClassName(), getMethodName());
+	}
+
+	@Override
+	public Runnable rightClickAction(MouseEvent e) {
+		return () -> {
+			JPopupMenu popup = new JPopupMenu();
+			popup.add(new JMenuItem("Show Details..."));
+			popup.show(e.getComponent(), e.getX(), e.getY());
+		};
 	}
 
 	private String getClassName() {
