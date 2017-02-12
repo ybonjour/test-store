@@ -18,8 +18,9 @@ public class Main {
 
 	private void createUIComponents() {
 		content = new JPanel(new BorderLayout());
+		TestStoreTree testStoreTree = new TestStoreTree();
 		String baseUrl = "http://localhost:8080";
-		TestStoreTree testStoreTree = new TestStoreTree(new TestStore(baseUrl));
+		testStoreTree.addTestStore(new TestStore(baseUrl));
 		JTree tree = testStoreTree.getTree();
 		tree.setCellRenderer(new TestStoreTreeRenderer());
 		JScrollPane scroll = new JScrollPane(tree);

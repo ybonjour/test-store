@@ -25,14 +25,15 @@ public class TestStoreTree implements TreeWillExpandListener {
 
 	private static final Loading LOADING = new Loading();
 	private static final ch.yvu.teststore.idea.plugin.model.Error ERROR = new ch.yvu.teststore.idea.plugin.model.Error();
-	private final DefaultTreeModel model;
+	private final DefaultTreeModel treeModel;
 	private final JTree tree;
+	private final DefaultMutableTreeNode root;
 
-	public TestStoreTree(TestStore testStore) {
-		DefaultMutableTreeNode root = new DefaultMutableTreeNode(testStore);
-		model = new DefaultTreeModel(root);
-		tree = new JTree(model);
-		model.insertNodeInto(loading(), root, 0);
+	public TestStoreTree() {
+		root = new DefaultMutableTreeNode(LOADING);
+		treeModel = new DefaultTreeModel(root);
+		tree = new JTree(treeModel);
+		tree.setRootVisible(false);
 		tree.addTreeWillExpandListener(this);
 		tree.addMouseListener(new MouseAdapter() {
 
@@ -52,6 +53,12 @@ public class TestStoreTree implements TreeWillExpandListener {
 				}
 			}
 		});
+	}
+
+	public void addTestStore(TestStore testStore) {
+		addModelToTree(testStore, root, root.getChildCount());
+		TreePath path = new TreePath(root);
+		tree.expandPath(path);
 	}
 
 	public JTree getTree() {
@@ -76,29 +83,24 @@ public class TestStoreTree implements TreeWillExpandListener {
 
 				int i = 0;
 				for (Model child : children) {
-					DefaultMutableTreeNode childNode = new DefaultMutableTreeNode(child);
-					model.insertNodeInto(childNode, node, i);
-					if (child.loadChildrenTask() != null) {
-						model.insertNodeInto(loading(), childNode, 0);
-					}
+					addModelToTree(child, node, i);
 					i += 1;
 				}
 
-				removeAll(model, oldChildren);
+				removeAll(treeModel, oldChildren);
 			}
 
 			@Override
 			public void onError(Throwable error) {
 				List<MutableTreeNode> children = getAllChildren(node);
 
-				model.insertNodeInto(new DefaultMutableTreeNode(ERROR), node, 0);
+				addModelToTree(ERROR, node, 0);
 
-				removeAll(model, children);
+				removeAll(treeModel, children);
 			}
 		});
 
 		ProgressManager.getInstance().run(loadTask);
-
 	}
 
 	@Override
@@ -107,15 +109,19 @@ public class TestStoreTree implements TreeWillExpandListener {
 		DefaultMutableTreeNode node = (DefaultMutableTreeNode) path.getLastPathComponent();
 		Model nodeModel = (Model) node.getUserObject();
 
-		removeAll(model, getAllChildren(node));
+		removeAll(treeModel, getAllChildren(node));
 
 		if (nodeModel.loadChildrenTask() != null) {
-			model.insertNodeInto(loading(), node, 0);
+			addModelToTree(LOADING, node, 0);;
 		}
 	}
 
-	private static DefaultMutableTreeNode loading() {
-		return new DefaultMutableTreeNode(LOADING);
+	private void addModelToTree(Model model, MutableTreeNode parent, int idx) {
+		DefaultMutableTreeNode node = new DefaultMutableTreeNode(model);
+		treeModel.insertNodeInto(node, parent, idx);
+		if (model.loadChildrenTask() != null) {
+			treeModel.insertNodeInto(new DefaultMutableTreeNode(LOADING), node, 0);
+		}
 	}
 
 	private void nodeDoubleClicked(TreePath path) {
