@@ -1,8 +1,7 @@
 <idea-plugin version="2">
   <id>ch.yvu.teststore.idea.plugin</id>
   <name>test-store IDEA Plugin</name>
-  <version>1.0</version>
-  <vendor email="support@yourcompany.com" url="http://www.yourcompany.com">YourCompany</vendor>
+  <version>0.1</version>
 
   <description><![CDATA[
       The test-store IDEA plugin

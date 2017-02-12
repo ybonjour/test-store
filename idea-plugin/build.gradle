@@ -9,5 +9,6 @@ plugins {
 }
 
 intellij {
+    version 'IC-2016.1'
     pluginName 'test-store'
 }
