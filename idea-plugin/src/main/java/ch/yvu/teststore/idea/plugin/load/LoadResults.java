@@ -33,6 +33,8 @@ public class LoadResults extends LoadTask<Result> {
 				dto.getTestResult(),
 				dto.getResults().get(0).getStackTrace(),
 				dto.getResults().get(0).getLog(),
+				dto.getResults().get(0).getFailureReason(),
+				dto.getResults().get(0).getRun(),
 				getBaseUrl())).collect(toList());
 		results.sort((r1, r2) -> {
 			int priorityR1 = RESULT_ORDER.indexOf(r1.getResult());
