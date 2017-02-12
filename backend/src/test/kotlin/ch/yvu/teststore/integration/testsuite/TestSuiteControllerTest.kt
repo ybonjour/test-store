@@ -32,7 +32,7 @@ class TestSuiteControllerTest() : BaseIntegrationTest() {
         testSuiteRepository.deleteAll()
     }
 
-    @Test fun storesTestSuiteCorrectly(){
+    @Test fun storesTestSuiteCorrectly() {
         given()
                 .contentType(JSON)
                 .body("{\"name\": \"MyTestSuite\"}").post("/testsuites")
@@ -122,5 +122,15 @@ class TestSuiteControllerTest() : BaseIntegrationTest() {
                 .get("/testsuites/${randomUUID()}")
                 .then()
                 .statusCode(404)
+    }
+
+    @Test fun getTestSuitesRawReturnsTestSuite() {
+        val testSuite = TestSuite(randomUUID(), "MyTestSuite")
+        testSuiteRepository.save(testSuite)
+
+        given()
+                .get("/testsuites/raw")
+                .then()
+                .statusCode(200)
     }
 }

@@ -1,8 +1,8 @@
 package ch.yvu.teststore.testsuite
 
 import ch.yvu.teststore.insert.dto.TestSuiteDto
-import ch.yvu.teststore.run.overview.RunStatistics.RunResult.UNKNOWN
 import ch.yvu.teststore.run.overview.RunOverviewService
+import ch.yvu.teststore.run.overview.RunStatistics.RunResult.UNKNOWN
 import ch.yvu.teststore.testsuite.overview.TestSuiteOverview
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus.NOT_FOUND
@@ -39,6 +39,11 @@ class TestSuiteController @Autowired constructor(val testSuiteRepository: TestSu
             val runResult = if (runOverview.isPresent) runOverview.get().runStatistics.result else UNKNOWN;
             TestSuiteOverview(it, runResult)
         };
+    }
+
+    @RequestMapping(method = arrayOf(GET), value = "/testsuites/raw")
+    fun getAllTestSuitesRaw(): List<TestSuite> {
+        return testSuiteRepository.findAll();
     }
 
     @RequestMapping(method = arrayOf(GET), value = "/testsuites/{testSuiteId}")
