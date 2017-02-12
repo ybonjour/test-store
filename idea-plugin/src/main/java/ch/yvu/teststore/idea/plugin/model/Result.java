@@ -15,7 +15,7 @@ import java.awt.event.MouseEvent;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Result implements Model {
+public class Result extends Model {
 
 	private final String result;
 	private final String testName;
@@ -31,7 +31,8 @@ public class Result implements Model {
 		ICONS.put("RETRIED", AllIcons.RunConfigurations.TestTerminated);
 	}
 
-	public Result(String testName, String result, String stackTrace, String log) {
+	public Result(String testName, String result, String stackTrace, String log, String baseUrl) {
+		super(baseUrl);
 		this.result = result;
 		this.testName = testName;
 		this.stackTrace = stackTrace;

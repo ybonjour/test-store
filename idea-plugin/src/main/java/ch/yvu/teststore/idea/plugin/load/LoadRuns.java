@@ -17,8 +17,8 @@ public class LoadRuns extends LoadTask<Run> {
 
 	private final String testSuiteId;
 
-	public LoadRuns(String testSuiteId) {
-		super("Load runs for test suite " + testSuiteId);
+	public LoadRuns(String testSuiteId, String baseUrl) {
+		super("Load runs for test suite " + testSuiteId, baseUrl);
 		this.testSuiteId = testSuiteId;
 	}
 
@@ -33,7 +33,7 @@ public class LoadRuns extends LoadTask<Run> {
 		return runOverviewPage.getResults()
 				.stream()
 				.map((RunOverviewDto dto) -> new Run(dto.getRun().getId(), dto.getRun().getRevision(),
-						LocalDateTime.ofInstant(Instant.ofEpochMilli(dto.getRun().getTime()), ZoneId.systemDefault()), dto.getRunStatistics().getResult()))
+						LocalDateTime.ofInstant(Instant.ofEpochMilli(dto.getRun().getTime()), ZoneId.systemDefault()), dto.getRunStatistics().getResult(), getBaseUrl()))
 				.collect(toList());
 	}
 }

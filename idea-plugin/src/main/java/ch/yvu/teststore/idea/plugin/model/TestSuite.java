@@ -6,12 +6,13 @@ import ch.yvu.teststore.idea.plugin.load.LoadTask;
 import javax.swing.*;
 import java.awt.event.MouseEvent;
 
-public class TestSuite implements Model {
+public class TestSuite extends Model {
 
 	private final String name;
 	private final String id;
 
-	public TestSuite(String name, String id) {
+	public TestSuite(String name, String id, String baseUrl) {
+		super(baseUrl);
 		this.name = name;
 		this.id = id;
 	}
@@ -28,7 +29,7 @@ public class TestSuite implements Model {
 
 	@Override
 	public LoadTask loadChildrenTask() {
-		return new LoadRuns(id);
+		return new LoadRuns(id, getBaseUrl());
 	}
 
 	@Override

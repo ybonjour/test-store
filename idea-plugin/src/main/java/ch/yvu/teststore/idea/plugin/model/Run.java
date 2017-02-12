@@ -12,7 +12,7 @@ import java.time.format.FormatStyle;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Run implements Model {
+public class Run extends Model {
 
 	private static Map<String, Icon> ICONS = new HashMap<>();
 
@@ -28,7 +28,8 @@ public class Run implements Model {
 	private final LocalDateTime time;
 	private final String result;
 
-	public Run(String id, String revision, LocalDateTime time, String result) {
+	public Run(String id, String revision, LocalDateTime time, String result, String baseUrl) {
+		super(baseUrl);
 		this.id = id;
 		this.revision = revision;
 		this.time = time;
@@ -53,7 +54,7 @@ public class Run implements Model {
 
 	@Override
 	public LoadTask loadChildrenTask() {
-		return new LoadResults(id);
+		return new LoadResults(id, getBaseUrl());
 	}
 
 	@Override

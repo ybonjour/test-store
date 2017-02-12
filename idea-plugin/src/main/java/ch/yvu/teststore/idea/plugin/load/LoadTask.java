@@ -19,9 +19,15 @@ public abstract class LoadTask<V extends Model> extends Task.Backgroundable {
 	private List<V> results;
 	private LoadListener loadListener;
 	protected final HttpClient httpClient = new HttpClient();
+	private final String baseUrl;
 
-	public LoadTask(@Nls(capitalization = Nls.Capitalization.Title) @NotNull String title) {
+	public LoadTask(@Nls(capitalization = Nls.Capitalization.Title) @NotNull String title, String baseUrl) {
 		super(null, title);
+		this.baseUrl = baseUrl;
+	}
+
+	protected String getBaseUrl() {
+		return baseUrl;
 	}
 
 	public void setLoadListener(LoadListener listener) {
@@ -49,7 +55,7 @@ public abstract class LoadTask<V extends Model> extends Task.Backgroundable {
 
 	protected String getJson(String path) {
 		try {
-			URL url = new URL(new URL("http://localhost:8080"), path);
+			URL url = new URL(new URL(baseUrl), path);
 			GetMethod get = new GetMethod(url.toString());
 			int status = httpClient.executeMethod(get);
 			if (status != 200) {

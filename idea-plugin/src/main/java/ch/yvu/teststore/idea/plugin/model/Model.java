@@ -4,17 +4,27 @@ import ch.yvu.teststore.idea.plugin.load.LoadTask;
 
 import javax.swing.*;
 import java.awt.event.MouseEvent;
-import java.util.List;
 
-public interface Model<T extends Model> {
+public abstract class Model<T extends Model> {
 
-	Icon getIcon();
+	private final String baseUrl;
 
-	String getText();
+	public Model(String baseUrl) {
 
-	LoadTask<T> loadChildrenTask();
+		this.baseUrl = baseUrl;
+	}
 
-	Runnable doubleClickAction();
+	protected String getBaseUrl() {
+		return baseUrl;
+	}
 
-	Runnable rightClickAction(MouseEvent e);
+	public abstract Icon getIcon();
+
+	public abstract String getText();
+
+	public abstract LoadTask<T> loadChildrenTask();
+
+	public abstract Runnable doubleClickAction();
+
+	public abstract Runnable rightClickAction(MouseEvent e);
 }

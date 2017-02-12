@@ -16,8 +16,8 @@ public class LoadResults extends LoadTask<Result> {
 
 	private final String runId;
 
-	public LoadResults(String runId) {
-		super("Loading results for run " + runId);
+	public LoadResults(String runId, String baseUrl) {
+		super("Loading results for run " + runId, baseUrl);
 		this.runId = runId;
 	}
 
@@ -32,7 +32,8 @@ public class LoadResults extends LoadTask<Result> {
 				dto.getTestName(),
 				dto.getTestResult(),
 				dto.getResults().get(0).getStackTrace(),
-				dto.getResults().get(0).getLog())).collect(toList());
+				dto.getResults().get(0).getLog(),
+				getBaseUrl())).collect(toList());
 		results.sort((r1, r2) -> {
 			int priorityR1 = RESULT_ORDER.indexOf(r1.getResult());
 			int priorityR2 = RESULT_ORDER.indexOf(r2.getResult());

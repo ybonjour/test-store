@@ -5,7 +5,11 @@ import ch.yvu.teststore.idea.plugin.load.LoadTask;
 import javax.swing.*;
 import java.awt.event.MouseEvent;
 
-public class Error implements Model<Error> {
+public class Error extends Model<Error> {
+
+	public Error() {
+		super(null);
+	}
 
 	@Override
 	public Icon getIcon() {

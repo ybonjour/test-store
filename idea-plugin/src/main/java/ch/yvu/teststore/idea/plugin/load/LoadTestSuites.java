@@ -11,8 +11,8 @@ import java.util.List;
 
 public class LoadTestSuites extends LoadTask<TestSuite> {
 
-	public LoadTestSuites() {
-		super("Load test suites");
+	public LoadTestSuites(String baseUrl) {
+		super("Load Test Suites", baseUrl);
 	}
 
 	@Override
@@ -22,7 +22,7 @@ public class LoadTestSuites extends LoadTask<TestSuite> {
 		TestSuiteOverviewDto[] testSuites = gson.fromJson(json, TestSuiteOverviewDto[].class);
 
 		return stream(testSuites) //
-				.map((TestSuiteOverviewDto dto) -> new TestSuite(dto.getTestSuite().getName(), dto.getTestSuite().getId())) //
+				.map((TestSuiteOverviewDto dto) -> new TestSuite(dto.getTestSuite().getName(), dto.getTestSuite().getId(), getBaseUrl())) //
 				.collect(toList());
 	}
 }

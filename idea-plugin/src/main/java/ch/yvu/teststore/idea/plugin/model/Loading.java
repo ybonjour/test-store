@@ -6,7 +6,11 @@ import com.intellij.icons.AllIcons;
 import javax.swing.*;
 import java.awt.event.MouseEvent;
 
-public class Loading implements Model {
+public class Loading extends Model {
+
+	public Loading() {
+		super(null);
+	}
 
 	@Override
 	public Icon getIcon() {

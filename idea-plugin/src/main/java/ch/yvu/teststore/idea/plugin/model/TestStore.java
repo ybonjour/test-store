@@ -6,7 +6,12 @@ import ch.yvu.teststore.idea.plugin.load.LoadTestSuites;
 import javax.swing.*;
 import java.awt.event.MouseEvent;
 
-public class TestStore implements Model {
+public class TestStore extends Model {
+
+
+	public TestStore(String baseUrl) {
+		super(baseUrl);
+	}
 
 	@Override
 	public Icon getIcon() {
@@ -20,7 +25,7 @@ public class TestStore implements Model {
 
 	@Override
 	public LoadTask loadChildrenTask() {
-		return new LoadTestSuites();
+		return new LoadTestSuites(getBaseUrl());
 	}
 
 	@Override
