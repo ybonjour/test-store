@@ -132,5 +132,8 @@ class TestSuiteControllerTest() : BaseIntegrationTest() {
                 .get("/testsuites/raw")
                 .then()
                 .statusCode(200)
+                .assertThat()
+                .body("[0].id", equalTo(testSuite.id.toString()))
+                .body("[0].name", equalTo(testSuite.name))
     }
 }
