@@ -13,9 +13,6 @@ import com.intellij.openapi.actionSystem.ActionToolbar;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.DefaultActionGroup;
-import com.intellij.openapi.progress.ProgressIndicator;
-import com.intellij.openapi.progress.ProgressManager;
-import com.intellij.openapi.progress.Task;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.DialogWrapper;
 import com.intellij.openapi.ui.SimpleToolWindowPanel;
@@ -64,7 +61,7 @@ public class Main {
 		DefaultActionGroup actionGroup = new DefaultActionGroup();
 		actionGroup.add(addTestStore);
 		JPanel toolBarPanel = new JPanel(new GridLayout());
-		ActionToolbar toolbar = ActionManager.getInstance().createActionToolbar(ActionPlaces.TOOLBAR, actionGroup, true);
+		ActionToolbar toolbar = ActionManager.getInstance().createActionToolbar(ActionPlaces.TOOLWINDOW_TITLE, actionGroup, true);
 		toolBarPanel.add(toolbar.getComponent());
 
 		return toolBarPanel;
@@ -72,11 +69,9 @@ public class Main {
 
 	private JComponent createContent() {
 		testStoreTree = new TestStoreTree();
-		readTestStoreUrls(urls -> {
-			for (String url : urls) {
-				testStoreTree.addTestStore(new TestStore(url));
-			}
-		});
+		for (String url : readTestStoreUrls()) {
+			testStoreTree.addTestStore(new TestStore(url));
+		}
 
 		JTree tree = testStoreTree.getTree();
 		tree.setCellRenderer(new TestStoreTreeRenderer());
@@ -90,38 +85,21 @@ public class Main {
 	}
 
 	private void storeTestStoreUrl(String url) {
-		ProgressManager.getInstance().run(new Task.Backgroundable(WindowFactory.currentProject, "Storing test suite") {
-
-			@Override
-			public void run(@NotNull ProgressIndicator indicator) {
-				readTestStoreUrls(urls -> {
-					if (urls.contains(url))
-						return;
-					ArrayList<String> newUrls = new ArrayList<>(urls);
-					newUrls.add(url);
-					PropertiesComponent.getInstance().setValues(KEY_TESTSTORES, newUrls.toArray(new String[newUrls.size()]));
-				});
-			}
-		});
+		java.util.List<String> urls = readTestStoreUrls();
+		if (urls.contains(url))
+			return;
+		ArrayList<String> newUrls = new ArrayList<>(urls);
+		newUrls.add(url);
+		PropertiesComponent.getInstance().setValues(KEY_TESTSTORES, newUrls.toArray(new String[newUrls.size()]));
 	}
 
-	private void readTestStoreUrls(final ReadCallback callback) {
-		ProgressManager.getInstance().run(new Task.Backgroundable(WindowFactory.currentProject, "Storing test suite") {
-
-			@Override
-			public void run(@NotNull ProgressIndicator indicator) {
-				String[] testStoreUrls = PropertiesComponent.getInstance().getValues(KEY_TESTSTORES);
-				if (testStoreUrls == null)
-					callback.result(emptyList());
-				else
-					callback.result(asList(testStoreUrls));
-			}
-		});
-	}
-
-	interface ReadCallback {
-
-		void result(java.util.List<String> urls);
+	private java.util.List<String> readTestStoreUrls() {
+		String[] testStoreUrls = PropertiesComponent.getInstance().getValues(KEY_TESTSTORES);
+		if (testStoreUrls == null) {
+			return emptyList();
+		} else {
+			return asList(testStoreUrls);
+		}
 	}
 
 	class TestStoreTreeRenderer implements TreeCellRenderer {

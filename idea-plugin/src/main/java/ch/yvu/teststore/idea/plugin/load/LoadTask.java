@@ -42,19 +42,21 @@ public abstract class LoadTask<V extends Model> extends Task.Backgroundable {
 
 	@Override
 	public void run(@NotNull ProgressIndicator indicator) {
-		results = fetch();
+		try {
+			results = fetch();
+		} catch(Throwable t) {
+			loadListener.onError(t);
+		}
 	}
 
 	@Override
 	public void onSuccess() {
-		if (results == null)
+		if (results == null) {
 			loadListener.onError(new NullPointerException("result was null"));
-		loadListener.onSuccess(results.stream().map((V m) -> (Model) m).collect(toList()));
-	}
+			return;
+		}
 
-	@Override
-	public void onThrowable(@NotNull Throwable error) {
-		loadListener.onError(error);
+		loadListener.onSuccess(results.stream().map((V m) -> (Model) m).collect(toList()));
 	}
 
 	public abstract List<V> fetch();
