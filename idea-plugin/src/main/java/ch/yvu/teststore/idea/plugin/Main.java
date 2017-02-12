@@ -1,14 +1,21 @@
 package ch.yvu.teststore.idea.plugin;
 
+import static java.util.Arrays.asList;
+import static java.util.Collections.emptyList;
+
 import ch.yvu.teststore.idea.plugin.model.Model;
 import ch.yvu.teststore.idea.plugin.model.TestStore;
 import com.intellij.icons.AllIcons;
+import com.intellij.ide.util.PropertiesComponent;
 import com.intellij.openapi.actionSystem.ActionManager;
 import com.intellij.openapi.actionSystem.ActionPlaces;
 import com.intellij.openapi.actionSystem.ActionToolbar;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.DefaultActionGroup;
+import com.intellij.openapi.progress.ProgressIndicator;
+import com.intellij.openapi.progress.ProgressManager;
+import com.intellij.openapi.progress.Task;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.DialogWrapper;
 import com.intellij.openapi.ui.SimpleToolWindowPanel;
@@ -19,6 +26,7 @@ import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeCellRenderer;
 import java.awt.*;
+import java.util.ArrayList;
 
 public class Main {
 
@@ -64,6 +72,12 @@ public class Main {
 
 	private JComponent createContent() {
 		testStoreTree = new TestStoreTree();
+		readTestStoreUrls(urls -> {
+			for (String url : urls) {
+				testStoreTree.addTestStore(new TestStore(url));
+			}
+		});
+
 		JTree tree = testStoreTree.getTree();
 		tree.setCellRenderer(new TestStoreTreeRenderer());
 		return new JScrollPane(tree);
@@ -73,6 +87,41 @@ public class Main {
 		if (testStoreTree == null)
 			return;
 		testStoreTree.addTestStore(new TestStore(url));
+	}
+
+	private void storeTestStoreUrl(String url) {
+		ProgressManager.getInstance().run(new Task.Backgroundable(WindowFactory.currentProject, "Storing test suite") {
+
+			@Override
+			public void run(@NotNull ProgressIndicator indicator) {
+				readTestStoreUrls(urls -> {
+					if (urls.contains(url))
+						return;
+					ArrayList<String> newUrls = new ArrayList<>(urls);
+					newUrls.add(url);
+					PropertiesComponent.getInstance().setValues(KEY_TESTSTORES, newUrls.toArray(new String[newUrls.size()]));
+				});
+			}
+		});
+	}
+
+	private void readTestStoreUrls(final ReadCallback callback) {
+		ProgressManager.getInstance().run(new Task.Backgroundable(WindowFactory.currentProject, "Storing test suite") {
+
+			@Override
+			public void run(@NotNull ProgressIndicator indicator) {
+				String[] testStoreUrls = PropertiesComponent.getInstance().getValues(KEY_TESTSTORES);
+				if (testStoreUrls == null)
+					callback.result(emptyList());
+				else
+					callback.result(asList(testStoreUrls));
+			}
+		});
+	}
+
+	interface ReadCallback {
+
+		void result(java.util.List<String> urls);
 	}
 
 	class TestStoreTreeRenderer implements TreeCellRenderer {
@@ -125,7 +174,9 @@ public class Main {
 
 		@Override
 		protected void doOKAction() {
+			storeTestStoreUrl(url.getText());
 			addTestStore(url.getText());
+
 			super.doOKAction();
 		}
 	}
