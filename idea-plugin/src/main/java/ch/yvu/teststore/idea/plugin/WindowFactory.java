@@ -20,7 +20,7 @@ public class WindowFactory implements ToolWindowFactory {
 
 		Main main = new Main();
 		ContentFactory contentFactory = ContentFactory.SERVICE.getInstance();
-		Content content = contentFactory.createContent(main.getContent(), "", false);
+		Content content = contentFactory.createContent(main.getToolWindow(), "", false);
 
 		toolWindow.getContentManager().addContent(content);
 	}
