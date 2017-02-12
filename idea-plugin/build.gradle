@@ -10,5 +10,12 @@ plugins {
 
 intellij {
     version 'IC-2016.1'
+
     pluginName 'test-store'
+}
+
+patchPluginXml {
+    version 0.1
+    sinceBuild 145
+    untilBuild 171
 }
