@@ -2,4 +2,3 @@ rootProject.name = 'teststore'
 
 include 'backend'
 include 'gradle-plugin'
-include 'idea-plugin'
