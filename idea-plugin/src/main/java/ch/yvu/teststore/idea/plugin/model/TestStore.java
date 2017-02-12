@@ -20,7 +20,7 @@ public class TestStore extends Model {
 
 	@Override
 	public String getText() {
-		return "Test Suites";
+		return getBaseUrl();
 	}
 
 	@Override
