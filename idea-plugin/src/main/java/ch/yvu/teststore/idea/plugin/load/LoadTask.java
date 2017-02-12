@@ -1,15 +1,17 @@
 package ch.yvu.teststore.idea.plugin.load;
 
 import static java.util.stream.Collectors.toList;
+import static org.apache.http.client.config.RequestConfig.DEFAULT;
+import static org.apache.http.client.config.RequestConfig.copy;
+import static org.apache.http.impl.client.HttpClientBuilder.create;
 
 import ch.yvu.teststore.idea.plugin.model.Model;
 import com.intellij.openapi.progress.ProgressIndicator;
 import com.intellij.openapi.progress.Task;
-import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
@@ -22,9 +24,12 @@ import java.util.List;
 
 public abstract class LoadTask<V extends Model> extends Task.Backgroundable {
 
+	private static int CONNECTION_TIMEOUT_MS = 30000;
 	private List<V> results;
 	private LoadListener loadListener;
-	protected final HttpClient httpClient = HttpClientBuilder.create().build();
+	protected final HttpClient httpClient = create()
+			.setDefaultRequestConfig(copy(DEFAULT).setConnectionRequestTimeout(CONNECTION_TIMEOUT_MS).build())
+			.build();
 	private final String baseUrl;
 
 	public LoadTask(@Nls(capitalization = Nls.Capitalization.Title) @NotNull String title, String baseUrl) {
@@ -44,7 +49,7 @@ public abstract class LoadTask<V extends Model> extends Task.Backgroundable {
 	public void run(@NotNull ProgressIndicator indicator) {
 		try {
 			results = fetch();
-		} catch(Throwable t) {
+		} catch (Throwable t) {
 			loadListener.onError(t);
 		}
 	}
@@ -66,10 +71,9 @@ public abstract class LoadTask<V extends Model> extends Task.Backgroundable {
 			URL url = new URL(new URL(baseUrl), path);
 			HttpGet get = new HttpGet(url.toString());
 
-
 			HttpResponse response = httpClient.execute(get);
 			int status = response.getStatusLine().getStatusCode();
-			if ( status != 200) {
+			if (status != 200) {
 				System.err.println("ERROR: Unexpected status code (" + status + ")");
 				return null;
 			}
@@ -82,8 +86,7 @@ public abstract class LoadTask<V extends Model> extends Task.Backgroundable {
 	}
 
 	private static String readBody(HttpResponse response) throws IOException {
-		BufferedReader rd = new BufferedReader(
-				new InputStreamReader(response.getEntity().getContent()));
+		BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
 
 		StringBuffer result = new StringBuffer();
 		String line = "";
@@ -93,7 +96,6 @@ public abstract class LoadTask<V extends Model> extends Task.Backgroundable {
 
 		return result.toString();
 	}
-
 
 	public interface LoadListener {
 

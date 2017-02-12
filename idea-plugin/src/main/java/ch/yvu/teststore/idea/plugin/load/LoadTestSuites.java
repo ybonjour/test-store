@@ -3,7 +3,7 @@ package ch.yvu.teststore.idea.plugin.load;
 import static java.util.Arrays.stream;
 import static java.util.stream.Collectors.toList;
 
-import ch.yvu.teststore.idea.plugin.dto.TestSuiteOverviewDto;
+import ch.yvu.teststore.idea.plugin.dto.TestSuiteDto;
 import ch.yvu.teststore.idea.plugin.model.TestSuite;
 import com.google.gson.Gson;
 
@@ -17,12 +17,12 @@ public class LoadTestSuites extends LoadTask<TestSuite> {
 
 	@Override
 	public List<TestSuite> fetch() {
-		String json = getJson("/testsuites");
+		String json = getJson("/testsuites/raw");
 		Gson gson = new Gson();
-		TestSuiteOverviewDto[] testSuites = gson.fromJson(json, TestSuiteOverviewDto[].class);
+		TestSuiteDto[] testSuites = gson.fromJson(json, TestSuiteDto[].class);
 
 		return stream(testSuites) //
-				.map((TestSuiteOverviewDto dto) -> new TestSuite(dto.getTestSuite().getName(), dto.getTestSuite().getId(), getBaseUrl())) //
+				.map((TestSuiteDto dto) -> new TestSuite(dto.getName(), dto.getId(), getBaseUrl())) //
 				.collect(toList());
 	}
 }
