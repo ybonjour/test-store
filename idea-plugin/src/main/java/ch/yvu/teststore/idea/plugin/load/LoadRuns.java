@@ -24,7 +24,7 @@ public class LoadRuns extends LoadTask<Run> {
 
 	@Override
 	public List<Run> fetch() {
-		String json = getJson("/testsuites/" + testSuiteId + "/runs/overview?fetchSize=10");
+		String json = getJson("testsuites/" + testSuiteId + "/runs/overview?fetchSize=10");
 		Gson gson = new Gson();
 		PageDto<RunOverviewDto> runOverviewPage = gson.fromJson(json, new TypeToken<PageDto<RunOverviewDto>>() {
 

@@ -17,7 +17,7 @@ public class LoadTestSuites extends LoadTask<TestSuite> {
 
 	@Override
 	public List<TestSuite> fetch() {
-		String json = getJson("/testsuites/raw");
+		String json = getJson("testsuites/raw");
 		Gson gson = new Gson();
 		TestSuiteDto[] testSuites = gson.fromJson(json, TestSuiteDto[].class);
 

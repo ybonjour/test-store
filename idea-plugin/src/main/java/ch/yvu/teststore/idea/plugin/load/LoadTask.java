@@ -10,12 +10,11 @@ import com.intellij.openapi.progress.ProgressIndicator;
 import com.intellij.openapi.progress.Task;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.HttpClientBuilder;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
 
+import java.awt.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -27,8 +26,7 @@ public abstract class LoadTask<V extends Model> extends Task.Backgroundable {
 	private static int CONNECTION_TIMEOUT_MS = 30000;
 	private List<V> results;
 	private LoadListener loadListener;
-	protected final HttpClient httpClient = create()
-			.setDefaultRequestConfig(copy(DEFAULT).setConnectionRequestTimeout(CONNECTION_TIMEOUT_MS).build())
+	protected final HttpClient httpClient = create().setDefaultRequestConfig(copy(DEFAULT).setConnectionRequestTimeout(CONNECTION_TIMEOUT_MS).build())
 			.build();
 	private final String baseUrl;
 
@@ -50,7 +48,13 @@ public abstract class LoadTask<V extends Model> extends Task.Backgroundable {
 		try {
 			results = fetch();
 		} catch (Throwable t) {
-			loadListener.onError(t);
+			EventQueue.invokeLater(new Runnable() {
+
+				@Override
+				public void run() {
+					loadListener.onError(t);
+				}
+			});
 		}
 	}
 
@@ -68,7 +72,7 @@ public abstract class LoadTask<V extends Model> extends Task.Backgroundable {
 
 	protected String getJson(String path) {
 		try {
-			URL url = new URL(new URL(baseUrl), path);
+			URL url = new URL(baseUrl + "/" + path);
 			HttpGet get = new HttpGet(url.toString());
 
 			HttpResponse response = httpClient.execute(get);
