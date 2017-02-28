@@ -11,6 +11,7 @@
             <a (click)="unselectResult($event)">Close</a>
             <test-results [results]="[currentResult]"></test-results>
         </div>
+        <span class="failureReason" *ngIf="result.failureReason">{{result.failureReason.charAt(0)}}</span>
     </li>
 </ul>
 <div *ngIf="durations" class="chart-container">
