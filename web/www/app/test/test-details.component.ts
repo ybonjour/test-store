@@ -15,23 +15,23 @@ import {TestWithResults} from "../test-result/test-with-results";
     styleUrls: ['app/test/test-details.css'],
     directives: [NgClass, CORE_DIRECTIVES, FORM_DIRECTIVES, TestResultsComponent],
 })
-export class TestDetailsComponent implements OnInit{
-    testSuiteId: string;
-    testName: string;
-    results: TestResult[] = [];
-    durations: number[];
-    durationsSuggestedMax: number;
-    labels: string[];
-    pointBackgroundColors: string[];
-    statistics: TestStatistics;
-    errorMessage: string;
+export class TestDetailsComponent implements OnInit {
+    testSuiteId:string;
+    testName:string;
+    results:TestResult[] = [];
+    durations:number[];
+    durationsSuggestedMax:number;
+    labels:string[];
+    pointBackgroundColors:string[];
+    statistics:TestStatistics;
+    errorMessage:string;
 
-    currentResult: TestWithResults = null;
+    currentResult:TestResult = null;
 
-    constructor(
-        private _routeParams: RouteParams,
-        private _testResultService: TestResultService,
-        private _testStatisticsService: TestStatisticsService) {}
+    constructor(private _routeParams:RouteParams,
+                private _testResultService:TestResultService,
+                private _testStatisticsService:TestStatisticsService) {
+    }
 
     ngOnInit():any {
         this.testSuiteId = this._routeParams.get('testsuite_id');
@@ -49,34 +49,46 @@ export class TestDetailsComponent implements OnInit{
         )
     }
 
-    selectResult(runId: string, testName: string){
-        this._testResultService.getResult(runId, testName).subscribe(
-            result => this.currentResult = result
-        )
+    selectResult(testResult:TestResult) {
+        this.currentResult = testResult;
     }
 
-    unselectResult(event: Event) {
+    unselectResult(event:Event) {
         this.currentResult = null;
         event.stopPropagation();
     }
 
-    isCurrentResult(runId: string, testName: string): boolean{
-        if(this.currentResult == null) return false;
+    stopEventPropagation(event:Event) {
+        event.stopPropagation();
+    }
 
-        return this.currentResult.getRunId() == runId &&
-            this.currentResult.testName == testName
+    isCurrentResult(result:TestResult):boolean {
+        return result == this.currentResult
+    }
+
+    private singleResult(testResult:TestResult):TestWithResults {
+        let result = new TestWithResults();
+        result.testName = testResult.testName;
+        result.testResult = testResult.passed ? "PASSED" : "FAILED";
+        result.results = [testResult];
+
+        return result;
     }
 
     private handleResults(page:Page<TestResult>) {
         this.results = page.results;
-        this.durations = page.results.map((r) => { return r.durationMillis / 1000 });
-        this.labels = page.results.map((r) => { return r.time.toLocaleDateString() + " " + r.time.toLocaleTimeString(); });
+        this.durations = page.results.map((r) => {
+            return r.durationMillis / 1000
+        });
+        this.labels = page.results.map((r) => {
+            return r.time.toLocaleDateString() + " " + r.time.toLocaleTimeString();
+        });
 
         this.durationsSuggestedMax = Math.max.apply(null, this.durations) * 1.2;
         this.pointBackgroundColors = [];
 
-        for(let result of page.results) {
-            if(result.passed) {
+        for (let result of page.results) {
+            if (result.passed) {
                 this.pointBackgroundColors.push("#00AA00");
             } else {
                 this.pointBackgroundColors.push("#AA0000");

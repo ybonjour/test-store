@@ -57,6 +57,7 @@ span.failureReason {
     border: 2px solid #AAAAAA;
     padding-left: 10px;
     padding-right: 10px;
+    z-index: 100;
 }
 
 a {
