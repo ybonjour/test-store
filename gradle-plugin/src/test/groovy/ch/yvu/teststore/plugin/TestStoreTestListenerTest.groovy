@@ -8,6 +8,7 @@ import org.mockito.Mock
 
 import static java.util.UUID.randomUUID
 import static org.gradle.api.tasks.testing.TestResult.ResultType.*
+import static org.mockito.ArgumentMatchers.*
 import static org.mockito.Mockito.*
 import static org.mockito.MockitoAnnotations.initMocks
 
@@ -223,6 +224,28 @@ class TestStoreTestListenerTest {
 
         listener.beforeTest(TEST_DESCRIPTOR_1)
         listener.afterTest(TEST_DESCRIPTOR_1, result)
+
+        // success if no exception has been thrown
+    }
+
+    @Test
+    public void swallowsExceptionWhenInsertingRun() {
+        extension.incremental = true
+        doThrow(new RuntimeException()).when(client).createRun(anyString(), any(Date.class))
+
+        listener.beforeTest(TEST_DESCRIPTOR_1)
+
+        // success if no exception has been thrown
+    }
+
+    @Test
+    public void swallowsExceptionWhenInsertingScmChange() {
+        extension.incremental = true
+        when(scmChanges.getChanges()).thenReturn(Collections.singletonList(mock(ScmChanges.ScmChange.class)))
+        doThrow(new RuntimeException()).when(client).insertScmChange(
+                any(UUID.class), any(ScmChanges.ScmChange.class), anyString())
+
+        listener.beforeTest(TEST_DESCRIPTOR_1);
 
         // success if no exception has been thrown
     }

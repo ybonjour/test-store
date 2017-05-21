@@ -36,12 +36,25 @@ class TestStoreTestListener implements TestListener {
         if (!pluginExtension.incremental) return
 
         if (runId == null) {
+            runId = insertRun();
+        }
+    }
+
+    private UUID insertRun() {
+        try {
             TeststoreClient client = clientFactory.createClient();
-            runId = client.createRun(pluginExtension.revision, new Date());
+
+            UUID runId = client.createRun(pluginExtension.revision, new Date());
+
             ScmChanges scmChanges = scmChangesFactory.createScmChanges();
             for(ScmChanges.ScmChange scmChange : scmChanges.getChanges()) {
                 client.insertScmChange(runId, scmChange, pluginExtension.changesUrlTemplate)
             }
+
+            return runId;
+        } catch(Exception e){
+            System.err.println("Result could not be sent to test-store")
+            return null;
         }
     }
 
