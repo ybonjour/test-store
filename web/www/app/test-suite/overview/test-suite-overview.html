@@ -2,13 +2,26 @@
     <h1>{{testSuite.name}}</h1>
 
     <b>test-store gradle plugin configuration</b>
-    <pre>teststore {{ '{' }}
+    <pre>buildscript &#x007B;
+    repositories &#x007B;
+        maven &#x007B;
+            url 'https://plugins.gradle.org/m2/'
+        &#x007D;
+    &#x007D;
+    dependencies &#x007B;
+        classpath 'gradle.plugin.ch.yvu.teststore:gradle-plugin:0.12'
+    &#x007D;
+&#x007D;
+
+apply plugin: 'ch.yvu.teststore'
+
+teststore &#x007B;
     host '{{hostname}}'
     port  8080
     testSuite '{{testSuite.id}}'
     revision System.properties['revision']
     xmlReports ~/.*\/test-results\/TEST-.*\.xml/
     incremental false
-    {{ '}' }}
+&#x007D;
     </pre>
 </div>
