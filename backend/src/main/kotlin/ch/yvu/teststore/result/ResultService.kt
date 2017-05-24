@@ -37,11 +37,16 @@ open class ResultService @Autowired constructor(
                 }.firstOrNull()
     }
 
-    fun getResultsByTestSuiteAndTestName(testSuiteId: UUID, testName: String, page :String?=null): Page<Result> {
-        val runsPage = runRepository.findAllByTestSuiteId(testSuiteId, page)
+    fun getResultsByTestSuiteAndTestName(testSuiteId: UUID, testName: String, page :String?=null, fetchSize: Int?=null): Page<Result> {
+        val runsPage = runRepository.findAllByTestSuiteId(testSuiteId, page, fetchSize)
         val results = runsPage.results.flatMap {
             resultRepository.findAllByRunIdAndTestName(it.id!!, testName)
         }
-        return Page(results, runsPage.nextPage)
+
+        if(runsPage.nextPage == null || !results.isEmpty()) {
+            return Page(results, runsPage.nextPage);
+        } else {
+            return getResultsByTestSuiteAndTestName(testSuiteId, testName, runsPage.nextPage, fetchSize);
+        }
     }
 }

@@ -7,12 +7,17 @@ import ch.yvu.teststore.run.RunRepository
 import java.util.*
 
 open class ListBackedRunRepository(val genericRepository: ListBackedRepository<Run>) : RunRepository {
+
     override fun findAllByTestSuiteId(testSuiteId: UUID, maxRows: Int): List<Run> {
         return findAllByTestSuiteId(testSuiteId).take(maxRows)
     }
 
     override fun findAllByTestSuiteId(testSuiteId: UUID, page: String?, fetchSize: Int?): Page<Run> {
-        return Page(findAllByTestSuiteId(testSuiteId), null);
+        val allElements = findAllByTestSuiteId(testSuiteId)
+        val start = page?.toInt() ?: 0
+        val end = if (fetchSize == null) allElements.size else start + fetchSize;
+        val nextPage = if (end >= allElements.size) null else end.toString()
+        return Page(allElements.subList(start, end), nextPage);
     }
 
     override fun findById(id: UUID): Run? {

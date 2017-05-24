@@ -186,6 +186,38 @@ class ResultServiceTest {
         assertEquals(0, resultPage.results.size)
     }
 
+    @Test fun getResultsByTestSuiteAndTestNameSkipsEmptyRunsAtTheBeginning() {
+        val testSuiteId = randomUUID()
+        val emptyRun = Run(randomUUID(), testSuiteId, "abc-124", Date(2))
+        runRepository.save(emptyRun)
+        val run = Run(randomUUID(), testSuiteId, "def-567", Date(1))
+        runRepository.save(run)
+
+        val result = Result(run.id, "myTest", 0, true, 42, Date())
+        resultRepository.save(result)
+
+        val resultPage = resultService.getResultsByTestSuiteAndTestName(testSuiteId, result.testName!!, null, 1)
+
+        assertEquals(1, resultPage.results.size)
+    }
+
+    @Test fun getResultsByTestSuiteAndTestNameRespectsFetchSize() {
+        val testSuiteId = randomUUID()
+        val run1 = Run(randomUUID(), testSuiteId, "abc-123", Date(1))
+        runRepository.save(run1)
+        val result1 = Result(run1.id, "myTest", 0, true, 42, Date())
+        resultRepository.save(result1)
+
+        val run2 = Run(randomUUID(), testSuiteId, "def-456", Date(2))
+        runRepository.save(run2)
+        val result2 = Result(run2.id, result1.testName, 0, true, 42, Date())
+        resultRepository.save(result2)
+
+        val resultPage = resultService.getResultsByTestSuiteAndTestName(testSuiteId, result1.testName!!, null, 1)
+
+        assertEquals(result2, resultPage.results.get(0))
+    }
+
     private fun fromResult(result: Result): TestWithResults {
         return TestWithResults(result.testName!!).addResult(result)
     }
