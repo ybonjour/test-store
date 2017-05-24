@@ -51,13 +51,14 @@ export class TestStatisticsComponent implements OnInit{
     extractStatistics(testStatisticsPage: Page<TestStatistics>) {
         this.testStatistics = this.testStatistics.concat(testStatisticsPage.results);
         this.nextPage = testStatisticsPage.nextPage;
-        let extractor = TestStatisticsComponent.getExtractor(this.orderBy);
-        if(extractor) {
-            this.testStatistics.sort(this.comparator(extractor))
-        }
 
         if(this.nextPage != null) {
             this.getStatistics(this.testSuiteId);
+        } else {
+            let extractor = TestStatisticsComponent.getExtractor(this.orderBy);
+            if(extractor) {
+                this.testStatistics.sort(this.comparator(extractor))
+            }
         }
     }
 
