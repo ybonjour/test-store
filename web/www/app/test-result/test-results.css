@@ -29,6 +29,12 @@ li.try .name {
     width: 100%;
 }
 
+.time {
+    font-weight: normal;
+    font-size: smaller;
+    padding-left: 5px;
+}
+
 li.result .duration,
 li.try .duration
 {

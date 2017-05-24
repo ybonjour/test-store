@@ -7,7 +7,7 @@
             <ul *ngIf="result.testResult == 'FAILED' || result.testResult == 'RETRIED'" class="tries">
                 <li *ngFor="let try of result.results" class="try" [ngClass]="{'passed': result.testResult == 'RETRIED' && try.passed, 'failed': result.testResult == 'RETRIED' && !try.passed}">
                     <div class="title">
-                        <span class="name">Try {{try.retryNum + 1}}</span>
+                        <span class="name">Try {{try.retryNum + 1}}: <span class="time">{{try.time.toLocaleString()}}</span></span>
                         <span *ngIf="!try.passed">
                             <span class="reason" *ngFor="let failureReason of failureReasons()">
                                 <span (click)="updateFailureReason(try, failureReason.name)" [ngClass]="{selected: try.failureReason == failureReason.name}">{{failureReason.name}}</span>
@@ -21,6 +21,9 @@
                 </li>
             </ul>
 
+            <span *ngIf="result.testResult == 'PASSED'" class="time">
+                {{result.results[0].time.toLocaleString()}}
+            </span>
             <span *ngIf="result.testResult == 'PASSED'" class="duration">
                 <duration [durationMillis]="result.results[0].durationMillis"></duration>
             </span>
