@@ -15,7 +15,7 @@ export class TestStatisticsComponent implements OnInit{
     orderBy: string;
     orderDirection: string;
     nextPage: string = null;
-    fetchSize: number = 10;
+    fetchSize: number = 200;
     testStatistics: TestStatistics[] = [];
     errorMessage: string;
 
