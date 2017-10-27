@@ -17,5 +17,5 @@ intellij {
 patchPluginXml {
     version 0.1
     sinceBuild 145
-    untilBuild 172
+    untilBuild 174
 }
