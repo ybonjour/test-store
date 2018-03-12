@@ -8,7 +8,7 @@
 Simply run
 ```
 ./scripts/build-all.sh
-docker-compose up -d
+docker-compose up -f docker-compose-dev.yml -d
 ```
 then the service is avialable on your docker host on port `8080`
 
