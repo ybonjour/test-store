@@ -8,9 +8,6 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/gradle-plugin/gradle-plugin.iml" filepath="$PROJECT_DIR$/.idea/modules/gradle-plugin/gradle-plugin.iml" group="gradle-plugin" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/gradle-plugin/gradle-plugin_main.iml" filepath="$PROJECT_DIR$/.idea/modules/gradle-plugin/gradle-plugin_main.iml" group="gradle-plugin" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/gradle-plugin/gradle-plugin_test.iml" filepath="$PROJECT_DIR$/.idea/modules/gradle-plugin/gradle-plugin_test.iml" group="gradle-plugin" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/idea-plugin/idea-plugin.iml" filepath="$PROJECT_DIR$/.idea/modules/idea-plugin/idea-plugin.iml" group="idea-plugin" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/idea-plugin/idea-plugin_main.iml" filepath="$PROJECT_DIR$/.idea/modules/idea-plugin/idea-plugin_main.iml" group="idea-plugin" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/idea-plugin/idea-plugin_test.iml" filepath="$PROJECT_DIR$/.idea/modules/idea-plugin/idea-plugin_test.iml" group="idea-plugin" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/teststore.iml" filepath="$PROJECT_DIR$/.idea/modules/teststore.iml" />
     </modules>
   </component>
