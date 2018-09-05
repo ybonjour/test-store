@@ -4,5 +4,5 @@ services:
   - docker
 
 script:
-- 'if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"; ./scripts/build-package-publish.sh; fi'
-- 'if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then ./scripts/build-package-dev.sh; fi'
+- 'if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"; ./scripts/build-package-publish.sh; fi'
+- 'if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then ./scripts/build-package-dev.sh; fi'
