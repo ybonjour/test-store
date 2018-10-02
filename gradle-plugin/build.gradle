@@ -38,7 +38,7 @@ pluginBundle {
     website = 'https://github.com/ybonjour/test-store'
     vcsUrl = 'https://github.com/ybonjour/test-store'
     description = 'Stores your test results'
-    tags = ['tests', 'continious integration', 'store']
+    tags = ['tests', 'continuous integration', 'store']
 
     plugins {
         testStorePlugin {
