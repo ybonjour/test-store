@@ -10,18 +10,39 @@
         <sourceRoots />
       </configuration>
     </facet>
+    <facet type="kotlin-language" name="Kotlin">
+      <configuration version="3" platform="JVM 1.6" useProjectSettings="false">
+        <compilerSettings />
+        <compilerArguments>
+          <option name="destination" value="$MODULE_DIR$/../../../backend/build/classes/kotlin/test" />
+          <option name="noStdlib" value="true" />
+          <option name="noReflect" value="true" />
+          <option name="moduleName" value="backend" />
+          <option name="addCompilerBuiltIns" value="true" />
+          <option name="loadBuiltInsFromDependencies" value="true" />
+          <option name="languageVersion" value="1.2" />
+          <option name="apiVersion" value="1.2" />
+          <option name="pluginOptions">
+            <array />
+          </option>
+          <option name="pluginClasspaths">
+            <array />
+          </option>
+          <option name="coroutinesState" value="warn" />
+          <option name="errors">
+            <ArgumentParseErrors />
+          </option>
+        </compilerArguments>
+      </configuration>
+    </facet>
   </component>
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_8">
     <output-test url="file://$MODULE_DIR$/../../../backend/out/test/classes" />
     <exclude-output />
     <content url="file://$MODULE_DIR$/../../../backend/src/test">
-      <sourceFolder url="file://$MODULE_DIR$/../../../backend/src/test/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../backend/src/test/kotlin" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../backend/src/test/resources" type="java-test-resource" />
     </content>
-    <content url="file://$MODULE_DIR$/../../../backend/test">
-      <sourceFolder url="file://$MODULE_DIR$/../../../backend/test/main/kotlin" isTestSource="true" />
-    </content>
+    <content url="file://$MODULE_DIR$/../../../backend/test" />
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="backend_main" />

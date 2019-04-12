@@ -5,7 +5,6 @@
     <exclude-output />
     <content url="file://$MODULE_DIR$/../../../gradle-plugin/src/main">
       <sourceFolder url="file://$MODULE_DIR$/../../../gradle-plugin/src/main/groovy" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../gradle-plugin/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../gradle-plugin/src/main/resources" type="java-resource" />
     </content>
     <orderEntry type="inheritedJdk" />
