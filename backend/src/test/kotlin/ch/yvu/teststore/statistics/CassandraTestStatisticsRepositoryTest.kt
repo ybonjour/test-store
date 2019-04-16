@@ -9,8 +9,8 @@ import com.datastax.driver.mapping.Mapper
 import com.datastax.driver.mapping.MappingManager
 import org.junit.Before
 import org.junit.Test
-import org.mockito.Matchers
-import org.mockito.Matchers.*
+import org.mockito.ArgumentMatchers.any
+import org.mockito.ArgumentMatchers.anyString
 import org.mockito.Mock
 import org.mockito.Mockito.`when`
 import org.mockito.Mockito.verify
@@ -40,24 +40,27 @@ class CassandraTestStatisticsRepositoryTest {
 
     lateinit var repository: CassandraTestStatisticsRepository
 
-    @Before fun setUp() {
+    @Before
+    fun setUp() {
         initMocks(this)
         `when`(mappingManager.session).thenReturn(session)
         `when`(mappingManager.mapper(TestStatistics::class.java)).thenReturn(mapper)
 
-        `when`(queryFactory.createQuery(Matchers.anyString(), anyCollection())).thenReturn(query)
+        `when`(queryFactory.createQuery(anyString(), any())).thenReturn(query)
         repository = CassandraTestStatisticsRepository(mappingManager, queryFactory)
         repository.pagedResultFetcher = pagedResultFetcher
     }
 
-    @Test fun findAllByTestSuitePagedReturnsCorrectResult() {
+    @Test
+    fun findAllByTestSuitePagedReturnsCorrectResult() {
         val page = Page(emptyList<TestStatistics>(), null)
         `when`(pagedResultFetcher.fetch(query, null)).thenReturn(page)
 
         repository.findAllByTestSuitePaged(randomUUID())
     }
 
-    @Test fun findAllByTestSuitePagedPassesPageCorrectly() {
+    @Test
+    fun findAllByTestSuitePagedPassesPageCorrectly() {
         val page = "abcdef"
 
         repository.findAllByTestSuitePaged(randomUUID(), page)
@@ -65,14 +68,16 @@ class CassandraTestStatisticsRepositoryTest {
         verify(pagedResultFetcher).fetch(query, page)
     }
 
-    @Test fun findAllByTestSuitePagedPassesFetchSizeCorrecly() {
+    @Test
+    fun findAllByTestSuitePagedPassesFetchSizeCorrecly() {
         val fetchSize = 2
-        repository.findAllByTestSuitePaged(randomUUID(), fetchSize=fetchSize)
+        repository.findAllByTestSuitePaged(randomUUID(), fetchSize = fetchSize)
 
         verify(pagedResultFetcher).fetch(query, fetchSize = fetchSize)
     }
 
-    @Test fun findAllByTestSuitePagedUsesNullAsDefaultValuesForPageAndFetchSize() {
+    @Test
+    fun findAllByTestSuitePagedUsesNullAsDefaultValuesForPageAndFetchSize() {
         repository.findAllByTestSuitePaged(randomUUID())
 
         verify(pagedResultFetcher).fetch(query, page = null, fetchSize = null)

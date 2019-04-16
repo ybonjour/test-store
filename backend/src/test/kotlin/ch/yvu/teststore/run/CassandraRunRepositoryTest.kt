@@ -8,6 +8,7 @@ import com.datastax.driver.mapping.Result
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
+import org.mockito.ArgumentMatchers
 import org.mockito.Mock
 import org.mockito.Mockito.*
 import org.mockito.MockitoAnnotations.initMocks
@@ -48,7 +49,7 @@ class CassandraRunRepositoryTest {
         initMocks(this)
         `when`(mappingManager.session).thenReturn(session)
         `when`(mappingManager.mapper(Run::class.java)).thenReturn(mapper)
-        `when`(queryFactory.createQuery(anyString(), anyCollection())).thenReturn(query)
+        `when`(queryFactory.createQuery(anyString(), any())).thenReturn(query)
 
         repository = CassandraRunRepository(mappingManager, queryFactory)
         repository.pagedResultFetcher = pagedResultFetcher

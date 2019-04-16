@@ -6,19 +6,17 @@ import com.datastax.driver.mapping.Mapper
 import com.datastax.driver.mapping.MappingManager
 import com.datastax.driver.mapping.Result
 import com.datastax.driver.mapping.annotations.Table
-import org.hamcrest.Description
-import org.hamcrest.Matcher
-import org.hamcrest.TypeSafeMatcher
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
-import org.mockito.Matchers
-import org.mockito.Matchers.any
-import org.mockito.Matchers.eq
 import org.mockito.Mock
-import org.mockito.Mockito.*
+import org.mockito.Mockito.`when`
+import org.mockito.Mockito.any
+import org.mockito.Mockito.anyString
+import org.mockito.Mockito.eq
+import org.mockito.Mockito.mock
+import org.mockito.Mockito.verify
 import org.mockito.MockitoAnnotations.initMocks
-
 
 class CassandraRepositoryTest {
     companion object {
@@ -40,7 +38,8 @@ class CassandraRepositoryTest {
 
     lateinit var repository: MyRepository
 
-    @Before fun setUp() {
+    @Before
+    fun setUp() {
         initMocks(this)
         `when`(mappingManager.session).thenReturn(session)
         `when`(mappingManager.mapper(MyModel::class.java)).thenReturn(mapper)
@@ -48,18 +47,21 @@ class CassandraRepositoryTest {
         repository = MyRepository(mappingManager)
     }
 
-    @Test fun canSaveAnItem() {
+    @Test
+    fun canSaveAnItem() {
         repository.save(ITEM)
 
         verify(mapper).save(eq(ITEM), any(Mapper.Option::class.java));
     }
 
-    @Test fun returnsSavedItem() {
+    @Test
+    fun returnsSavedItem() {
         val result = repository.save(ITEM)
         assertEquals(ITEM, result)
     }
 
-    @Test fun findAllSendsCorrectQuery() {
+    @Test
+    fun findAllSendsCorrectQuery() {
         val resultSet = mock(ResultSet::class.java)
         `when`(session.execute(anyString())).thenReturn(resultSet)
         `when`(mapper.map(resultSet)).thenReturn(result)
@@ -70,7 +72,8 @@ class CassandraRepositoryTest {
         verify(session).execute("SELECT * FROM myTable")
     }
 
-    @Test fun findAllReturnsCorrectResult() {
+    @Test
+    fun findAllReturnsCorrectResult() {
         val model = MyModel("Foo")
         val resultSet = mock(ResultSet::class.java)
         `when`(session.execute(anyString())).thenReturn(resultSet)
@@ -82,12 +85,12 @@ class CassandraRepositoryTest {
         assertEquals(listOf(model), result)
     }
 
-    @Test fun deleteAllSendsCorrectQuery() {
+    @Test
+    fun deleteAllSendsCorrectQuery() {
         repository.deleteAll()
 
         verify(mapper).deleteQuery("DELETE FROM myTable")
     }
-
 
     @Table(name = "myTable")
     data class MyModel(var name: String) : Model

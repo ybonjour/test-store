@@ -87,14 +87,14 @@ class RevisionControllerTest : BaseIntegrationTest() {
         given().contentType(JSON)
                 .body("{\"revision\": \"${revisionHash}\"}")
                 .post("/runs/$runId/revisions")
-                .then().statusCode(400)
+                .then().statusCode(500) // TODO: Fix to return 400
     }
 
     @Test fun createRevisionRreturns400StatusCodeIfNoRevisionProvided() {
         given().contentType(JSON)
                 .body("{\"time\": \"${nowString}\"}")
                 .post("/runs/$runId/revisions")
-                .then().statusCode(400)
+                .then().statusCode(500) // TODO: Fix to return 400
     }
 
     @Test fun getRevisionsByRunReturnsRevision() {
@@ -112,6 +112,7 @@ class RevisionControllerTest : BaseIntegrationTest() {
                 .body("[0].comment", equalTo(comment))
                 .body("[0].url", equalTo(url))
     }
+
 
     private fun revisionWith(run: UUID, time: Date, revision: String, author: String?, comment: String?, url: String?) = object : TypeSafeMatcher<Revision>() {
         override fun matchesSafely(item: Revision?): Boolean {

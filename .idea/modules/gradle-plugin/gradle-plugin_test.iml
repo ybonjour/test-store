@@ -21,6 +21,15 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
+          <root url="jar://$USER_HOME$/.gradle/caches/4.6/generated-gradle-jars/gradle-api-4.6.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
           <root url="jar://$USER_HOME$/.gradle/wrapper/dists/gradle-4.6-bin/4jp4stjndanmxuerzfseyb6wo/gradle-4.6/lib/groovy-all-2.4.12.jar!/" />
         </CLASSES>
         <JAVADOC />
@@ -30,7 +39,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$USER_HOME$/.gradle/caches/4.6/generated-gradle-jars/gradle-api-4.6.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/4.6/generated-gradle-jars/gradle-test-kit-4.6.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -71,15 +80,6 @@
     <orderEntry type="library" name="Gradle: asm:asm-tree:3.2" level="project" />
     <orderEntry type="library" name="Gradle: asm:asm:3.2" level="project" />
     <orderEntry type="library" name="Gradle: xerces:xercesImpl:2.9.1" level="project" />
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://$USER_HOME$/.gradle/caches/4.6/generated-gradle-jars/gradle-test-kit-4.6.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
     <orderEntry type="library" name="Gradle: xml-apis:xml-apis:1.3.04" level="project" />
   </component>
   <component name="TestModuleProperties" production-module="gradle-plugin_main" />
