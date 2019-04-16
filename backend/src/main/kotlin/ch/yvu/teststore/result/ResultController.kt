@@ -25,7 +25,7 @@ class ResultController @Autowired constructor(
 
     @RequestMapping(
             method = arrayOf(POST),
-            value = "/runs/{run}/results",
+            value = ["/runs/{run}/results"],
             headers = arrayOf("content-type=application/json")
     )
     fun createResultJson(
@@ -37,14 +37,14 @@ class ResultController @Autowired constructor(
         response.status = 201
     }
 
-    @RequestMapping(method = arrayOf(GET), value = "/runs/{run}/results")
+    @RequestMapping(method = arrayOf(GET), value = ["/runs/{run}/results"])
     fun getResults(
             @PathVariable run: UUID,
             @RequestParam(value = "testresult", required = false) testResult: TestResult?): List<TestWithResults> {
         return resultService.getTestsWithResults(run, testResult);
     }
 
-    @RequestMapping(method = arrayOf(GET), value = "/runs/{run}/results/filtered")
+    @RequestMapping(method = arrayOf(GET), value = ["/runs/{run}/results/filtered"])
     fun getResultByRunAndTestName(
             @PathVariable run: UUID,
             @RequestParam(value = "testname", required = true) testName: String
@@ -55,13 +55,13 @@ class ResultController @Autowired constructor(
         return ResponseEntity(result, OK)
     }
 
-    @RequestMapping(method = arrayOf(GET), value = "/runs/{run}/results/grouped")
+    @RequestMapping(method = arrayOf(GET), value = ["/runs/{run}/results/grouped"])
     fun getAllResultsGrouped(
             @PathVariable run: UUID): Map<TestResult, List<TestWithResults>> {
         return resultService.getGroupedResults(run)
     }
 
-    @RequestMapping(method = arrayOf(GET), value = "/runs/{run}/results/diff")
+    @RequestMapping(method = arrayOf(GET), value = ["/runs/{run}/results/diff"])
     fun getDiffToPrevRun(
             @PathVariable run: UUID): ResponseEntity<Map<ResultDiffService.DiffCategory, List<TestWithResults>>> {
 
@@ -73,7 +73,7 @@ class ResultController @Autowired constructor(
         return ResponseEntity(resultDiffService.findDiff(prevRun?.id, currentRun.id!!), OK)
     }
 
-    @RequestMapping(method = arrayOf(GET), value = "/testsuites/{testSuite}/tests/{testName:.+}")
+    @RequestMapping(method = arrayOf(GET), value = ["/testsuites/{testSuite}/tests/{testName:.+}"])
     fun getResultsByTestSuiteAndTestName(
             @PathVariable testSuite: UUID,
             @PathVariable testName: String,
@@ -83,7 +83,7 @@ class ResultController @Autowired constructor(
         return resultService.getResultsByTestSuiteAndTestName(testSuite, decodedTestName, page)
     }
 
-    @RequestMapping(method = arrayOf(PUT), value = "/runs/{run}/tests/{testName:.+}/{retryNum}")
+    @RequestMapping(method = arrayOf(PUT), value = ["/runs/{run}/tests/{testName:.+}/{retryNum}"])
     fun updateFailureReason(
             @PathVariable run: UUID,
             @PathVariable testName: String,
