@@ -1,6 +1,6 @@
-FROM java:8-jre
+FROM java:8-jre-alpine
 ADD ./build/libs/backend-0.1.0.jar /app/teststore.jar
-ADD ./scripts /scripts
+COPY ./scripts /scripts
 WORKDIR /app
-RUN apt-get update && apt-get install -y netcat
+RUN apk add --update --no-cache netcat-openbsd bash
 CMD /scripts/wait-for-cassandra.sh $CASSANDRA_HOST $CASSANDRA_PORT && java -jar /app/teststore.jar --cassandra.contactPoints=$CASSANDRA_HOST
