@@ -9,7 +9,7 @@ import java.util.*
 
 @RestController
 class HistoryController @Autowired constructor(val historyService: HistoryService) {
-    @RequestMapping(method = arrayOf(GET), value = "/testsuites/{testSuite}/history/testnames")
+    @RequestMapping(method = arrayOf(GET), value = ["/testsuites/{testSuite}/history/testnames"])
     fun getTestNames(
             @PathVariable testSuite: UUID,
             @RequestParam(value="limit") limit:Int): List<String> {
@@ -22,7 +22,7 @@ class HistoryController @Autowired constructor(val historyService: HistoryServic
     // Need to find a better solution for that.
     @RequestMapping(
             method = arrayOf(POST),
-            value = "/testsuites/{testSuite}/history/results",
+            value = ["/testsuites/{testSuite}/history/results"],
             headers = arrayOf("content-type=application/json"))
     fun getResults(
             @PathVariable testSuite: UUID,

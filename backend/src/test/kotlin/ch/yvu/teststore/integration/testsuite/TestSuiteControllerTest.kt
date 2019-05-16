@@ -10,8 +10,8 @@ import ch.yvu.teststore.run.overview.RunStatistics.RunResult.PASSED
 import ch.yvu.teststore.run.overview.RunStatistics.RunResult.UNKNOWN
 import ch.yvu.teststore.testsuite.TestSuite
 import ch.yvu.teststore.testsuite.TestSuiteRepository
-import com.jayway.restassured.RestAssured.given
-import com.jayway.restassured.http.ContentType.JSON
+import io.restassured.RestAssured.given
+import io.restassured.http.ContentType.JSON
 import org.hamcrest.Matchers.*
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertThat

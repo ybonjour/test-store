@@ -16,7 +16,7 @@ import java.util.*
 @RestController
 class StatisticsController @Autowired constructor(val testStatisticsRepository: TestStatisticsRepository){
 
-    @RequestMapping(method = arrayOf(GET), value = "/testsuites/{testSuite}/statistics")
+    @RequestMapping(method = arrayOf(GET), value = ["/testsuites/{testSuite}/statistics"])
     fun getStatisticsByTestSuitePaged(
             @PathVariable testSuite: UUID,
             @RequestParam(name = "page", required = false) page: String?,
@@ -25,7 +25,7 @@ class StatisticsController @Autowired constructor(val testStatisticsRepository: 
         return testStatisticsRepository.findAllByTestSuitePaged(testSuite, page, fetchSize)
     }
 
-    @RequestMapping(method = arrayOf(GET), value = "/testsuites/{testSuite}/statistics/{testName:.+}")
+    @RequestMapping(method = arrayOf(GET), value = ["/testsuites/{testSuite}/statistics/{testName:.+}"])
     fun getStatisticsByTestSuiteAndTestName(
             @PathVariable testSuite: UUID,
             @PathVariable testName: String): ResponseEntity<TestStatistics> {

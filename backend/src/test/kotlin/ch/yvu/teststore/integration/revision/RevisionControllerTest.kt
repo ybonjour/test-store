@@ -1,14 +1,12 @@
 package ch.yvu.teststore.integration.revision
 
 import ch.yvu.teststore.integration.BaseIntegrationTest
-import ch.yvu.teststore.integration.result.ResultControllerTest
 import ch.yvu.teststore.revision.Revision
 import ch.yvu.teststore.revision.RevisionDto
 import ch.yvu.teststore.revision.RevisionRepository
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.jayway.restassured.RestAssured.given
-import com.jayway.restassured.http.ContentType
-import com.jayway.restassured.http.ContentType.JSON
+import io.restassured.RestAssured.given
+import io.restassured.http.ContentType.JSON
 import org.hamcrest.Description
 import org.hamcrest.Matchers.equalTo
 import org.hamcrest.Matchers.hasItem

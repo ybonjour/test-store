@@ -21,7 +21,7 @@ class RunController @Autowired constructor(val runRepository: RunRepository, val
 
     @RequestMapping(
             method = arrayOf(POST),
-            value = "/testsuites/{testSuite}/runs",
+            value = ["/testsuites/{testSuite}/runs"],
             headers = arrayOf("content-type=application/json"))
     fun createRunJson(
             @PathVariable testSuite: UUID,
@@ -35,7 +35,7 @@ class RunController @Autowired constructor(val runRepository: RunRepository, val
         return run
     }
 
-    @RequestMapping(method = arrayOf(GET), value = "/testsuites/{testSuite}/runs/last")
+    @RequestMapping(method = arrayOf(GET), value = ["/testsuites/{testSuite}/runs/last"])
     fun getLastRunOverview(@PathVariable testSuite: UUID): ResponseEntity<RunOverview> {
         val lastRun = runOverviewService.getLastRunOverview(testSuite)
         if (!lastRun.isPresent) {
@@ -45,7 +45,7 @@ class RunController @Autowired constructor(val runRepository: RunRepository, val
         return ResponseEntity(lastRun.get(), OK)
     }
 
-    @RequestMapping(method = arrayOf(GET), value = "testsuites/{testSuite}/runs/overview")
+    @RequestMapping(method = arrayOf(GET), value = ["testsuites/{testSuite}/runs/overview"])
     fun getRunOverviewsPaged(
             @PathVariable testSuite: UUID,
             @RequestParam(name = "page", required = false) page: String?,

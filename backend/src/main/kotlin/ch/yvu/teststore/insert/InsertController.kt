@@ -13,7 +13,7 @@ class InsertController @Autowired constructor(val insertService: InsertService) 
 
     @RequestMapping(
             method = arrayOf(POST),
-            value = "/runs/{run}/results",
+            value = ["/runs/{run}/results"],
             headers = arrayOf("content-type=application/xml"))
     fun insert(@PathVariable run: UUID, @RequestBody body: String) {
 
