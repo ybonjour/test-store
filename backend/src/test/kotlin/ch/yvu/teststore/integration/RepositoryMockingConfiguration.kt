@@ -25,8 +25,8 @@ import org.springframework.stereotype.Repository
         DataSourceAutoConfiguration::class,
         CassandraDataAutoConfiguration::class))
 @ComponentScan(basePackages = arrayOf("ch.yvu.teststore"), excludeFilters = arrayOf(
-        Filter(type = ANNOTATION, value = Repository::class),
-        Filter(type = ANNOTATION, value = Configuration::class)))
+        Filter(type = ANNOTATION, value = [Repository::class]),
+        Filter(type = ANNOTATION, value = [Configuration::class])))
 open class RepositoryMockingConfiguration {
 
     @Bean

@@ -23,7 +23,7 @@ class TestSuiteController @Autowired constructor(val testSuiteRepository: TestSu
 
     @RequestMapping(
             method = arrayOf(POST),
-            value = "/testsuites",
+            value = ["/testsuites"],
             headers = arrayOf("content-type=application/json"))
     fun createTestSuiteJson(@RequestBody testSuiteDto: TestSuiteDto, response: HttpServletResponse): TestSuite {
         val testSuite = TestSuite(randomUUID(), testSuiteDto.name)
@@ -32,7 +32,7 @@ class TestSuiteController @Autowired constructor(val testSuiteRepository: TestSu
         return testSuite
     }
 
-    @RequestMapping(method = arrayOf(GET), value = "/testsuites")
+    @RequestMapping(method = arrayOf(GET), value = ["/testsuites"])
     fun getAllTestSuites(): List<TestSuiteOverview> {
         return testSuiteRepository.findAll().map {
             val runOverview = runOverviewService.getLastRunOverview(it.id!!);
@@ -41,12 +41,12 @@ class TestSuiteController @Autowired constructor(val testSuiteRepository: TestSu
         };
     }
 
-    @RequestMapping(method = arrayOf(GET), value = "/testsuites/raw")
+    @RequestMapping(method = arrayOf(GET), value = ["/testsuites/raw"])
     fun getAllTestSuitesRaw(): List<TestSuite> {
         return testSuiteRepository.findAll();
     }
 
-    @RequestMapping(method = arrayOf(GET), value = "/testsuites/{testSuiteId}")
+    @RequestMapping(method = arrayOf(GET), value = ["/testsuites/{testSuiteId}"])
     fun getTestSuite(@PathVariable testSuiteId: UUID): ResponseEntity<TestSuiteOverview> {
         val testSuite = testSuiteRepository.findById(testSuiteId)
         if (testSuite == null) return ResponseEntity(NOT_FOUND)

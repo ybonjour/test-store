@@ -13,7 +13,7 @@ class RevisionController @Autowired constructor(val revisionRepository: Revision
 
     @RequestMapping(
             method = arrayOf(POST),
-            value = "/runs/{run}/revisions",
+            value = ["/runs/{run}/revisions"],
             headers = arrayOf("content-type=application/json"))
     fun createRevision(
             @PathVariable run: UUID,
@@ -24,7 +24,7 @@ class RevisionController @Autowired constructor(val revisionRepository: Revision
         response.status = 201
     }
 
-    @RequestMapping(method = arrayOf(GET), value = "/runs/{run}/revisions")
+    @RequestMapping(method = arrayOf(GET), value = ["/runs/{run}/revisions"])
     fun getRevisionsByRun(@PathVariable run: UUID): List<Revision> {
         return revisionRepository.findAllByRunId(run)
     }
