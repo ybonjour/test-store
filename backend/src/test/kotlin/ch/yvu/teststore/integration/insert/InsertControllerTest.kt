@@ -3,8 +3,8 @@ package ch.yvu.teststore.integration.insert
 import ch.yvu.teststore.integration.BaseIntegrationTest
 import ch.yvu.teststore.result.ResultRepository
 import ch.yvu.teststore.run.RunRepository
-import com.jayway.restassured.RestAssured.given
-import com.jayway.restassured.http.ContentType.XML
+import io.restassured.RestAssured.given
+import io.restassured.http.ContentType.XML
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test

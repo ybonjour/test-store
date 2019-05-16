@@ -3,11 +3,10 @@ package ch.yvu.teststore.integration.statistics
 import ch.yvu.teststore.integration.BaseIntegrationTest
 import ch.yvu.teststore.statistics.TestStatistics
 import ch.yvu.teststore.statistics.TestStatisticsRepository
-import com.jayway.restassured.RestAssured.given
+import io.restassured.RestAssured.given
 import org.hamcrest.Matchers.equalTo
 import org.junit.Before
 import org.junit.Test
-import org.mockito.BDDMockito.then
 import org.springframework.beans.factory.annotation.Autowired
 import java.net.URLEncoder
 import java.util.UUID.randomUUID

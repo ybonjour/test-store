@@ -9,8 +9,8 @@ import ch.yvu.teststore.result.ResultRepository
 import ch.yvu.teststore.run.Run
 import ch.yvu.teststore.run.RunRepository
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.jayway.restassured.RestAssured.given
-import com.jayway.restassured.http.ContentType.JSON
+import io.restassured.RestAssured.given
+import io.restassured.http.ContentType.JSON
 import org.hamcrest.Matchers.*
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertThat

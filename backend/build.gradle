@@ -46,7 +46,7 @@ dependencies {
     compile "com.datastax.cassandra:cassandra-driver-core:3.0.7"
     compile "com.datastax.cassandra:cassandra-driver-mapping:3.0.7"
     testCompile "junit:junit"
-    testCompile "com.jayway.restassured:rest-assured:2.9.0"
+    testCompile "io.rest-assured:rest-assured:4.0.0"
     testCompile "org.springframework.boot:spring-boot-starter-test:2.1.5.RELEASE"
     testCompile "com.natpryce:hamkrest:1.7.0.0"
 }
