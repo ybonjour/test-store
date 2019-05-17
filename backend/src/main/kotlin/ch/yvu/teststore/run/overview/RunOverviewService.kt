@@ -2,6 +2,7 @@ package ch.yvu.teststore.run.overview
 
 import ch.yvu.teststore.common.Page
 import ch.yvu.teststore.result.Result
+import ch.yvu.teststore.result.ResultDiffService
 import ch.yvu.teststore.result.ResultRepository
 import ch.yvu.teststore.run.Run
 import ch.yvu.teststore.run.RunRepository
@@ -13,7 +14,8 @@ import java.util.*
 @Service
 open class RunOverviewService @Autowired constructor(
         open val runRepository: RunRepository,
-        open val resultRepository: ResultRepository) {
+        open val resultRepository: ResultRepository,
+        val resultDiffService: ResultDiffService) {
 
     fun getLastRunOverview(testSuiteId: UUID): Optional<RunOverview> {
         val run = runRepository.findAllByTestSuiteId(testSuiteId, 1).firstOrNull()
@@ -31,7 +33,12 @@ open class RunOverviewService @Autowired constructor(
         val runResult = extractRunResult(results);
         val totalDuration = results.map { it.durationMillis!! }.sum()
 
-        return RunOverview(run, RunStatistics(run.id, runResult, totalDuration, 0, 0, null, null))
+        val prevRun = runRepository.findLastRunBefore(run.testSuite!!, run.time!!)
+        val diff = resultDiffService.findDiff(prevRun?.id, run.id!!)
+        val numberPassed = diff[ResultDiffService.DiffCategory.NEW_PASSED]?.size ?: 0
+        val numberFailed = diff[ResultDiffService.DiffCategory.NEW_FAILED]?.size ?: 0
+
+        return RunOverview(run, RunStatistics(run.id, runResult, totalDuration, numberPassed, numberFailed, null, null))
     }
 
     private fun extractRunResult(results: List<Result>): RunStatistics.RunResult {
