@@ -2,6 +2,7 @@ package ch.yvu.teststore.run.overview
 
 import ch.yvu.teststore.common.Page
 import ch.yvu.teststore.result.Result
+import ch.yvu.teststore.result.ResultDiffService
 import ch.yvu.teststore.result.ResultRepository
 import ch.yvu.teststore.run.Run
 import ch.yvu.teststore.run.RunRepository
@@ -13,7 +14,8 @@ import java.util.*
 @Service
 open class RunOverviewService @Autowired constructor(
         open val runRepository: RunRepository,
-        open val resultRepository: ResultRepository) {
+        open val resultRepository: ResultRepository,
+        val resultDiffService: ResultDiffService) {
 
     fun getLastRunOverview(testSuiteId: UUID): Optional<RunOverview> {
         val run = runRepository.findAllByTestSuiteId(testSuiteId, 1).firstOrNull()
@@ -22,14 +24,26 @@ open class RunOverviewService @Autowired constructor(
         return Optional.of(getRunOverview(run))
     }
 
-    fun getRunOverviews(testSuiteId: UUID, page:String?, fetchSize: Int?=null): Page<RunOverview> {
-        return runRepository.findAllByTestSuiteId(testSuiteId, page, fetchSize).map{getRunOverview(it)}
+    fun getRunOverviews(testSuiteId: UUID, page: String?, fetchSize: Int? = null): Page<RunOverview> {
+        return runRepository.findAllByTestSuiteId(testSuiteId, page, fetchSize).map {getRunOverview(it)}
     }
 
     private fun getRunOverview(run: Run): RunOverview {
         val results = resultRepository.findAllByRunId(run.id!!)
-        val runResult = extractRunResult(results);
+        val runResult = extractRunResult(results)
         val totalDuration = results.map { it.durationMillis!! }.sum()
+
+        run.testSuite?.let { testSuite ->
+            run.time?.let { time ->
+                run.id?.let { runId ->
+                        val diff = resultDiffService.findDiff(null, runId)
+                        val numberPassed = diff[ResultDiffService.DiffCategory.NEW_PASSED]?.size ?: 0
+                        val numberFailed = diff[ResultDiffService.DiffCategory.NEW_FAILED]?.size ?: 0
+
+                        return RunOverview(run, RunStatistics(run.id, runResult, totalDuration, numberPassed, numberFailed, null, null))
+                }
+            }
+        }
 
         return RunOverview(run, RunStatistics(run.id, runResult, totalDuration, 0, 0, null, null))
     }

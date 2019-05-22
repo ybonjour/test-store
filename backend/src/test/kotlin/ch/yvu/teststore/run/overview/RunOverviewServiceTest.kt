@@ -4,7 +4,9 @@ import ch.yvu.teststore.integration.ListBackedRepository
 import ch.yvu.teststore.integration.result.ListBackedResultRepository
 import ch.yvu.teststore.integration.run.ListBackedRunRepository
 import ch.yvu.teststore.result.Result
+import ch.yvu.teststore.result.ResultDiffService
 import ch.yvu.teststore.result.ResultRepository
+import ch.yvu.teststore.result.ResultService
 import ch.yvu.teststore.run.Run
 import ch.yvu.teststore.run.RunRepository
 import ch.yvu.teststore.run.overview.RunStatistics.RunResult.*
@@ -27,15 +29,19 @@ class RunOverviewServiceTest {
     lateinit var resultRepository: ResultRepository
 
     lateinit var runOverviewService: RunOverviewService
+    lateinit var resultDiffService: ResultDiffService
 
-    @Before fun setUp() {
+    @Before
+    fun setUp() {
         runRepository = ListBackedRunRepository(ListBackedRepository())
         resultRepository = ListBackedResultRepository(ListBackedRepository())
+        resultDiffService = ResultDiffService(ResultService( resultRepository, runRepository))
 
-        runOverviewService = RunOverviewService(runRepository, resultRepository)
+        runOverviewService = RunOverviewService(runRepository, resultRepository, resultDiffService)
     }
 
-    @Test fun returnsRunOverview() {
+    @Test
+    fun returnsRunOverview() {
         runRepository.save(run)
 
         val runOverview = runOverviewService.getLastRunOverview(testSuiteId)
@@ -44,13 +50,15 @@ class RunOverviewServiceTest {
         assertEquals(run, runOverview.get().run)
     }
 
-    @Test fun returnsNoRunOverviewIfThereAreNoRuns() {
+    @Test
+    fun returnsNoRunOverviewIfThereAreNoRuns() {
         val runOverview = runOverviewService.getLastRunOverview(testSuiteId)
 
         assertFalse(runOverview.isPresent)
     }
 
-    @Test fun returnsNoRunOverviewIfOnlyRunsFromOtherTestSuiteArePresent() {
+    @Test
+    fun returnsNoRunOverviewIfOnlyRunsFromOtherTestSuiteArePresent() {
         val otherTestSuitedId = randomUUID()
         val otherRun = Run(randomUUID(), otherTestSuitedId, "def123", Date())
         runRepository.save(otherRun)
@@ -60,7 +68,8 @@ class RunOverviewServiceTest {
         assertFalse(runOverview.isPresent)
     }
 
-    @Test fun returnsLatestRun() {
+    @Test
+    fun returnsLatestRun() {
         val latestRun = Run(randomUUID(), testSuiteId, "abc124", Date(2))
         runRepository.save(run)
         runRepository.save(latestRun)
@@ -70,7 +79,8 @@ class RunOverviewServiceTest {
         assertEquals(latestRun, runOverview.get().run)
     }
 
-    @Test fun returnsCorrectResultIfAllResultsArePassedWithoutRetry() {
+    @Test
+    fun returnsCorrectResultIfAllResultsArePassedWithoutRetry() {
         runRepository.save(run)
 
         resultRepository.save(passedResult)
@@ -80,7 +90,8 @@ class RunOverviewServiceTest {
         assertEquals(PASSED, runOverview.get().runStatistics.result)
     }
 
-    @Test fun returnsCorrectResultIfOneResultIsFailedAndHasNoRetries() {
+    @Test
+    fun returnsCorrectResultIfOneResultIsFailedAndHasNoRetries() {
         runRepository.save(run)
         resultRepository.save(failedResult)
 
@@ -89,7 +100,8 @@ class RunOverviewServiceTest {
         assertEquals(FAILED, runOverview.get().runStatistics.result)
     }
 
-    @Test fun returnsCorrectResultIfOnlyOneResultIsFailed() {
+    @Test
+    fun returnsCorrectResultIfOnlyOneResultIsFailed() {
         runRepository.save(run)
         resultRepository.save(passedResult)
         resultRepository.save(failedResult)
@@ -99,7 +111,8 @@ class RunOverviewServiceTest {
         assertEquals(FAILED, runOverview.get().runStatistics.result)
     }
 
-    @Test fun returnsCorrectResultIfRunHasNoResults() {
+    @Test
+    fun returnsCorrectResultIfRunHasNoResults() {
         runRepository.save(run)
 
         val runOverview = runOverviewService.getLastRunOverview(testSuiteId)
@@ -107,7 +120,8 @@ class RunOverviewServiceTest {
         assertEquals(UNKNOWN, runOverview.get().runStatistics.result)
     }
 
-    @Test fun doesNotConsiderResultsFromOtherRuns() {
+    @Test
+    fun doesNotConsiderResultsFromOtherRuns() {
         val otherTestSuiteId = randomUUID()
         val otherRun = Run(randomUUID(), otherTestSuiteId, "def123", Date(1))
         val otherFailedResult = Result(otherRun.id, "myOtherTest", 0, false, 0, Date(1))
@@ -120,7 +134,8 @@ class RunOverviewServiceTest {
         assertEquals(UNKNOWN, runOverview.get().runStatistics.result)
     }
 
-    @Test fun returnsCorrectResultIfRetryPassed() {
+    @Test
+    fun returnsCorrectResultIfRetryPassed() {
         val passedRetry = Result(run.id, failedResult.testName, 1, true, 0, Date(1))
         runRepository.save(run)
         resultRepository.save(failedResult)
@@ -131,7 +146,8 @@ class RunOverviewServiceTest {
         assertEquals(PASSED_WITH_RETRIES, runOverview.get().runStatistics.result)
     }
 
-    @Test fun returnsCorrectResultIfRunHasFailedRetry() {
+    @Test
+    fun returnsCorrectResultIfRunHasFailedRetry() {
         val failedRetry = Result(run.id, failedResult.testName, 1, false, 0, Date(1))
         runRepository.save(run)
         resultRepository.save(failedResult)
@@ -142,7 +158,8 @@ class RunOverviewServiceTest {
         assertEquals(FAILED, runOverview.get().runStatistics.result)
     }
 
-    @Test fun returnsCorrectResultIfRunHasOnePassedWithRetriesAndOneFailedTest() {
+    @Test
+    fun returnsCorrectResultIfRunHasOnePassedWithRetriesAndOneFailedTest() {
         val passedRetry = Result(run.id, failedResult.testName, 1, true, 0, Date(1))
         val failedResult2 = Result(run.id, "myFailedTest2", 0, false, 0, Date(1))
         val failedRetry = Result(run.id, failedResult2.testName, 1, false, 0, Date(1))
@@ -157,7 +174,66 @@ class RunOverviewServiceTest {
         assertEquals(FAILED, runOverview.get().runStatistics.result)
     }
 
-    @Test fun totalDurationIsZeroIfThereAreNoResults() {
+    @Test
+    fun returnsCorrectNumberOfPassedRuns() {
+        val passedResult1 = Result(run.id, "myTest1", 0, true, 0, Date(1))
+        runRepository.save(run)
+        resultRepository.save(passedResult1)
+
+        val runOverview = runOverviewService.getLastRunOverview(testSuiteId)
+
+        assertEquals(1, runOverview.get().runStatistics.numPassed)
+    }
+
+    @Test
+    fun returnsCorrectNumberOfFailedRuns() {
+        val failedResult1 = Result(run.id, "myTest1", 0, false, 0, Date(1))
+        val failedResult2 = Result(run.id, "myTest2", 0, false, 0, Date(1))
+        runRepository.save(run)
+        resultRepository.save(failedResult1)
+        resultRepository.save(failedResult2)
+
+        val runOverview = runOverviewService.getLastRunOverview(testSuiteId)
+
+        assertEquals(2, runOverview.get().runStatistics.numFailed)
+    }
+
+    @Test
+    fun returnsCorrectNuberOfPassedRunsWhenZero() {
+        runRepository.save(run)
+
+        val runOverview = runOverviewService.getLastRunOverview(testSuiteId)
+
+        assertEquals(0, runOverview.get().runStatistics.numPassed)
+    }
+
+    @Test
+    fun returnsCorrectNuberOfFailedRunsWhenZero() {
+        runRepository.save(run)
+
+        val runOverview = runOverviewService.getLastRunOverview(testSuiteId)
+
+        assertEquals(0, runOverview.get().runStatistics.numFailed)
+    }
+
+    @Test
+    fun returnsCorrectNumberOfPassedAndFailedRuns() {
+        val passedResult1 = Result(run.id, "myTest1", 0, true, 0, Date(1))
+        val passedResult2 = Result(run.id, "myTest2", 0, true, 0, Date(1))
+        val failedResult1 = Result(run.id, "myTest3", 0, false, 0, Date(1))
+        runRepository.save(run)
+        resultRepository.save(passedResult1)
+        resultRepository.save(passedResult2)
+        resultRepository.save(failedResult1)
+
+        val runOverview = runOverviewService.getLastRunOverview(testSuiteId)
+
+        assertEquals(2, runOverview.get().runStatistics.numPassed)
+        assertEquals(1, runOverview.get().runStatistics.numFailed)
+    }
+
+    @Test
+    fun totalDurationIsZeroIfThereAreNoResults() {
         runRepository.save(run)
 
         val runOverview = runOverviewService.getLastRunOverview(testSuiteId)
@@ -165,7 +241,8 @@ class RunOverviewServiceTest {
         assertEquals(0L, runOverview.get().runStatistics.totalDurationMillis)
     }
 
-    @Test fun totalDurationIsSumOfAllResultDurations() {
+    @Test
+    fun totalDurationIsSumOfAllResultDurations() {
         val result1 = Result(run.id, "myTest", 0, true, 10, Date(1))
         val result2 = Result(run.id, "myTest", 0, true, 20, Date(1))
         runRepository.save(run)
@@ -177,7 +254,8 @@ class RunOverviewServiceTest {
         assertEquals(30L, runOverview.get().runStatistics.totalDurationMillis)
     }
 
-    @Test fun totalDurationDoesNotCountResultsFromOtherRuns() {
+    @Test
+    fun totalDurationDoesNotCountResultsFromOtherRuns() {
         val otherTestSuiteId = randomUUID()
         val otherRun = Run(randomUUID(), otherTestSuiteId, "def123", Date(2))
         val otherResult = Result(otherRun.id, "myOtherTest", 0, true, 10, Date(1))
@@ -190,17 +268,19 @@ class RunOverviewServiceTest {
         assertEquals(0L, runOverview.get().runStatistics.totalDurationMillis)
     }
 
-    @Test fun getRunOverviewsReturnsRunOverviews() {
+    @Test
+    fun getRunOverviewsReturnsRunOverviews() {
         runRepository.save(run)
         resultRepository.save(passedResult)
 
         val runOverviewsPage = runOverviewService.getRunOverviews(testSuiteId, null)
 
-        assertEquals(listOf(RunOverview(run, RunStatistics(run.id, PASSED, passedResult.durationMillis!!, 0, 0, null, null))), runOverviewsPage.results)
+        assertEquals(listOf(RunOverview(run, RunStatistics(run.id, PASSED, passedResult.durationMillis!!, 1, 0, null, null))), runOverviewsPage.results)
 
     }
 
-    @Test fun getRunOverviewsDoesNotFindRunsFromOtherTestSuites() {
+    @Test
+    fun getRunOverviewsDoesNotFindRunsFromOtherTestSuites() {
         val otherTestSuiteId = randomUUID()
         val otherRun = Run(randomUUID(), otherTestSuiteId, "def123", Date(2))
         runRepository.save(otherRun)
