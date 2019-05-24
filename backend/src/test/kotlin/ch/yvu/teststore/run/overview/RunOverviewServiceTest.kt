@@ -69,6 +69,26 @@ class RunOverviewServiceTest {
     }
 
     @Test
+    fun returnsCorrectRunById() {
+        val runId = randomUUID()
+        val run = Run(runId, testSuiteId, "abc1234", Date(1))
+        runRepository.save(run)
+
+        val runOverview = runOverviewService.getRunOverviewById(runId)
+
+        assertEquals(run, runOverview.get().run)
+    }
+
+    @Test
+    fun returnsNoRunOverviewIfRunNotFound() {
+        val notFoundId = randomUUID()
+
+        val runOverview = runOverviewService.getRunOverviewById(notFoundId)
+
+        assertFalse(runOverview.isPresent)
+    }
+
+    @Test
     fun returnsLatestRun() {
         val latestRun = Run(randomUUID(), testSuiteId, "abc124", Date(2))
         runRepository.save(run)
