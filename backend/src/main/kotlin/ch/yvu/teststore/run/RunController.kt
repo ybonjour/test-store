@@ -44,7 +44,7 @@ class RunController @Autowired constructor(val runRepository: RunRepository, val
         return ResponseEntity(lastRun.get(), OK)
     }
 
-    @RequestMapping(method = arrayOf(GET), value = ["/runs/{run}"])
+    @RequestMapping(method = arrayOf(GET), value = ["/runs/{runId}"])
     fun getRunOverviewById(@PathVariable runId: UUID): ResponseEntity<RunOverview> {
         val run = runOverviewService.getRunOverviewById(runId)
         if (!run.isPresent) {
