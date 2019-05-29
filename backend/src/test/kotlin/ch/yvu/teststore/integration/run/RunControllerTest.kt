@@ -99,6 +99,33 @@ class RunControllerTest : BaseIntegrationTest() {
             .statusCode(404)
     }
 
+    @Test fun getRunByIdReturnsRunOverview() {
+        val runId = randomUUID()
+        val run = Run(runId, testSuite, "abc123", now)
+        val result = Result(run.id, "myTest", 0, true, 20, Date())
+        runRepository.save(run)
+        resultRepository.save(result)
+
+        given()
+                .get("/runs/$runId")
+
+                .then()
+                .statusCode(200)
+                .body("run.revision", equalTo(run.revision))
+                .body("runStatistics.result", equalTo("PASSED"))
+                .body("runStatistics.totalDurationMillis", equalTo(20))
+    }
+
+    @Test fun getRunByIdReturns404IfThereIsNoRunWithCorrespondingId() {
+        val runId = randomUUID()
+
+        given()
+                .get("/runs/$runId")
+
+                .then()
+                .statusCode(404)
+    }
+
     @Test fun getRunOverviewsReturnsRunOverviews() {
         val run = Run(randomUUID(), testSuite, "abc123", now)
         val result = Result(run.id, "myTest", 0, true, 20, Date())

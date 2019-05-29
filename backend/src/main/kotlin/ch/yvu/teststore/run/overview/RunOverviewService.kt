@@ -17,6 +17,10 @@ open class RunOverviewService @Autowired constructor(
         open val resultRepository: ResultRepository,
         val resultDiffService: ResultDiffService) {
 
+    fun getRunOverviewById(runId: UUID): Optional<RunOverview> =
+            Optional.ofNullable(runRepository.findById(runId))
+                    .map { getRunOverview(it) }
+
     fun getLastRunOverview(testSuiteId: UUID): Optional<RunOverview> {
         val run = runRepository.findAllByTestSuiteId(testSuiteId, 1).firstOrNull()
         if (run == null) return Optional.empty()
@@ -25,7 +29,7 @@ open class RunOverviewService @Autowired constructor(
     }
 
     fun getRunOverviews(testSuiteId: UUID, page: String?, fetchSize: Int? = null): Page<RunOverview> {
-        return runRepository.findAllByTestSuiteId(testSuiteId, page, fetchSize).map {getRunOverview(it)}
+        return runRepository.findAllByTestSuiteId(testSuiteId, page, fetchSize).map { getRunOverview(it) }
     }
 
     private fun getRunOverview(run: Run): RunOverview {
@@ -36,11 +40,11 @@ open class RunOverviewService @Autowired constructor(
         run.testSuite?.let { testSuite ->
             run.time?.let { time ->
                 run.id?.let { runId ->
-                        val diff = resultDiffService.findDiff(null, runId)
-                        val numberPassed = diff[ResultDiffService.DiffCategory.NEW_PASSED]?.size ?: 0
-                        val numberFailed = diff[ResultDiffService.DiffCategory.NEW_FAILED]?.size ?: 0
+                    val diff = resultDiffService.findDiff(null, runId)
+                    val numberPassed = diff[ResultDiffService.DiffCategory.NEW_PASSED]?.size ?: 0
+                    val numberFailed = diff[ResultDiffService.DiffCategory.NEW_FAILED]?.size ?: 0
 
-                        return RunOverview(run, RunStatistics(run.id, runResult, totalDuration, numberPassed, numberFailed, null, null))
+                    return RunOverview(run, RunStatistics(run.id, runResult, totalDuration, numberPassed, numberFailed, null, null))
                 }
             }
         }
