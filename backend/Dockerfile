@@ -1,4 +1,4 @@
-FROM java:8-jre-alpine
+FROM openjdk:8-jre-alpine
 ADD ./build/libs/backend-0.1.0.jar /app/teststore.jar
 COPY ./scripts /scripts
 WORKDIR /app
