@@ -4,6 +4,7 @@ import ch.yvu.teststore.insert.dto.ResultDto
 import ch.yvu.teststore.integration.ListBackedRepository
 import ch.yvu.teststore.integration.result.ListBackedResultRepository
 import ch.yvu.teststore.integration.run.ListBackedRunRepository
+import ch.yvu.teststore.integration.run.runInstance
 import ch.yvu.teststore.integration.statistics.ListBackedTestStatisticsRepository
 import ch.yvu.teststore.matchers.ResultMatchers.resultWith
 import ch.yvu.teststore.result.ResultRepository
@@ -69,7 +70,7 @@ class InsertServiceTest {
     }
 
     @Test fun insertsTestStatisticsForNewPassedResultCorrectly() {
-        val run = Run(randomUUID(), randomUUID(), "abc-123", Date())
+        val run = runInstance()
         runRepository.save(run)
 
         val resultDtos = listOf(A_TEST_DTO_PASSED)
@@ -80,7 +81,7 @@ class InsertServiceTest {
     }
 
     @Test fun insertsTestStatisticsForNewFailedResultCorrectly() {
-        val run = Run(randomUUID(), randomUUID(), "abc-123", Date())
+        val run = runInstance()
         runRepository.save(run)
 
         val resultDtos = listOf(B_TEST_DTO_FAILED)
@@ -91,7 +92,7 @@ class InsertServiceTest {
     }
 
     @Test fun updatesExistingTestStatisticsCorrectly() {
-        val run = Run(randomUUID(), randomUUID(), "abc-123", Date())
+        val run = runInstance()
         runRepository.save(run)
         val testStatistic = TestStatistics(run.testSuite, A_TEST_DTO_PASSED.testName, numPassed = 1, numFailed = 0, durationSum = 5, durationNum = 1)
         testStatisticsRepository.save(testStatistic)
@@ -103,7 +104,7 @@ class InsertServiceTest {
     }
 
     @Test fun multipleTestStatisticsAreStoredCorrectly() {
-        val run = Run(randomUUID(), randomUUID(), "abc-123", Date())
+        val run = runInstance()
         runRepository.save(run)
         val resultDtos = listOf(A_TEST_DTO_PASSED, B_TEST_DTO_FAILED)
 

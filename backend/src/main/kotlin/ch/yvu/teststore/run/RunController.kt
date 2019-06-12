@@ -27,10 +27,9 @@ class RunController @Autowired constructor(val runRepository: RunRepository, val
             @RequestBody runDto: RunDto,
             response: HttpServletResponse
     ): Run {
-        val run = Run(randomUUID(), testSuite, runDto.revision, runDto.time)
+        val run = Run(randomUUID(), testSuite, runDto.revision, runDto.time, runDto.tags)
         runRepository.save(run)
         response.status = 201
-
         return run
     }
 

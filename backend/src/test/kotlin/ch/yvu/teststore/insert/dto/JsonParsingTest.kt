@@ -29,10 +29,7 @@ class JsonParsingTest {
 
     @Test
     fun canParseRun() {
-        val runDto = RunDto(
-                revision = "abc123",
-                time = Date(1)
-        )
+        val runDto = runDtoInstance()
 
         val json = mapper.writeValueAsString(runDto)
 

@@ -1,5 +1,6 @@
 package ch.yvu.teststore.common
 
+import ch.yvu.teststore.integration.run.runInstance
 import ch.yvu.teststore.run.Run
 import com.datastax.driver.core.ExecutionInfo
 import com.datastax.driver.core.PagingState
@@ -32,7 +33,7 @@ class PagedResultFetcherTest {
 
     companion object {
         val testSuite = randomUUID()
-        val run = Run(randomUUID(), testSuite, "abc-123", Date(1))
+        val run = runInstance()
         val query = SimpleQuery("SELECT * FROM run WHERE testSuite=?", testSuite)
         val pagingState = PagingState.fromString("00270010001b000800000156e1d573f11004f3aed39d784b4cb666646f4c5add50f07ffffffdf07ffffffd14f77afb69f7d2b915966de34665f10c0004")
     }

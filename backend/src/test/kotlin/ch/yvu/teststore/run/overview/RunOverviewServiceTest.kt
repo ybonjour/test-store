@@ -3,6 +3,7 @@ package ch.yvu.teststore.run.overview
 import ch.yvu.teststore.integration.ListBackedRepository
 import ch.yvu.teststore.integration.result.ListBackedResultRepository
 import ch.yvu.teststore.integration.run.ListBackedRunRepository
+import ch.yvu.teststore.integration.run.runInstance
 import ch.yvu.teststore.result.Result
 import ch.yvu.teststore.result.ResultDiffService
 import ch.yvu.teststore.result.ResultRepository
@@ -20,7 +21,7 @@ class RunOverviewServiceTest {
 
     companion object {
         val testSuiteId = randomUUID()
-        val run = Run(randomUUID(), testSuiteId, "abc123", Date(1))
+        val run = runInstance(testSuite = testSuiteId)
         val passedResult = Result(run.id, "myTest", 0, true, 0, Date(1))
         val failedResult = Result(run.id, "myTest2", 0, false, 0, Date(1))
     }
@@ -35,7 +36,7 @@ class RunOverviewServiceTest {
     fun setUp() {
         runRepository = ListBackedRunRepository(ListBackedRepository())
         resultRepository = ListBackedResultRepository(ListBackedRepository())
-        resultDiffService = ResultDiffService(ResultService( resultRepository, runRepository))
+        resultDiffService = ResultDiffService(ResultService(resultRepository, runRepository))
 
         runOverviewService = RunOverviewService(runRepository, resultRepository, resultDiffService)
     }
@@ -60,7 +61,7 @@ class RunOverviewServiceTest {
     @Test
     fun returnsNoRunOverviewIfOnlyRunsFromOtherTestSuiteArePresent() {
         val otherTestSuitedId = randomUUID()
-        val otherRun = Run(randomUUID(), otherTestSuitedId, "def123", Date())
+        val otherRun = runInstance(testSuite = otherTestSuitedId)
         runRepository.save(otherRun)
 
         val runOverview = runOverviewService.getLastRunOverview(testSuiteId)
@@ -71,7 +72,7 @@ class RunOverviewServiceTest {
     @Test
     fun returnsCorrectRunById() {
         val runId = randomUUID()
-        val run = Run(runId, testSuiteId, "abc1234", Date(1))
+        val run = runInstance(id = runId)
         runRepository.save(run)
 
         val runOverview = runOverviewService.getRunOverviewById(runId)
@@ -90,7 +91,7 @@ class RunOverviewServiceTest {
 
     @Test
     fun returnsLatestRun() {
-        val latestRun = Run(randomUUID(), testSuiteId, "abc124", Date(2))
+        val latestRun = runInstance(id = randomUUID(), time = Date(2), testSuite = testSuiteId)
         runRepository.save(run)
         runRepository.save(latestRun)
 
@@ -143,7 +144,7 @@ class RunOverviewServiceTest {
     @Test
     fun doesNotConsiderResultsFromOtherRuns() {
         val otherTestSuiteId = randomUUID()
-        val otherRun = Run(randomUUID(), otherTestSuiteId, "def123", Date(1))
+        val otherRun = runInstance(testSuite = otherTestSuiteId, id = randomUUID())
         val otherFailedResult = Result(otherRun.id, "myOtherTest", 0, false, 0, Date(1))
         runRepository.save(run)
         runRepository.save(otherRun)
@@ -277,7 +278,7 @@ class RunOverviewServiceTest {
     @Test
     fun totalDurationDoesNotCountResultsFromOtherRuns() {
         val otherTestSuiteId = randomUUID()
-        val otherRun = Run(randomUUID(), otherTestSuiteId, "def123", Date(2))
+        val otherRun = runInstance(testSuite = otherTestSuiteId, id = randomUUID())
         val otherResult = Result(otherRun.id, "myOtherTest", 0, true, 10, Date(1))
         runRepository.save(run)
         runRepository.save(otherRun)
@@ -302,7 +303,7 @@ class RunOverviewServiceTest {
     @Test
     fun getRunOverviewsDoesNotFindRunsFromOtherTestSuites() {
         val otherTestSuiteId = randomUUID()
-        val otherRun = Run(randomUUID(), otherTestSuiteId, "def123", Date(2))
+        val otherRun = runInstance(testSuite = otherTestSuiteId)
         runRepository.save(otherRun)
 
         val runOverviewsPage = runOverviewService.getRunOverviews(testSuiteId, null)
