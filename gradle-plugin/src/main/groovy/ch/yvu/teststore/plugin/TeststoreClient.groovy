@@ -61,9 +61,13 @@ class TeststoreClient {
     }
 
     def collectTags() {
-        def device = InetAddress.getLocalHost().getHostName()
         def tags = new HashMap<String, String>()
-        tags.put("device", device)
+        try {
+            def device = InetAddress.getLocalHost().getHostName()
+            tags.put("device", device)
+        } catch (UnknownHostException e) {
+            System.err.println("Could not get hostname:\n" + e.stackTrace)
+        }
         return tags
     }
 }
