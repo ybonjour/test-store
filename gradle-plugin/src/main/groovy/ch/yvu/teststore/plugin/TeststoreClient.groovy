@@ -3,6 +3,8 @@ package ch.yvu.teststore.plugin
 import ch.yvu.teststore.plugin.ScmChanges.ScmChange
 import groovy.json.JsonBuilder
 import groovy.text.SimpleTemplateEngine
+import org.gradle.api.logging.Logger
+import org.gradle.api.logging.Logging
 
 import java.text.SimpleDateFormat
 
@@ -10,6 +12,7 @@ class TeststoreClient {
     HttpClient httpClient
     UUID testSuiteId
 
+    private final Logger logger = Logging.getLogger("TeststoreClientLogger")
     private static final String ISO_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
 
     def createRun(String revision, Date time) {
@@ -66,7 +69,7 @@ class TeststoreClient {
             def device = InetAddress.getLocalHost().getHostName()
             tags.put("device", device)
         } catch (UnknownHostException e) {
-            System.err.println("Could not get hostname:\n" + e.stackTrace)
+            logger.warn("Could not get hostname")
         }
         return tags
     }

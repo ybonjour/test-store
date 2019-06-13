@@ -1,8 +1,12 @@
 package ch.yvu.teststore.plugin
 
 import org.gradle.api.*
+import org.gradle.api.logging.Logger
+import org.gradle.api.logging.Logging
 
 class TestStorePlugin implements Plugin<Project> {
+
+    private final Logger logger = Logging.getLogger("TestStorePluginLogger")
 
     @Override
     void apply(Project project) {
@@ -10,14 +14,14 @@ class TestStorePlugin implements Plugin<Project> {
         project.task(storeResultsTaskSettings(), 'storeResults') doLast {
             def client = createClient(project.teststore)
             def runId = client.createRun(project.teststore.revision, new Date())
-            System.out.println("Created run $runId")
+            logger.info("Created run $runId")
             def fileWalker = new FileWalker(baseDir: project.rootDir, pattern: project.teststore.xmlReports)
             fileWalker.walkFileContents { filePath, xml ->
                 try {
                     client.insertTestResult(runId, xml)
-                    System.out.println("Stored $filePath")
+                    logger.info("Stored $filePath")
                 } catch(Exception e) {
-                    System.err.println("Could not store $filePath (${e.getMessage()}")
+                    logger.warn("Could not store $filePath (${e.getMessage()}")
                 }
             }
         }
