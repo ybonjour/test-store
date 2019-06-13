@@ -3,10 +3,10 @@ package ch.yvu.teststore.history
 import ch.yvu.teststore.integration.ListBackedRepository
 import ch.yvu.teststore.integration.result.ListBackedResultRepository
 import ch.yvu.teststore.integration.run.ListBackedRunRepository
+import ch.yvu.teststore.integration.run.runInstance
 import ch.yvu.teststore.result.Result
 import ch.yvu.teststore.result.ResultRepository
 import ch.yvu.teststore.result.ResultService
-import ch.yvu.teststore.run.Run
 import ch.yvu.teststore.run.RunRepository
 import com.natpryce.hamkrest.assertion.assertThat
 import com.natpryce.hamkrest.equalTo
@@ -22,7 +22,7 @@ class HistoryServiceTest {
 
     companion object {
         val testSuiteId = randomUUID()
-        val run = Run(randomUUID(), testSuiteId, "abc-123", Date())
+        val run = runInstance()
     }
 
     lateinit var runRepository: RunRepository
@@ -40,12 +40,12 @@ class HistoryServiceTest {
     }
 
     @Test fun getAllTestNamesReturnsTestNamesFromDifferentRuns() {
-        val run1 = Run(randomUUID(), testSuiteId, "abc-123", Date(1))
+        val run1 = runInstance(id= randomUUID(), testSuite = testSuiteId)
         runRepository.save(run1)
         val result1 = Result(run1.id, "test1", 0, true, 20, Date(1))
         resultRepository.save(result1)
 
-        val run2 = Run(randomUUID(), testSuiteId, "def-456", Date(2))
+        val run2 = runInstance(testSuite= testSuiteId)
         runRepository.save(run2)
         val result2 = Result(run2.id, "test2", 0, true, 24, Date(2))
         resultRepository.save(result2)
@@ -58,12 +58,12 @@ class HistoryServiceTest {
     }
 
     @Test fun getAllTestNamesDoesNotContainduplicates() {
-        val run1 = Run(randomUUID(), testSuiteId, "abc-123", Date(1))
+        val run1 = runInstance(id= randomUUID(), testSuite = testSuiteId)
         runRepository.save(run1)
         val result1 = Result(run1.id, "test", 0, true, 20, Date(1))
         resultRepository.save(result1)
 
-        val run2 = Run(randomUUID(), testSuiteId, "def-456", Date(2))
+        val run2 = runInstance(testSuite= testSuiteId)
         runRepository.save(run2)
         val result2 = Result(run2.id, "test", 0, true, 24, Date(2))
         resultRepository.save(result2)
@@ -74,12 +74,12 @@ class HistoryServiceTest {
     }
 
     @Test fun getAllTestNamesOnlyConsidersFirstNRuns() {
-        val run1 = Run(randomUUID(), testSuiteId, "abc-123", Date(1))
+        val run1 = runInstance(id= randomUUID(), testSuite = testSuiteId)
         runRepository.save(run1)
         val result1 = Result(run1.id, "test1", 0, true, 20, Date(1))
         resultRepository.save(result1)
 
-        val run2 = Run(randomUUID(), testSuiteId, "def-456", Date(2))
+        val run2 = runInstance(testSuite= testSuiteId)
         runRepository.save(run2)
         val result2 = Result(run2.id, "test2", 0, true, 24, Date(2))
         resultRepository.save(result2)

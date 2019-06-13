@@ -2,10 +2,10 @@ package ch.yvu.teststore.integration.result
 
 import ch.yvu.teststore.insert.dto.ResultDto
 import ch.yvu.teststore.integration.BaseIntegrationTest
+import ch.yvu.teststore.integration.run.runInstance
 import ch.yvu.teststore.matchers.ResultMatchers.resultWith
 import ch.yvu.teststore.result.Result
 import ch.yvu.teststore.result.ResultRepository
-import ch.yvu.teststore.run.Run
 import ch.yvu.teststore.run.RunRepository
 import com.fasterxml.jackson.databind.ObjectMapper
 import io.restassured.RestAssured.given
@@ -169,10 +169,9 @@ class ResultControllerTest : BaseIntegrationTest() {
     }
 
     @Test fun getRunDiffReturnsDiffOfRun() {
-        val testSuiteId = randomUUID()
-        val prevRun = Run(randomUUID(), testSuiteId, "abc-123", Date(1))
+        val prevRun = runInstance(id = randomUUID(), time = Date(1))
         runRepository.save(prevRun)
-        val run = Run(randomUUID(), testSuiteId, "def-456", Date(2))
+        val run = runInstance(time = Date(2))
         runRepository.save(run)
 
         val resultPrev = Result(prevRun.id, "MyTest", 0, false, 120, Date())
@@ -196,7 +195,7 @@ class ResultControllerTest : BaseIntegrationTest() {
     }
 
     @Test fun getRunDiffReturnsResultsIfNoPreviousRun() {
-        val run = Run(randomUUID(), randomUUID(), "abc-123", Date())
+        val run = runInstance()
         runRepository.save(run)
 
         given()
@@ -239,7 +238,7 @@ class ResultControllerTest : BaseIntegrationTest() {
 
     @Test fun getResultsByTestSuiteAndTestNameReturnsResults() {
         val testSutiteId = randomUUID()
-        val run = Run(randomUUID(), testSutiteId, "abc-123", Date())
+        val run = runInstance(testSuite = testSutiteId)
         runRepository.save(run)
         val result = Result(run.id, "myTest", 0, true, 42,  Date())
         saveResults(listOf(result))
@@ -253,7 +252,7 @@ class ResultControllerTest : BaseIntegrationTest() {
 
     @Test fun getResultsByTestSuiteAndTestNameDecodesTestName() {
         val testSuiteId = randomUUID()
-        val run = Run(randomUUID(), testSuiteId, "abc-123", Date())
+        val run = runInstance(testSuite = testSuiteId)
         runRepository.save(run)
         val result = Result(run.id, "ch.yvu.teststore.common.CassandraRepositoryTest#canSaveAnItem", 0, true, 42, Date())
         saveResults(listOf(result))

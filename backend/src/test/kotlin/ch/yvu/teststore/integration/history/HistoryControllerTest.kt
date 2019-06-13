@@ -1,9 +1,9 @@
 package ch.yvu.teststore.integration.history
 
 import ch.yvu.teststore.integration.BaseIntegrationTest
+import ch.yvu.teststore.integration.run.runInstance
 import ch.yvu.teststore.result.Result
 import ch.yvu.teststore.result.ResultRepository
-import ch.yvu.teststore.run.Run
 import ch.yvu.teststore.run.RunRepository
 import com.fasterxml.jackson.databind.ObjectMapper
 import io.restassured.RestAssured.given
@@ -32,7 +32,7 @@ class HistoryControllerTest : BaseIntegrationTest() {
 
     @Test fun getTestNames() {
         val testSuite = randomUUID()
-        val run = Run(randomUUID(), testSuite, "abc-123", Date(1))
+        val run = runInstance(testSuite=testSuite)
         runRepository.save(run)
         val result = Result(run.id, "myTest", 0, true, 42, Date(1))
         resultRepository.save(result)
@@ -50,7 +50,7 @@ class HistoryControllerTest : BaseIntegrationTest() {
 
     @Test fun getResultsReturnsResults() {
         val testSuite = randomUUID()
-        val run = Run(randomUUID(), testSuite, "abc-123", Date(1))
+        val run = runInstance(testSuite=testSuite)
         runRepository.save(run)
         val result = Result(run.id, "myTest", 0, true, 42, Date(1))
         resultRepository.save(result)

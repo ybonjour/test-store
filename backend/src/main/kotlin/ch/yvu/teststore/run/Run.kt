@@ -10,6 +10,7 @@ data class Run(
         @PartitionKey(2) var id: UUID?,
         @PartitionKey(0) var testSuite: UUID?,
         var revision: String?,
-        @PartitionKey(1) var time: Date?) : Model {
-    constructor(): this(null, null, null, null) {}
+        @PartitionKey(1) var time: Date?,
+        var tags: Map<String, String>) : Model {
+    constructor() : this(null, null, null, null, emptyMap()) {}
 }

@@ -1,5 +1,6 @@
 package ch.yvu.teststore.common
 
+import ch.yvu.teststore.integration.run.runInstance
 import ch.yvu.teststore.run.Run
 import org.junit.Assert.assertEquals
 import org.junit.Before
@@ -14,9 +15,9 @@ import java.util.UUID.randomUUID
 class MaxRowsResultFetcherTest {
     companion object {
         val query = SimpleQuery("SELECT foo")
-        val run = Run(randomUUID(), randomUUID(), "abc-123", Date(1))
-        val run2 = Run(randomUUID(), randomUUID(), "abc-124", Date(2))
-        val run3 = Run(randomUUID(), randomUUID(), "abc-125", Date(3))
+        val run = runInstance()
+        val run2 = runInstance()
+        val run3 = runInstance()
     }
 
     @Mock

@@ -1,10 +1,10 @@
 package ch.yvu.teststore.integration.testsuite
 
 import ch.yvu.teststore.integration.BaseIntegrationTest
+import ch.yvu.teststore.integration.run.runInstance
 import ch.yvu.teststore.matchers.TestSuiteMatchers.testSuiteWithName
 import ch.yvu.teststore.result.Result
 import ch.yvu.teststore.result.ResultRepository
-import ch.yvu.teststore.run.Run
 import ch.yvu.teststore.run.RunRepository
 import ch.yvu.teststore.run.overview.RunStatistics.RunResult.PASSED
 import ch.yvu.teststore.run.overview.RunStatistics.RunResult.UNKNOWN
@@ -54,7 +54,7 @@ class TestSuiteControllerTest() : BaseIntegrationTest() {
 
     @Test fun getTestSuitesReturnsLastTestResult() {
         val testSuite = TestSuite(randomUUID(), "MyTestSuite")
-        val run = Run(randomUUID(), testSuite.id, "abc-123", Date());
+        val run = runInstance(testSuite = testSuite.id);
         val result = Result(run.id, "MyTest", 0, true, 2, Date())
         testSuiteRepository.save(testSuite)
         runRepository.save(run)
@@ -91,7 +91,7 @@ class TestSuiteControllerTest() : BaseIntegrationTest() {
 
     @Test fun getTestSuiteReturnsTestSuite() {
         val testSuite = TestSuite(randomUUID(), "MyTestSuite")
-        val run = Run(randomUUID(), testSuite.id, "abc-123", Date());
+        val run = runInstance(testSuite = testSuite.id);
         val result = Result(run.id, "MyTest", 0, true, 2, Date())
         testSuiteRepository.save(testSuite)
         runRepository.save(run)

@@ -6,4 +6,5 @@ import java.util.*
 
 data class RunDto @JsonCreator constructor(
         @JsonProperty("revision") val revision: String? = null,
-        @JsonProperty("time") val time: Date)
+        @JsonProperty("time") val time: Date,
+        @JsonProperty("tags") val tags: Map<String, String>)

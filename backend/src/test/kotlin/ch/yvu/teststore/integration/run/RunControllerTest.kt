@@ -1,12 +1,11 @@
 package ch.yvu.teststore.integration.run
 
-import ch.yvu.teststore.insert.dto.RunDto
+import ch.yvu.teststore.insert.dto.runDtoInstance
 import ch.yvu.teststore.integration.BaseIntegrationTest
 import ch.yvu.teststore.integration.result.ResultControllerTest
 import ch.yvu.teststore.matchers.RunMatchers.runWith
 import ch.yvu.teststore.result.Result
 import ch.yvu.teststore.result.ResultRepository
-import ch.yvu.teststore.run.Run
 import ch.yvu.teststore.run.RunRepository
 import com.fasterxml.jackson.databind.ObjectMapper
 import io.restassured.RestAssured.given
@@ -39,7 +38,7 @@ class RunControllerTest : BaseIntegrationTest() {
     }
 
     @Test fun createRunReturnsCorrectStatusCode() {
-        val run = RunDto("abc123", Date(1))
+        val run = runDtoInstance()
         val mapper = ObjectMapper()
         mapper.dateFormat = SimpleDateFormat(ResultControllerTest.isoFormat)
         val json = mapper.writeValueAsString(run)
@@ -51,7 +50,7 @@ class RunControllerTest : BaseIntegrationTest() {
     }
 
     @Test fun storesRunWithCorrectRevisionAndTestSuite() {
-        val run = RunDto("abc123", Date(1))
+        val run = runDtoInstance()
         val mapper = ObjectMapper()
         mapper.dateFormat = SimpleDateFormat(ResultControllerTest.isoFormat)
         val json = mapper.writeValueAsString(run)
@@ -66,7 +65,7 @@ class RunControllerTest : BaseIntegrationTest() {
     }
 
     @Test fun runIdIsReturnedWhenCreatingARun() {
-        val run = RunDto("abc123", Date(1))
+        val run = runDtoInstance()
         val mapper = ObjectMapper()
         mapper.dateFormat = SimpleDateFormat(ResultControllerTest.isoFormat)
         val json = mapper.writeValueAsString(run)
@@ -78,7 +77,7 @@ class RunControllerTest : BaseIntegrationTest() {
     }
 
     @Test fun getLastRunReturnsRunOverview() {
-        val run = Run(randomUUID(), testSuite, "abc123", now)
+        val run = runInstance(testSuite= testSuite)
         val result = Result(run.id, "myTest", 0, true, 20, Date())
         runRepository.save(run)
         resultRepository.save(result)
@@ -101,7 +100,7 @@ class RunControllerTest : BaseIntegrationTest() {
 
     @Test fun getRunByIdReturnsRunOverview() {
         val runId = randomUUID()
-        val run = Run(runId, testSuite, "abc123", now)
+        val run = runInstance(id = runId)
         val result = Result(run.id, "myTest", 0, true, 20, Date())
         runRepository.save(run)
         resultRepository.save(result)
@@ -127,7 +126,7 @@ class RunControllerTest : BaseIntegrationTest() {
     }
 
     @Test fun getRunOverviewsReturnsRunOverviews() {
-        val run = Run(randomUUID(), testSuite, "abc123", now)
+        val run = runInstance(testSuite= testSuite)
         val result = Result(run.id, "myTest", 0, true, 20, Date())
         runRepository.save(run)
         resultRepository.save(result)

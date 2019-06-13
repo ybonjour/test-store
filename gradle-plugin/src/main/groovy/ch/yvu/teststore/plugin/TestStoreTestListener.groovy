@@ -1,5 +1,7 @@
 package ch.yvu.teststore.plugin
 
+import org.gradle.api.logging.Logger
+import org.gradle.api.logging.Logging
 import org.gradle.api.tasks.testing.*
 
 import static org.gradle.api.tasks.testing.TestResult.ResultType.SKIPPED
@@ -10,6 +12,7 @@ class TestStoreTestListener implements TestListener {
     private final TestStorePluginExtension pluginExtension
     private final TeststoreClientFactory clientFactory
     private final ScmChangesFactory scmChangesFactory
+    private final Logger logger = Logging.getLogger("TestStoreTestListenerLogger")
 
     private UUID runId
 
@@ -53,7 +56,7 @@ class TestStoreTestListener implements TestListener {
 
             return runId;
         } catch(Exception e){
-            System.err.println("Result could not be sent to test-store")
+            logger.warn("Result could not be sent to test-store")
             return null;
         }
     }
@@ -78,7 +81,7 @@ class TestStoreTestListener implements TestListener {
                     log
             )
         } catch(Exception e) {
-            System.err.println("Result could not be sent to test-store")
+            logger.warn("Result could not be sent to test-store")
         }
     }
 

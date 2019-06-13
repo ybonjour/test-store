@@ -3,9 +3,9 @@ package ch.yvu.teststore.result
 import ch.yvu.teststore.integration.ListBackedRepository
 import ch.yvu.teststore.integration.result.ListBackedResultRepository
 import ch.yvu.teststore.integration.run.ListBackedRunRepository
+import ch.yvu.teststore.integration.run.runInstance
 import ch.yvu.teststore.result.TestWithResults.TestResult
 import ch.yvu.teststore.result.TestWithResults.TestResult.PASSED
-import ch.yvu.teststore.run.Run
 import ch.yvu.teststore.run.RunRepository
 import org.junit.Assert.*
 import org.junit.Before
@@ -149,7 +149,7 @@ class ResultServiceTest {
 
     @Test fun getResultsByTestSuiteAndTestNameReturnsTestsForTestname() {
         val testSuiteId = randomUUID()
-        val run = Run(randomUUID(), testSuiteId, "abc-123", Date())
+        val run = runInstance(testSuite = testSuiteId)
         runRepository.save(run)
         val result = Result(run.id, "myTest", 0, true, 42, Date())
         resultRepository.save(result)
@@ -162,7 +162,7 @@ class ResultServiceTest {
 
     @Test fun getResultsByTestSuiteAndTestNameDoesNotReturnResultsFromOtherTestSuite() {
         val otherTestSuiteId = randomUUID()
-        val run = Run(randomUUID(), otherTestSuiteId, "abc-123", Date())
+        val run = runInstance(testSuite = otherTestSuiteId)
         runRepository.save(run)
         val result = Result(run.id, "mytest", 0, true, 42, Date())
         resultRepository.save(result)
@@ -176,7 +176,7 @@ class ResultServiceTest {
 
     @Test fun getResultsByTestSuiteAndTestNameDoesNotReturnResultsFromOtherTestName() {
         val testSuiteId = randomUUID()
-        val run = Run(randomUUID(), testSuiteId, "abc-124", Date())
+        val run = runInstance()
         runRepository.save(run)
         val result = Result(run.id, "myTest", 0, true, 42, Date())
         resultRepository.save(result)
@@ -188,9 +188,9 @@ class ResultServiceTest {
 
     @Test fun getResultsByTestSuiteAndTestNameSkipsEmptyRunsAtTheBeginning() {
         val testSuiteId = randomUUID()
-        val emptyRun = Run(randomUUID(), testSuiteId, "abc-124", Date(2))
+        val emptyRun = runInstance(testSuite = testSuiteId)
         runRepository.save(emptyRun)
-        val run = Run(randomUUID(), testSuiteId, "def-567", Date(1))
+        val run = runInstance(testSuite = testSuiteId)
         runRepository.save(run)
 
         val result = Result(run.id, "myTest", 0, true, 42, Date())
@@ -203,12 +203,12 @@ class ResultServiceTest {
 
     @Test fun getResultsByTestSuiteAndTestNameRespectsFetchSize() {
         val testSuiteId = randomUUID()
-        val run1 = Run(randomUUID(), testSuiteId, "abc-123", Date(1))
+        val run1 = runInstance(testSuite = testSuiteId)
         runRepository.save(run1)
         val result1 = Result(run1.id, "myTest", 0, true, 42, Date())
         resultRepository.save(result1)
 
-        val run2 = Run(randomUUID(), testSuiteId, "def-456", Date(2))
+        val run2 = runInstance(testSuite = testSuiteId)
         runRepository.save(run2)
         val result2 = Result(run2.id, result1.testName, 0, true, 42, Date())
         resultRepository.save(result2)

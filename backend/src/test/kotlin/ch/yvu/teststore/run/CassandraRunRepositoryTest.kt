@@ -1,6 +1,7 @@
 package ch.yvu.teststore.run
 
 import ch.yvu.teststore.common.*
+import ch.yvu.teststore.integration.run.runInstance
 import com.datastax.driver.core.Session
 import com.datastax.driver.mapping.Mapper
 import com.datastax.driver.mapping.MappingManager
@@ -8,18 +9,16 @@ import com.datastax.driver.mapping.Result
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
-import org.mockito.ArgumentMatchers
 import org.mockito.Mock
 import org.mockito.Mockito.*
 import org.mockito.MockitoAnnotations.initMocks
-import java.util.*
 import java.util.UUID.randomUUID
 
 class CassandraRunRepositoryTest {
 
     companion object {
         val query = SimpleQuery("SELECT * FROM foo")
-        val run = Run(randomUUID(), randomUUID(), "abc-123", Date())
+        val run = runInstance()
     }
 
     @Mock
