@@ -1,4 +1,4 @@
-version = 0.23
+version = 0.29
 group = 'ch.yvu.teststore'
 buildscript {
     repositories {
@@ -8,7 +8,7 @@ buildscript {
         }
     }
     dependencies {
-        classpath 'com.gradle.publish:plugin-publish-plugin:0.9.6'
+        classpath 'com.gradle.publish:plugin-publish-plugin:0.10.1'
     }
 }
 
