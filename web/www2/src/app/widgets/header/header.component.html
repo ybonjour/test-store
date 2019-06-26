@@ -1,0 +1,8 @@
+<mat-toolbar color="primary">
+  <a *ngIf="backOption()" [routerLink]="getLink()"><mat-icon class="backButton">arrow_back</mat-icon></a>
+  <h1>{{'app-name' | translate }}</h1>
+  <span class="spacer"></span>
+  <button mat-stroked-button color="accent" (click)="setLanguage('en')">en</button>
+  <button mat-stroked-button color="accent" (click)="setLanguage('de')">de</button>
+</mat-toolbar>
+<div class="blocker"></div>

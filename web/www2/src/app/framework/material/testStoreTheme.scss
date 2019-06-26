@@ -1,0 +1,12 @@
+@import '../../../../node_modules/@angular/material/theming';
+
+@include mat-core();
+
+
+$testStore-app-primary: mat-palette($mat-indigo);
+$testStore-app-accent:  mat-palette($mat-orange);
+$testStore-app-warn:    mat-palette($mat-red);
+
+$testStore-app-theme: mat-light-theme($testStore-app-primary, $testStore-app-accent, $testStore-app-warn);
+
+@include angular-material-theme($testStore-app-theme);

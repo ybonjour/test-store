@@ -1,0 +1,11 @@
+<mat-card>
+  <form>
+    <h1 class="mat-h1">{{"testsuite-create.title" | translate}}</h1>
+    <mat-form-field>
+    <input matInput required placeholder="{{'testsuite-create.input-placeholder' | translate}}" [formControl]="testsuiteNameInput"/>
+      <mat-error>{{"testsuite-create.please-enter-name" | translate}}</mat-error>
+    </mat-form-field>
+    <button mat-stroked-button (click)="goBack()" type="button">{{'testsuite-create.button-cancel' | translate}}</button>
+    <button mat-stroked-button (click)="createTestsuite(testsuiteNameInput.value)"  type="button">{{'testsuite-create.button-create' | translate}}</button>
+  </form>
+</mat-card>

@@ -1,0 +1,15 @@
+<div *ngIf="testsuitesAvailable(); else noTestsuitesElement" class="item-container">
+  <div *ngFor="let testsuite of testsuites" class="inline-block-item">
+    <app-testsuite-tile [testsuite]="testsuite"></app-testsuite-tile>
+  </div>
+</div>
+<ng-template #noTestsuitesElement>
+  <div id="noTestsuitesContainer">
+  <h1 class="mat-display-2 noTestsuiteText">{{"dashboard.no-testsuites-found" | translate}}</h1>
+  </div>
+</ng-template>
+<a routerLink="/testsuite/create">
+  <button mat-fab class="createTestsuite" type="button">+</button>
+</a>
+
+

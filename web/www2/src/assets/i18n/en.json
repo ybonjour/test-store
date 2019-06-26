@@ -1,0 +1,32 @@
+{
+  "app-name": "Test Store Dashboard",
+  "testsuite-tile": {
+    "date-time": "Last run",
+    "duration": "Total duration",
+    "number-of-tests": "Number of tests",
+    "failed-tests": "Failed tests"
+  },
+  "testsuite-create": {
+    "title": "Create Testsuite",
+    "input-placeholder": "Name",
+    "button-cancel": "Cancel",
+    "button-create": "Create"
+  },
+  "table-filter-input": {
+    "placeholder": "Search table"
+  },
+  "runs-table": {
+    "header": {
+      "name": "Name",
+      "revision": "Revision",
+      "duration": "Total duration",
+      "numberOfTests": "Number of tests"
+    }
+  },
+  "paginator": {
+    "of": "of",
+    "items-per-page": "Items per page",
+    "next-page": "Next Page",
+    "previous-page": "Previous Page"
+  }
+}

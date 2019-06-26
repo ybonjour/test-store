@@ -1,0 +1,36 @@
+<div class="wrapper">
+  <mat-card>
+    <mat-card-header *ngIf="testsuite">
+        <mat-card-title>
+          <h1 class="mat-display-1">{{testsuite.name}}</h1>
+        </mat-card-title>
+        <mat-card-subtitle>
+          <h2 class="mat-h2">{{testsuite.id}}</h2>
+        </mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <ng-template #progressBar>
+        <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+      </ng-template>
+      <div *ngIf="dataSource; else progressBar">
+        <div class="tableBox">
+        <table mat-table [dataSource]="dataSource">
+          <ng-container matColumnDef="name" sticky>
+            <th mat-header-cell *matHeaderCellDef><mat-checkbox color="accent" labelPosition="before" (change)="applyFilter()" [(ngModel)]="checked">{{'history-grid.show-successful-tests' | translate}}</mat-checkbox></th>
+            <td mat-cell class="nameColumn" *matCellDef="let test">{{test.testName}}</td>
+          </ng-container>
+          <ng-container [matColumnDef]="revision" *ngFor="let revision of revisions">
+            <th mat-header-cell *matHeaderCellDef><div class="verticalWrapper"><div class="verticalFont">{{revision}}</div></div></th>
+            <td class="stateCell" mat-cell *matCellDef="let test"
+                [ngClass]="{ 'successfulCell': getRevisionResultFor(test, revision).isResultSuccessful(), 'unknownCell': getRevisionResultFor(test, revision).isResultUnknown(),
+                'failedCell': getRevisionResultFor(test, revision).isResultFailed(), 'partiallyFailedCell': getRevisionResultFor(test, revision).isResultPartiallyFailed()}"></td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="columns"></tr>
+          <tr mat-row class="row" *matRowDef="let row; columns: columns"></tr>
+        </table>
+        </div>
+      <mat-paginator [length]="100" [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>
