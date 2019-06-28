@@ -1,0 +1,35 @@
+<a *ngIf="lastRun; else noDataAvailable" [routerLink]="generateRouterLink()">
+<mat-card>
+  <div class="stateBar" [ngClass]="{ 'successful': lastRun.isResultSuccessful(), 'unknown': lastRun.isResultUnknown(), 'failed': lastRun.isResultFailed()}"></div>
+  <mat-card-header>
+    <mat-card-title>{{testsuite.name}}</mat-card-title>
+    <mat-card-subtitle>{{testsuite.id}}</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    <table *ngIf="lastRun; else noDataAvailable" class="lastRunInformation">
+      <tr><td class="attribute">{{'testsuite-tile.last-run.date-time' | translate }}:</td><td matTooltip="{{lastRun.dateTime | formatDate}}" [matTooltipClass]="'tooltip'">{{lastRun.dateTime | humanizeDate}}</td></tr>
+      <tr><td class="attribute">{{'testsuite-tile.last-run.duration' | translate }}:</td><td matTooltip="{{lastRun.totalDurationMillis | formatDuration}}" [matTooltipClass]="'tooltip'">{{lastRun.totalDurationMillis | humanizeDuration}}</td></tr>
+      <tr><td class="attribute">{{'testsuite-tile.last-run.number-of-tests-total' | translate }}:</td><td>{{lastRun.numberOfTestsTotal}}</td></tr>
+      <tr><td class="attribute">{{'testsuite-tile.last-run.number-of-tests-failed' | translate }}:</td><td>{{lastRun.numberOfTestsFailed}}</td></tr>
+    </table>
+  </mat-card-content>
+</mat-card>
+</a>
+
+<ng-template #noDataAvailable>
+  <mat-card>
+    <div class="stateBar unknown"></div>
+    <mat-card-header>
+      <mat-card-title>{{testsuite.name}}</mat-card-title>
+      <mat-card-subtitle>{{testsuite.id}}</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+        <table class="lastRunInformation">
+          <tr><td class="attribute">{{'testsuite-tile.last-run.date-time' | translate }}:</td><td>-</td></tr>
+          <tr><td class="attribute">{{'testsuite-tile.last-run.duration' | translate }}:</td><td>-</td></tr>
+          <tr><td class="attribute">{{'testsuite-tile.last-run.number-of-tests-total' | translate }}:</td><td>-</td></tr>
+          <tr><td class="attribute">{{'testsuite-tile.last-run.number-of-tests-failed' | translate }}:</td><td>-</td></tr>
+        </table>
+    </mat-card-content>
+  </mat-card>
+</ng-template>

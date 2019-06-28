@@ -1,0 +1,3 @@
+export enum Result {
+  SUCCESSFUL, UNKNOWN, FAILED, PARTIALLY_FAILED
+}

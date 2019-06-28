@@ -1,0 +1,73 @@
+{
+  "app-name": "Test Store Dashboard",
+  "testsuite-tile": {
+    "last-run": {
+      "date-time": "Letzter Run",
+      "duration": "Dauer",
+      "number-of-tests-total": "Tests total",
+      "number-of-tests-failed": "Tests fehlgeschlagen"
+    }
+  },
+  "dashboard": {
+    "no-testsuites-found": "Keine Testsuites gefunden..."
+  },
+  "testsuite-create": {
+    "title": "Testsuite erstellen",
+    "input-placeholder": "Name",
+    "button-cancel": "Abbrechen",
+    "button-create": "Erstellen",
+    "please-enter-name": "Bitte geben Sie einen Namen ein!"
+  },
+  "testsuite-view": {
+    "last-run": {
+      "title": "Letzter Run",
+      "date-time": "Datum/Zeit",
+      "duration": "Dauer",
+      "number-of-tests-total": "Tests total",
+      "number-of-tests-failed": "Tests fehlgeschlagen",
+      "number-of-tests-successful": "Tests erfolgreich"
+    },
+    "runs-table": {
+      "header": {
+        "revision": "Revision",
+        "device": "Gerät",
+        "date-time": "Datum/Zeit",
+        "duration": "Dauer",
+        "number-of-tests-total": "Anzahl Tests Total",
+        "number-of-tests-successful": "Anzahl Tests erfolgreich",
+        "number-of-tests-failed": "Anzahl Tests fehlgeschlagen"
+      },
+      "device-unknown": "Unbekannt",
+      "last-revision": "Letzte Revision"
+    },
+    "test-history": "Test History"
+  },
+  "run-view": {
+    "run": {
+      "title": "Run",
+      "date-time": "Datum/Zeit",
+      "duration": "Dauer",
+      "number-of-tests-total": "Tests total",
+      "number-of-tests-failed": "Tests fehlgeschlagen",
+      "number-of-tests-successful": "Tests erfolgreich"
+    },
+    "tests-table": {
+      "header": {
+        "name": "Name",
+        "date-time": "Datum/Zeit",
+        "duration": "Dauer"
+      }
+    },
+    "search-tests": "Tests durchsuchen",
+    "show-successful-tests": "Erfolgreiche Tests anzeigen"
+  },
+  "history-grid": {
+    "show-successful-tests": "Erfolgreiche Tests anzeigen"
+  },
+  "paginator": {
+    "of": "von",
+    "items-per-page": "Einträge pro Seite",
+    "next-page": "Nächste Seite",
+    "previous-page": "Vorherige Seite"
+  }
+}

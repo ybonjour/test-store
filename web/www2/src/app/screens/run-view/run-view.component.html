@@ -1,0 +1,86 @@
+<div class="wrapper">
+  <mat-card>
+    <mat-card-header *ngIf="testsuite && run">
+      <div class="titleBox">
+        <mat-icon *ngIf="run.isResultSuccessful()" class="successfulIcon">check_circle</mat-icon>
+        <mat-icon *ngIf="run.isResultUnknown()" class="unknownIcon">error</mat-icon>
+        <mat-icon *ngIf="run.isResultFailed()" class="failedIcon">cancel</mat-icon>
+        <mat-card-title>
+          <h1 class="mat-display-1">{{run.dateTime | formatDate}}</h1>
+        </mat-card-title>
+        <mat-card-subtitle>
+          <h2 class="mat-h2">{{testsuite.name}}</h2>
+        </mat-card-subtitle>
+      </div>
+    </mat-card-header>
+    <div class="infoBar" *ngIf="run">
+      <div>
+        <div class="stateElement">
+          <h4 class="mat-h4 light">{{'run-view.run.title' | translate}}:</h4>
+        </div>
+        <div class="stateElement">
+          <span class="label">{{'run-view.run.date-time' | translate }}:</span>
+          <div class="badge" matTooltip="{{run.dateTime | formatDate}}"
+               [matTooltipClass]="'tooltip'">{{run.dateTime | humanizeDate}}</div>
+        </div>
+        <div class="stateElement">
+          <span class="label">{{'run-view.run.duration' | translate }}:</span>
+          <div class="badge" matTooltip="{{run.totalDurationMillis | formatDuration}}"
+               [matTooltipClass]="'tooltip'">{{run.totalDurationMillis | humanizeDuration}}</div>
+        </div>
+        <div class="stateElement">
+          <span class="label">{{'run-view.run.number-of-tests-total' | translate }}:</span>
+          <div class="badge">{{run.numberOfTestsTotal}}</div>
+        </div>
+        <div class="stateElement">
+          <span class="label">{{'run-view.run.number-of-tests-failed' | translate }}:</span>
+          <div class="badge failed">{{run.numberOfTestsFailed}}</div>
+        </div>
+        <div class="stateElement">
+          <span class="label">{{'run-view.run.number-of-tests-successful' | translate }}:</span>
+          <div class="badge successful">{{run.numberOfTestsSuccessful}}</div>
+        </div>
+      </div>
+      <div>
+        <mat-checkbox color="accent" labelPosition="before" (change)="applyFilter()" [(ngModel)]="checked">{{'run-view.show-successful-tests' | translate}}</mat-checkbox>
+        <mat-form-field class="filterInput">
+          <input matInput (keyup)="applyFilter()" placeholder="{{'run-view.search-tests' | translate}}"
+                 [(ngModel)]="filterValue">
+          <button mat-button *ngIf="filterValue" matSuffix mat-icon-button aria-label="Clear" (click)="clearFilter()">
+            <mat-icon>close</mat-icon>
+          </button>
+        </mat-form-field>
+      </div>
+    </div>
+    <mat-card-content>
+      <ng-template #progressBar>
+        <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+      </ng-template>
+      <div *ngIf="dataSource; else progressBar">
+        <table mat-table [dataSource]="dataSource" matSort>
+          <ng-container matColumnDef="state">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let test" class="stateCell">
+              <div class="stateBar"
+                   [ngClass]="{ 'successfulRow': test.isResultSuccessful(), 'unknownRow': test.isResultUnknown(), 'failedRow': test.isResultFailed()}"></div>
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef
+                mat-sort-header>{{'run-view.tests-table.header.name' | translate}}</th>
+            <td mat-cell *matCellDef="let test">{{test.name}}</td>
+          </ng-container>
+          <ng-container matColumnDef="totalDurationMillis">
+            <th mat-header-cell *matHeaderCellDef
+                mat-sort-header>{{'run-view.tests-table.header.duration' | translate}}</th>
+            <td mat-cell *matCellDef="let test" matTooltip="{{test.totalDurationMillis | formatDuration}}"
+                [matTooltipClass]="'tooltip'">{{test.totalDurationMillis | humanizeDuration}}</td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        </table>
+        <mat-paginator [length]="100" [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

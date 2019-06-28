@@ -1,0 +1,75 @@
+$color-successful: #00cd00;
+$color-unkonw: #c5c5c5;
+$color-failed: #e01838;
+
+a {
+  text-decoration: none;
+}
+
+mat-card {
+  height: 380px;
+  width: 380px;
+  padding: 0px;
+
+  mat-card-header {
+    padding: 8px;
+    box-shadow: 0px 2px 2px #e0e0e0;
+
+    mat-card-title {
+      text-align: left;
+    }
+
+    mat-card-subtitle {
+      margin-bottom: 0px;
+      text-align: left;
+    }
+  }
+
+  mat-card-content {
+    float: left;
+    margin-left: 12px;
+    padding: 8px;
+    width: 350px;
+
+    .lastRunInformation {
+      border-spacing: 0px;
+      width: 100%;
+
+      td {
+        height: 32px;
+        text-align: left;
+        border-bottom: 1px solid #e4e4e4;
+      }
+
+      .attribute {
+        font-weight: bold;
+        width: 180px;
+      }
+    }
+  }
+}
+
+
+.stateBar {
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  width: 12px;
+  height: 100%;
+  border-top-left-radius: 1px;
+  border-bottom-left-radius: 1px;
+  box-shadow: 2px 0px 2px #e0e0e0;
+}
+
+.successful {
+  background-color: $color-successful;
+}
+
+.unknown {
+  background-color: $color-unkonw;
+}
+
+.failed {
+  background-color: $color-failed;
+}
+

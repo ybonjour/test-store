@@ -1,0 +1,28 @@
+.item-container {
+  padding: 36px;
+  text-align: center;
+
+  .inline-block-item {
+    display: inline-block;
+    margin: 36px;
+  }
+}
+
+.createTestsuite {
+  position: fixed;
+  right: 40px;
+  bottom: 40px;
+  font-size: 40px;
+  font-weight: normal;
+}
+
+#noTestsuitesContainer {
+  position: absolute;
+  top: 40%;
+  width: 100%;
+  text-align: center;
+}
+
+.noTestsuiteText {
+  color: #171717;
+}
