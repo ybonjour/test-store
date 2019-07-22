@@ -1,0 +1,58 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: cassandra
+  labels:
+    app: test-store
+    tier: database
+spec:
+  type: ClusterIP
+  ports:
+    - port: 9042
+  selector:
+    app: test-store
+    tier: database
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: cassandra-volumeclaim
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cassandra
+  labels:
+    app: test-store
+    tier: database
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: test-store
+      tier: database
+  template:
+    metadata:
+      labels:
+        app: test-store
+        tier: database
+    spec:
+      containers:
+        - image: cassandra:3.11
+          name: cassandra
+          ports:
+            - containerPort: 9042
+              name: cassandra
+          volumeMounts:
+            - name: cassandra-persistent-storage
+              mountPath: /var/lib/cassandra
+      volumes:
+        - name: cassandra-persistent-storage
+          persistentVolumeClaim:
+            claimName: cassandra-volumeclaim

@@ -1,0 +1,22 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: migration-job
+  labels:
+    app: test-store
+spec:
+  template:
+    metadata:
+      name: migration-job
+      labels:
+        app: test-store
+    spec:
+      containers:
+        - name: migration-job
+          image: ybonjour/test-store-migration
+          env:
+            - name: CASSANDRA_HOST
+              value: "cassandra"
+            - name: CASSANDRA_PORT
+              value: "9042"
+      restartPolicy: Never

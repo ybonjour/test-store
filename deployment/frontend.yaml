@@ -1,0 +1,47 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend
+  labels:
+    app: test-store
+    tier: frontend
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 80
+      targetPort: 80
+      protocol: TCP
+  selector:
+    app: test-store
+    tier: frontend
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+  labels:
+    app: test-store
+    tier: frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: test-store
+        tier: frontend
+  template:
+    metadata:
+      labels:
+        app: test-store
+          tier: frontend
+    spec:
+      containers:
+        - image: ybonjour/test-store-web
+          name: frontend
+          env:
+            - name: BACKEND_HOST
+              value: "backend"
+            - name: BACKEND_PORT
+              value: "8080"
+          ports:
+            - containerPort: 80
+              name: frontend

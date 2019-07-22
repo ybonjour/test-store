@@ -1,0 +1,169 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: cassandra-volumeclaim
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cassandra
+  labels:
+    app: cassandra
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cassandra
+  template:
+    metadata:
+      labels:
+        app: cassandra
+    spec:
+      containers:
+        - image: cassandra:3.11
+          name: cassandra
+          ports:
+            - containerPort: 9042
+              name: cassandra
+          volumeMounts:
+            - name: cassandra-persistent-storage
+              mountPath: /var/lib/cassandra
+      volumes:
+        - name: cassandra-persistent-storage
+          persistentVolumeClaim:
+            claimName: cassandra-volumeclaim
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: cassandra
+  labels:
+    app: cassandra
+spec:
+  type: ClusterIP
+  ports:
+    - port: 9042
+  selector:
+    app: cassandra
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: migration-job
+spec:
+  template:
+    metadata:
+      name: migration-job
+    spec:
+      containers:
+        - name: migration-job
+          image: ybonjour/test-store-migration
+          env:
+            - name: CASSANDRA_HOST
+              value: "cassandra"
+            - name: CASSANDRA_PORT
+              value: "9042"
+      restartPolicy: Never
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+  labels:
+    app: backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+        - image: ybonjour/test-store-backend
+          name: backend
+          env:
+            - name: CASSANDRA_HOST
+              value: "cassandra"
+            - name: CASSANDRA_PORT
+              value: "9042"
+          ports:
+            - containerPort: 8080
+              name: backend
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend
+  labels:
+    app: backend
+spec:
+  type: ClusterIP
+  ports:
+    - port: 8080
+  selector:
+    app: backend
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend
+  labels:
+    app: backend
+spec:
+  type: ClusterIP
+  ports:
+    - port: 8080
+  selector:
+    app: backend
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+  labels:
+    app: frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      containers:
+        - image: ybonjour/test-store-web
+          name: frontend
+          env:
+            - name: BACKEND_HOST
+              value: "backend"
+            - name: BACKEND_PORT
+              value: "8080"
+          ports:
+            - containerPort: 80
+              name: frontend
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend
+  labels:
+    app: frontend
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 80
+      targetPort: 80
+      protocol: TCP
+  selector:
+    app: frontend
