@@ -5,8 +5,7 @@ Stores your test results
 1. Install `docker` and `docker-compose`
 2. Download `docker-compose-prod.yml`
 3. Run `docker-compose -f /path/to/docker-compose-prod.yml up -d`
-4. Access test-store on http://localhost
-
+4. Access test-store on http://localhost or http://localhost:8080 if you want to use the new UI.
 
 ## Store test results from your gradle build
 Adapt your build.gradle according to the following template
