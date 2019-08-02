@@ -1,6 +1,6 @@
-FROM nginx
+FROM nginx:alpine
 
-RUN apt-get update && apt-get install -y netcat
+RUN apk add netcat-openbsd bash
 
 ADD scripts /scripts
 
